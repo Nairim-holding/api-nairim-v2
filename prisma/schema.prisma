@@ -1,0 +1,442 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==============================
+// ENUMS
+// ==============================
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Role {
+  DEFAULT
+  ADMIN
+}
+
+enum PropertyStatus {
+  OCCUPIED
+  AVAILABLE
+}
+
+enum DocumentType {
+  TITLE_DEED      
+  REGISTRATION    
+  PROPERTY_RECORD 
+  IMAGE            
+  OTHER        
+}
+// ==============================
+// AGENCY
+// ==============================
+
+model Agency {
+  id                     String  @id @default(uuid())
+  trade_name             String
+  legal_name             String
+  cnpj                   String  @db.VarChar(18)
+  state_registration     String?
+  municipal_registration String?
+  license_number         String? @db.VarChar(20)
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  contacts   AgencyContact[]
+  addresses  AgencyAddress[]
+  properties Property[]
+
+  @@index([cnpj])
+}
+
+// ==============================
+// PROPERTY
+// ==============================
+
+model Property {
+  id        String  @id @default(uuid())
+  owner_id  String
+  agency_id String?
+  type_id   String
+
+  title            String
+  bedrooms         Int
+  bathrooms        Int
+  half_bathrooms   Int
+  garage_spaces    Int
+  area_total       Float
+  area_built       Float
+  frontage         Float
+  furnished        Boolean
+  floor_number     Int
+  tax_registration String  @db.VarChar(20)
+  notes            String?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  owner  Owner        @relation(fields: [owner_id], references: [id])
+  agency Agency?      @relation(fields: [agency_id], references: [id])
+  type   PropertyType @relation(fields: [type_id], references: [id])
+
+  documents Document[]
+  addresses PropertyAddress[]
+  favorites Favorite[]
+  leases    Lease[]
+  values    PropertyValue[]
+
+  @@index([owner_id])
+  @@index([agency_id])
+}
+
+// ==============================
+// USER
+// ==============================
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  birth_date DateTime @db.Date
+  gender     Gender
+  role       Role     @default(DEFAULT)
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  favorites Favorite[]
+  documents Document[]
+
+  @@index([email])
+}
+
+// ==============================
+// DOCUMENT
+// ==============================
+
+model Document {
+  id          String @id @default(uuid())
+  property_id String
+  created_by  String
+
+  file_path   String
+  file_type   String
+  description String?
+  type        DocumentType
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  user     User     @relation(fields: [created_by], references: [id])
+  property Property @relation(fields: [property_id], references: [id])
+
+  @@index([property_id])
+}
+
+// ==============================
+// OWNER
+// ==============================
+
+model Owner {
+  id             String  @id @default(uuid())
+  name           String
+  internal_code  String
+  occupation     String
+  marital_status String
+  cpf            String? @db.VarChar(14)
+  cnpj           String? @db.VarChar(20)
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  properties Property[]
+  leases     Lease[]
+  addresses  OwnerAddress[]
+  contacts   OwnerContact[]
+
+  @@index([cpf])
+  @@index([cnpj])
+}
+
+// ==============================
+// TENANT
+// ==============================
+
+model Tenant {
+  id             String  @id @default(uuid())
+  name           String
+  internal_code  String
+  occupation     String
+  marital_status String
+  cpf            String? @db.VarChar(14)
+  cnpj           String? @db.VarChar(20)
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  addresses TenantAddress[]
+  leases    Lease[]
+  contacts  TenantContact[]
+
+  @@index([cpf])
+  @@index([cnpj])
+}
+
+// ==============================
+// LEASE
+// ==============================
+
+model Lease {
+  id          String @id @default(uuid())
+  property_id String
+  type_id     String
+  owner_id    String
+  tenant_id   String
+
+  contract_number String
+  start_date      DateTime @db.Date
+  end_date        DateTime @db.Date
+
+  rent_amount       Decimal  @db.Decimal(10, 2)
+  condo_fee         Decimal? @db.Decimal(10, 2)
+  property_tax      Decimal? @db.Decimal(10, 2)
+  extra_charges     Decimal? @db.Decimal(10, 2)
+  commission_amount Decimal? @db.Decimal(10, 2)
+
+  rent_due_day  Int
+  tax_due_day   Int?
+  condo_due_day Int?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  property Property     @relation(fields: [property_id], references: [id])
+  type     PropertyType @relation(fields: [type_id], references: [id])
+  owner    Owner        @relation(fields: [owner_id], references: [id])
+  tenant   Tenant       @relation(fields: [tenant_id], references: [id])
+
+  @@index([property_id])
+  @@index([tenant_id])
+}
+
+// ==============================
+// PROPERTY VALUE (HISTÓRICO)
+// ==============================
+
+model PropertyValue {
+  id             String   @id @default(uuid())
+  property_id    String
+  reference_date DateTime @db.Date
+
+  purchase_value Decimal @db.Decimal(10, 2)
+  rental_value   Decimal @db.Decimal(10, 2)
+  condo_fee      Decimal @db.Decimal(10, 2)
+  property_tax   Decimal @db.Decimal(10, 2)
+
+  status PropertyStatus
+  notes  String?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  property Property @relation(fields: [property_id], references: [id])
+
+  @@index([property_id])
+}
+
+// ==============================
+// PROPERTY TYPE
+// ==============================
+
+model PropertyType {
+  id          String @id @default(uuid())
+  description String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  properties Property[]
+  leases     Lease[]
+}
+
+// ==============================
+// ADDRESS
+// ==============================
+
+model Address {
+  id       String @id @default(uuid())
+  zip_code String @db.VarChar(10)
+  street   String
+  number   String
+  district String
+  city     String
+  state    String
+  country  String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  propertyAddresses PropertyAddress[]
+  agencyAddresses   AgencyAddress[]
+  ownerAddresses    OwnerAddress[]
+  tenantAddresses   TenantAddress[]
+}
+
+// ==============================
+// CONTACT
+// ==============================
+
+model Contact {
+  id       String  @id @default(uuid())
+  contact  String
+  phone    String
+  email    String?
+  whatsapp Boolean
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  agencyContacts AgencyContact[]
+  ownerContacts  OwnerContact[]
+  tenantContacts TenantContact[]
+}
+
+// ==============================
+// FAVORITE
+// ==============================
+
+model Favorite {
+  id          String @id @default(uuid())
+  user_id     String
+  property_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  user     User     @relation(fields: [user_id], references: [id])
+  property Property @relation(fields: [property_id], references: [id])
+
+  @@unique([user_id, property_id])
+}
+
+// ==============================
+// PIVOT TABLES
+// ==============================
+
+model AgencyContact {
+  id         String @id @default(uuid())
+  agency_id  String
+  contact_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  agency  Agency  @relation(fields: [agency_id], references: [id])
+  contact Contact @relation(fields: [contact_id], references: [id])
+}
+
+model AgencyAddress {
+  id         String @id @default(uuid())
+  agency_id  String
+  address_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  agency  Agency  @relation(fields: [agency_id], references: [id])
+  address Address @relation(fields: [address_id], references: [id])
+}
+
+model PropertyAddress {
+  id          String @id @default(uuid())
+  property_id String
+  address_id  String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  property Property @relation(fields: [property_id], references: [id])
+  address  Address  @relation(fields: [address_id], references: [id])
+}
+
+model OwnerAddress {
+  id         String @id @default(uuid())
+  owner_id   String
+  address_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  owner   Owner   @relation(fields: [owner_id], references: [id])
+  address Address @relation(fields: [address_id], references: [id])
+}
+
+model OwnerContact {
+  id         String @id @default(uuid())
+  owner_id   String
+  contact_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  owner   Owner   @relation(fields: [owner_id], references: [id])
+  contact Contact @relation(fields: [contact_id], references: [id])
+}
+
+model TenantAddress {
+  id         String @id @default(uuid())
+  tenant_id  String
+  address_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  tenant  Tenant  @relation(fields: [tenant_id], references: [id])
+  address Address @relation(fields: [address_id], references: [id])
+}
+
+model TenantContact {
+  id         String @id @default(uuid())
+  tenant_id  String
+  contact_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  tenant  Tenant  @relation(fields: [tenant_id], references: [id])
+  contact Contact @relation(fields: [contact_id], references: [id])
+}

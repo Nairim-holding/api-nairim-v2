@@ -1,0 +1,1097 @@
+{
+	"info": {
+		"_postman_id": "84d1771a-203e-44ac-90e1-15feb176f009",
+		"name": "Nairim",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32375968"
+	},
+	"item": [
+		{
+			"name": "Imobiliaria",
+			"item": [
+				{
+					"name": "Imobiliaria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/agencies"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-filtro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/agencies/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/agencies/30d3a7ae-8c81-4653-8d59-07c7825a1afe"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"trade_name\": \"Minha Imobiliária\",\r\n  \"legal_name\": \"Minha Imobiliária LTDA\",\r\n  \"cnpj\": \"98.765.432/0001-01\",\r\n  \"state_registration\": \"987654\",\r\n  \"municipal_registration\": \"456789\",\r\n  \"license_number\": \"CRECI-SP 54321\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"Contato Principal\",\r\n      \"phone\": \"(11) 99999-9999\",\r\n      \"email\": \"contato@minhaimobiliaria.com\",\r\n      \"whatsapp\": true\r\n    },\r\n    {\r\n      \"contact\": \"Financeiro\",\r\n      \"phone\": \"(11) 88888-8888\",\r\n      \"email\": \"financeiro@minhaimobiliaria.com\",\r\n      \"whatsapp\": false\r\n    }\r\n  ],\r\n  \"addresses\": [\r\n    {\r\n      \"zip_code\": \"04538-132\",\r\n      \"street\": \"Av. Paulista\",\r\n      \"number\": 1000,\r\n      \"district\": \"Bela Vista\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/agencies"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"trade_name\": \"Nairim Imóveis Atualizado\",\r\n  \"legal_name\": \"Nairim Negócios Atualizados LTDA\",\r\n  \"cnpj\": \"12.345.678/0001-02\",\r\n  \"license_number\": \"CRECI-SP 99999\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"Novo Contato\",\r\n      \"phone\": \"(11) 97777-7777\",\r\n      \"email\": \"novo@nairim.com\",\r\n      \"whatsapp\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/agencies/30d3a7ae-8c81-4653-8d59-07c7825a1afe"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/agencies/30d3a7ae-8c81-4653-8d59-07c7825a1afe"
+					},
+					"response": []
+				},
+				{
+					"name": "imobiliaria-restaurar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/agencies/30d3a7ae-8c81-4653-8d59-07c7825a1afe/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "user-filtro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/users/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "user-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/users/415797cc-f5bf-4775-81b0-cd3a54fe9837"
+					},
+					"response": []
+				},
+				{
+					"name": "user-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"João Silva\",\r\n    \"email\": \"teste2@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"birth_date\": \"1990-01-01\",\r\n    \"gender\": \"MALE\",\r\n    \"role\": \"ADMIN\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "user-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"João Silva Atualizado\",\r\n    \"email\": \"joao.novo@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/users/2e3a415f-2f44-4b3c-aef5-a82888a1a99a"
+					},
+					"response": []
+				},
+				{
+					"name": "user-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/users/2e3a415f-2f44-4b3c-aef5-a82888a1a99a"
+					},
+					"response": []
+				},
+				{
+					"name": "user-restaurar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/users/2e3a415f-2f44-4b3c-aef5-a82888a1a99a/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Aluguel",
+			"item": [
+				{
+					"name": "lease",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "lease-filtro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/leases/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "lease-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/leases/ec98a8a7-2b95-4709-882e-b55ed104a4f6"
+					},
+					"response": []
+				},
+				{
+					"name": "lease-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"property_id\": \"uuid-da-propriedade\",\r\n  \"type_id\": \"uuid-do-tipo\",\r\n  \"owner_id\": \"uuid-do-proprietario\",\r\n  \"tenant_id\": \"uuid-do-inquilino\",\r\n  \"contract_number\": \"12345\",\r\n  \"start_date\": \"2024-01-01\",\r\n  \"end_date\": \"2024-12-31\",\r\n  \"rent_amount\": 2500.00,\r\n  \"condo_fee\": 300.00,\r\n  \"property_tax\": 150.00,\r\n  \"extra_charges\": 50.00,\r\n  \"commission_amount\": 262.50,\r\n  \"rent_due_day\": 5,\r\n  \"tax_due_day\": 10,\r\n  \"condo_due_day\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/leases"
+					},
+					"response": []
+				},
+				{
+					"name": "lease-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rent_amount\": 2600.00,\r\n  \"condo_fee\": 320.00,\r\n  \"end_date\": \"2025-01-31\",\r\n  \"rent_due_day\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/leases/ec98a8a7-2b95-4709-882e-b55ed104a4f6"
+					},
+					"response": []
+				},
+				{
+					"name": "lease-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/leases/ec98a8a7-2b95-4709-882e-b55ed104a4f6"
+					},
+					"response": []
+				},
+				{
+					"name": "lease-restaurar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/leases/ec98a8a7-2b95-4709-882e-b55ed104a4f6"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Proprietário",
+			"item": [
+				{
+					"name": "owner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/owners"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/owners/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "owner-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/owners/11fc04a8-372d-4be8-ab43-5c0d690b1ecf"
+					},
+					"response": []
+				},
+				{
+					"name": "owner-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"João da Silva\",\r\n  \"internal_code\": \"001\",\r\n  \"occupation\": \"Engenheiro\",\r\n  \"marital_status\": \"Casado\",\r\n  \"cpf\": \"123.456.789-00\",\r\n  \"cnpj\": \"12.345.678/0001-90\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"João\",\r\n      \"phone\": \"(11) 99999-9999\",\r\n      \"email\": \"joao@email.com\",\r\n      \"whatsapp\": true\r\n    }\r\n  ],\r\n  \"addresses\": [\r\n    {\r\n      \"zip_code\": \"12345-678\",\r\n      \"street\": \"Rua das Flores\",\r\n      \"number\": \"123\",\r\n      \"district\": \"Centro\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/owners"
+					},
+					"response": []
+				},
+				{
+					"name": "owner-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"João da Silva Santos\",\r\n  \"occupation\": \"Arquiteto\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"João Silva\",\r\n      \"phone\": \"(11) 98888-8888\",\r\n      \"email\": \"joao.silva@email.com\",\r\n      \"whatsapp\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/owners/11fc04a8-372d-4be8-ab43-5c0d690b1ecf"
+					},
+					"response": []
+				},
+				{
+					"name": "owner-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/owners/11fc04a8-372d-4be8-ab43-5c0d690b1ecf"
+					},
+					"response": []
+				},
+				{
+					"name": "owner-reativar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/owners/11fc04a8-372d-4be8-ab43-5c0d690b1ecf/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inquilino",
+			"item": [
+				{
+					"name": "tenant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/tenants"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-filtro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/tenants/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/tenants/3f86a0b4-b837-400b-85e5-754e89b0e8a7"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Maria Souza\",\r\n  \"internal_code\": \"002\",\r\n  \"occupation\": \"Advogada\",\r\n  \"marital_status\": \"Solteira\",\r\n  \"cpf\": \"987.654.321-00\",\r\n  \"cnpj\": \"98.765.432/0001-10\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"Maria\",\r\n      \"phone\": \"(11) 98888-7777\",\r\n      \"email\": \"maria@email.com\",\r\n      \"whatsapp\": true\r\n    }\r\n  ],\r\n  \"addresses\": [\r\n    {\r\n      \"zip_code\": \"54321-876\",\r\n      \"street\": \"Avenida Paulista\",\r\n      \"number\": \"1000\",\r\n      \"district\": \"Bela Vista\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/tenants"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Maria Souza Santos\",\r\n  \"occupation\": \"Juíza\",\r\n  \"contacts\": [\r\n    {\r\n      \"contact\": \"Maria Souza\",\r\n      \"phone\": \"(11) 97777-6666\",\r\n      \"email\": \"maria.souza@email.com\",\r\n      \"whatsapp\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/tenants/3f86a0b4-b837-400b-85e5-754e89b0e8a7"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/tenants/3f86a0b4-b837-400b-85e5-754e89b0e8a7"
+					},
+					"response": []
+				},
+				{
+					"name": "tenant-reativar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/tenants/3f86a0b4-b837-400b-85e5-754e89b0e8a7/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tipo Imóvel",
+			"item": [
+				{
+					"name": "property-type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/property-types"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-filtro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/property-types/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/property-types/446929c8-d65c-48d5-9225-6489e1fcfb0f"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Apartamento 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/property-types"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Apartamento Residencial\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/property-types/446929c8-d65c-48d5-9225-6489e1fcfb0f"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/property-types/446929c8-d65c-48d5-9225-6489e1fcfb0f"
+					},
+					"response": []
+				},
+				{
+					"name": "property-type-reativar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/property-types/446929c8-d65c-48d5-9225-6489e1fcfb0f/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Imóvel",
+			"item": [
+				{
+					"name": "property",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/properties"
+					},
+					"response": []
+				},
+				{
+					"name": "property-filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/properties/filters"
+					},
+					"response": []
+				},
+				{
+					"name": "property-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2"
+					},
+					"response": []
+				},
+				{
+					"name": "property-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Casa com Piscina\",\r\n  \"bedrooms\": 3,\r\n  \"bathrooms\": 2,\r\n  \"half_bathrooms\": 1,\r\n  \"garage_spaces\": 2,\r\n  \"area_total\": 200,\r\n  \"area_built\": 180,\r\n  \"frontage\": 15,\r\n  \"furnished\": true,\r\n  \"floor_number\": 0,\r\n  \"tax_registration\": \"123.456.789\",\r\n  \"notes\": \"Casa em ótimo estado\",\r\n  \"owner_id\": \"03bb815b-e8a7-425b-bcc5-37f0ac6cb216\",\r\n  \"type_id\": \"35519ac2-0816-47b9-9554-48440062fe3e\",\r\n  \"agency_id\": \"30d3a7ae-8c81-4653-8d59-07c7825a1afe\",\r\n  \"address\": {\r\n    \"zip_code\": \"12345-678\",\r\n    \"street\": \"Rua das Flores\",\r\n    \"number\": \"123\",\r\n    \"district\": \"Centro\",\r\n    \"city\": \"São Paulo\",\r\n    \"state\": \"SP\",\r\n    \"country\": \"Brasil\"\r\n  },\r\n  \"values\": {\r\n    \"purchase_value\": 500000,\r\n    \"rental_value\": 3000,\r\n    \"condo_fee\": 500,\r\n    \"property_tax\": 200,\r\n    \"status\": \"AVAILABLE\",\r\n    \"notes\": \"Valor atualizado\",\r\n    \"reference_date\": \"2024-01-01\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/properties"
+					},
+					"response": []
+				},
+				{
+					"name": "property-arquivos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "arquivosImagens",
+									"type": "file",
+									"src": [
+										"postman-cloud:///1f0f3353-52fd-49b0-ac04-d3ff27f46271",
+										"postman-cloud:///1f0f3352-a458-4220-bee3-35c7c2bb5f2c"
+									]
+								},
+								{
+									"key": "userId",
+									"value": "27a5bf3b-e0d8-48e6-bcc0-111b8d7f9b07",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2/documents"
+					},
+					"response": []
+				},
+				{
+					"name": "property-alteração",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Casa com Piscina 2\",\r\n  \"bedrooms\": 3,\r\n  \"bathrooms\": 2,\r\n  \"half_bathrooms\": 1,\r\n  \"garage_spaces\": 2,\r\n  \"area_total\": 200,\r\n  \"area_built\": 180,\r\n  \"frontage\": 15,\r\n  \"furnished\": true,\r\n  \"floor_number\": 0,\r\n  \"tax_registration\": \"123.456.789\",\r\n  \"notes\": \"Casa em ótimo estado\",\r\n  \"owner_id\": \"03bb815b-e8a7-425b-bcc5-37f0ac6cb216\",\r\n  \"type_id\": \"35519ac2-0816-47b9-9554-48440062fe3e\",\r\n  \"agency_id\": \"30d3a7ae-8c81-4653-8d59-07c7825a1afe\",\r\n  \"address\": {\r\n    \"zip_code\": \"12345-678\",\r\n    \"street\": \"Rua das Flores\",\r\n    \"number\": \"123\",\r\n    \"district\": \"Centro\",\r\n    \"city\": \"São Paulo\",\r\n    \"state\": \"SP\",\r\n    \"country\": \"Brasil\"\r\n  },\r\n  \"values\": {\r\n    \"purchase_value\": 500000,\r\n    \"rental_value\": 3000,\r\n    \"condo_fee\": 500,\r\n    \"property_tax\": 200,\r\n    \"status\": \"AVAILABLE\",\r\n    \"notes\": \"Valor atualizado\",\r\n    \"reference_date\": \"2024-01-01\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2"
+					},
+					"response": []
+				},
+				{
+					"name": "property-arquivos",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "arquivosImagens",
+									"type": "file",
+									"src": "postman-cloud:///1f0f3352-a458-4220-bee3-35c7c2bb5f2c"
+								},
+								{
+									"key": "arquivosMatricula",
+									"type": "file",
+									"src": [
+										"postman-cloud:///1f0f3374-857a-4660-8151-ae6436f7cb05",
+										"postman-cloud:///1f0f3373-55f8-4a50-ba86-ecdca9f6646c"
+									]
+								},
+								{
+									"key": "arquivosRegistro",
+									"type": "file",
+									"src": "postman-cloud:///1f0f3373-55f8-4a50-ba86-ecdca9f6646c"
+								},
+								{
+									"key": "arquivosEscritura",
+									"type": "file",
+									"src": "postman-cloud:///1f0f3373-55f8-4a50-ba86-ecdca9f6646c"
+								},
+								{
+									"key": "userId",
+									"value": "27a5bf3b-e0d8-48e6-bcc0-111b8d7f9b07",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2/documents"
+					},
+					"response": []
+				},
+				{
+					"name": "property-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2"
+					},
+					"response": []
+				},
+				{
+					"name": "property-reativar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/properties/0b959091-55fa-4196-a465-b3702aee30b2/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "dashboard-financial",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/dashboard/financial?startDate=2025-12-01&endDate=2026-01-31",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"dashboard",
+								"financial"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard-portfolio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/dashboard/portfolio?startDate=2025-12-01&endDate=2026-01-31",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"dashboard",
+								"portfolio"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard-clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/dashboard/clients?startDate=2025-12-01&endDate=2026-01-31",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"dashboard",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard-map",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/dashboard/map?startDate=2025-12-01&endDate=2026-01-31",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"dashboard",
+								"map"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard-all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/dashboard/all?startDate=2025-12-01&endDate=2026-01-31",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"dashboard",
+								"all"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-12-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favoritos",
+			"item": [
+				{
+					"name": "favorito",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/favorites"
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseURL}}/favorites/cc7f3752-13f6-4383-92a5-65de69043af2"
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-id-user",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": \"27a5bf3b-e0d8-48e6-bcc0-111b8d7f9b07\",\r\n  \"property_id\": \"0b959091-55fa-4196-a465-b3702aee30b2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/favorites"
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-inativar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseURL}}/favorites/cc7f3752-13f6-4383-92a5-65de69043af2"
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-inativar-ids",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"property_id\": \"0b959091-55fa-4196-a465-b3702aee30b2\",\r\n    \"user_id\": \"27a5bf3b-e0d8-48e6-bcc0-111b8d7f9b07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/favorites/delete-by-user-property"
+					},
+					"response": []
+				},
+				{
+					"name": "favorito-restaurar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{baseURL}}/favorites/cc7f3752-13f6-4383-92a5-65de69043af2/restore"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"teste2@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "verify-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3YTViZjNiLWUwZDgtNDhlNi1iY2MwLTExMWI4ZDdmOWIwNyIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoidGVzdGUyQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzY4NjE2MjAyLCJleHAiOjE3Njg2NDUwMDJ9.5LuP7R8QDS2N5YvLxxQamXxdM5HhTr-6449qgwEM6P0\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/verify-token"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3YTViZjNiLWUwZDgtNDhlNi1iY2MwLTExMWI4ZDdmOWIwNyIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoidGVzdGUyQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzY4NjE2MjAyLCJleHAiOjE3Njg2NDUwMDJ9.5LuP7R8QDS2N5YvLxxQamXxdM5HhTr-6449qgwEM6P0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3YTViZjNiLWUwZDgtNDhlNi1iY2MwLTExMWI4ZDdmOWIwNyIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoidGVzdGUyQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzY4NjE2MjAyLCJleHAiOjE3Njg2NDUwMDJ9.5LuP7R8QDS2N5YvLxxQamXxdM5HhTr-6449qgwEM6P0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/refresh-token"
+					},
+					"response": []
+				},
+				{
+					"name": "request-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"teste2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/request-password-reset"
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"token\": \"eyJhbGciO\",\r\n  \"newPassword\": \"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/reset-password"
+					},
+					"response": []
+				},
+				{
+					"name": "current-session",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3YTViZjNiLWUwZDgtNDhlNi1iY2MwLTExMWI4ZDdmOWIwNyIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoidGVzdGUyQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzY4NjE2MjAyLCJleHAiOjE3Njg2NDUwMDJ9.5LuP7R8QDS2N5YvLxxQamXxdM5HhTr-6449qgwEM6P0"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{baseURL}}/auth/me"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3YTViZjNiLWUwZDgtNDhlNi1iY2MwLTExMWI4ZDdmOWIwNyIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImVtYWlsIjoidGVzdGUyQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzY4NjE2MjAyLCJleHAiOjE3Njg2NDUwMDJ9.5LuP7R8QDS2N5YvLxxQamXxdM5HhTr-6449qgwEM6P0"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"oldPassword\": \"1234567\",\r\n  \"newPassword\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/change-password/27a5bf3b-e0d8-48e6-bcc0-111b8d7f9b07"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
