@@ -1,6 +1,6 @@
 import { DocumentType } from '@/generated/prisma/enums';
 import prisma from '../lib/prisma';
-import { UploadServiceFactory } from '../utils/upload';
+import { UploadServiceFactory } from '../utils/uploadServiceFactory';
 import fs from 'fs';
 import path from 'path';
 
