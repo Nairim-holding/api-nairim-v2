@@ -18,10 +18,8 @@ export interface GetPropertyTypesParams {
   limit?: number;
   page?: number;
   search?: string;
-  sortOptions?: {
-    sort_id?: string;
-    sort_description?: string;
-  };
+  filters?: Record<string, any>;
+  sortOptions?: Record<string, string>;
   includeInactive?: boolean;
 }
 

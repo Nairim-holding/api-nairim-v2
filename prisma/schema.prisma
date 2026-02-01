@@ -160,10 +160,12 @@ model Owner {
   id             String  @id @default(uuid())
   name           String
   internal_code  String
-  occupation     String
-  marital_status String
+  occupation     String?
+  marital_status String?
   cpf            String? @db.VarChar(14)
   cnpj           String? @db.VarChar(20)
+  state_registration     String? 
+  municipal_registration String? 
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -190,6 +192,8 @@ model Tenant {
   marital_status String
   cpf            String? @db.VarChar(14)
   cnpj           String? @db.VarChar(20)
+  state_registration     String?   
+  municipal_registration String? 
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -218,11 +222,11 @@ model Lease {
   start_date      DateTime @db.Date
   end_date        DateTime @db.Date
 
-  rent_amount       Decimal  @db.Decimal(10, 2)
-  condo_fee         Decimal? @db.Decimal(10, 2)
-  property_tax      Decimal? @db.Decimal(10, 2)
-  extra_charges     Decimal? @db.Decimal(10, 2)
-  commission_amount Decimal? @db.Decimal(10, 2)
+  rent_amount       Decimal  @db.Decimal(20, 2)
+  condo_fee         Decimal? @db.Decimal(20, 2)
+  property_tax      Decimal? @db.Decimal(20, 2)
+  extra_charges     Decimal? @db.Decimal(20, 2)
+  commission_amount Decimal? @db.Decimal(20, 2)
 
   rent_due_day  Int
   tax_due_day   Int?
@@ -250,10 +254,13 @@ model PropertyValue {
   property_id    String
   reference_date DateTime @db.Date
 
-  purchase_value Decimal @db.Decimal(10, 2)
-  rental_value   Decimal @db.Decimal(10, 2)
-  condo_fee      Decimal @db.Decimal(10, 2)
-  property_tax   Decimal @db.Decimal(10, 2)
+  purchase_value Decimal @db.Decimal(20, 2)
+  rental_value   Decimal @db.Decimal(20, 2)
+  condo_fee      Decimal @db.Decimal(20, 2)
+  property_tax   Decimal @db.Decimal(20, 2)
+
+  sale_value      Decimal? @db.Decimal(20, 2)
+  extra_charges   Decimal? @db.Decimal(20, 2)
 
   status PropertyStatus
   notes  String?
@@ -313,10 +320,10 @@ model Address {
 
 model Contact {
   id       String  @id @default(uuid())
-  contact  String
-  phone    String
+  contact  String?
+  phone    String?
   email    String?
-  whatsapp Boolean
+  cellphone String?
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt

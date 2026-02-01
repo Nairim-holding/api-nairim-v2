@@ -6,6 +6,33 @@ export interface Tenant {
   marital_status: string;
   cpf?: string | null;
   cnpj?: string | null;
+  state_registration?: string | null;     
+  municipal_registration?: string | null; 
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null;
+}
+
+export interface Address {
+  id: string;
+  zip_code: string;
+  street: string;
+  number: string;
+  district: string;
+  city: string;
+  state: string;
+  country: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null;
+}
+
+export interface Contact {
+  id: string;
+  contact?: string;
+  phone?: string;
+  email?: string | null;
+  cellphone?: string;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -14,31 +41,10 @@ export interface Tenant {
 export interface TenantWithRelations extends Tenant {
   leases: any[];
   addresses: {
-    address: {
-      id: string;
-      zip_code: string;
-      street: string;
-      number: string;
-      district: string;
-      city: string;
-      state: string;
-      country: string;
-      created_at: Date;
-      updated_at: Date;
-      deleted_at?: Date | null;
-    };
+    address: Address;
   }[];
   contacts: {
-    contact: {
-      id: string;
-      contact: string;
-      phone: string;
-      email?: string | null;
-      whatsapp: boolean;
-      created_at: Date;
-      updated_at: Date;
-      deleted_at?: Date | null;
-    };
+    contact: Contact;
   }[];
 }
 
@@ -49,6 +55,8 @@ export interface CreateTenantInput {
   marital_status: string;
   cpf?: string;
   cnpj?: string;
+  state_registration?: string | null;     
+  municipal_registration?: string | null;
   contacts?: {
     contact: string;
     phone: string;
@@ -72,16 +80,9 @@ export interface GetTenantsParams {
   limit?: number;
   page?: number;
   search?: string;
-  sortOptions?: {
-    sort_id?: string;
-    sort_name?: string;
-    sort_internal_code?: string;
-    sort_occupation?: string;
-    sort_marital_status?: string;
-    sort_cnpj?: string;
-    sort_cpf?: string;
-  };
+  sortOptions?: Record<string, 'asc' | 'desc'>;
   includeInactive?: boolean;
+  filters?: Record<string, any>;
 }
 
 export interface PaginatedTenantResponse {
@@ -93,11 +94,19 @@ export interface PaginatedTenantResponse {
 
 export interface FilterOption {
   field: string;
-  type: 'string' | 'number' | 'date' | 'boolean';
+  type: 'string' | 'number' | 'date' | 'boolean' | 'select';
   label: string;
   values?: string[];
+  options?: Array<{ value: string; label: string }>;
+  searchable?: boolean;
+  autocomplete?: boolean;
+  dateRange?: boolean;
+  description?: string;
 }
 
 export interface FiltersResponse {
   filters: FilterOption[];
+  operators: Record<string, string[]>;
+  defaultSort: string;
+  searchFields: string[];
 }

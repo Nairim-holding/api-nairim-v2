@@ -1,5 +1,5 @@
-
 import bcrypt from 'bcrypt';
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
 import {
   GetUsersParams,
@@ -10,141 +10,85 @@ import {
   genderLabels,
   roleLabels
 } from '../types/user';
-import { Gender, Prisma, Role } from '@/generated/prisma/client';
+import { Gender, Role } from '@/generated/prisma/client';
 
 export class UserService {
+  static readonly FIELD_MAPPING: Record<string, { 
+    type: 'direct' | 'enum' | 'date',
+    realField: string
+  }> = {
+    'id': { type: 'direct', realField: 'id' },
+    'name': { type: 'direct', realField: 'name' },
+    'email': { type: 'direct', realField: 'email' },
+    'birth_date': { type: 'date', realField: 'birth_date' },
+    'gender': { type: 'enum', realField: 'gender' },
+    'role': { type: 'enum', realField: 'role' },
+    'created_at': { type: 'date', realField: 'created_at' },
+    'updated_at': { type: 'date', realField: 'updated_at' }
+  };
+
+  // Método para normalizar texto (remover acentos e caracteres especiais)
+  private static normalizeText(text: string): string {
+    if (!text) return '';
+    
+    // Normaliza para a forma NFD (Decomposição) e remove os diacríticos
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')  // Remove acentos
+      .replace(/[çÇ]/g, 'c')             // Substitui ç por c
+      .replace(/[ñÑ]/g, 'n')             // Substitui ñ por n
+      .toLowerCase()
+      .trim();
+  }
+
   static async getUsers({
     limit = 10,
     page = 1,
     search,
-    sortOptions,
+    sortOptions = {},
     includeInactive = false,
     filters = {}
   }: GetUsersParams): Promise<PaginatedResponse<any>> {
     try {
-      console.log('🔍 Executing getUsers with params:', { limit, page, search, filters });
+      console.log('🔍 Executando getUsers com parâmetros:', { 
+        limit, page, search, 
+        sortOptions: JSON.stringify(sortOptions, null, 2),
+        filters: JSON.stringify(filters, null, 2) 
+      });
       
-      const insensitiveMode: Prisma.QueryMode = 'insensitive';
-
-      // Construir where clause
-      let whereClause: Prisma.UserWhereInput = {};
-
-      // Por padrão, não mostra deletados
-      if (!includeInactive) {
-        whereClause.deleted_at = null;
-      }
-
-      // Aplicar filtros individuais
-      if (Object.keys(filters).length > 0) {
-        const filterConditions: Prisma.UserWhereInput[] = [];
-
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value === undefined || value === '') return;
-
-          switch (key) {
-            case 'name':
-            case 'email':
-              filterConditions.push({
-                [key]: { contains: String(value), mode: insensitiveMode }
-              });
-              break;
-
-            case 'birth_date':
-              try {
-                const date = new Date(value as string);
-                if (!isNaN(date.getTime())) {
-                  filterConditions.push({
-                    birth_date: { equals: date }
-                  });
-                }
-              } catch (error) {
-                console.warn('Invalid date filter:', value);
-              }
-              break;
-
-            case 'gender':
-              if (Object.values(Gender).includes(value as Gender)) {
-                filterConditions.push({
-                  gender: { equals: value as Gender }
-                });
-              }
-              break;
-
-            case 'role':
-              if (Object.values(Role).includes(value as Role)) {
-                filterConditions.push({
-                  role: { equals: value as Role }
-                });
-              }
-              break;
-
-            case 'created_at':
-            case 'updated_at':
-              try {
-                const date = new Date(value as string);
-                if (!isNaN(date.getTime())) {
-                  filterConditions.push({
-                    [key]: { equals: date }
-                  });
-                }
-              } catch (error) {
-                console.warn('Invalid date filter:', value);
-              }
-              break;
-          }
-        });
-
-        if (filterConditions.length > 0) {
-          whereClause = { ...whereClause, AND: filterConditions };
-        }
-      }
-
-      // Busca global
-      if (search) {
-        const normalized = search.trim();
-        const orFilters: Prisma.UserWhereInput['OR'] = [
-          { name: { contains: normalized, mode: insensitiveMode } },
-          { email: { contains: normalized, mode: insensitiveMode } },
-        ];
-
-        // Verificar se é um gênero ou role
-        if (Object.values(Gender).includes(normalized.toUpperCase() as Gender)) {
-          orFilters.push({ gender: { equals: normalized.toUpperCase() as Gender } });
-        }
-        if (Object.values(Role).includes(normalized.toUpperCase() as Role)) {
-          orFilters.push({ role: { equals: normalized.toUpperCase() as Role } });
-        }
-
-        // Se já tiver condições AND, adicionar OR dentro
-        if (whereClause.AND) {
-          whereClause = { AND: [whereClause, { OR: orFilters }] };
-        } else {
-          whereClause = { ...whereClause, OR: orFilters };
-        }
-      }
-
-      // Ordenação
-      const orderBy: Prisma.UserOrderByWithRelationInput[] = [];
-      if (sortOptions?.sort_id) orderBy.push({ id: sortOptions.sort_id.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_name) orderBy.push({ name: sortOptions.sort_name.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_email) orderBy.push({ email: sortOptions.sort_email.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_birth_date) orderBy.push({ birth_date: sortOptions.sort_birth_date.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_gender) orderBy.push({ gender: sortOptions.sort_gender.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_role) orderBy.push({ role: sortOptions.sort_role.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_created_at) orderBy.push({ created_at: sortOptions.sort_created_at.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      if (sortOptions?.sort_updated_at) orderBy.push({ updated_at: sortOptions.sort_updated_at.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-
       const take = Math.max(1, Math.min(limit, 100));
       const skip = (Math.max(1, page) - 1) * take;
 
-      console.log('📊 User query parameters:', { where: whereClause, skip, take, orderBy });
+      // Construir where clause sem busca global (busca será feita em memória)
+      const where = this.buildWhereClauseWithoutSearch(filters, includeInactive);
+      
+      // Normalizar sortOptions para o formato que o buildOrderBy espera
+      const normalizedSortOptions: Record<string, 'asc' | 'desc'> = {};
+      
+      // Converter sortOptions do frontend para o formato interno
+      Object.entries(sortOptions).forEach(([key, value]) => {
+        if (value && (value.toLowerCase() === 'asc' || value.toLowerCase() === 'desc')) {
+          const fieldName = key.replace('sort_', '');
+          normalizedSortOptions[fieldName] = value.toLowerCase() as 'asc' | 'desc';
+        }
+      });
+      
+      // Verificar tipo de ordenação
+      const sortField = Object.keys(normalizedSortOptions)[0];
+      const sortDirection = sortField ? normalizedSortOptions[sortField] : undefined;
+      
+      console.log(`🔧 Campo de ordenação: ${sortField} -> ${sortDirection}`);
 
-      const [users, total] = await Promise.all([
-        prisma.user.findMany({
-          where: whereClause,
-          skip,
-          take,
-          orderBy: orderBy.length > 0 ? orderBy : [{ created_at: 'desc' }],
+      let users: any[] = [];
+      let total = 0;
+
+      // Se houver busca, buscar todos para processar em memória
+      if (search && search.trim()) {
+        console.log(`🔄 Processando em memória (busca: "${search.trim()}")`);
+        
+        // Buscar TODOS os usuários para processamento em memória
+        const allUsers = await prisma.user.findMany({
+          where,
           select: {
             id: true,
             name: true,
@@ -154,13 +98,61 @@ export class UserService {
             role: true,
             created_at: true,
             updated_at: true,
-            // Não retornar password por segurança
           },
-        }),
-        prisma.user.count({ where: whereClause }),
-      ]);
+        });
 
-      console.log(`✅ Found ${users.length} users, total: ${total}`);
+        // Aplicar filtro de busca em memória
+        let filteredUsers = allUsers;
+        if (search.trim()) {
+          filteredUsers = this.filterUsersBySearch(allUsers, search);
+        }
+
+        total = filteredUsers.length;
+
+        // Ordenar em memória se necessário
+        if (sortField && sortDirection) {
+          users = this.sortByDirectField(filteredUsers, sortField, sortDirection);
+        } else {
+          // Ordenação padrão por data de criação (mais recente primeiro)
+          users = filteredUsers.sort((a, b) => 
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        }
+        
+        // Aplicar paginação
+        users = users.slice(skip, skip + take);
+      } else {
+        // Sem busca global - usar ordenação do Prisma
+        const orderBy = this.buildOrderBy(normalizedSortOptions);
+        
+        console.log('📊 ORDER BY direto:', JSON.stringify(orderBy, null, 2));
+        
+        // Buscar com ordenação do Prisma
+        const [usersData, totalCount] = await Promise.all([
+          prisma.user.findMany({
+            where,
+            skip,
+            take,
+            orderBy,
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              birth_date: true,
+              gender: true,
+              role: true,
+              created_at: true,
+              updated_at: true,
+            },
+          }),
+          prisma.user.count({ where })
+        ]);
+
+        users = usersData;
+        total = totalCount;
+      }
+
+      console.log(`✅ Encontrados ${users.length} usuários, total: ${total}`);
 
       return {
         data: users || [],
@@ -170,9 +162,177 @@ export class UserService {
       };
 
     } catch (error) {
-      console.error('❌ Error in UserService.getUsers:', error);
-      throw new Error('Failed to fetch users');
+      console.error('❌ Erro em UserService.getUsers:', error);
+      throw new Error('Falha ao buscar usuários');
     }
+  }
+
+  /**
+   * Filtra usuários em memória com base no termo de busca (ignorando acentos)
+   */
+  private static filterUsersBySearch(
+    users: any[],
+    searchTerm: string
+  ): any[] {
+    if (!searchTerm.trim()) return users;
+
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+    
+    return users.filter(user => {
+      // Campos diretos do usuário
+      const directFields = [
+        user.name,
+        user.email,
+        user.gender,
+        user.role,
+        user.id
+      ].filter(Boolean).join(' ');
+
+      // Normalizar e verificar se contém o termo de busca
+      const normalizedAllFields = this.normalizeText(directFields);
+      return normalizedAllFields.includes(normalizedSearchTerm);
+    });
+  }
+
+  /**
+   * Ordenação por campo direto em memória
+   */
+  private static sortByDirectField<T>(
+    items: T[],
+    field: string,
+    direction: 'asc' | 'desc'
+  ): T[] {
+    return [...items].sort((a: any, b: any) => {
+      const valueA = a[field] || '';
+      const valueB = b[field] || '';
+
+      const strA = this.normalizeText(String(valueA));
+      const strB = this.normalizeText(String(valueB));
+
+      if (direction === 'asc') {
+        return strA.localeCompare(strB, 'pt-BR', { sensitivity: 'base' });
+      } else {
+        return strB.localeCompare(strA, 'pt-BR', { sensitivity: 'base' });
+      }
+    });
+  }
+
+  /**
+   * Constrói ORDER BY para campos diretos
+   */
+  private static buildOrderBy(sortOptions: Record<string, 'asc' | 'desc'>): any[] {
+    const orderBy: any[] = [];
+
+    Object.entries(sortOptions).forEach(([field, value]) => {
+      if (!value) return;
+
+      const direction = String(value).toLowerCase() === 'desc' ? 'desc' : 'asc';
+      
+      console.log(`🔧 Processando ordenação direta: ${field} -> ${direction}`);
+
+      // Campos diretos que o Prisma pode ordenar
+      if (['id', 'name', 'email', 'birth_date', 'gender', 'role', 'created_at', 'updated_at'].includes(field)) {
+        orderBy.push({ [field]: direction });
+      }
+    });
+
+    if (orderBy.length === 0) {
+      orderBy.push({ created_at: 'desc' });
+      console.log('🔄 Usando ordenação padrão: created_at desc');
+    }
+
+    return orderBy;
+  }
+
+  /**
+   * Constrói a cláusula WHERE para a query (sem busca global)
+   */
+  private static buildWhereClauseWithoutSearch(
+    filters: Record<string, any>,
+    includeInactive: boolean
+  ): any {
+    const where: any = {};
+    
+    // Filtrar por status deletado
+    if (!includeInactive) {
+      where.deleted_at = null;
+    }
+    
+    // Filtros específicos
+    const filterConditions = this.buildFilterConditions(filters);
+    if (Object.keys(filterConditions).length > 0) {
+      where.AND = [filterConditions];
+    }
+    
+    return where;
+  }
+
+  /**
+   * Constrói condições de filtro específicas
+   */
+  private static buildFilterConditions(filters: Record<string, any>): any {
+    const conditions: any = {};
+    
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') {
+        return;
+      }
+
+      console.log(`🔄 Aplicando filtro ${key}:`, value);
+
+      // Campos diretos do usuário
+      if (['name', 'email'].includes(key)) {
+        conditions[key] = { 
+          contains: String(value), 
+          mode: 'insensitive' as Prisma.QueryMode 
+        };
+      }
+      // Campos de enum
+      else if (['gender', 'role'].includes(key)) {
+        conditions[key] = { equals: String(value).toUpperCase() };
+      }
+      // Campos de data
+      else if (['birth_date', 'created_at', 'updated_at'].includes(key)) {
+        conditions[key] = this.buildDateCondition(value);
+      }
+    });
+    
+    return conditions;
+  }
+
+  /**
+   * Constrói condição para filtro de data
+   */
+  private static buildDateCondition(value: any): any {
+    if (typeof value === 'object' && value && 'from' in value && 'to' in value) {
+      const dateRange = value as { from: string; to: string };
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      toDate.setHours(23, 59, 59, 999);
+      
+      if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+        return {
+          gte: fromDate,
+          lte: toDate
+        };
+      }
+    } 
+    else if (typeof value === 'string') {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
+        
+        return {
+          gte: startOfDay,
+          lte: endOfDay
+        };
+      }
+    }
+    
+    return {};
   }
 
   static async getUserById(id: string) {
@@ -419,76 +579,136 @@ export class UserService {
     }
   }
 
-  static async getUserFilters(): Promise<FiltersResponse> {
+  static async getUserFilters(filters?: Record<string, any>): Promise<FiltersResponse> {
     try {
-      console.log('🔍 Building comprehensive user filters...');
+      console.log('🔍 Building comprehensive user filters with context...');
+      console.log('📦 Active filters for context:', filters);
 
-      // Buscar todos os campos únicos para filtros
-      const [
-        names,
-        emails,
-        genders,
-        roles,
-        dateRange
-      ] = await Promise.all([
-        // Nomes
+      // Construir where clause com base nos filtros atuais
+      const where: any = { deleted_at: null };
+      
+      // Aplicar filtros de forma correta
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value && value !== '') {
+            console.log(`🔄 Processing filter: ${key} =`, value);
+            
+            // Para campos de texto (name, email)
+            if (key === 'name' || key === 'email') {
+              where[key] = {
+                contains: String(value),
+                mode: 'insensitive' as Prisma.QueryMode
+              };
+            }
+            // Para enum (gender, role) - deve ser string exata
+            else if (key === 'gender' || key === 'role') {
+              where[key] = value;
+            }
+            // Para datas (range ou string)
+            else if (key === 'birth_date' || key === 'created_at' || key === 'updated_at') {
+              // Se for objeto com from/to (date range)
+              if (typeof value === 'object' && 'from' in value && 'to' in value) {
+                const fromDate = new Date(value.from);
+                const toDate = new Date(value.to);
+                
+                // Ajustar para incluir todo o dia final
+                toDate.setHours(23, 59, 59, 999);
+                
+                where[key] = {
+                  gte: fromDate,
+                  lte: toDate
+                };
+                console.log(`📅 Date range filter for ${key}:`, { from: fromDate, to: toDate });
+              } 
+              // Se for uma data única (string)
+              else if (typeof value === 'string') {
+                const date = new Date(value);
+                if (!isNaN(date.getTime())) {
+                  const startOfDay = new Date(date.setHours(0, 0, 0, 0));
+                  const endOfDay = new Date(date.setHours(23, 59, 59, 999));
+                  
+                  where[key] = {
+                    gte: startOfDay,
+                    lte: endOfDay
+                  };
+                  console.log(`📅 Single date filter for ${key}:`, startOfDay);
+                }
+              }
+            }
+          }
+        });
+      }
+
+      console.log('📊 WHERE clause for contextual filters:', JSON.stringify(where, null, 2));
+
+      // Buscar dados com base nos filtros atuais
+      const [users, totalCount] = await Promise.all([
         prisma.user.findMany({
-          select: { name: true },
-          distinct: ['name'],
-          where: { deleted_at: null },
+          where,
+          select: {
+            name: true,
+            email: true,
+            gender: true,
+            role: true,
+            birth_date: true,
+            created_at: true,
+            updated_at: true
+          },
           orderBy: { name: 'asc' }
         }),
-        // Emails
-        prisma.user.findMany({
-          select: { email: true },
-          distinct: ['email'],
-          where: { deleted_at: null },
-          orderBy: { email: 'asc' }
-        }),
-        // Gêneros
-        prisma.user.findMany({
-          select: { gender: true },
-          distinct: ['gender'],
-          where: { deleted_at: null }
-        }),
-        // Roles
-        prisma.user.findMany({
-          select: { role: true },
-          distinct: ['role'],
-          where: { deleted_at: null }
-        }),
-        // Data range
-        prisma.user.aggregate({
-          where: { deleted_at: null },
-          _min: { 
-            birth_date: true,
-            created_at: true 
-          },
-          _max: { 
-            birth_date: true,
-            created_at: true 
-          }
-        })
+        prisma.user.count({ where })
       ]);
 
-      // Construir filtros
-      const filters: FilterOption[] = [
-        // Campos principais
-        {
-          field: 'id',
-          type: 'string',
-          label: fieldLabels.id,
-          description: 'Identificador único',
-          searchable: true
+      console.log(`📈 Found ${users.length} users with current filters`);
+
+      // Extrair valores únicos com base nos usuários filtrados
+      const uniqueNames = Array.from(new Set(
+        users
+          .filter(u => u.name)
+          .map(u => u.name.trim())
+          .sort()
+      ));
+
+      const uniqueEmails = Array.from(new Set(
+        users
+          .filter(u => u.email)
+          .map(u => u.email.trim())
+          .sort()
+      ));
+
+      const uniqueGenders = Array.from(new Set(
+        users
+          .filter(u => u.gender)
+          .map(u => u.gender)
+      )).sort();
+
+      const uniqueRoles = Array.from(new Set(
+        users
+          .filter(u => u.role)
+          .map(u => u.role)
+      )).sort();
+
+      // Buscar range de datas considerando os filtros
+      const dateRangeData = await prisma.user.aggregate({
+        where,
+        _min: { 
+          birth_date: true,
+          created_at: true 
         },
+        _max: { 
+          birth_date: true,
+          created_at: true 
+        }
+      });
+
+      // Construir filtros com opções contextuais
+      const filtersList: FilterOption[] = [
         {
           field: 'name',
           type: 'string',
           label: fieldLabels.name,
           description: 'Nome completo do usuário',
-          values: names
-            .filter(u => u.name)
-            .map(u => u.name.trim()),
+          values: uniqueNames,
           searchable: true,
           autocomplete: true
         },
@@ -497,75 +717,62 @@ export class UserService {
           type: 'string',
           label: fieldLabels.email,
           description: 'Endereço de email',
-          values: emails
-            .filter(u => u.email)
-            .map(u => u.email.trim()),
+          values: uniqueEmails,
           searchable: true,
           autocomplete: true,
           inputType: 'email'
-        },
-        {
-          field: 'birth_date',
-          type: 'date',
-          label: fieldLabels.birth_date,
-          description: 'Data de nascimento',
-          min: dateRange._min.birth_date?.toISOString(),
-          max: dateRange._max.birth_date?.toISOString(),
-          dateRange: true
         },
         {
           field: 'gender',
           type: 'enum',
           label: fieldLabels.gender,
           description: 'Gênero',
-          values: genders
-            .filter(u => u.gender)
-            .map(u => u.gender),
+          values: uniqueGenders,
           options: Object.values(Gender),
           searchable: true,
-          inputType: 'select'
+          autocomplete: true
         },
         {
           field: 'role',
           type: 'enum',
           label: fieldLabels.role,
-          description: 'Função/perfil do usuário',
-          values: roles
-            .filter(u => u.role)
-            .map(u => u.role),
+          description: 'Papel/role do usuário',
+          values: uniqueRoles,
           options: Object.values(Role),
           searchable: true,
-          inputType: 'select'
+          autocomplete: true
+        },
+        {
+          field: 'birth_date',
+          type: 'date',
+          label: fieldLabels.birth_date,
+          description: 'Data de nascimento',
+          min: dateRangeData._min.birth_date?.toISOString().split('T')[0],
+          max: dateRangeData._max.birth_date?.toISOString().split('T')[0],
+          dateRange: true
         },
         {
           field: 'created_at',
           type: 'date',
           label: fieldLabels.created_at,
           description: 'Data de criação do cadastro',
-          min: dateRange._min.created_at?.toISOString(),
-          max: dateRange._max.created_at?.toISOString(),
-          dateRange: true
-        },
-        {
-          field: 'updated_at',
-          type: 'date',
-          label: fieldLabels.updated_at,
-          description: 'Data da última atualização',
+          min: dateRangeData._min.created_at?.toISOString().split('T')[0],
+          max: dateRangeData._max.created_at?.toISOString().split('T')[0],
           dateRange: true
         }
       ];
 
       // Tipos de operadores
       const operators = {
-        string: ['equals', 'contains', 'startsWith', 'endsWith', 'in', 'not'],
-        number: ['equals', 'gt', 'gte', 'lt', 'lte', 'between', 'not'],
+        string: ['contains', 'equals', 'startsWith', 'endsWith'],
+        number: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'],
         date: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'],
         boolean: ['equals'],
-        enum: ['equals', 'in', 'not']
+        enum: ['equals', 'in']
       };
 
       return {
-        filters: filters.filter(f => !f.values || f.values.length > 0),
+        filters: filtersList,
         operators,
         defaultSort: 'created_at:desc',
         searchFields: ['name', 'email', 'gender', 'role']

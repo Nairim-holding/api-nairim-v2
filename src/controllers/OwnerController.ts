@@ -1,40 +1,83 @@
+// controllers/OwnerController.ts
 import { Request, Response } from 'express';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { OwnerValidator } from '../lib/validators/owner';
 import { OwnerService } from '@/services/OwnerService';
+import {
+  GetOwnersParams,
+  CreateOwnerInput,
+  UpdateOwnerInput,
+  OwnerWithRelations
+} from '../types/owner';
 
 export class OwnerController {
   static async getOwners(req: Request, res: Response) {
     try {
-      const limit = ValidationUtil.parseNumberParam(req.query?.limit, 10);
+      const limit = ValidationUtil.parseNumberParam(req.query?.limit, 30);
       const page = ValidationUtil.parseNumberParam(req.query?.page, 1);
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      const sortOptions = {
-        sort_id: ValidationUtil.parseStringParam(req.query?.sort_id),
-        sort_name: ValidationUtil.parseStringParam(req.query?.sort_name),
-        sort_internal_code: ValidationUtil.parseStringParam(req.query?.sort_internal_code),
-        sort_occupation: ValidationUtil.parseStringParam(req.query?.sort_occupation),
-        sort_marital_status: ValidationUtil.parseStringParam(req.query?.sort_marital_status),
-        sort_cnpj: ValidationUtil.parseStringParam(req.query?.sort_cnpj),
-        sort_cpf: ValidationUtil.parseStringParam(req.query?.sort_cpf),
-      };
+      // Processar sort no formato sort[field]=direction
+      const sortOptions: Record<string, 'asc' | 'desc'> = {};
+      const filters: Record<string, any> = {};
+      
+      console.log('📥 Query params recebidos para proprietários:', req.query);
+      
+      // Processar parâmetros de ordenação
+      Object.entries(req.query || {}).forEach(([key, value]) => {
+        if (typeof value === 'string') {
+          // Verificar se é parâmetro de ordenação no formato sort[field]
+          const sortMatch = key.match(/^sort\[(.+)\]$/);
+          if (sortMatch) {
+            const field = sortMatch[1];
+            const direction = value.toLowerCase() as 'asc' | 'desc';
+            if (direction === 'asc' || direction === 'desc') {
+              sortOptions[field] = direction;
+              console.log(`📌 Ordenação detectada: ${field} -> ${direction}`);
+            }
+          }
+          // Processar filtros
+          else if (!['limit', 'page', 'search', 'includeInactive'].includes(key) && value.trim() !== '') {
+            // Verificar se é filtro no formato filter[field]
+            const filterMatch = key.match(/^filter\[(.+)\]$/);
+            if (filterMatch) {
+              const field = filterMatch[1];
+              filters[field] = value;
+            }
+            // Tratar outros parâmetros como filtros diretos
+            else if (key !== 'sort' && !key.startsWith('sort[')) {
+              try {
+                const parsedValue = JSON.parse(value);
+                filters[key] = parsedValue;
+              } catch {
+                filters[key] = value;
+              }
+            }
+          }
+        }
+      });
 
-      const validation = OwnerValidator.validateQueryParams(req.query);
-      if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
-      }
+      console.log('🔍 Sort options extraídos:', sortOptions);
+      console.log('📋 Filtros extraídos:', filters);
 
-      const result = await OwnerService.getOwners({
+      const params: GetOwnersParams = {
         limit,
         page,
         search,
+        filters,
         sortOptions,
         includeInactive,
-      });
+      };
 
+      const result = await OwnerService.getOwners(params);
+
+      // Desabilitar cache
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      
       res.status(200).json(result);
 
     } catch (error: any) {
@@ -66,14 +109,16 @@ export class OwnerController {
 
   static async createOwner(req: Request, res: Response) {
     try {
-      const validation = OwnerValidator.validateCreate(req.body);
+      const ownerData: CreateOwnerInput = req.body;
+      
+      const validation = OwnerValidator.validateCreate(ownerData);
       if (!validation.isValid) {
         return res.status(400).json(
           ApiResponse.error('Validation error', validation.errors)
         );
       }
 
-      const owner = await OwnerService.createOwner(req.body);
+      const owner = await OwnerService.createOwner(ownerData);
 
       res.status(201).json(
         ApiResponse.success(owner, `Owner ${owner.name} created successfully`)
@@ -100,14 +145,16 @@ export class OwnerController {
         return res.status(400).json(ApiResponse.error('ID is required'));
       }
 
-      const validation = OwnerValidator.validateUpdate(req.body);
+      const ownerData: UpdateOwnerInput = req.body;
+
+      const validation = OwnerValidator.validateUpdate(ownerData);
       if (!validation.isValid) {
         return res.status(400).json(
           ApiResponse.error('Validation error', validation.errors)
         );
       }
 
-      const owner = await OwnerService.updateOwner(id, req.body);
+      const owner = await OwnerService.updateOwner(id, ownerData);
 
       res.status(200).json(
         ApiResponse.success(owner, `Owner ${owner.name} updated successfully`)
@@ -183,12 +230,38 @@ export class OwnerController {
 
   static async getOwnerFilters(req: Request, res: Response) {
     try {
-      const filters = await OwnerService.getOwnerFilters();
+      // Extrair filtros dos query params para contexto
+      const filters: Record<string, any> = {};
+      
+      console.log('📥 Received query params for owner filters:', req.query);
+
+      // Processar parâmetros de filtro
+      Object.entries(req.query || {}).forEach(([key, value]) => {
+        if (value && value !== '' && value !== 'undefined' && value !== 'null') {
+          console.log(`🔧 Processing filter param: ${key} =`, value);
+          
+          try {
+            const parsedValue = JSON.parse(value as string);
+            if (parsedValue && typeof parsedValue === 'object') {
+              filters[key] = parsedValue;
+            } else {
+              filters[key] = value;
+            }
+          } catch {
+            filters[key] = value;
+          }
+        }
+      });
+
+      console.log('📋 Parsed filters for context:', filters);
+
+      const filtersData = await OwnerService.getOwnerFilters(filters);
+      
       res.status(200).json(
-        ApiResponse.success(filters, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filters retrieved successfully')
       );
     } catch (error) {
-      console.error('Error getting filters:', error);
+      console.error('❌ Error getting owner filters:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }

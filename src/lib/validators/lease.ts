@@ -22,19 +22,11 @@ export class LeaseValidator {
       }
     }
 
-    if (data.contract_number && !this.validateContractNumber(data.contract_number)) {
-      errors.push('Número do contrato deve ser um número válido');
-    }
-
     return { isValid: errors.length === 0, errors };
   }
 
   static validateUpdate(data: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-
-    if (data.contract_number && !this.validateContractNumber(data.contract_number)) {
-      errors.push('Número do contrato deve ser um número válido');
-    }
 
     if (data.start_date && data.end_date) {
       const startDate = new Date(data.start_date);

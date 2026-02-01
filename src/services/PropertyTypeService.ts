@@ -1,15 +1,40 @@
+// services/PropertyTypeService.ts
 import prisma from '../lib/prisma';
+import { Prisma } from '@/generated/prisma/client';
 import { GetPropertyTypesParams, PaginatedPropertyTypeResponse } from '../types/property-type';
 
 export class PropertyTypeService {
+  // Método para normalizar texto (remover acentos e caracteres especiais)
+  private static normalizeText(text: string): string {
+    if (!text) return '';
+    
+    // Normaliza para a forma NFD (Decomposição) e remove os diacríticos
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')  // Remove acentos
+      .replace(/[çÇ]/g, 'c')             // Substitui ç por c
+      .replace(/[ñÑ]/g, 'n')             // Substitui ñ por n
+      .toLowerCase()
+      .trim();
+  }
+
+  // Método auxiliar para normalizar direção de ordenação
+  private static normalizeSortDirection(direction: string): 'asc' | 'desc' {
+    if (direction.toLowerCase() === 'desc') {
+      return 'desc';
+    }
+    return 'asc'; // default
+  }
+
   static async getPropertyTypes(params: GetPropertyTypesParams = {}): Promise<PaginatedPropertyTypeResponse> {
     try {
-      console.log('🔍 Executing getPropertyTypes with params:', params);
+      console.log('🔍 Executing getPropertyTypes with params:', JSON.stringify(params, null, 2));
       
       const { 
-        limit = 10, 
+        limit = 30, 
         page = 1, 
         search = '',
+        filters = {},
         sortOptions = {},
         includeInactive = false 
       } = params;
@@ -17,55 +42,79 @@ export class PropertyTypeService {
       const take = Math.max(1, Math.min(limit, 100));
       const skip = (Math.max(1, page) - 1) * take;
 
-      // Construir where clause
-      const where: any = {};
+      // Construir where clause sem busca global (busca será feita em memória)
+      const where = this.buildWhereClauseWithoutSearch(filters, includeInactive);
       
-      // Por padrão, não mostra deletados
-      if (!includeInactive) {
-        where.deleted_at = null;
-      }
+      // Verificar tipo de ordenação
+      const sortEntries = Object.entries(sortOptions);
+      const sortField = sortEntries.length > 0 ? sortEntries[0][0] : '';
+      const sortDirection = sortEntries.length > 0 ? 
+        this.normalizeSortDirection(sortEntries[0][1]) : 'asc';
       
-      if (search) {
-        const searchTerm = search.trim();
-        where.OR = [
-          { description: { contains: searchTerm, mode: 'insensitive' } },
-        ];
+      console.log(`🔧 Campo de ordenação: ${sortField} -> ${sortDirection}`);
+
+      let propertyTypes: any[] = [];
+      let total = 0;
+
+      // Se houver busca, processar em memória
+      if (search.trim()) {
+        console.log(`🔄 Processando busca em memória: "${search}"`);
+        
+        // Buscar TODOS os property types para processamento em memória
+        const allPropertyTypes = await prisma.propertyType.findMany({
+          where,
+          select: {
+            id: true,
+            description: true,
+            created_at: true,
+            updated_at: true,
+            deleted_at: true,
+          },
+        });
+
+        // Aplicar filtro de busca em memória
+        const filteredPropertyTypes = this.filterPropertyTypesBySearch(allPropertyTypes, search);
+        total = filteredPropertyTypes.length;
+
+        // Ordenar em memória se necessário
+        if (sortField && sortDirection) {
+          propertyTypes = this.sortPropertyTypes(filteredPropertyTypes, sortField, sortDirection);
+        } else {
+          // Ordenação padrão por descrição
+          propertyTypes = filteredPropertyTypes.sort((a, b) => 
+            this.normalizeText(a.description).localeCompare(this.normalizeText(b.description), 'pt-BR', { sensitivity: 'base' })
+          );
+        }
+        
+        // Aplicar paginação
+        propertyTypes = propertyTypes.slice(skip, skip + take);
+      } else {
+        // Sem busca, fazer query normal
+        const orderBy = this.buildOrderBy(sortOptions);
+        
+        console.log('📊 ORDER BY:', JSON.stringify(orderBy, null, 2));
+        
+        // Buscar com ordenação do Prisma
+        const [propertyTypesData, totalCount] = await Promise.all([
+          prisma.propertyType.findMany({
+            where,
+            skip,
+            take,
+            orderBy,
+            select: {
+              id: true,
+              description: true,
+              created_at: true,
+              updated_at: true,
+              deleted_at: true,
+            },
+          }),
+          prisma.propertyType.count({ where })
+        ]);
+
+        propertyTypes = propertyTypesData;
+        total = totalCount;
       }
-
-      // Construir orderBy a partir de sortOptions
-      const orderBy: any[] = [];
-      
-      if (sortOptions.sort_id) {
-        orderBy.push({ id: sortOptions.sort_id.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      }
-      if (sortOptions.sort_description) {
-        orderBy.push({ description: sortOptions.sort_description.toLowerCase() === 'desc' ? 'desc' : 'asc' });
-      }
-
-      // Ordenação padrão se não houver sortOptions
-      if (orderBy.length === 0) {
-        orderBy.push({ id: 'asc' });
-      }
-
-      console.log('📊 Query parameters:', { where, skip, take, orderBy });
-
-      // Buscar dados
-      const propertyTypes = await prisma.propertyType.findMany({
-        where,
-        skip,
-        take,
-        orderBy,
-        select: {
-          id: true,
-          description: true,
-          created_at: true,
-          updated_at: true,
-          deleted_at: true,
-        },
-      });
-
-      // Contar total
-      const total = await prisma.propertyType.count({ where });
 
       console.log(`✅ Found ${propertyTypes.length} property types, total: ${total}`);
 
@@ -78,8 +127,169 @@ export class PropertyTypeService {
 
     } catch (error: any) {
       console.error('❌ Error in PropertyTypeService.getPropertyTypes:', error);
-      throw new Error('Failed to fetch property types');
+      throw new Error(`Failed to fetch property types: ${error.message}`);
     }
+  }
+
+  /**
+   * Filtra property types em memória com base no termo de busca (ignorando acentos)
+   */
+  private static filterPropertyTypesBySearch(
+    propertyTypes: any[],
+    searchTerm: string
+  ): any[] {
+    if (!searchTerm.trim()) return propertyTypes;
+
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+    
+    return propertyTypes.filter(propertyType => {
+      // Campos para busca
+      const searchFields = [
+        propertyType.description
+      ].filter(Boolean).join(' ');
+
+      // Normalizar e verificar se contém o termo de busca
+      const normalizedFields = this.normalizeText(searchFields);
+      return normalizedFields.includes(normalizedSearchTerm);
+    });
+  }
+
+  /**
+   * Ordenação de property types em memória
+   */
+  private static sortPropertyTypes(
+    items: any[],
+    field: string,
+    direction: 'asc' | 'desc'
+  ): any[] {
+    return [...items].sort((a, b) => {
+      let valueA = a[field] || '';
+      let valueB = b[field] || '';
+
+      // Se for campo de texto, normalizar para ordenação
+      if (field === 'description') {
+        valueA = this.normalizeText(String(valueA));
+        valueB = this.normalizeText(String(valueB));
+      }
+
+      if (direction === 'asc') {
+        return valueA.localeCompare(valueB, 'pt-BR', { sensitivity: 'base' });
+      } else {
+        return valueB.localeCompare(valueA, 'pt-BR', { sensitivity: 'base' });
+      }
+    });
+  }
+
+  /**
+   * Constrói a cláusula WHERE para a query (sem busca global)
+   */
+  private static buildWhereClauseWithoutSearch(
+    filters: Record<string, any>,
+    includeInactive: boolean
+  ): any {
+    const where: any = {};
+    
+    // Por padrão, não mostra deletados
+    if (!includeInactive) {
+      where.deleted_at = null;
+    }
+    
+    // Filtros específicos
+    const filterConditions = this.buildFilterConditions(filters);
+    if (Object.keys(filterConditions).length > 0) {
+      where.AND = [filterConditions];
+    }
+    
+    return where;
+  }
+
+  /**
+   * Constrói condições de filtro específicas
+   */
+  private static buildFilterConditions(filters: Record<string, any>): any {
+    const conditions: any = {};
+    
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') {
+        console.log(`⚠️  Valor vazio para filtro ${key}:`, value);
+        return;
+      }
+
+      console.log(`🔄 Aplicando filtro ${key}:`, value);
+
+      // Para campos diretos
+      if (['description'].includes(key)) {
+        conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+      }
+      // Para campos de data
+      else if (key === 'created_at') {
+        conditions[key] = this.buildDateCondition(value);
+      }
+    });
+    
+    return conditions;
+  }
+
+  /**
+   * Constrói condição para filtro de data
+   */
+  private static buildDateCondition(value: any): any {
+    if (typeof value === 'object' && value && 'from' in value && 'to' in value) {
+      const dateRange = value as { from: string; to: string };
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      toDate.setHours(23, 59, 59, 999);
+      
+      if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+        return {
+          gte: fromDate,
+          lte: toDate
+        };
+      }
+    } 
+    else if (typeof value === 'string') {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
+        
+        return {
+          gte: startOfDay,
+          lte: endOfDay
+        };
+      }
+    }
+    
+    return {};
+  }
+
+  /**
+   * Constrói ORDER BY
+   */
+  private static buildOrderBy(sortOptions: Record<string, string>): any[] {
+    const orderBy: any[] = [];
+
+    Object.entries(sortOptions).forEach(([key, value]) => {
+      if (!value) return;
+
+      const direction = this.normalizeSortDirection(value);
+      const field = key.replace('sort_', '');
+
+      console.log(`🔧 Processando ordenação: ${field} -> ${direction}`);
+
+      // Campos diretos
+      if (['description', 'created_at', 'updated_at'].includes(field)) {
+        orderBy.push({ [field]: direction });
+      }
+    });
+
+    if (orderBy.length === 0) {
+      orderBy.push({ description: 'asc' });
+    }
+
+    return orderBy;
   }
 
   static async getPropertyTypeById(id: string) {
@@ -276,32 +486,42 @@ export class PropertyTypeService {
     }
   }
 
-  static async getPropertyTypeFilters() {
+  static async getPropertyTypeFilters(filters?: Record<string, any>) {
     try {
-      console.log('🔍 Building property type filters...');
+      console.log('🔍 Building property type filters with context...');
+      console.log('📦 Active filters for context:', filters);
+
+      // Construir where clause com base nos filtros atuais
+      const where: any = { deleted_at: null };
+      
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value && value !== '') {
+            if (['description'].includes(key)) {
+              where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+            }
+          }
+        });
+      }
+
+      console.log('📊 WHERE clause para filtros contextuais:', JSON.stringify(where, null, 2));
 
       // Buscar todos os tipos de propriedade únicos
       const propertyTypes = await prisma.propertyType.findMany({
+        where,
         select: { description: true },
         distinct: ['description'],
-        where: { deleted_at: null },
         orderBy: { description: 'asc' }
       });
 
       // Data range para filtros de data
       const dateRange = await prisma.propertyType.aggregate({
-        where: { deleted_at: null },
+        where,
         _min: { created_at: true },
         _max: { created_at: true }
       });
 
-      const filters = [
-        {
-          field: 'id',
-          type: 'string',
-          label: 'ID',
-          description: 'Identificador único'
-        },
+      const filtersList = [
         {
           field: 'description',
           type: 'string',
@@ -318,26 +538,19 @@ export class PropertyTypeService {
           type: 'date',
           label: 'Data de Criação',
           description: 'Data de cadastro no sistema',
-          min: dateRange._min?.created_at?.toISOString(),
-          max: dateRange._max?.created_at?.toISOString(),
-          dateRange: true
-        },
-        {
-          field: 'updated_at',
-          type: 'date',
-          label: 'Data de Atualização',
-          description: 'Última atualização',
+          min: dateRange._min.created_at?.toISOString().split('T')[0],
+          max: dateRange._max.created_at?.toISOString().split('T')[0],
           dateRange: true
         }
       ];
 
       const operators = {
-        string: ['equals', 'contains', 'startsWith', 'endsWith', 'in', 'not'],
+        string: ['contains', 'equals', 'startsWith', 'endsWith'],
         date: ['equals', 'gt', 'gte', 'lt', 'lte', 'between']
       };
 
       return {
-        filters: filters.filter(f => !f.values || f.values.length > 0),
+        filters: filtersList,
         operators,
         defaultSort: 'description:asc',
         searchFields: [

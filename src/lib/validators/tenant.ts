@@ -15,16 +15,16 @@ export class TenantValidator {
       errors.push('CNPJ inválido');
     }
 
-    if (data.contacts && Array.isArray(data.contacts)) {
-      data.contacts.forEach((contact: any, index: number) => {
-        if (contact.email && !this.validateEmail(contact.email)) {
-          errors.push(`Contato ${index + 1}: Email inválido`);
-        }
-        if (!contact.phone?.trim()) {
-          errors.push(`Contato ${index + 1}: Telefone é obrigatório`);
-        }
-      });
-    }
+    // if (data.contacts && Array.isArray(data.contacts)) {
+    //   data.contacts.forEach((contact: any, index: number) => {
+    //     if (contact.email && !this.validateEmail(contact.email)) {
+    //       errors.push(`Contato ${index + 1}: Email inválido`);
+    //     }
+    //     if (!contact.phone?.trim()) {
+    //       errors.push(`Contato ${index + 1}: Telefone é obrigatório`);
+    //     }
+    //   });
+    // }
 
     if (data.addresses && Array.isArray(data.addresses)) {
       data.addresses.forEach((address: any, index: number) => {

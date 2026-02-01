@@ -13,27 +13,81 @@ export class UserController {
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      const sortOptions = {
-        sort_id: ValidationUtil.parseStringParam(req.query?.sort_id),
-        sort_name: ValidationUtil.parseStringParam(req.query?.sort_name),
-        sort_email: ValidationUtil.parseStringParam(req.query?.sort_email),
-        sort_birth_date: ValidationUtil.parseStringParam(req.query?.sort_birth_date),
-        sort_gender: ValidationUtil.parseStringParam(req.query?.sort_gender),
-        sort_role: ValidationUtil.parseStringParam(req.query?.sort_role),
-        sort_created_at: ValidationUtil.parseStringParam(req.query?.sort_created_at),
-        sort_updated_at: ValidationUtil.parseStringParam(req.query?.sort_updated_at),
-      };
-
-      // Extrair filtros dos query params
-      const filters: Record<string, any> = {};
+      // **CORREÇÃO: Processar sort no formato sort[name]=desc**
+      const sortOptions: any = {};
+      
+      console.log('📥 Query params recebidos:', req.query);
+      
+      // Processar parâmetros de ordenação no formato sort[field]=direction
       Object.entries(req.query || {}).forEach(([key, value]) => {
-        if (!['limit', 'page', 'search', 'includeInactive'].includes(key) && 
-            !key.startsWith('sort_')) {
-          filters[key] = value;
+        console.log(`🔧 Processando parâmetro: ${key} =`, value);
+        
+        // Verificar se é parâmetro de ordenação no formato sort[field]
+        if (key.startsWith('sort[') && key.endsWith(']')) {
+          const field = key.substring(5, key.length - 1); // Extrai o nome do campo
+          const direction = String(value).toLowerCase();
+          
+          if (direction === 'asc' || direction === 'desc') {
+            sortOptions[`sort_${field}`] = direction;
+            console.log(`📌 Ordenação detectada: ${field} -> ${direction}`);
+          }
+        }
+        // Verificar se é parâmetro de ordenação no formato antigo sort_field
+        else if (key.startsWith('sort_')) {
+          const field = key.substring(5); // Remove "sort_"
+          const direction = String(value).toLowerCase();
+          
+          if (direction === 'asc' || direction === 'desc') {
+            sortOptions[`sort_${field}`] = direction;
+            console.log(`📌 Ordenação detectada (formato antigo): ${field} -> ${direction}`);
+          }
         }
       });
 
-      const validation = UserValidator.validateQueryParams(req.query);
+      console.log('🔍 Sort options extraídos:', sortOptions);
+
+      // Extrair filtros
+      const filters: Record<string, any> = {};
+      
+      Object.entries(req.query || {}).forEach(([key, value]) => {
+        // Ignorar parâmetros que não são filtros
+        if (
+          key === 'limit' || 
+          key === 'page' || 
+          key === 'search' || 
+          key === 'includeInactive' ||
+          key.startsWith('sort')
+        ) {
+          return;
+        }
+        
+        // Processar filtros
+        if (value && value !== '' && value !== 'undefined' && value !== 'null') {
+          console.log(`📌 Processando filtro: ${key} =`, value);
+          
+          try {
+            // Tentar parsear como JSON (para objetos como date ranges)
+            if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))) {
+              const parsedValue = JSON.parse(value);
+              if (parsedValue && typeof parsedValue === 'object') {
+                filters[key] = parsedValue;
+              } else {
+                filters[key] = value;
+              }
+            } else {
+              // Se não for JSON, tratar como string
+              filters[key] = value;
+            }
+          } catch {
+            // Se falhar no parse, usar o valor original
+            filters[key] = value;
+          }
+        }
+      });
+
+      console.log('📋 Filtros extraídos:', filters);
+
+      const validation = UserValidator.validateQueryParams({ ...req.query, ...sortOptions });
       if (!validation.isValid) {
         return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
       }
@@ -47,16 +101,17 @@ export class UserController {
         filters
       });
 
-      res.status(200).json(
-        ApiResponse.paginated(
-          result.data,
-          result.count,
-          result.currentPage,
-          result.totalPages,
-          limit,
-          'Users retrieved successfully'
-        )
-      );
+      // Desabilitar cache para filtros dinâmicos
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      
+      res.status(200).json({
+        data: result.data, 
+        count: result.count,
+        totalPages: result.totalPages,
+        currentPage: result.currentPage
+      });
     } catch (error: any) {
       console.error('Error getting users:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
@@ -86,12 +141,40 @@ export class UserController {
 
   static async getUserFilters(req: Request, res: Response) {
     try {
-      const filters = await UserService.getUserFilters();
+      // Extrair filtros dos query params para contexto
+      const filters: Record<string, any> = {};
+      
+      console.log('📥 Received query params:', req.query);
+
+      // Processar todos os parâmetros de filtro
+      Object.entries(req.query || {}).forEach(([key, value]) => {
+        if (value && value !== '' && value !== 'undefined' && value !== 'null') {
+          console.log(`🔧 Processing param: ${key} =`, value);
+          
+          try {
+            // Tentar parsear como JSON (para objetos como date ranges)
+            const parsedValue = JSON.parse(value as string);
+            if (parsedValue && typeof parsedValue === 'object') {
+              filters[key] = parsedValue;
+            } else {
+              filters[key] = value;
+            }
+          } catch {
+            // Se não for JSON, tratar como string
+            filters[key] = value;
+          }
+        }
+      });
+
+      console.log('📋 Parsed filters for context:', filters);
+
+      const filtersData = await UserService.getUserFilters(filters);
+      
       res.status(200).json(
-        ApiResponse.success(filters, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filters retrieved successfully')
       );
     } catch (error) {
-      console.error('Error getting filters:', error);
+      console.error('❌ Error getting filters:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }

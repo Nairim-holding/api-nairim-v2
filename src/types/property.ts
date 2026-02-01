@@ -22,24 +22,26 @@ export interface Property {
   deleted_at?: Date | null;
 }
 
+export interface Address {
+  id: string;
+  zip_code: string;
+  street: string;
+  number: string;
+  district: string;
+  city: string;
+  state: string;
+  country: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null;
+}
+
 export interface PropertyWithRelations extends Property {
   owner: any;
   agency?: any;
   type: any;
   addresses: {
-    address: {
-      id: string;
-      zip_code: string;
-      street: string;
-      number: string;
-      district: string;
-      city: string;
-      state: string;
-      country: string;
-      created_at: Date;
-      updated_at: Date;
-      deleted_at?: Date | null;
-    };
+    address: Address;
   }[];
   documents: Document[];
   values: PropertyValue[];
@@ -69,7 +71,7 @@ export interface Document {
   file_path: string;
   file_type: string;
   description?: string | null;
-  type: 'TITLE_DEED' | 'REGISTRATION' | 'PROPERTY_RECORD' | 'IMAGE' | 'OTHER';
+  type: DocumentType;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -117,8 +119,8 @@ export interface GetPropertiesParams {
   limit?: number;
   page?: number;
   search?: string;
-  filters?: Record<string, string>;
-  sortOptions?: Record<string, string>;
+  filters?: Record<string, any>;
+  sortOptions?: Record<string, 'asc' | 'desc'>;
   includeInactive?: boolean;
 }
 
@@ -149,5 +151,74 @@ export interface FilterOption {
   type: 'string' | 'number' | 'date' | 'boolean' | 'select';
   label: string;
   values?: string[];
-  options?: string[];
+  options?: Array<{ value: string; label: string }>;
+  searchable?: boolean;
+  autocomplete?: boolean;
+  dateRange?: boolean;
+  description?: string;
+}
+
+export interface UnifiedPropertyInput {
+  // Dados básicos do imóvel
+  title: string;
+  bedrooms: number;
+  bathrooms: number;
+  half_bathrooms?: number;
+  garage_spaces?: number;
+  area_total: number;
+  area_built?: number;
+  frontage?: number;
+  furnished: boolean;
+  floor_number?: number;
+  tax_registration: string;
+  notes?: string;
+  
+  // Relacionamentos
+  owner_id: string;
+  type_id: string;
+  agency_id?: string;
+  
+  // Endereço
+  address: {
+    zip_code: string;
+    street: string;
+    number: string;
+    district: string;
+    city: string;
+    state: string;
+    country?: string;
+  };
+  
+  // Valores
+  values: {
+    purchase_value: number;
+    rental_value: number;
+    condo_fee?: number;
+    property_tax?: number;
+    status: PropertyStatus;
+    notes?: string;
+    reference_date?: Date | string;
+  };
+  
+  // Documentos (arquivos)
+  documents: {
+    images: File[];
+    registration?: File;
+    property_record?: File;
+    title_deed?: File;
+    others?: File[];
+  };
+  
+  // Metadados
+  created_by: string;
+}
+
+export interface UnifiedPropertyResponse extends PropertyWithRelations {
+  documentUrls: {
+    images: string[];
+    registration?: string;
+    property_record?: string;
+    title_deed?: string;
+    others?: string[];
+  };
 }

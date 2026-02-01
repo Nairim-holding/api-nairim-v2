@@ -157,13 +157,15 @@ export const validateGetPropertyTypes = (req: Request, res: Response, next: Next
   next();
 };
 
-// Validações de Property
+// Validações de Property - ATUALIZADO
 export const validateCreateProperty = (req: Request, res: Response, next: NextFunction) => {
-  // Para multipart/form-data, a validação é feita no controller
+  // Para multipart/form-data, NÃO faz validação aqui - será feita no controller após parse
   if (req.is('multipart/form-data')) {
+    console.log('✅ Multipart/form-data detectado, validação será feita no controller');
     return next();
   }
   
+  // Apenas valida para JSON requests
   const validation = PropertyValidator.validateCreate(req.body);
   if (!validation.isValid) {
     return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
@@ -172,7 +174,7 @@ export const validateCreateProperty = (req: Request, res: Response, next: NextFu
 };
 
 export const validateUpdateProperty = (req: Request, res: Response, next: NextFunction) => {
-  // Para multipart/form-data, a validação é feita no controller
+  // Para multipart/form-data, NÃO faz validação aqui
   if (req.is('multipart/form-data')) {
     return next();
   }
