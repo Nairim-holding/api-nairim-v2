@@ -24,27 +24,28 @@ function getRandomValue(min: number, max: number) {
 async function main() {
   console.log('🧹 Cleaning database...');
 
-  // Ordem de exclusão rigorosa para evitar erros de Foreign Key
-  await prisma.agencyContact.deleteMany();
+  // 1. Limpeza de tabelas dependentes (Filhos)
+  // IMPORTANTE: Contact agora aponta para Owner/Agency/Tenant, então deve ser limpo antes deles.
+  await prisma.contact.deleteMany(); 
+  
+  // Limpeza de tabelas pivô restantes e endereços
   await prisma.agencyAddress.deleteMany();
   await prisma.propertyAddress.deleteMany();
   await prisma.ownerAddress.deleteMany();
-  await prisma.ownerContact.deleteMany();
   await prisma.tenantAddress.deleteMany();
-  await prisma.tenantContact.deleteMany();
+  
   await prisma.favorite.deleteMany();
   await prisma.document.deleteMany();
   await prisma.propertyValue.deleteMany();
   await prisma.lease.deleteMany();
   
-  // Tabelas principais
+  // 2. Limpeza de tabelas principais (Pais)
   await prisma.property.deleteMany();
   await prisma.tenant.deleteMany();
   await prisma.owner.deleteMany();
   await prisma.agency.deleteMany();
   await prisma.propertyType.deleteMany();
   await prisma.address.deleteMany();
-  await prisma.contact.deleteMany();
   await prisma.user.deleteMany();
 
   console.log('🌱 Seeding database with realistic data for dashboard...');
@@ -112,7 +113,14 @@ async function main() {
         cnpj: '12.345.678/0001-01',
         state_registration: '123.456.789.000',
         license_number: 'CRECI-123456',
-        created_at: getRandomDate(startDate, endDate)
+        created_at: getRandomDate(startDate, endDate),
+        // Exemplo de criação de contato direto para Agência
+        contacts: {
+            create: [
+                { contact: "Recepção", phone: "1133334444", email: "contato@nairim.com" },
+                { contact: "Gerente Financeiro", cellphone: "11999998888", email: "financeiro@nairim.com" }
+            ]
+        }
       } 
     }),
     prisma.agency.create({ 
@@ -137,7 +145,7 @@ async function main() {
     }),
   ]);
 
-  // 4. OWNERS (20 proprietários para ter dados variados)
+  // 4. OWNERS (20 proprietários)
   console.log('👨‍💼 Creating owners...');
   const owners = [];
   const ownerNames = [
@@ -156,7 +164,21 @@ async function main() {
         occupation: ['Médico', 'Advogado', 'Engenheiro', 'Professor', 'Empresário', 'Arquiteto'][i % 6],
         marital_status: ['Casado', 'Solteiro', 'Divorciado', 'Viúvo'][i % 4],
         cpf: `${String(111111111 + i).padStart(11, '0').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}`,
-        created_at: getRandomDate(startDate, endDate)
+        created_at: getRandomDate(startDate, endDate),
+        // ADICIONADO: Criando contatos múltiplos para cada owner
+        contacts: {
+            create: [
+                { 
+                    contact: `Pessoal (${ownerNames[i].split(' ')[0]})`, 
+                    cellphone: `119${getRandomValue(10000000, 99999999)}`,
+                    email: `${ownerNames[i].toLowerCase().replace(/ /g, '.')}@email.com`
+                },
+                {
+                    contact: "Cônjuge / Comercial",
+                    phone: `113${getRandomValue(1000000, 9999999)}`
+                }
+            ]
+        }
       } 
     });
     owners.push(owner);
@@ -180,13 +202,23 @@ async function main() {
         occupation: ['Estudante', 'Designer', 'Programador', 'Enfermeira', 'Empresário', 'Contador'][i % 6],
         marital_status: ['Solteiro', 'Casado', 'Divorciado', 'União Estável'][i % 4],
         cpf: `${String(222222222 + i).padStart(11, '0').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}`,
-        created_at: getRandomDate(startDate, endDate)
+        created_at: getRandomDate(startDate, endDate),
+        // ADICIONADO: Criando contatos múltiplos para cada tenant
+        contacts: {
+            create: [
+                { 
+                    contact: "Whatsapp Principal", 
+                    cellphone: `119${getRandomValue(10000000, 99999999)}`,
+                    email: `${tenantNames[i].toLowerCase().replace(/ /g, '_')}@tenant.com`
+                }
+            ]
+        }
       } 
     });
     tenants.push(tenant);
   }
 
-  // 6. ADDRESSES (diversos bairros de São Paulo para geolocalização)
+  // 6. ADDRESSES
   console.log('📍 Creating addresses...');
   const addressesData = [
     // Zona Sul
@@ -195,19 +227,16 @@ async function main() {
     { street: 'Rua Oscar Freire', number: '800', district: 'Cerqueira César', city: 'São Paulo', state: 'SP', zip_code: '01426-001' },
     { street: 'Alameda Santos', number: '2100', district: 'Jardim Paulista', city: 'São Paulo', state: 'SP', zip_code: '01418-200' },
     { street: 'Rua Haddock Lobo', number: '746', district: 'Cerqueira César', city: 'São Paulo', state: 'SP', zip_code: '01414-001' },
-    
     // Zona Oeste
     { street: 'Rua Teodoro Sampaio', number: '1000', district: 'Pinheiros', city: 'São Paulo', state: 'SP', zip_code: '05406-100' },
     { street: 'Avenida Brigadeiro Faria Lima', number: '3477', district: 'Itaim Bibi', city: 'São Paulo', state: 'SP', zip_code: '04538-133' },
     { street: 'Rua dos Pinheiros', number: '870', district: 'Pinheiros', city: 'São Paulo', state: 'SP', zip_code: '05422-001' },
     { street: 'Avenida Rebouças', number: '2000', district: 'Pinheiros', city: 'São Paulo', state: 'SP', zip_code: '05401-000' },
     { street: 'Rua Butantã', number: '500', district: 'Pinheiros', city: 'São Paulo', state: 'SP', zip_code: '05503-000' },
-    
     // Zona Norte
     { street: 'Avenida Braz Leme', number: '1000', district: 'Santana', city: 'São Paulo', state: 'SP', zip_code: '02012-000' },
     { street: 'Rua Voluntários da Pátria', number: '2000', district: 'Santana', city: 'São Paulo', state: 'SP', zip_code: '02011-000' },
     { street: 'Avenida Água Fria', number: '500', district: 'Água Fria', city: 'São Paulo', state: 'SP', zip_code: '02340-000' },
-    
     // Zona Leste
     { street: 'Avenida Sapopemba', number: '3000', district: 'Sapopemba', city: 'São Paulo', state: 'SP', zip_code: '03223-000' },
     { street: 'Rua Tuiuti', number: '1500', district: 'Tatuapé', city: 'São Paulo', state: 'SP', zip_code: '03080-000' },
@@ -225,30 +254,21 @@ async function main() {
     addresses.push(address);
   }
 
-  // 7. PROPERTIES (50 propriedades para ter dados significativos no dashboard)
+  // 7. PROPERTIES
   console.log('🏘️ Creating properties...');
   const properties = [];
   const propertyTitles = [
-    // Apartamentos
     'Apartamento 2 Quartos Centro', 'Apartamento 3 Quartos Higienópolis', 'Studio República',
     'Apartamento 1 Quarto Pinheiros', 'Apartamento 4 Quartos Jardins', 'Apartamento 2 Quartos Itaim',
     'Apartamento 3 Quartos Moema', 'Apartamento 1 Quarto Vila Mariana', 'Apartamento 2 Quartos Perdizes',
     'Apartamento 3 Quartos Brooklin', 'Apartamento 4 Quartos Alto de Pinheiros', 'Apartamento 2 Quartos Bela Vista',
-    
-    // Casas
     'Casa 3 Quartos Vila Madalena', 'Casa 4 Quartos Alto da Lapa', 'Casa 2 Quartos Pompéia',
     'Casa 3 Quartos Butantã', 'Casa 4 Quartos Morumbi', 'Casa 2 Quartos Saúde',
     'Casa 3 Quartos Ipiranga', 'Casa 4 Quartos Campo Belo', 'Casa 2 Quartos Santo Amaro',
-    
-    // Coberturas
     'Cobertura 3 Quartos Jardins', 'Cobertura 4 Quartos Itaim Bibi', 'Cobertura 2 Quartos Moema',
     'Cobertura 3 Quartos Brooklin', 'Cobertura Penthouse Paulista',
-    
-    // Comerciais
     'Sala Comercial Paulista', 'Sala Comercial Faria Lima', 'Sala Comercial Berrini',
     'Loja Shopping Center', 'Galpão Logístico', 'Sala Comercial Centro',
-    
-    // Outros
     'Terreno Residencial', 'Terreno Comercial', 'Sítio Recreio', 'Chácara Fim de Semana'
   ];
 
@@ -282,10 +302,9 @@ async function main() {
     properties.push(property);
   }
 
-  // 8. PROPERTY VALUES com histórico nos últimos 12 meses
+  // 8. PROPERTY VALUES
   console.log('💰 Creating property values with historical data...');
   for (const property of properties) {
-    // Criar 2-4 registros históricos para cada propriedade
     const numRecords = getRandomValue(2, 4);
     const basePurchaseValue = getRandomValue(300000, 2000000);
     const baseRentalValue = getRandomValue(1500, 8000);
@@ -293,18 +312,15 @@ async function main() {
     const baseCondoFee = property.type_id === propertyTypes[0].id ? getRandomValue(500, 2000) : 0;
     
     for (let i = 0; i < numRecords; i++) {
-      // Datas espaçadas nos últimos 12 meses
       const recordDate = new Date(startDate);
       recordDate.setMonth(recordDate.getMonth() + Math.floor((i * 12) / numRecords));
       
-      // Variação nos valores ao longo do tempo
-      const variation = 1 + (i * 0.05); // 5% de aumento por registro
+      const variation = 1 + (i * 0.05); 
       const purchaseValue = basePurchaseValue * variation;
       const rentalValue = baseRentalValue * variation;
       const propertyTax = basePropertyTax * variation;
       const condoFee = baseCondoFee * variation;
       
-      // Status: 70% ocupado, 30% disponível
       const status = Math.random() > 0.3 ? PropertyStatus.OCCUPIED : PropertyStatus.AVAILABLE;
       
       await prisma.propertyValue.create({ 
@@ -315,7 +331,7 @@ async function main() {
           rental_value: rentalValue,
           condo_fee: condoFee,
           property_tax: propertyTax,
-          sale_value: Math.random() > 0.7 ? purchaseValue * 1.2 : null, // 30% têm valor de venda definido
+          sale_value: Math.random() > 0.7 ? purchaseValue * 1.2 : null,
           status: status,
           notes: `Valor registrado em ${recordDate.toLocaleDateString('pt-BR')}`
         } 
@@ -323,19 +339,17 @@ async function main() {
     }
   }
 
-  // 9. LEASES distribuídos no tempo
+  // 9. LEASES
   console.log('📑 Creating leases with time distribution...');
   const leases = [];
-  // Criar contratos para propriedades ocupadas
-  const occupiedProperties = properties.filter((_, index) => index % 3 !== 0); // ~66% das propriedades
+  const occupiedProperties = properties.filter((_, index) => index % 3 !== 0); 
     
   for (let i = 0; i < Math.min(occupiedProperties.length, tenants.length); i++) {
     const property = occupiedProperties[i];
     const startLeaseDate = getRandomDate(startDate, endDate);
     const endLeaseDate = new Date(startLeaseDate);
-    endLeaseDate.setFullYear(endLeaseDate.getFullYear() + 1); // Contrato de 1 ano
+    endLeaseDate.setFullYear(endLeaseDate.getFullYear() + 1); 
     
-    // Buscar o último valor da propriedade para definir o aluguel
     const latestValue = await prisma.propertyValue.findFirst({
       where: { property_id: property.id },
       orderBy: { reference_date: 'desc' }
@@ -355,7 +369,7 @@ async function main() {
           condo_fee: Number(latestValue.condo_fee) || 0, 
           property_tax: Number(latestValue.property_tax),
           extra_charges: getRandomValue(0, 200),
-          commission_amount: Number(latestValue.rental_value) * 0.5, // 50% do aluguel como comissão
+          commission_amount: Number(latestValue.rental_value) * 0.5,
           rent_due_day: getRandomValue(1, 10),
           tax_due_day: getRandomValue(10, 20),
           condo_due_day: getRandomValue(5, 15),
@@ -366,11 +380,11 @@ async function main() {
     }
   }
 
-  // 10. DOCUMENTS - Algumas propriedades têm poucos documentos (para métrica de documentação pendente)
+  // 10. DOCUMENTS
   console.log('📄 Creating documents...');
   for (let i = 0; i < properties.length; i++) {
     const property = properties[i];
-    const numDocs = getRandomValue(0, 5); // Algumas terão 0-2 docs (pendentes), outras mais
+    const numDocs = getRandomValue(0, 5); 
     
     const docTypes = [DocumentType.TITLE_DEED, DocumentType.REGISTRATION, DocumentType.PROPERTY_RECORD, DocumentType.IMAGE, DocumentType.OTHER];
     
@@ -389,8 +403,8 @@ async function main() {
     }
   }
 
-  // 11. RELACIONAMENTOS (Addresses para propriedades)
-  console.log('🔗 Creating property addresses...');
+  // 11. ADDRESSES RELATIONSHIPS
+  console.log('🔗 Linking addresses...');
   for (let i = 0; i < properties.length; i++) {
     await prisma.propertyAddress.create({ 
       data: { 
@@ -400,8 +414,6 @@ async function main() {
     });
   }
 
-  // 12. Criar alguns Owners com Addresses
-  console.log('🔗 Creating owner addresses...');
   for (let i = 0; i < Math.min(owners.length, addresses.length); i++) {
     await prisma.ownerAddress.create({ 
       data: { 
@@ -411,8 +423,6 @@ async function main() {
     });
   }
 
-  // 13. Criar alguns Tenants com Addresses
-  console.log('🔗 Creating tenant addresses...');
   for (let i = 0; i < Math.min(tenants.length, addresses.length); i++) {
     await prisma.tenantAddress.create({ 
       data: { 
@@ -426,28 +436,18 @@ async function main() {
   console.log(`📊 Dashboard-ready Summary:`);
   console.log(`   👥 Users: ${users.length}`);
   console.log(`   🏠 Property Types: ${propertyTypes.length}`);
-  console.log(`   🏢 Agencies: ${agencies.length}`);
-  console.log(`   👨‍💼 Owners: ${owners.length} (distribuídos no tempo)`);
-  console.log(`   👨‍💻 Tenants: ${tenants.length} (distribuídos no tempo)`);
-  console.log(`   📍 Addresses: ${addresses.length} (diversos bairros de SP)`);
-  console.log(`   🏘️ Properties: ${properties.length} (50 imóveis variados)`);
-  console.log(`   💰 Property Values: ~${properties.length * 3} registros históricos`);
-  console.log(`   📑 Leases: ${leases.length} contratos ativos/inativos`);
-  console.log(`   📄 Documents: distribuição variada (alguns com <3 docs)`);
-  console.log(`\n📅 Data Range: ${startDate.toLocaleDateString('pt-BR')} to ${endDate.toLocaleDateString('pt-BR')}`);
-  console.log(`🎯 Dashboard Features:`);
-  console.log(`   • Filtro por data funcionará com dados reais`);
-  console.log(`   • Variação temporal nos valores`);
-  console.log(`   • Imóveis com documentação pendente (<3 docs)`);
-  console.log(`   • Mix de status (disponíveis/ocupados)`);
-  console.log(`   • Diferentes tipos de propriedade`);
-  console.log(`   • Vários proprietários e inquilinos`);
+  console.log(`   🏢 Agencies: ${agencies.length} (com contatos)`);
+  console.log(`   👨‍💼 Owners: ${owners.length} (com múltiplos contatos)`);
+  console.log(`   👨‍💻 Tenants: ${tenants.length} (com contatos)`);
+  console.log(`   📍 Addresses: ${addresses.length}`);
+  console.log(`   🏘️ Properties: ${properties.length}`);
+  console.log(`   💰 Property Values: ~${properties.length * 3}`);
+  console.log(`   📑 Leases: ${leases.length}`);
 }
 
 main()
   .then(async () => { 
-    console.log('🎉 Seeding completed! Your dashboard now has realistic data.');
-    console.log('📊 Try filtering by different date ranges in the dashboard.');
+    console.log('🎉 Seeding completed!');
     await prisma.$disconnect(); 
   })
   .catch(async (e) => {

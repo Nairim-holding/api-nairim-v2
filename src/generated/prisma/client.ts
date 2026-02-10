@@ -100,11 +100,6 @@ export type Contact = Prisma.ContactModel
  */
 export type Favorite = Prisma.FavoriteModel
 /**
- * Model AgencyContact
- * 
- */
-export type AgencyContact = Prisma.AgencyContactModel
-/**
  * Model AgencyAddress
  * 
  */
@@ -120,17 +115,7 @@ export type PropertyAddress = Prisma.PropertyAddressModel
  */
 export type OwnerAddress = Prisma.OwnerAddressModel
 /**
- * Model OwnerContact
- * 
- */
-export type OwnerContact = Prisma.OwnerContactModel
-/**
  * Model TenantAddress
  * 
  */
 export type TenantAddress = Prisma.TenantAddressModel
-/**
- * Model TenantContact
- * 
- */
-export type TenantContact = Prisma.TenantContactModel

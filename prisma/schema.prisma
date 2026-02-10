@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// ... (Configurações iniciais permanecem iguais)
 
 generator client {
   provider = "prisma-client"
@@ -13,9 +9,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// ==============================
-// ENUMS
-// ==============================
+// ... (ENUMS permanecem iguais)
 
 enum Gender {
   MALE
@@ -34,12 +28,13 @@ enum PropertyStatus {
 }
 
 enum DocumentType {
-  TITLE_DEED      
-  REGISTRATION    
-  PROPERTY_RECORD 
-  IMAGE            
-  OTHER        
+  TITLE_DEED
+  REGISTRATION
+  PROPERTY_RECORD
+  IMAGE
+  OTHER
 }
+
 // ==============================
 // AGENCY
 // ==============================
@@ -57,7 +52,9 @@ model Agency {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
-  contacts   AgencyContact[]
+  // RELAÇÃO DIRETA: Uma agência tem vários contatos
+  contacts  Contact[]
+  
   addresses  AgencyAddress[]
   properties Property[]
 
@@ -65,14 +62,14 @@ model Agency {
 }
 
 // ==============================
-// PROPERTY
+// PROPERTY (Permanece igual)
 // ==============================
 
 model Property {
-  id        String  @id @default(uuid())
-  owner_id  String
-  agency_id String?
-  type_id   String
+  id               String  @id @default(uuid())
+  owner_id         String
+  agency_id        String?
+  type_id          String
 
   title            String
   bedrooms         Int
@@ -106,7 +103,7 @@ model Property {
 }
 
 // ==============================
-// USER
+// USER (Permanece igual)
 // ==============================
 
 model User {
@@ -129,7 +126,7 @@ model User {
 }
 
 // ==============================
-// DOCUMENT
+// DOCUMENT (Permanece igual)
 // ==============================
 
 model Document {
@@ -157,13 +154,13 @@ model Document {
 // ==============================
 
 model Owner {
-  id             String  @id @default(uuid())
-  name           String
-  internal_code  String
-  occupation     String?
-  marital_status String?
-  cpf            String? @db.VarChar(14)
-  cnpj           String? @db.VarChar(20)
+  id                     String  @id @default(uuid())
+  name                   String
+  internal_code          String
+  occupation             String?
+  marital_status         String?
+  cpf                    String? @db.VarChar(14)
+  cnpj                   String? @db.VarChar(20)
   state_registration     String? 
   municipal_registration String? 
 
@@ -174,7 +171,9 @@ model Owner {
   properties Property[]
   leases     Lease[]
   addresses  OwnerAddress[]
-  contacts   OwnerContact[]
+  
+  // RELAÇÃO DIRETA: Um proprietário tem vários contatos
+  contacts   Contact[]
 
   @@index([cpf])
   @@index([cnpj])
@@ -185,14 +184,14 @@ model Owner {
 // ==============================
 
 model Tenant {
-  id             String  @id @default(uuid())
-  name           String
-  internal_code  String
-  occupation     String
-  marital_status String
-  cpf            String? @db.VarChar(14)
-  cnpj           String? @db.VarChar(20)
-  state_registration     String?   
+  id                     String  @id @default(uuid())
+  name                   String
+  internal_code          String
+  occupation             String
+  marital_status         String
+  cpf                    String? @db.VarChar(14)
+  cnpj                   String? @db.VarChar(20)
+  state_registration     String?    
   municipal_registration String? 
 
   created_at DateTime  @default(now())
@@ -201,15 +200,15 @@ model Tenant {
 
   addresses TenantAddress[]
   leases    Lease[]
-  contacts  TenantContact[]
+  
+  // RELAÇÃO DIRETA: Um inquilino tem vários contatos
+  contacts  Contact[]
 
   @@index([cpf])
   @@index([cnpj])
 }
 
-// ==============================
-// LEASE
-// ==============================
+// ... (Lease, PropertyValue, PropertyType, Address permanecem iguais)
 
 model Lease {
   id          String @id @default(uuid())
@@ -245,13 +244,9 @@ model Lease {
   @@index([tenant_id])
 }
 
-// ==============================
-// PROPERTY VALUE (HISTÓRICO)
-// ==============================
-
 model PropertyValue {
-  id             String   @id @default(uuid())
-  property_id    String
+  id          String   @id @default(uuid())
+  property_id String
   reference_date DateTime @db.Date
 
   purchase_value Decimal @db.Decimal(20, 2)
@@ -274,10 +269,6 @@ model PropertyValue {
   @@index([property_id])
 }
 
-// ==============================
-// PROPERTY TYPE
-// ==============================
-
 model PropertyType {
   id          String @id @default(uuid())
   description String
@@ -289,10 +280,6 @@ model PropertyType {
   properties Property[]
   leases     Lease[]
 }
-
-// ==============================
-// ADDRESS
-// ==============================
 
 model Address {
   id       String @id @default(uuid())
@@ -315,27 +302,37 @@ model Address {
 }
 
 // ==============================
-// CONTACT
+// CONTACT (MODIFICADO)
 // ==============================
 
 model Contact {
-  id       String  @id @default(uuid())
-  contact  String?
-  phone    String?
-  email    String?
+  id        String  @id @default(uuid())
+  contact   String? // Nome da pessoa de contato
+  phone     String?
+  email     String?
   cellphone String?
+
+  // Chaves estrangeiras opcionais para vincular a quem pertence o contato
+  agency_id String?
+  owner_id  String?
+  tenant_id String?
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
-  agencyContacts AgencyContact[]
-  ownerContacts  OwnerContact[]
-  tenantContacts TenantContact[]
+  // Relações
+  agency Agency? @relation(fields: [agency_id], references: [id])
+  owner  Owner?  @relation(fields: [owner_id], references: [id])
+  tenant Tenant? @relation(fields: [tenant_id], references: [id])
+
+  @@index([agency_id])
+  @@index([owner_id])
+  @@index([tenant_id])
 }
 
 // ==============================
-// FAVORITE
+// FAVORITE (Permanece igual)
 // ==============================
 
 model Favorite {
@@ -354,25 +351,14 @@ model Favorite {
 }
 
 // ==============================
-// PIVOT TABLES
+// PIVOT TABLES (ADDRESSES AINDA MANTIDOS)
 // ==============================
-
-model AgencyContact {
-  id         String @id @default(uuid())
-  agency_id  String
-  contact_id String
-
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-
-  agency  Agency  @relation(fields: [agency_id], references: [id])
-  contact Contact @relation(fields: [contact_id], references: [id])
-}
+// Nota: As tabelas pivô de CONTATO (AgencyContact, OwnerContact, TenantContact) 
+// foram removidas pois agora a relação é direta na tabela Contact.
 
 model AgencyAddress {
-  id         String @id @default(uuid())
-  agency_id  String
+  id        String @id @default(uuid())
+  agency_id String
   address_id String
 
   created_at DateTime  @default(now())
@@ -397,8 +383,8 @@ model PropertyAddress {
 }
 
 model OwnerAddress {
-  id         String @id @default(uuid())
-  owner_id   String
+  id        String @id @default(uuid())
+  owner_id  String
   address_id String
 
   created_at DateTime  @default(now())
@@ -407,24 +393,11 @@ model OwnerAddress {
 
   owner   Owner   @relation(fields: [owner_id], references: [id])
   address Address @relation(fields: [address_id], references: [id])
-}
-
-model OwnerContact {
-  id         String @id @default(uuid())
-  owner_id   String
-  contact_id String
-
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-
-  owner   Owner   @relation(fields: [owner_id], references: [id])
-  contact Contact @relation(fields: [contact_id], references: [id])
 }
 
 model TenantAddress {
-  id         String @id @default(uuid())
-  tenant_id  String
+  id        String @id @default(uuid())
+  tenant_id String
   address_id String
 
   created_at DateTime  @default(now())
@@ -433,17 +406,4 @@ model TenantAddress {
 
   tenant  Tenant  @relation(fields: [tenant_id], references: [id])
   address Address @relation(fields: [address_id], references: [id])
-}
-
-model TenantContact {
-  id         String @id @default(uuid())
-  tenant_id  String
-  contact_id String
-
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-
-  tenant  Tenant  @relation(fields: [tenant_id], references: [id])
-  contact Contact @relation(fields: [contact_id], references: [id])
 }

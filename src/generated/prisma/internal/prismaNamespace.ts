@@ -396,13 +396,10 @@ export const ModelName = {
   Address: 'Address',
   Contact: 'Contact',
   Favorite: 'Favorite',
-  AgencyContact: 'AgencyContact',
   AgencyAddress: 'AgencyAddress',
   PropertyAddress: 'PropertyAddress',
   OwnerAddress: 'OwnerAddress',
-  OwnerContact: 'OwnerContact',
-  TenantAddress: 'TenantAddress',
-  TenantContact: 'TenantContact'
+  TenantAddress: 'TenantAddress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyContact" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "ownerContact" | "tenantAddress" | "tenantContact"
+    modelProps: "agency" | "property" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1310,80 +1307,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    AgencyContact: {
-      payload: Prisma.$AgencyContactPayload<ExtArgs>
-      fields: Prisma.AgencyContactFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.AgencyContactFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.AgencyContactFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        findFirst: {
-          args: Prisma.AgencyContactFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.AgencyContactFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        findMany: {
-          args: Prisma.AgencyContactFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>[]
-        }
-        create: {
-          args: Prisma.AgencyContactCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        createMany: {
-          args: Prisma.AgencyContactCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.AgencyContactCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>[]
-        }
-        delete: {
-          args: Prisma.AgencyContactDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        update: {
-          args: Prisma.AgencyContactUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        deleteMany: {
-          args: Prisma.AgencyContactDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.AgencyContactUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.AgencyContactUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>[]
-        }
-        upsert: {
-          args: Prisma.AgencyContactUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgencyContactPayload>
-        }
-        aggregate: {
-          args: Prisma.AgencyContactAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAgencyContact>
-        }
-        groupBy: {
-          args: Prisma.AgencyContactGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AgencyContactGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.AgencyContactCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AgencyContactCountAggregateOutputType> | number
-        }
-      }
-    }
     AgencyAddress: {
       payload: Prisma.$AgencyAddressPayload<ExtArgs>
       fields: Prisma.AgencyAddressFieldRefs
@@ -1606,80 +1529,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    OwnerContact: {
-      payload: Prisma.$OwnerContactPayload<ExtArgs>
-      fields: Prisma.OwnerContactFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OwnerContactFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OwnerContactFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        findFirst: {
-          args: Prisma.OwnerContactFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OwnerContactFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        findMany: {
-          args: Prisma.OwnerContactFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>[]
-        }
-        create: {
-          args: Prisma.OwnerContactCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        createMany: {
-          args: Prisma.OwnerContactCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OwnerContactCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>[]
-        }
-        delete: {
-          args: Prisma.OwnerContactDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        update: {
-          args: Prisma.OwnerContactUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        deleteMany: {
-          args: Prisma.OwnerContactDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OwnerContactUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OwnerContactUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>[]
-        }
-        upsert: {
-          args: Prisma.OwnerContactUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerContactPayload>
-        }
-        aggregate: {
-          args: Prisma.OwnerContactAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnerContact>
-        }
-        groupBy: {
-          args: Prisma.OwnerContactGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OwnerContactGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OwnerContactCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OwnerContactCountAggregateOutputType> | number
-        }
-      }
-    }
     TenantAddress: {
       payload: Prisma.$TenantAddressPayload<ExtArgs>
       fields: Prisma.TenantAddressFieldRefs
@@ -1751,80 +1600,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantAddressCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantAddressCountAggregateOutputType> | number
-        }
-      }
-    }
-    TenantContact: {
-      payload: Prisma.$TenantContactPayload<ExtArgs>
-      fields: Prisma.TenantContactFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TenantContactFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TenantContactFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        findFirst: {
-          args: Prisma.TenantContactFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TenantContactFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        findMany: {
-          args: Prisma.TenantContactFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>[]
-        }
-        create: {
-          args: Prisma.TenantContactCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        createMany: {
-          args: Prisma.TenantContactCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TenantContactCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>[]
-        }
-        delete: {
-          args: Prisma.TenantContactDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        update: {
-          args: Prisma.TenantContactUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        deleteMany: {
-          args: Prisma.TenantContactDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TenantContactUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TenantContactUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>[]
-        }
-        upsert: {
-          args: Prisma.TenantContactUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantContactPayload>
-        }
-        aggregate: {
-          args: Prisma.TenantContactAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantContact>
-        }
-        groupBy: {
-          args: Prisma.TenantContactGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantContactGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TenantContactCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantContactCountAggregateOutputType> | number
         }
       }
     }
@@ -2055,6 +1830,9 @@ export const ContactScalarFieldEnum = {
   phone: 'phone',
   email: 'email',
   cellphone: 'cellphone',
+  agency_id: 'agency_id',
+  owner_id: 'owner_id',
+  tenant_id: 'tenant_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -2073,18 +1851,6 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
-
-
-export const AgencyContactScalarFieldEnum = {
-  id: 'id',
-  agency_id: 'agency_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type AgencyContactScalarFieldEnum = (typeof AgencyContactScalarFieldEnum)[keyof typeof AgencyContactScalarFieldEnum]
 
 
 export const AgencyAddressScalarFieldEnum = {
@@ -2123,18 +1889,6 @@ export const OwnerAddressScalarFieldEnum = {
 export type OwnerAddressScalarFieldEnum = (typeof OwnerAddressScalarFieldEnum)[keyof typeof OwnerAddressScalarFieldEnum]
 
 
-export const OwnerContactScalarFieldEnum = {
-  id: 'id',
-  owner_id: 'owner_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type OwnerContactScalarFieldEnum = (typeof OwnerContactScalarFieldEnum)[keyof typeof OwnerContactScalarFieldEnum]
-
-
 export const TenantAddressScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
@@ -2145,18 +1899,6 @@ export const TenantAddressScalarFieldEnum = {
 } as const
 
 export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)[keyof typeof TenantAddressScalarFieldEnum]
-
-
-export const TenantContactScalarFieldEnum = {
-  id: 'id',
-  tenant_id: 'tenant_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type TenantContactScalarFieldEnum = (typeof TenantContactScalarFieldEnum)[keyof typeof TenantContactScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2428,13 +2170,10 @@ export type GlobalOmitConfig = {
   address?: Prisma.AddressOmit
   contact?: Prisma.ContactOmit
   favorite?: Prisma.FavoriteOmit
-  agencyContact?: Prisma.AgencyContactOmit
   agencyAddress?: Prisma.AgencyAddressOmit
   propertyAddress?: Prisma.PropertyAddressOmit
   ownerAddress?: Prisma.OwnerAddressOmit
-  ownerContact?: Prisma.OwnerContactOmit
   tenantAddress?: Prisma.TenantAddressOmit
-  tenantContact?: Prisma.TenantContactOmit
 }
 
 /* Types for Logging */

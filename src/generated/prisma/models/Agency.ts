@@ -222,7 +222,7 @@ export type AgencyWhereInput = {
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
-  contacts?: Prisma.AgencyContactListRelationFilter
+  contacts?: Prisma.ContactListRelationFilter
   addresses?: Prisma.AgencyAddressListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
 }
@@ -238,7 +238,7 @@ export type AgencyOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  contacts?: Prisma.AgencyContactOrderByRelationAggregateInput
+  contacts?: Prisma.ContactOrderByRelationAggregateInput
   addresses?: Prisma.AgencyAddressOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
 }
@@ -257,7 +257,7 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
-  contacts?: Prisma.AgencyContactListRelationFilter
+  contacts?: Prisma.ContactListRelationFilter
   addresses?: Prisma.AgencyAddressListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
 }, "id">
@@ -305,7 +305,7 @@ export type AgencyCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
 }
@@ -321,7 +321,7 @@ export type AgencyUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
 }
@@ -337,7 +337,7 @@ export type AgencyUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
 }
@@ -353,7 +353,7 @@ export type AgencyUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
 }
@@ -484,10 +484,12 @@ export type AgencyCreateNestedOneWithoutContactsInput = {
   connect?: Prisma.AgencyWhereUniqueInput
 }
 
-export type AgencyUpdateOneRequiredWithoutContactsNestedInput = {
+export type AgencyUpdateOneWithoutContactsNestedInput = {
   create?: Prisma.XOR<Prisma.AgencyCreateWithoutContactsInput, Prisma.AgencyUncheckedCreateWithoutContactsInput>
   connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutContactsInput
   upsert?: Prisma.AgencyUpsertWithoutContactsInput
+  disconnect?: Prisma.AgencyWhereInput | boolean
+  delete?: Prisma.AgencyWhereInput | boolean
   connect?: Prisma.AgencyWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutContactsInput, Prisma.AgencyUpdateWithoutContactsInput>, Prisma.AgencyUncheckedUpdateWithoutContactsInput>
 }
@@ -517,7 +519,7 @@ export type AgencyCreateWithoutPropertiesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
 }
 
@@ -532,7 +534,7 @@ export type AgencyUncheckedCreateWithoutPropertiesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
 }
 
@@ -563,7 +565,7 @@ export type AgencyUpdateWithoutPropertiesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
 }
 
@@ -578,7 +580,7 @@ export type AgencyUncheckedUpdateWithoutPropertiesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
@@ -669,7 +671,7 @@ export type AgencyCreateWithoutAddressesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
 }
 
@@ -684,7 +686,7 @@ export type AgencyUncheckedCreateWithoutAddressesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
 }
 
@@ -715,7 +717,7 @@ export type AgencyUpdateWithoutAddressesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
 }
 
@@ -730,7 +732,7 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  contacts?: Prisma.AgencyContactUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
@@ -765,7 +767,7 @@ export type AgencyCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
  * AgencyCountOutputType without action
  */
 export type AgencyCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AgencyContactWhereInput
+  where?: Prisma.ContactWhereInput
 }
 
 /**
@@ -852,7 +854,7 @@ export type AgencyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Agency"
   objects: {
-    contacts: Prisma.$AgencyContactPayload<ExtArgs>[]
+    contacts: Prisma.$ContactPayload<ExtArgs>[]
     addresses: Prisma.$AgencyAddressPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
   }
@@ -1261,7 +1263,7 @@ readonly fields: AgencyFieldRefs;
  */
 export interface Prisma__AgencyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  contacts<T extends Prisma.Agency$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contacts<T extends Prisma.Agency$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   addresses<T extends Prisma.Agency$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Agency$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1695,23 +1697,23 @@ export type AgencyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
  */
 export type Agency$contactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the AgencyContact
+   * Select specific fields to fetch from the Contact
    */
-  select?: Prisma.AgencyContactSelect<ExtArgs> | null
+  select?: Prisma.ContactSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the AgencyContact
+   * Omit specific fields from the Contact
    */
-  omit?: Prisma.AgencyContactOmit<ExtArgs> | null
+  omit?: Prisma.ContactOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.AgencyContactInclude<ExtArgs> | null
-  where?: Prisma.AgencyContactWhereInput
-  orderBy?: Prisma.AgencyContactOrderByWithRelationInput | Prisma.AgencyContactOrderByWithRelationInput[]
-  cursor?: Prisma.AgencyContactWhereUniqueInput
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.AgencyContactScalarFieldEnum | Prisma.AgencyContactScalarFieldEnum[]
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
 }
 
 /**

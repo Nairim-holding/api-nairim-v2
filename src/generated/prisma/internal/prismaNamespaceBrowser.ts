@@ -63,13 +63,10 @@ export const ModelName = {
   Address: 'Address',
   Contact: 'Contact',
   Favorite: 'Favorite',
-  AgencyContact: 'AgencyContact',
   AgencyAddress: 'AgencyAddress',
   PropertyAddress: 'PropertyAddress',
   OwnerAddress: 'OwnerAddress',
-  OwnerContact: 'OwnerContact',
-  TenantAddress: 'TenantAddress',
-  TenantContact: 'TenantContact'
+  TenantAddress: 'TenantAddress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -276,6 +273,9 @@ export const ContactScalarFieldEnum = {
   phone: 'phone',
   email: 'email',
   cellphone: 'cellphone',
+  agency_id: 'agency_id',
+  owner_id: 'owner_id',
+  tenant_id: 'tenant_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -294,18 +294,6 @@ export const FavoriteScalarFieldEnum = {
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
-
-
-export const AgencyContactScalarFieldEnum = {
-  id: 'id',
-  agency_id: 'agency_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type AgencyContactScalarFieldEnum = (typeof AgencyContactScalarFieldEnum)[keyof typeof AgencyContactScalarFieldEnum]
 
 
 export const AgencyAddressScalarFieldEnum = {
@@ -344,18 +332,6 @@ export const OwnerAddressScalarFieldEnum = {
 export type OwnerAddressScalarFieldEnum = (typeof OwnerAddressScalarFieldEnum)[keyof typeof OwnerAddressScalarFieldEnum]
 
 
-export const OwnerContactScalarFieldEnum = {
-  id: 'id',
-  owner_id: 'owner_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type OwnerContactScalarFieldEnum = (typeof OwnerContactScalarFieldEnum)[keyof typeof OwnerContactScalarFieldEnum]
-
-
 export const TenantAddressScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
@@ -366,18 +342,6 @@ export const TenantAddressScalarFieldEnum = {
 } as const
 
 export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)[keyof typeof TenantAddressScalarFieldEnum]
-
-
-export const TenantContactScalarFieldEnum = {
-  id: 'id',
-  tenant_id: 'tenant_id',
-  contact_id: 'contact_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
-} as const
-
-export type TenantContactScalarFieldEnum = (typeof TenantContactScalarFieldEnum)[keyof typeof TenantContactScalarFieldEnum]
 
 
 export const SortOrder = {
