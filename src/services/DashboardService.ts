@@ -10,6 +10,7 @@ import {
   MetricResult
 } from '../types/dashboard';
 
+// Helper para converter Decimal do Prisma para Number
 const decimalToNumber = (v: Decimal | number | null | undefined) =>
   v == null ? 0 : v instanceof Decimal ? v.toNumber() : Number(v);
 
@@ -19,6 +20,7 @@ const REQUIRED_DOCUMENT_TYPES = [
   'PROPERTY_RECORD'  // Registro do Imóvel
 ];
 
+// Helper para calcular variação percentual
 const calcVariation = (current: number, previous: number, data?: any[]): MetricResult => {
   if (previous === 0 || !isFinite(previous)) {
     return { 
@@ -29,8 +31,9 @@ const calcVariation = (current: number, previous: number, data?: any[]): MetricR
     };
   }
   let variation = ((current - previous) / previous) * 100;
-  // Limitar variação para evitar distorções visuais extremas
+  // Limitar variação para evitar distorções visuais extremas (opcional, mas recomendado)
   variation = Math.max(Math.min(variation, 100), -100);
+  
   return {
     result: +current.toFixed(2),
     variation: +variation.toFixed(2),
@@ -39,6 +42,7 @@ const calcVariation = (current: number, previous: number, data?: any[]): MetricR
   };
 };
 
+// Helper para buscar coordenadas (Geocoding)
 async function fetchCoordinatesBatch(
   addresses: {
     street?: string;
@@ -107,7 +111,7 @@ export class DashboardService {
   }
 
   static calculateVacancyMonths(leases: any[], referenceDate: Date): number {
-    if (!leases || leases.length === 0) return 12; // Se nunca foi alugado, assume-se 12 meses de vacância para métrica
+    if (!leases || leases.length === 0) return 12; // Se nunca foi alugado, assume-se 12 meses de vacância para métrica simplificada
     
     const lastLease = leases[0];
     const leaseEnd = new Date(lastLease.end_date);
@@ -273,34 +277,137 @@ export class DashboardService {
 
   static async getClientsMetrics(startDate: Date, endDate: Date): Promise<ClientsMetrics> {
     const periods = this.getPeriodDates(startDate, endDate);
-    
-    const [owners, prevOwners, tenants, prevTenants, agencies, prevAgencies, properties] = await Promise.all([
-      prisma.owner.findMany({ where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null }, include: { properties: { where: { deleted_at: null } } } }),
+    const toNum = (v: any) => decimalToNumber(v);
+
+    const [owners, prevOwnersCount, tenants, prevTenantsCount, agencies, prevAgenciesCount] = await Promise.all([
+      // 1. Proprietários com Imóveis Detalhados
+      prisma.owner.findMany({
+        where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
+        include: {
+          properties: {
+            where: { deleted_at: null },
+            include: {
+              type: true,
+              values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 }
+            }
+          }
+        }
+      }),
       prisma.owner.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } }),
-      prisma.tenant.findMany({ where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null } }),
+
+      // 2. Inquilinos com Contratos e Imóveis
+      prisma.tenant.findMany({
+        where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
+        include: {
+          leases: {
+            where: { deleted_at: null },
+            include: {
+              property: {
+                include: {
+                  type: true,
+                  values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 }
+                }
+              }
+            }
+          }
+        }
+      }),
       prisma.tenant.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } }),
-      prisma.agency.findMany({ where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null }, include: { properties: { where: { deleted_at: null } } } }),
-      prisma.agency.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } }),
-      prisma.property.findMany({ where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null } })
+
+      // 3. Agências com Imóveis
+      prisma.agency.findMany({
+        where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
+        include: {
+          properties: {
+            where: { deleted_at: null },
+            include: {
+              type: true,
+              values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 }
+            }
+          }
+        }
+      }),
+      prisma.agency.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } })
     ]);
 
-    const ownersDetails = owners.map(o => ({ id: o.id, name: o.name, createdAt: o.created_at, propertiesCount: o.properties.length }));
-    const tenantsDetails = tenants.map(t => ({ id: t.id, name: t.name, createdAt: t.created_at }));
-    const agenciesDetails = agencies.map(a => ({ id: a.id, legalName: a.legal_name, tradeName: a.trade_name, createdAt: a.created_at, propertiesCount: a.properties.length }));
+    // --- Processamento dos Dados ---
 
-    const propertiesPerOwnerVal = owners.length > 0 ? properties.length / owners.length : 0;
-    const prevOwnersCount = prevOwners || 1;
-    const prevPropertiesPerOwnerVal = properties.length / prevOwnersCount;
+    // Detalhes dos Proprietários (incluindo a lista de imóveis)
+    const ownersDetails = owners.map(o => ({
+      id: o.id,
+      name: o.name,
+      createdAt: o.created_at,
+      propertiesCount: o.properties.length,
+      // Retornando o imóvel em si para visualização
+      properties: o.properties.map(p => ({
+        id: p.id,
+        title: p.title,
+        type: p.type?.description,
+        status: p.values[0]?.status,
+        rentalValue: toNum(p.values[0]?.rental_value),
+        saleValue: toNum(p.values[0]?.sale_value)
+      }))
+    }));
+
+    // Detalhes dos Inquilinos (incluindo imóveis relacionados)
+    const tenantsDetails = tenants.map(t => ({
+      id: t.id,
+      name: t.name,
+      createdAt: t.created_at,
+      // Mapeando imóveis através dos contratos
+      properties: t.leases.map(l => ({
+        id: l.property.id,
+        title: l.property.title,
+        type: l.property.type?.description,
+        contractNumber: l.contract_number,
+        rentalValue: toNum(l.rent_amount)
+      }))
+    }));
+
+    // Detalhes das Agências
+    const agenciesDetails = agencies.map(a => ({
+      id: a.id,
+      legalName: a.legal_name,
+      tradeName: a.trade_name,
+      createdAt: a.created_at,
+      propertiesCount: a.properties.length
+    }));
+
+    // Cálculos de Variação
+    const totalProperties = owners.reduce((acc, o) => acc + o.properties.length, 0);
+    const propertiesPerOwnerVal = owners.length > 0 ? totalProperties / owners.length : 0;
+    
+    // Estimativa anterior simplificada
+    const prevTotalPropertiesEstimate = prevOwnersCount * propertiesPerOwnerVal; 
+    const prevPropertiesPerOwnerVal = prevOwnersCount > 0 ? prevTotalPropertiesEstimate / prevOwnersCount : 0;
 
     return {
-      ownersTotal: calcVariation(owners.length, prevOwners, ownersDetails),
-      tenantsTotal: calcVariation(tenants.length, prevTenants, tenantsDetails),
-      propertiesPerOwner: calcVariation(propertiesPerOwnerVal, prevPropertiesPerOwnerVal, ownersDetails),
-      agenciesTotal: calcVariation(agencies.length, prevAgencies, agenciesDetails),
+      ownersTotal: calcVariation(owners.length, prevOwnersCount, ownersDetails),
+      
+      tenantsTotal: calcVariation(tenants.length, prevTenantsCount, tenantsDetails),
+      
+      propertiesPerOwner: calcVariation(propertiesPerOwnerVal, prevPropertiesPerOwnerVal, ownersDetails), 
+      
+      agenciesTotal: calcVariation(agencies.length, prevAgenciesCount, agenciesDetails),
+      
+      // Imóveis por Agência (Donut/Lista)
       propertiesByAgency: agencies.map(a => ({
         name: a.trade_name || a.legal_name,
         value: a.properties.length,
-        data: a.properties.map(p => ({ id: p.id, title: p.title }))
+        // Detalhes ricos para o modal/drilldown incluindo a própria agência
+        data: a.properties.map(p => ({
+          id: p.id,
+          title: p.title,
+          type: p.type?.description,
+          status: p.values[0]?.status,
+          rentalValue: toNum(p.values[0]?.rental_value),
+          areaTotal: p.area_total,
+          agency: {
+            id: a.id,
+            tradeName: a.trade_name,
+            legalName: a.legal_name
+          }
+        }))
       }))
     };
   }

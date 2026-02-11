@@ -11,6 +11,7 @@ const router = Router();
 router.get('/', validateGetOwners, OwnerController.getOwners);
 router.get('/filters', OwnerController.getOwnerFilters);
 router.get('/:id', OwnerController.getOwnerById);
+router.get('/suggestions/contacts', OwnerController.getContactSuggestions);
 router.post('/', validateCreateOwner, OwnerController.createOwner);
 router.put('/:id', validateUpdateOwner, OwnerController.updateOwner);
 router.delete('/:id', OwnerController.deleteOwner);

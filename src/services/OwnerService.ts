@@ -726,4 +726,64 @@ export class OwnerService {
       throw error;
     }
   }
+
+static async getAvailableContacts(search: string = ''): Promise<any[]> {
+    try {
+      const where: any = {
+        deleted_at: null,
+        // Opcional: Se quiser sugerir apenas contatos que já pertencem a outros Owners, descomente abaixo:
+        // owner_id: { not: null } 
+      };
+
+      if (search.trim()) {
+        const normalizedSearch = this.normalizeText(search);
+        // Busca flexível
+        where.OR = [
+          { contact: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search, mode: 'insensitive' } },
+          { cellphone: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } }
+        ];
+      }
+
+      // Buscamos os dados brutos
+      const contacts = await prisma.contact.findMany({
+        where,
+        select: {
+          id: true,
+          contact: true,
+          phone: true,
+          cellphone: true,
+          email: true,
+          // Trazemos o ID do dono apenas para referência se necessário
+          owner_id: true 
+        },
+        take: 50, // Limite para não sobrecarregar o dropdown
+        orderBy: { created_at: 'desc' }
+      });
+
+      // Filtragem manual de duplicatas (já que o Prisma distinct nem sempre é flexível o suficiente com campos nulos)
+      // Agrupamos por uma chave única composta (ex: telefone ou email)
+      const uniqueContacts = new Map();
+
+      contacts.forEach(c => {
+        // Define uma chave única: preferência para celular, depois telefone, depois email
+        const key = c.cellphone || c.phone || c.email;
+        
+        if (key && !uniqueContacts.has(key)) {
+          uniqueContacts.set(key, {
+            contact: c.contact, // Nome da pessoa (ex: "Portaria", "João")
+            phone: c.phone,
+            cellphone: c.cellphone,
+            email: c.email
+          });
+        }
+      });
+
+      return Array.from(uniqueContacts.values());
+
+    } catch (error: any) {
+      throw new Error(`Falha ao buscar sugestões de contatos: ${error.message}`);
+    }
+  }
 }

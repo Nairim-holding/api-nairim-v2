@@ -247,4 +247,22 @@ export class AgencyController {
       res.status(500).json(ApiResponse.error('Error restoring agency'));
     }
   }
+
+  static async getContactSuggestions(req: Request, res: Response) {
+    try {
+      const search = ValidationUtil.parseStringParam(req.query?.search);
+      
+      const suggestions = await AgencyService.getAvailableContacts(search);
+
+      // Cache curto
+      res.setHeader('Cache-Control', 'public, max-age=30'); 
+      
+      res.status(200).json(
+        ApiResponse.success(suggestions, 'Contact suggestions retrieved successfully')
+      );
+    } catch (error: any) {
+      console.error('Error getting contact suggestions:', error);
+      res.status(500).json(ApiResponse.error('Internal server error'));
+    }
+  }
 }

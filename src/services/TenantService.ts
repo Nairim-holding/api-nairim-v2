@@ -576,4 +576,61 @@ export class TenantService {
       throw error;
     }
   }
+
+static async getAvailableContacts(search: string = ''): Promise<any[]> {
+    try {
+      const where: any = {
+        deleted_at: null,
+        // Opcional: Se quiser sugerir apenas contatos que já foram usados em inquilinos
+        // tenant_id: { not: null } 
+      };
+
+      if (search.trim()) {
+        // Busca flexível por nome, telefone ou email
+        where.OR = [
+          { contact: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search, mode: 'insensitive' } },
+          { cellphone: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } }
+        ];
+      }
+
+      // Buscamos os dados brutos (limite de 50 para performance)
+      const contacts = await prisma.contact.findMany({
+        where,
+        select: {
+          id: true,
+          contact: true,
+          phone: true,
+          cellphone: true,
+          email: true,
+          tenant_id: true // Apenas para referência interna
+        },
+        take: 50,
+        orderBy: { created_at: 'desc' }
+      });
+
+      // Lógica de Deduplicação (Mesma usada no OwnerService)
+      const uniqueContacts = new Map();
+
+      contacts.forEach(c => {
+        // Define uma chave única: preferência para celular, depois telefone, depois email
+        const key = c.cellphone || c.phone || c.email;
+        
+        if (key && !uniqueContacts.has(key)) {
+          uniqueContacts.set(key, {
+            contact: c.contact, // Nome da pessoa de contato
+            phone: c.phone,
+            cellphone: c.cellphone,
+            email: c.email
+          });
+        }
+      });
+
+      return Array.from(uniqueContacts.values());
+
+    } catch (error: any) {
+      throw new Error(`Falha ao buscar sugestões de contatos: ${error.message}`);
+    }
+  }
 }

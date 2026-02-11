@@ -255,4 +255,22 @@ export class TenantController {
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }
+
+static async getContactSuggestions(req: Request, res: Response) {
+    try {
+      const search = ValidationUtil.parseStringParam(req.query?.search);
+      
+      const suggestions = await TenantService.getAvailableContacts(search);
+
+      // Cache curto para agilizar o autocomplete no front
+      res.setHeader('Cache-Control', 'public, max-age=30'); 
+      
+      res.status(200).json(
+        ApiResponse.success(suggestions, 'Contact suggestions retrieved successfully')
+      );
+    } catch (error: any) {
+      console.error('Error getting contact suggestions:', error);
+      res.status(500).json(ApiResponse.error('Internal server error'));
+    }
+  }
 }

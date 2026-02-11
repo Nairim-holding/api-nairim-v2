@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/', AgencyController.getAgencies);
 router.get('/filters', AgencyController.getAgencyFilters);
+router.get('/suggestions/contacts', AgencyController.getContactSuggestions);
 router.get('/:id', AgencyController.getAgencyById);
 router.post('/', AgencyController.createAgency);
 router.put('/:id', AgencyController.updateAgency);

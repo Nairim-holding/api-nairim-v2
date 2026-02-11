@@ -653,4 +653,57 @@ export class AgencyService {
       throw error;
     }
   }
+
+static async getAvailableContacts(search: string = ''): Promise<any[]> {
+    try {
+      const where: any = {
+        deleted_at: null,
+      };
+
+      if (search.trim()) {
+        const normalizedSearch = this.normalizeText(search);
+        where.OR = [
+          { contact: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search, mode: 'insensitive' } },
+          { cellphone: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } }
+        ];
+      }
+
+      const contacts = await prisma.contact.findMany({
+        where,
+        select: {
+          id: true,
+          contact: true,
+          phone: true,
+          cellphone: true,
+          email: true,
+          agency_id: true // Apenas para referência
+        },
+        take: 50,
+        orderBy: { created_at: 'desc' }
+      });
+
+      // Deduplicação (Mesma lógica dos outros services)
+      const uniqueContacts = new Map();
+
+      contacts.forEach(c => {
+        const key = c.cellphone || c.phone || c.email;
+        
+        if (key && !uniqueContacts.has(key)) {
+          uniqueContacts.set(key, {
+            contact: c.contact,
+            phone: c.phone,
+            cellphone: c.cellphone,
+            email: c.email
+          });
+        }
+      });
+
+      return Array.from(uniqueContacts.values());
+
+    } catch (error: any) {
+      throw new Error(`Falha ao buscar sugestões de contatos: ${error.message}`);
+    }
+  }
 }
