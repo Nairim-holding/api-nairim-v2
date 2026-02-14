@@ -190,8 +190,8 @@ export type OwnerAddressWhereInput = {
   created_at?: Prisma.DateTimeFilter<"OwnerAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"OwnerAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"OwnerAddress"> | Date | string | null
-  owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
 }
 
 export type OwnerAddressOrderByWithRelationInput = {
@@ -201,8 +201,8 @@ export type OwnerAddressOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  owner?: Prisma.OwnerOrderByWithRelationInput
   address?: Prisma.AddressOrderByWithRelationInput
+  owner?: Prisma.OwnerOrderByWithRelationInput
 }
 
 export type OwnerAddressWhereUniqueInput = Prisma.AtLeast<{
@@ -215,8 +215,8 @@ export type OwnerAddressWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"OwnerAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"OwnerAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"OwnerAddress"> | Date | string | null
-  owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
 }, "id">
 
 export type OwnerAddressOrderByWithAggregationInput = {
@@ -248,8 +248,8 @@ export type OwnerAddressCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  owner: Prisma.OwnerCreateNestedOneWithoutAddressesInput
   address: Prisma.AddressCreateNestedOneWithoutOwnerAddressesInput
+  owner: Prisma.OwnerCreateNestedOneWithoutAddressesInput
 }
 
 export type OwnerAddressUncheckedCreateInput = {
@@ -266,8 +266,8 @@ export type OwnerAddressUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  owner?: Prisma.OwnerUpdateOneRequiredWithoutAddressesNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOwnerAddressesNestedInput
+  owner?: Prisma.OwnerUpdateOneRequiredWithoutAddressesNestedInput
 }
 
 export type OwnerAddressUncheckedUpdateInput = {
@@ -594,8 +594,8 @@ export type OwnerAddressSelect<ExtArgs extends runtime.Types.Extensions.Internal
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerAddress"]>
 
 export type OwnerAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -605,8 +605,8 @@ export type OwnerAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerAddress"]>
 
 export type OwnerAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -616,8 +616,8 @@ export type OwnerAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerAddress"]>
 
 export type OwnerAddressSelectScalar = {
@@ -631,23 +631,23 @@ export type OwnerAddressSelectScalar = {
 
 export type OwnerAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "owner_id" | "address_id" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["ownerAddress"]>
 export type OwnerAddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }
 export type OwnerAddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }
 export type OwnerAddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
 }
 
 export type $OwnerAddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OwnerAddress"
   objects: {
-    owner: Prisma.$OwnerPayload<ExtArgs>
     address: Prisma.$AddressPayload<ExtArgs>
+    owner: Prisma.$OwnerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1050,8 +1050,8 @@ readonly fields: OwnerAddressFieldRefs;
  */
 export interface Prisma__OwnerAddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  owner<T extends Prisma.OwnerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnerClient<runtime.Types.Result.GetResult<Prisma.$OwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   address<T extends Prisma.AddressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddressDefaultArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  owner<T extends Prisma.OwnerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnerClient<runtime.Types.Result.GetResult<Prisma.$OwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

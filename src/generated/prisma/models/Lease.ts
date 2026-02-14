@@ -356,10 +356,10 @@ export type LeaseWhereInput = {
   created_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
-  type?: Prisma.XOR<Prisma.PropertyTypeScalarRelationFilter, Prisma.PropertyTypeWhereInput>
   owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
+  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  type?: Prisma.XOR<Prisma.PropertyTypeScalarRelationFilter, Prisma.PropertyTypeWhereInput>
 }
 
 export type LeaseOrderByWithRelationInput = {
@@ -382,10 +382,10 @@ export type LeaseOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  property?: Prisma.PropertyOrderByWithRelationInput
-  type?: Prisma.PropertyTypeOrderByWithRelationInput
   owner?: Prisma.OwnerOrderByWithRelationInput
+  property?: Prisma.PropertyOrderByWithRelationInput
   tenant?: Prisma.TenantOrderByWithRelationInput
+  type?: Prisma.PropertyTypeOrderByWithRelationInput
 }
 
 export type LeaseWhereUniqueInput = Prisma.AtLeast<{
@@ -411,10 +411,10 @@ export type LeaseWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
-  type?: Prisma.XOR<Prisma.PropertyTypeScalarRelationFilter, Prisma.PropertyTypeWhereInput>
   owner?: Prisma.XOR<Prisma.OwnerScalarRelationFilter, Prisma.OwnerWhereInput>
+  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  type?: Prisma.XOR<Prisma.PropertyTypeScalarRelationFilter, Prisma.PropertyTypeWhereInput>
 }, "id">
 
 export type LeaseOrderByWithAggregationInput = {
@@ -485,10 +485,10 @@ export type LeaseCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
-  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
   owner: Prisma.OwnerCreateNestedOneWithoutLeasesInput
+  property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
   tenant: Prisma.TenantCreateNestedOneWithoutLeasesInput
+  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
 }
 
 export type LeaseUncheckedCreateInput = {
@@ -529,10 +529,10 @@ export type LeaseUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
-  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
   owner?: Prisma.OwnerUpdateOneRequiredWithoutLeasesNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutLeasesNestedInput
+  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
 }
 
 export type LeaseUncheckedUpdateInput = {
@@ -859,14 +859,6 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type LeaseCreateNestedManyWithoutTypeInput = {
   create?: Prisma.XOR<Prisma.LeaseCreateWithoutTypeInput, Prisma.LeaseUncheckedCreateWithoutTypeInput> | Prisma.LeaseCreateWithoutTypeInput[] | Prisma.LeaseUncheckedCreateWithoutTypeInput[]
   connectOrCreate?: Prisma.LeaseCreateOrConnectWithoutTypeInput | Prisma.LeaseCreateOrConnectWithoutTypeInput[]
@@ -925,9 +917,9 @@ export type LeaseCreateWithoutPropertyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
   owner: Prisma.OwnerCreateNestedOneWithoutLeasesInput
   tenant: Prisma.TenantCreateNestedOneWithoutLeasesInput
+  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
 }
 
 export type LeaseUncheckedCreateWithoutPropertyInput = {
@@ -1019,8 +1011,8 @@ export type LeaseCreateWithoutOwnerInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
-  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
   tenant: Prisma.TenantCreateNestedOneWithoutLeasesInput
+  type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
 }
 
 export type LeaseUncheckedCreateWithoutOwnerInput = {
@@ -1086,9 +1078,9 @@ export type LeaseCreateWithoutTenantInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  owner: Prisma.OwnerCreateNestedOneWithoutLeasesInput
   property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
   type: Prisma.PropertyTypeCreateNestedOneWithoutLeasesInput
-  owner: Prisma.OwnerCreateNestedOneWithoutLeasesInput
 }
 
 export type LeaseUncheckedCreateWithoutTenantInput = {
@@ -1154,8 +1146,8 @@ export type LeaseCreateWithoutTypeInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
   owner: Prisma.OwnerCreateNestedOneWithoutLeasesInput
+  property: Prisma.PropertyCreateNestedOneWithoutLeasesInput
   tenant: Prisma.TenantCreateNestedOneWithoutLeasesInput
 }
 
@@ -1243,9 +1235,9 @@ export type LeaseUpdateWithoutPropertyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
   owner?: Prisma.OwnerUpdateOneRequiredWithoutLeasesNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutLeasesNestedInput
+  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
 }
 
 export type LeaseUncheckedUpdateWithoutPropertyInput = {
@@ -1328,8 +1320,8 @@ export type LeaseUpdateWithoutOwnerInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
-  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutLeasesNestedInput
+  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
 }
 
 export type LeaseUncheckedUpdateWithoutOwnerInput = {
@@ -1411,9 +1403,9 @@ export type LeaseUpdateWithoutTenantInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.OwnerUpdateOneRequiredWithoutLeasesNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
   type?: Prisma.PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput
-  owner?: Prisma.OwnerUpdateOneRequiredWithoutLeasesNestedInput
 }
 
 export type LeaseUncheckedUpdateWithoutTenantInput = {
@@ -1495,8 +1487,8 @@ export type LeaseUpdateWithoutTypeInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
   owner?: Prisma.OwnerUpdateOneRequiredWithoutLeasesNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutLeasesNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutLeasesNestedInput
 }
 
@@ -1564,10 +1556,10 @@ export type LeaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lease"]>
 
 export type LeaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1590,10 +1582,10 @@ export type LeaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lease"]>
 
 export type LeaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1616,10 +1608,10 @@ export type LeaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lease"]>
 
 export type LeaseSelectScalar = {
@@ -1646,31 +1638,31 @@ export type LeaseSelectScalar = {
 
 export type LeaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "type_id" | "owner_id" | "tenant_id" | "contract_number" | "start_date" | "end_date" | "rent_amount" | "condo_fee" | "property_tax" | "extra_charges" | "commission_amount" | "rent_due_day" | "tax_due_day" | "condo_due_day" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["lease"]>
 export type LeaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }
 export type LeaseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }
 export type LeaseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  type?: boolean | Prisma.PropertyTypeDefaultArgs<ExtArgs>
 }
 
 export type $LeasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Lease"
   objects: {
-    property: Prisma.$PropertyPayload<ExtArgs>
-    type: Prisma.$PropertyTypePayload<ExtArgs>
     owner: Prisma.$OwnerPayload<ExtArgs>
+    property: Prisma.$PropertyPayload<ExtArgs>
     tenant: Prisma.$TenantPayload<ExtArgs>
+    type: Prisma.$PropertyTypePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2086,10 +2078,10 @@ readonly fields: LeaseFieldRefs;
  */
 export interface Prisma__LeaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  type<T extends Prisma.PropertyTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyTypeClient<runtime.Types.Result.GetResult<Prisma.$PropertyTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.OwnerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnerClient<runtime.Types.Result.GetResult<Prisma.$OwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  type<T extends Prisma.PropertyTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyTypeClient<runtime.Types.Result.GetResult<Prisma.$PropertyTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -32,11 +32,11 @@ export type OwnerMinAggregateOutputType = {
   marital_status: string | null
   cpf: string | null
   cnpj: string | null
-  state_registration: string | null
-  municipal_registration: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  municipal_registration: string | null
+  state_registration: string | null
 }
 
 export type OwnerMaxAggregateOutputType = {
@@ -47,11 +47,11 @@ export type OwnerMaxAggregateOutputType = {
   marital_status: string | null
   cpf: string | null
   cnpj: string | null
-  state_registration: string | null
-  municipal_registration: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  municipal_registration: string | null
+  state_registration: string | null
 }
 
 export type OwnerCountAggregateOutputType = {
@@ -62,11 +62,11 @@ export type OwnerCountAggregateOutputType = {
   marital_status: number
   cpf: number
   cnpj: number
-  state_registration: number
-  municipal_registration: number
   created_at: number
   updated_at: number
   deleted_at: number
+  municipal_registration: number
+  state_registration: number
   _all: number
 }
 
@@ -79,11 +79,11 @@ export type OwnerMinAggregateInputType = {
   marital_status?: true
   cpf?: true
   cnpj?: true
-  state_registration?: true
-  municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  municipal_registration?: true
+  state_registration?: true
 }
 
 export type OwnerMaxAggregateInputType = {
@@ -94,11 +94,11 @@ export type OwnerMaxAggregateInputType = {
   marital_status?: true
   cpf?: true
   cnpj?: true
-  state_registration?: true
-  municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  municipal_registration?: true
+  state_registration?: true
 }
 
 export type OwnerCountAggregateInputType = {
@@ -109,11 +109,11 @@ export type OwnerCountAggregateInputType = {
   marital_status?: true
   cpf?: true
   cnpj?: true
-  state_registration?: true
-  municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  municipal_registration?: true
+  state_registration?: true
   _all?: true
 }
 
@@ -197,11 +197,11 @@ export type OwnerGroupByOutputType = {
   marital_status: string | null
   cpf: string | null
   cnpj: string | null
-  state_registration: string | null
-  municipal_registration: string | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+  municipal_registration: string | null
+  state_registration: string | null
   _count: OwnerCountAggregateOutputType | null
   _min: OwnerMinAggregateOutputType | null
   _max: OwnerMaxAggregateOutputType | null
@@ -233,15 +233,15 @@ export type OwnerWhereInput = {
   marital_status?: Prisma.StringNullableFilter<"Owner"> | string | null
   cpf?: Prisma.StringNullableFilter<"Owner"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Owner"> | string | null
-  state_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
-  municipal_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
   created_at?: Prisma.DateTimeFilter<"Owner"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Owner"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Owner"> | Date | string | null
-  properties?: Prisma.PropertyListRelationFilter
+  municipal_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
+  state_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
+  contacts?: Prisma.ContactListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.OwnerAddressListRelationFilter
-  contacts?: Prisma.ContactListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
 }
 
 export type OwnerOrderByWithRelationInput = {
@@ -252,15 +252,15 @@ export type OwnerOrderByWithRelationInput = {
   marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
-  state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
-  municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  properties?: Prisma.PropertyOrderByRelationAggregateInput
+  municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
+  state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
+  contacts?: Prisma.ContactOrderByRelationAggregateInput
   leases?: Prisma.LeaseOrderByRelationAggregateInput
   addresses?: Prisma.OwnerAddressOrderByRelationAggregateInput
-  contacts?: Prisma.ContactOrderByRelationAggregateInput
+  properties?: Prisma.PropertyOrderByRelationAggregateInput
 }
 
 export type OwnerWhereUniqueInput = Prisma.AtLeast<{
@@ -274,15 +274,15 @@ export type OwnerWhereUniqueInput = Prisma.AtLeast<{
   marital_status?: Prisma.StringNullableFilter<"Owner"> | string | null
   cpf?: Prisma.StringNullableFilter<"Owner"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Owner"> | string | null
-  state_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
-  municipal_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
   created_at?: Prisma.DateTimeFilter<"Owner"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Owner"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Owner"> | Date | string | null
-  properties?: Prisma.PropertyListRelationFilter
+  municipal_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
+  state_registration?: Prisma.StringNullableFilter<"Owner"> | string | null
+  contacts?: Prisma.ContactListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.OwnerAddressListRelationFilter
-  contacts?: Prisma.ContactListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
 }, "id">
 
 export type OwnerOrderByWithAggregationInput = {
@@ -293,11 +293,11 @@ export type OwnerOrderByWithAggregationInput = {
   marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
-  state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
-  municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
+  state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OwnerCountOrderByAggregateInput
   _max?: Prisma.OwnerMaxOrderByAggregateInput
   _min?: Prisma.OwnerMinOrderByAggregateInput
@@ -314,11 +314,11 @@ export type OwnerScalarWhereWithAggregatesInput = {
   marital_status?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
   cpf?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
   cnpj?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
-  state_registration?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
-  municipal_registration?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Owner"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Owner"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Owner"> | Date | string | null
+  municipal_registration?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
+  state_registration?: Prisma.StringNullableWithAggregatesFilter<"Owner"> | string | null
 }
 
 export type OwnerCreateInput = {
@@ -329,15 +329,15 @@ export type OwnerCreateInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
   leases?: Prisma.LeaseCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressCreateNestedManyWithoutOwnerInput
-  contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUncheckedCreateInput = {
@@ -348,15 +348,15 @@ export type OwnerUncheckedCreateInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
   leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutOwnerInput
-  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUpdateInput = {
@@ -367,15 +367,15 @@ export type OwnerUpdateInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUpdateManyWithoutOwnerNestedInput
-  contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerUncheckedUpdateInput = {
@@ -386,15 +386,15 @@ export type OwnerUncheckedUpdateInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
   leases?: Prisma.LeaseUncheckedUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutOwnerNestedInput
-  contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerCreateManyInput = {
@@ -405,11 +405,11 @@ export type OwnerCreateManyInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
 }
 
 export type OwnerUpdateManyMutationInput = {
@@ -420,11 +420,11 @@ export type OwnerUpdateManyMutationInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OwnerUncheckedUpdateManyInput = {
@@ -435,11 +435,11 @@ export type OwnerUncheckedUpdateManyInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OwnerScalarRelationFilter = {
@@ -455,11 +455,11 @@ export type OwnerCountOrderByAggregateInput = {
   marital_status?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  state_registration?: Prisma.SortOrder
-  municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  municipal_registration?: Prisma.SortOrder
+  state_registration?: Prisma.SortOrder
 }
 
 export type OwnerMaxOrderByAggregateInput = {
@@ -470,11 +470,11 @@ export type OwnerMaxOrderByAggregateInput = {
   marital_status?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  state_registration?: Prisma.SortOrder
-  municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  municipal_registration?: Prisma.SortOrder
+  state_registration?: Prisma.SortOrder
 }
 
 export type OwnerMinOrderByAggregateInput = {
@@ -485,11 +485,11 @@ export type OwnerMinOrderByAggregateInput = {
   marital_status?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  state_registration?: Prisma.SortOrder
-  municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  municipal_registration?: Prisma.SortOrder
+  state_registration?: Prisma.SortOrder
 }
 
 export type OwnerNullableScalarRelationFilter = {
@@ -563,14 +563,14 @@ export type OwnerCreateWithoutPropertiesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
   leases?: Prisma.LeaseCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressCreateNestedManyWithoutOwnerInput
-  contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUncheckedCreateWithoutPropertiesInput = {
@@ -581,14 +581,14 @@ export type OwnerUncheckedCreateWithoutPropertiesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
   leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutOwnerInput
-  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerCreateOrConnectWithoutPropertiesInput = {
@@ -615,14 +615,14 @@ export type OwnerUpdateWithoutPropertiesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUpdateManyWithoutOwnerNestedInput
-  contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerUncheckedUpdateWithoutPropertiesInput = {
@@ -633,14 +633,14 @@ export type OwnerUncheckedUpdateWithoutPropertiesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
   leases?: Prisma.LeaseUncheckedUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutOwnerNestedInput
-  contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerCreateWithoutLeasesInput = {
@@ -651,14 +651,14 @@ export type OwnerCreateWithoutLeasesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
-  addresses?: Prisma.OwnerAddressCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  addresses?: Prisma.OwnerAddressCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUncheckedCreateWithoutLeasesInput = {
@@ -669,14 +669,14 @@ export type OwnerUncheckedCreateWithoutLeasesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
-  addresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  addresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerCreateOrConnectWithoutLeasesInput = {
@@ -703,14 +703,14 @@ export type OwnerUpdateWithoutLeasesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
-  addresses?: Prisma.OwnerAddressUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  addresses?: Prisma.OwnerAddressUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerUncheckedUpdateWithoutLeasesInput = {
@@ -721,14 +721,14 @@ export type OwnerUncheckedUpdateWithoutLeasesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
-  addresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  addresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerCreateWithoutContactsInput = {
@@ -739,14 +739,14 @@ export type OwnerCreateWithoutContactsInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   leases?: Prisma.LeaseCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUncheckedCreateWithoutContactsInput = {
@@ -757,14 +757,14 @@ export type OwnerUncheckedCreateWithoutContactsInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutOwnerInput
   addresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerCreateOrConnectWithoutContactsInput = {
@@ -791,14 +791,14 @@ export type OwnerUpdateWithoutContactsInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leases?: Prisma.LeaseUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerUncheckedUpdateWithoutContactsInput = {
@@ -809,14 +809,14 @@ export type OwnerUncheckedUpdateWithoutContactsInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leases?: Prisma.LeaseUncheckedUpdateManyWithoutOwnerNestedInput
   addresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerCreateWithoutAddressesInput = {
@@ -827,14 +827,14 @@ export type OwnerCreateWithoutAddressesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
-  leases?: Prisma.LeaseCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerUncheckedCreateWithoutAddressesInput = {
@@ -845,14 +845,14 @@ export type OwnerUncheckedCreateWithoutAddressesInput = {
   marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
-  state_registration?: string | null
-  municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
-  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutOwnerInput
+  municipal_registration?: string | null
+  state_registration?: string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutOwnerInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type OwnerCreateOrConnectWithoutAddressesInput = {
@@ -879,14 +879,14 @@ export type OwnerUpdateWithoutAddressesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
-  leases?: Prisma.LeaseUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutOwnerNestedInput
 }
 
 export type OwnerUncheckedUpdateWithoutAddressesInput = {
@@ -897,14 +897,14 @@ export type OwnerUncheckedUpdateWithoutAddressesInput = {
   marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
-  leases?: Prisma.LeaseUncheckedUpdateManyWithoutOwnerNestedInput
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutOwnerNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -913,17 +913,17 @@ export type OwnerUncheckedUpdateWithoutAddressesInput = {
  */
 
 export type OwnerCountOutputType = {
-  properties: number
+  contacts: number
   leases: number
   addresses: number
-  contacts: number
+  properties: number
 }
 
 export type OwnerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  properties?: boolean | OwnerCountOutputTypeCountPropertiesArgs
+  contacts?: boolean | OwnerCountOutputTypeCountContactsArgs
   leases?: boolean | OwnerCountOutputTypeCountLeasesArgs
   addresses?: boolean | OwnerCountOutputTypeCountAddressesArgs
-  contacts?: boolean | OwnerCountOutputTypeCountContactsArgs
+  properties?: boolean | OwnerCountOutputTypeCountPropertiesArgs
 }
 
 /**
@@ -939,8 +939,8 @@ export type OwnerCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * OwnerCountOutputType without action
  */
-export type OwnerCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PropertyWhereInput
+export type OwnerCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactWhereInput
 }
 
 /**
@@ -960,8 +960,8 @@ export type OwnerCountOutputTypeCountAddressesArgs<ExtArgs extends runtime.Types
 /**
  * OwnerCountOutputType without action
  */
-export type OwnerCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ContactWhereInput
+export type OwnerCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyWhereInput
 }
 
 
@@ -973,15 +973,15 @@ export type OwnerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   marital_status?: boolean
   cpf?: boolean
   cnpj?: boolean
-  state_registration?: boolean
-  municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  properties?: boolean | Prisma.Owner$propertiesArgs<ExtArgs>
+  municipal_registration?: boolean
+  state_registration?: boolean
+  contacts?: boolean | Prisma.Owner$contactsArgs<ExtArgs>
   leases?: boolean | Prisma.Owner$leasesArgs<ExtArgs>
   addresses?: boolean | Prisma.Owner$addressesArgs<ExtArgs>
-  contacts?: boolean | Prisma.Owner$contactsArgs<ExtArgs>
+  properties?: boolean | Prisma.Owner$propertiesArgs<ExtArgs>
   _count?: boolean | Prisma.OwnerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["owner"]>
 
@@ -993,11 +993,11 @@ export type OwnerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   marital_status?: boolean
   cpf?: boolean
   cnpj?: boolean
-  state_registration?: boolean
-  municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  municipal_registration?: boolean
+  state_registration?: boolean
 }, ExtArgs["result"]["owner"]>
 
 export type OwnerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1008,11 +1008,11 @@ export type OwnerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   marital_status?: boolean
   cpf?: boolean
   cnpj?: boolean
-  state_registration?: boolean
-  municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  municipal_registration?: boolean
+  state_registration?: boolean
 }, ExtArgs["result"]["owner"]>
 
 export type OwnerSelectScalar = {
@@ -1023,19 +1023,19 @@ export type OwnerSelectScalar = {
   marital_status?: boolean
   cpf?: boolean
   cnpj?: boolean
-  state_registration?: boolean
-  municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  municipal_registration?: boolean
+  state_registration?: boolean
 }
 
-export type OwnerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "internal_code" | "occupation" | "marital_status" | "cpf" | "cnpj" | "state_registration" | "municipal_registration" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["owner"]>
+export type OwnerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "internal_code" | "occupation" | "marital_status" | "cpf" | "cnpj" | "created_at" | "updated_at" | "deleted_at" | "municipal_registration" | "state_registration", ExtArgs["result"]["owner"]>
 export type OwnerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  properties?: boolean | Prisma.Owner$propertiesArgs<ExtArgs>
+  contacts?: boolean | Prisma.Owner$contactsArgs<ExtArgs>
   leases?: boolean | Prisma.Owner$leasesArgs<ExtArgs>
   addresses?: boolean | Prisma.Owner$addressesArgs<ExtArgs>
-  contacts?: boolean | Prisma.Owner$contactsArgs<ExtArgs>
+  properties?: boolean | Prisma.Owner$propertiesArgs<ExtArgs>
   _count?: boolean | Prisma.OwnerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OwnerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1044,10 +1044,10 @@ export type OwnerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $OwnerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Owner"
   objects: {
-    properties: Prisma.$PropertyPayload<ExtArgs>[]
+    contacts: Prisma.$ContactPayload<ExtArgs>[]
     leases: Prisma.$LeasePayload<ExtArgs>[]
     addresses: Prisma.$OwnerAddressPayload<ExtArgs>[]
-    contacts: Prisma.$ContactPayload<ExtArgs>[]
+    properties: Prisma.$PropertyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1057,11 +1057,11 @@ export type $OwnerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     marital_status: string | null
     cpf: string | null
     cnpj: string | null
-    state_registration: string | null
-    municipal_registration: string | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
+    municipal_registration: string | null
+    state_registration: string | null
   }, ExtArgs["result"]["owner"]>
   composites: {}
 }
@@ -1456,10 +1456,10 @@ readonly fields: OwnerFieldRefs;
  */
 export interface Prisma__OwnerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  properties<T extends Prisma.Owner$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contacts<T extends Prisma.Owner$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   leases<T extends Prisma.Owner$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   addresses<T extends Prisma.Owner$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  contacts<T extends Prisma.Owner$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  properties<T extends Prisma.Owner$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Owner$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1496,11 +1496,11 @@ export interface OwnerFieldRefs {
   readonly marital_status: Prisma.FieldRef<"Owner", 'String'>
   readonly cpf: Prisma.FieldRef<"Owner", 'String'>
   readonly cnpj: Prisma.FieldRef<"Owner", 'String'>
-  readonly state_registration: Prisma.FieldRef<"Owner", 'String'>
-  readonly municipal_registration: Prisma.FieldRef<"Owner", 'String'>
   readonly created_at: Prisma.FieldRef<"Owner", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Owner", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Owner", 'DateTime'>
+  readonly municipal_registration: Prisma.FieldRef<"Owner", 'String'>
+  readonly state_registration: Prisma.FieldRef<"Owner", 'String'>
 }
     
 
@@ -1889,27 +1889,27 @@ export type OwnerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Owner.properties
+ * Owner.contacts
  */
-export type Owner$propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Owner$contactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Property
+   * Select specific fields to fetch from the Contact
    */
-  select?: Prisma.PropertySelect<ExtArgs> | null
+  select?: Prisma.ContactSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Property
+   * Omit specific fields from the Contact
    */
-  omit?: Prisma.PropertyOmit<ExtArgs> | null
+  omit?: Prisma.ContactOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PropertyInclude<ExtArgs> | null
-  where?: Prisma.PropertyWhereInput
-  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
-  cursor?: Prisma.PropertyWhereUniqueInput
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
 }
 
 /**
@@ -1961,27 +1961,27 @@ export type Owner$addressesArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Owner.contacts
+ * Owner.properties
  */
-export type Owner$contactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Owner$propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Contact
+   * Select specific fields to fetch from the Property
    */
-  select?: Prisma.ContactSelect<ExtArgs> | null
+  select?: Prisma.PropertySelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Contact
+   * Omit specific fields from the Property
    */
-  omit?: Prisma.ContactOmit<ExtArgs> | null
+  omit?: Prisma.PropertyOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContactInclude<ExtArgs> | null
-  where?: Prisma.ContactWhereInput
-  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
-  cursor?: Prisma.ContactWhereUniqueInput
+  include?: Prisma.PropertyInclude<ExtArgs> | null
+  where?: Prisma.PropertyWhereInput
+  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
+  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
 }
 
 /**

@@ -166,11 +166,11 @@ export const OwnerScalarFieldEnum = {
   marital_status: 'marital_status',
   cpf: 'cpf',
   cnpj: 'cnpj',
-  state_registration: 'state_registration',
-  municipal_registration: 'municipal_registration',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  municipal_registration: 'municipal_registration',
+  state_registration: 'state_registration'
 } as const
 
 export type OwnerScalarFieldEnum = (typeof OwnerScalarFieldEnum)[keyof typeof OwnerScalarFieldEnum]
@@ -184,11 +184,11 @@ export const TenantScalarFieldEnum = {
   marital_status: 'marital_status',
   cpf: 'cpf',
   cnpj: 'cnpj',
-  state_registration: 'state_registration',
-  municipal_registration: 'municipal_registration',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  municipal_registration: 'municipal_registration',
+  state_registration: 'state_registration'
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
@@ -222,18 +222,18 @@ export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof Le
 export const PropertyValueScalarFieldEnum = {
   id: 'id',
   property_id: 'property_id',
-  reference_date: 'reference_date',
+  sale_date: 'sale_date',
   purchase_value: 'purchase_value',
   rental_value: 'rental_value',
   condo_fee: 'condo_fee',
   property_tax: 'property_tax',
-  sale_value: 'sale_value',
-  extra_charges: 'extra_charges',
   status: 'status',
   notes: 'notes',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  extra_charges: 'extra_charges',
+  sale_value: 'sale_value'
 } as const
 
 export type PropertyValueScalarFieldEnum = (typeof PropertyValueScalarFieldEnum)[keyof typeof PropertyValueScalarFieldEnum]
@@ -272,13 +272,13 @@ export const ContactScalarFieldEnum = {
   contact: 'contact',
   phone: 'phone',
   email: 'email',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at',
   cellphone: 'cellphone',
   agency_id: 'agency_id',
   owner_id: 'owner_id',
-  tenant_id: 'tenant_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  tenant_id: 'tenant_id'
 } as const
 
 export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]

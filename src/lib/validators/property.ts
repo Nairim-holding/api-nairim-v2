@@ -30,7 +30,10 @@ export class PropertyValidator {
       if (data.values.rental_value === undefined || isNaN(data.values.rental_value))
         errors.push('Valor de aluguel é obrigatório');
       if (!data.values.status) errors.push('Status da propriedade é obrigatório');
-      if (!data.values.reference_date) errors.push('Data de referência é obrigatória');
+      
+      if (data.values.sale_date && isNaN(new Date(data.values.sale_date).getTime())) {
+        errors.push('Data de venda inválida');
+      }
     }
 
     return { isValid: errors.length === 0, errors };
@@ -45,6 +48,10 @@ export class PropertyValidator {
       errors.push('Número de banheiros deve ser um número');
     if (data.area_total !== undefined && isNaN(data.area_total)) 
       errors.push('Área total deve ser um número');
+
+    if (data.values?.sale_date && isNaN(new Date(data.values.sale_date).getTime())) {
+      errors.push('Data de venda inválida');
+    }
 
     return { isValid: errors.length === 0, errors };
   }

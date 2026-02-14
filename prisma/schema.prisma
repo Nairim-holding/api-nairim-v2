@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Agency {
-  id                     String          @id @default(uuid())
-  trade_name             String
-  legal_name             String
-  cnpj                   String          @db.VarChar(18)
-  state_registration     String?
+  id                   String          @id @default(uuid())
+  trade_name           String
+  legal_name           String
+  cnpj                 String          @db.VarChar(18)
+  state_registration   String?
   municipal_registration String?
-  license_number         String?         @db.VarChar(20)
-  created_at             DateTime        @default(now())
-  updated_at             DateTime        @updatedAt
-  deleted_at             DateTime?
-  addresses              AgencyAddress[]
-  contacts               Contact[]
-  properties             Property[]
+  license_number       String?         @db.VarChar(20)
+  created_at           DateTime        @default(now())
+  updated_at           DateTime        @updatedAt
+  deleted_at           DateTime?
+  addresses            AgencyAddress[]
+  contacts             Contact[]
+  properties           Property[]
 
   @@index([cnpj])
 }
@@ -39,7 +39,7 @@ model Property {
   area_built       Float
   frontage         Float
   furnished        Boolean
-  floor_number     Int
+  floor_number     Int?
   tax_registration String            @db.VarChar(20)
   notes            String?
   created_at       DateTime          @default(now())
@@ -167,7 +167,7 @@ model Lease {
 model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
-  reference_date DateTime       @db.Date
+  sale_date      DateTime?      @db.Date
   purchase_value Decimal        @db.Decimal(20, 2)
   rental_value   Decimal        @db.Decimal(20, 2)
   condo_fee      Decimal        @db.Decimal(20, 2)

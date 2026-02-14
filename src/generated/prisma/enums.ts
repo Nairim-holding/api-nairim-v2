@@ -37,9 +37,9 @@ export type PropertyStatus = (typeof PropertyStatus)[keyof typeof PropertyStatus
 export const DocumentType = {
   TITLE_DEED: 'TITLE_DEED',
   REGISTRATION: 'REGISTRATION',
+  OTHER: 'OTHER',
   PROPERTY_RECORD: 'PROPERTY_RECORD',
-  IMAGE: 'IMAGE',
-  OTHER: 'OTHER'
+  IMAGE: 'IMAGE'
 } as const
 
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]

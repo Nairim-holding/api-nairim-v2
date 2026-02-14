@@ -9,7 +9,6 @@ export class DocumentService {
     try {
       console.log(`📁 Uploading documents for property: ${propertyId}`);
 
-      // Verificar se a propriedade existe
       const property = await prisma.property.findUnique({
         where: { 
           id: propertyId,
@@ -29,11 +28,9 @@ export class DocumentService {
           let fileUrl: string;
 
           if (uploadService) {
-            // Upload para Vercel Blob
             const folder = this.getFolderName(key);
             fileUrl = await uploadService.uploadFile(file, folder);
           } else {
-            // Upload local
             const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
             const relativePath = path.relative(path.join(__dirname, '../../uploads'), file.path);
             fileUrl = `${baseUrl}/uploads/${relativePath.replace(/\\/g, '/')}`;
@@ -69,7 +66,6 @@ export class DocumentService {
     try {
       console.log(`📁 Updating documents for property: ${propertyId}`);
 
-      // Verificar se a propriedade existe
       const property = await prisma.property.findUnique({
         where: { 
           id: propertyId,
@@ -85,17 +81,14 @@ export class DocumentService {
       const savedDocuments = [];
       const newFileUrls: string[] = [];
 
-      // Processar novos arquivos
       for (const [key, fileArray] of Object.entries(files)) {
         for (const file of fileArray) {
           let fileUrl: string;
 
           if (uploadService) {
-            // Upload para Vercel Blob
             const folder = this.getFolderName(key);
             fileUrl = await uploadService.uploadFile(file, folder);
           } else {
-            // Upload local
             const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
             const relativePath = path.relative(path.join(__dirname, '../../uploads'), file.path);
             fileUrl = `${baseUrl}/uploads/${relativePath.replace(/\\/g, '/')}`;
@@ -120,7 +113,6 @@ export class DocumentService {
         }
       }
 
-      // Se houver novos arquivos, deletar os antigos
       if (newFileUrls.length > 0) {
         const existingDocuments = await prisma.document.findMany({
           where: {
@@ -154,10 +146,8 @@ export class DocumentService {
       const uploadService = UploadServiceFactory.create();
 
       if (uploadService) {
-        // Deletar do Vercel Blob
         await uploadService.deleteFile(fileUrl);
       } else {
-        // Deletar localmente
         const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
         const filePath = fileUrl.replace(`${baseUrl}/uploads/`, '');
         const absolutePath = path.join(__dirname, '../../uploads', filePath);
@@ -189,7 +179,7 @@ export class DocumentService {
   private static getDescription(key: string): string {
     switch (key) {
       case 'arquivosImagens':
-        return 'Property Images';
+        return 'Property Media';
       case 'arquivosMatricula':
         return 'Property Registration Document';
       case 'arquivosRegistro':

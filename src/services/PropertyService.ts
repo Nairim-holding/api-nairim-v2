@@ -98,8 +98,6 @@ export class PropertyService {
 
   static async getProperties(params: GetPropertiesParams = {}): Promise<PaginatedPropertyResponse> {
     try {
-      console.log('🔍 Executing getProperties with params:', JSON.stringify(params, null, 2));
-      
       const { 
         limit = 10, 
         page = 1, 
@@ -119,14 +117,10 @@ export class PropertyService {
       const sortDirection = sortEntries.length > 0 ? 
         this.normalizeSortDirection(sortEntries[0][1]) : 'asc';
       
-      console.log(`🔧 Campo de ordenação: ${sortField} -> ${sortDirection}`);
-
       let properties: PropertyWithRelations[] = [];
       let total = 0;
 
       if (search.trim() || (sortField && sortDirection && this.FIELD_MAPPING[sortField]?.type !== 'direct')) {
-        console.log(`🔄 Processando em memória (busca: "${search}", ordenação relacionada: ${sortField})`);
-        
         const allProperties = await prisma.property.findMany({
           where,
           include: {
@@ -159,7 +153,7 @@ export class PropertyService {
             },
             values: {
               where: { deleted_at: null },
-              orderBy: { reference_date: 'desc' }
+              orderBy: { created_at: 'desc' }
             },
             leases: {
               where: { deleted_at: null },
@@ -196,8 +190,6 @@ export class PropertyService {
       } else {
         const orderBy = this.buildOrderBy(sortOptions);
         
-        console.log('📊 Ordenação normal:', orderBy);
-
         const [propertiesData, totalCount] = await Promise.all([
           prisma.property.findMany({
             where,
@@ -234,7 +226,7 @@ export class PropertyService {
               },
               values: {
                 where: { deleted_at: null },
-                orderBy: { reference_date: 'desc' }
+                orderBy: { created_at: 'desc' }
               },
               leases: {
                 where: { deleted_at: null },
@@ -254,8 +246,6 @@ export class PropertyService {
         total = totalCount;
       }
 
-      console.log(`✅ Found ${properties.length} properties, total: ${total}`);
-
       return {
         data: properties,
         count: total || 0,
@@ -264,7 +254,6 @@ export class PropertyService {
       };
 
     } catch (error: any) {
-      console.error('❌ Error in PropertyService.getProperties:', error);
       throw new Error(`Failed to fetch properties: ${error.message}`);
     }
   }
@@ -317,7 +306,6 @@ export class PropertyService {
         addressFields
       ].join(' ');
 
-      // Normalizar e verificar se contém o termo de busca
       const normalizedAllFields = this.normalizeText(allFields);
       return normalizedAllFields.includes(normalizedSearchTerm);
     });
@@ -332,7 +320,6 @@ export class PropertyService {
       const valueA = a[field] || '';
       const valueB = b[field] || '';
 
-      // Se for campo de texto, normalizar para ordenação
       if (['title', 'tax_registration', 'notes'].includes(field)) {
         const strA = this.normalizeText(String(valueA));
         const strB = this.normalizeText(String(valueB));
@@ -343,7 +330,6 @@ export class PropertyService {
           return strB.localeCompare(strA, 'pt-BR', { sensitivity: 'base' });
         }
       } else {
-        // Para campos numéricos e datas
         if (direction === 'asc') {
           return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
         } else {
@@ -359,12 +345,10 @@ export class PropertyService {
   ): any {
     const where: any = {};
     
-    // Filtrar por status deletado
     if (!includeInactive) {
       where.deleted_at = null;
     }
     
-    // Filtros específicos
     const filterConditions = this.buildFilterConditions(filters);
     if (Object.keys(filterConditions).length > 0) {
       where.AND = [filterConditions];
@@ -381,38 +365,30 @@ export class PropertyService {
         return;
       }
 
-      console.log(`🔄 Aplicando filtro ${key}:`, value);
-
-      // Campos diretos
       if (key === 'owner_id' || key === 'type_id' || key === 'agency_id') {
         conditions[key] = value;
       }
-      // Campos booleanos
       else if (key === 'furnished') {
         const boolValue = typeof value === 'string' 
           ? value.toLowerCase() === 'true' 
           : Boolean(value);
         conditions.furnished = boolValue;
       }
-      // Campos numéricos
       else if (['bedrooms', 'bathrooms', 'half_bathrooms', 'garage_spaces', 'floor_number'].includes(key)) {
         const numValue = parseInt(String(value));
         if (!isNaN(numValue)) {
           conditions[key] = numValue;
         }
       }
-      // Campos de área
       else if (['area_total', 'area_built', 'frontage'].includes(key)) {
         const floatValue = parseFloat(String(value));
         if (!isNaN(floatValue)) {
           conditions[key] = floatValue;
         }
       }
-      // Campos de texto
       else if (['title', 'tax_registration', 'notes'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
-      // Campos de endereço
       else if (['city', 'state', 'district', 'street', 'zip_code'].includes(key)) {
         if (!conditions.addresses) {
           conditions.addresses = { some: { address: {} } };
@@ -422,7 +398,6 @@ export class PropertyService {
           mode: 'insensitive' as Prisma.QueryMode 
         };
       }
-      // Campo de data
       else if (key === 'created_at') {
         conditions.created_at = this.buildDateCondition(value);
       }
@@ -467,11 +442,8 @@ export class PropertyService {
     const orderBy: any[] = [];
 
     Object.entries(sortOptions).forEach(([field, direction]) => {
-      console.log(`🔧 Processando ordenação no service: ${field} -> ${direction}`);
-
       const normalizedDirection = this.normalizeSortDirection(direction);
 
-      // Campos de relacionamento
       if (field === 'owner.name' || field === 'owner_name') {
         orderBy.push({ owner: { name: normalizedDirection } });
       } 
@@ -481,7 +453,6 @@ export class PropertyService {
       else if (field === 'agency.trade_name' || field === 'agency_trade_name') {
         orderBy.push({ agency: { trade_name: normalizedDirection } });
       }
-      // Campos diretos da propriedade
       else if (['title', 'bedrooms', 'bathrooms', 'half_bathrooms', 'garage_spaces', 
                 'area_total', 'area_built', 'frontage', 'furnished', 'floor_number',
                 'tax_registration', 'notes', 'created_at', 'updated_at'].includes(field)) {
@@ -498,8 +469,6 @@ export class PropertyService {
 
   static async getPropertyById(id: string) {
     try {
-      console.log(`🔍 Getting property by ID: ${id}`);
-      
       const property = await prisma.property.findUnique({
         where: { 
           id,
@@ -518,7 +487,7 @@ export class PropertyService {
           },
           values: {
             where: { deleted_at: null },
-            orderBy: { reference_date: 'desc' }
+            orderBy: { created_at: 'desc' }
           },
           agency: true,
           leases: {
@@ -539,21 +508,16 @@ export class PropertyService {
         throw new Error('Property not found');
       }
 
-      console.log(`✅ Found property: ${property.title}`);
       return property;
 
     } catch (error: any) {
-      console.error(`❌ Error getting property ${id}:`, error);
       throw error;
     }
   }
 
   static async createProperty(data: any) {
     try {
-      console.log('➕ Creating new property:', data.title);
-      
       const property = await prisma.$transaction(async (tx: any) => {
-        // Verificar se o proprietário existe
         const owner = await tx.owner.findUnique({
           where: { 
             id: data.owner_id,
@@ -565,7 +529,6 @@ export class PropertyService {
           throw new Error('Owner not found');
         }
 
-        // Verificar se o tipo de propriedade existe
         const propertyType = await tx.propertyType.findUnique({
           where: { 
             id: data.type_id,
@@ -577,7 +540,6 @@ export class PropertyService {
           throw new Error('Property type not found');
         }
 
-        // Verificar se a agência existe (se fornecida)
         if (data.agency_id) {
           const agency = await tx.agency.findUnique({
             where: { 
@@ -591,7 +553,6 @@ export class PropertyService {
           }
         }
 
-        // Criar propriedade
         const newProperty = await tx.property.create({
           data: {
             title: data.title,
@@ -603,7 +564,7 @@ export class PropertyService {
             area_built: parseFloat(data.area_built || 0),
             frontage: parseFloat(data.frontage || 0),
             furnished: Boolean(data.furnished),
-            floor_number: parseInt(data.floor_number || 0),
+            floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
             notes: data.notes,
             owner_id: data.owner_id,
@@ -612,7 +573,6 @@ export class PropertyService {
           }
         });
 
-        // Adicionar endereço
         if (data.address) {
           const newAddress = await tx.address.create({
             data: {
@@ -634,20 +594,19 @@ export class PropertyService {
           });
         }
 
-        // Adicionar valores da propriedade
         if (data.values) {
           await tx.propertyValue.create({
             data: {
               property_id: newProperty.id,
               purchase_value: parseFloat(data.values.purchase_value),
               rental_value: parseFloat(data.values.rental_value),
-              condo_fee: parseFloat(data.values.condo_fee || 0),
+              condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
               sale_value: parseFloat(data.values.sale_value || 0),
               extra_charges: parseFloat(data.values.extra_charges || 0),
               status: data.values.status as PropertyStatus || 'AVAILABLE',
               notes: data.values.notes,
-              reference_date: new Date(data.values.reference_date || new Date()),
+              sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
             }
           });
         }
@@ -655,11 +614,9 @@ export class PropertyService {
         return newProperty;
       });
 
-      console.log(`✅ Property created: ${property.id}`);
       return property;
 
     } catch (error: any) {
-      console.error('❌ Error creating property:', error);
       throw error;
     }
   }
@@ -671,9 +628,6 @@ export class PropertyService {
   ): Promise<any[]> {
     const uploadedDocuments = [];
     
-    console.log('📁 Arquivos recebidos para upload:', Object.keys(files));
-    
-    // Mapeamento dos tipos de arquivos com os ENUMS do Prisma
     const fileTypes: Record<string, any> = {
       arquivosImagens: 'IMAGE',
       arquivosMatricula: 'REGISTRATION',
@@ -682,75 +636,76 @@ export class PropertyService {
       arquivosOutros: 'OTHER'
     };
 
-    // Processar cada tipo de arquivo sequencialmente para evitar problemas de concorrência
+    let userExists = false;
+    
+    if (userId && typeof userId === 'string' && userId.trim() !== '') {
+      try {
+        const userCount = await prisma.user.count({ where: { id: userId } });
+        userExists = userCount > 0;
+      } catch (e) {}
+    }
+
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
       if (files[fieldName] && files[fieldName].length > 0) {
-        console.log(`📤 Processando ${files[fieldName].length} arquivos do tipo: ${fieldName} (${docType})`);
-        
         for (const file of files[fieldName]) {
+          let blobResult;
+
           try {
-            console.log(`📄 Processando arquivo: ${file.originalname} (${file.mimetype}, ${file.size} bytes)`);
-            
-            // Extrair apenas o nome do arquivo sem extensão para descrição
-            const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, "");
-            
-            // Upload para Vercel Blob
-            const blobResult = await BlobService.uploadFile(
+            blobResult = await BlobService.uploadFile(
               file,
               file.originalname,
               `properties/${propertyId}`
             );
+          } catch (uploadError: any) {
+            throw new Error(`Erro na CDN ao processar arquivo ${file.originalname}: ${uploadError.message}`);
+          }
 
-            console.log(`✅ Upload concluído: ${blobResult.url}`);
+          try {
+            const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, "");
+            
+            const documentData: any = {
+              property_id: propertyId,
+              file_path: blobResult.url,
+              file_type: file.mimetype?.substring(0, 100) || 'application/octet-stream',
+              type: docType, 
+              description: fileNameWithoutExt.substring(0, 250) 
+            };
 
-            // Criar registro do documento no banco
+            if (userExists) {
+              documentData.created_by = userId;
+            }
+
             const document = await prisma.document.create({
-              data: {
-                property_id: propertyId,
-                created_by: userId,
-                file_path: blobResult.url,
-                file_type: file.mimetype,
-                type: docType, // Usar string literal diretamente
-                // ✅ ALTERAÇÃO AQUI: Remover o prefixo do tipo da descrição
-                description: fileNameWithoutExt // Usar apenas o nome do arquivo sem extensão
-              }
+              data: documentData
             });
 
             uploadedDocuments.push({
               id: document.id,
               type: docType,
               url: blobResult.url,
-              filename: file.originalname, // Nome original do arquivo
-              name: fileNameWithoutExt, // ✅ NOVO CAMPO: Apenas o nome cadastrado (sem extensão)
-              displayName: fileNameWithoutExt, // ✅ NOVO CAMPO: Nome para exibição
+              filename: file.originalname, 
+              name: fileNameWithoutExt, 
+              displayName: fileNameWithoutExt, 
               mimetype: file.mimetype,
               size: file.size,
-              description: fileNameWithoutExt // ✅ Incluir a descrição usada no banco
+              description: fileNameWithoutExt 
             });
 
-            console.log(`✅ Documento criado no banco: ${document.id}`);
+            await new Promise(resolve => setTimeout(resolve, 50));
             
-            // Pequena pausa entre arquivos para evitar sobrecarga
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
-          } catch (uploadError: any) {
-            console.error(`❌ Erro ao processar arquivo ${file.originalname}:`, uploadError.message);
-            // Continue com outros arquivos, não interrompa o processo
+          } catch (dbError: any) {
+            throw new Error(`Falha no banco de dados ao salvar documento ${file.originalname}: ${dbError.message}`);
           }
         }
       }
     }
 
-    console.log(`✅ Total de ${uploadedDocuments.length} documentos processados com sucesso`);
     return uploadedDocuments;
   }
 
   static async updateProperty(id: string, data: any) {
     try {
-      console.log(`✏️ Updating property: ${id}`);
-      
       const property = await prisma.$transaction(async (tx: any) => {
-        // Verificar se existe e não está deletada
         const existing = await tx.property.findUnique({ 
           where: { 
             id,
@@ -762,7 +717,6 @@ export class PropertyService {
           throw new Error('Property not found');
         }
 
-        // Atualizar propriedade
         const updatedProperty = await tx.property.update({
           where: { id },
           data: {
@@ -775,7 +729,7 @@ export class PropertyService {
             area_built: parseFloat(data.area_built || 0),
             frontage: parseFloat(data.frontage || 0),
             furnished: Boolean(data.furnished),
-            floor_number: parseInt(data.floor_number || 0),
+            floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
             notes: data.notes,
             owner_id: data.owner_id,
@@ -787,20 +741,15 @@ export class PropertyService {
         return updatedProperty;
       });
 
-      console.log(`✅ Property updated: ${property.id}`);
       return property;
 
     } catch (error: any) {
-      console.error(`❌ Error updating property ${id}:`, error);
       throw error;
     }
   }
 
   static async deleteProperty(id: string) {
     try {
-      console.log(`🗑️ Soft deleting property: ${id}`);
-      
-      // Verificar se a propriedade existe e não está deletada
       const property = await prisma.property.findUnique({
         where: { 
           id,
@@ -812,26 +761,20 @@ export class PropertyService {
         throw new Error('Property not found or already deleted');
       }
 
-      // SOFT DELETE
       await prisma.property.update({
         where: { id },
         data: { deleted_at: new Date() }
       });
 
-      console.log(`✅ Property soft deleted: ${id}`);
       return property;
 
     } catch (error: any) {
-      console.error(`❌ Error soft deleting property ${id}:`, error);
       throw error;
     }
   }
 
   static async restoreProperty(id: string) {
     try {
-      console.log(`♻️ Restoring property: ${id}`);
-      
-      // Verificar se a propriedade existe
       const property = await prisma.property.findUnique({
         where: { id },
       });
@@ -844,31 +787,23 @@ export class PropertyService {
         throw new Error('Property is not deleted');
       }
 
-      // Restaurar
       await prisma.property.update({
         where: { id },
         data: { deleted_at: null }
       });
       
-      console.log(`✅ Property restored: ${id}`);
       return property;
 
     } catch (error: any) {
-      console.error(`❌ Error restoring property ${id}:`, error);
       throw error;
     }
   }
 
   static async getPropertyFilters(filters?: Record<string, any>) {
     try {
-      console.log('🔍 Building comprehensive property filters with context...');
-      console.log('📦 Active filters for context:', filters);
-
-      // Construir where clause com base nos filtros atuais
       const where: any = { deleted_at: null };
       
       if (filters) {
-        // Aplicar filtros atuais para contexto
         Object.entries(filters).forEach(([key, value]) => {
           if (value && value !== '') {
             if (key === 'owner_id') {
@@ -892,7 +827,6 @@ export class PropertyService {
         });
       }
 
-      // Buscar dados para filtros em paralelo
       const [
         properties,
         owners,
@@ -960,7 +894,6 @@ export class PropertyService {
         }),
       ]);
 
-      // Extrair valores únicos
       const uniqueTitles = [...new Set(properties.filter(p => p.title).map(p => p.title.trim()))].sort();
       const uniqueTaxRegistrations = [...new Set(properties.filter(p => p.tax_registration).map(p => p.tax_registration.trim()))].sort();
       const uniqueCities = [...new Set(addresses.filter(a => a.city).map(a => a.city.trim()))].sort();
@@ -976,7 +909,6 @@ export class PropertyService {
       const uniqueGarageSpaces = [...new Set(properties.filter(p => p.garage_spaces !== null).map(p => p.garage_spaces.toString()))]
         .sort((a, b) => parseInt(a) - parseInt(b));
 
-      // Construir lista de filtros
       const filtersList = [
         {
           field: 'title',
@@ -1136,30 +1068,23 @@ export class PropertyService {
       };
 
     } catch (error) {
-      console.error('❌ Error getting property filters:', error);
       throw error;
     }
   }
 
   static async createPropertyWithFiles(data: any, files: Record<string, Express.Multer.File[]>, userId: string) {
     try {
-      console.log('📤 Iniciando criação de propriedade com arquivos para o Vercel Blob');
-      
-      // 1. PRIMEIRA TRANSAÇÃO: Criar propriedade, endereço e valores (rápido)
       const { property, address, propertyValue } = await prisma.$transaction(async (tx: any) => {
-        // Verificar proprietário
         const owner = await tx.owner.findUnique({
           where: { id: data.owner_id, deleted_at: null }
         });
         if (!owner) throw new Error('Proprietário não encontrado');
 
-        // Verificar tipo de propriedade
         const propertyType = await tx.propertyType.findUnique({
           where: { id: data.type_id, deleted_at: null }
         });
         if (!propertyType) throw new Error('Tipo de propriedade não encontrado');
 
-        // Verificar agência (se fornecida)
         if (data.agency_id) {
           const agency = await tx.agency.findUnique({
             where: { id: data.agency_id, deleted_at: null }
@@ -1167,7 +1092,6 @@ export class PropertyService {
           if (!agency) throw new Error('Agência não encontrada');
         }
 
-        // Criar propriedade
         const property = await tx.property.create({
           data: {
             title: data.title,
@@ -1179,7 +1103,7 @@ export class PropertyService {
             area_built: parseFloat(data.area_built || 0),
             frontage: parseFloat(data.frontage || 0),
             furnished: Boolean(data.furnished),
-            floor_number: parseInt(data.floor_number || 0),
+            floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
             notes: data.notes,
             owner_id: data.owner_id,
@@ -1188,9 +1112,6 @@ export class PropertyService {
           }
         });
 
-        console.log(`✅ Propriedade criada: ${property.id}`);
-
-        // Criar endereço
         let address = null;
         if (data.address) {
           const newAddress = await tx.address.create({
@@ -1215,7 +1136,6 @@ export class PropertyService {
           address = newAddress;
         }
 
-        // Criar valores da propriedade
         let propertyValue = null;
         if (data.values) {
           propertyValue = await tx.propertyValue.create({
@@ -1223,31 +1143,24 @@ export class PropertyService {
               property_id: property.id,
               purchase_value: parseFloat(data.values.purchase_value),
               rental_value: parseFloat(data.values.rental_value),
-              condo_fee: parseFloat(data.values.condo_fee || 0),
+              condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
               status: data.values.status as PropertyStatus || 'AVAILABLE',
               notes: data.values.notes,
               sale_value: parseFloat(data.values.sale_value || 0),
               extra_charges: parseFloat(data.values.extra_charges || 0),
-              reference_date: new Date(data.values.reference_date || new Date()),
+              sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
             }
           });
         }
 
         return { property, address, propertyValue };
       }, {
-        timeout: 10000, // 10 segundos para a primeira transação
+        timeout: 10000, 
       });
 
-      console.log('✅ Primeira transação concluída com sucesso');
-
-      // 2. SEGUNDA ETAPA: Upload dos arquivos (fora da transação, pode ser assíncrono)
-      console.log('🚀 Iniciando upload de arquivos...');
       const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
 
-      console.log(`✅ Total de ${uploadedDocuments.length} documentos enviados`);
-
-      // 3. TERCEIRA ETAPA: Buscar propriedade completa
       const fullProperty = await prisma.property.findUnique({
         where: { id: property.id },
         include: {
@@ -1262,7 +1175,7 @@ export class PropertyService {
           },
           values: {
             where: { deleted_at: null },
-            orderBy: { reference_date: 'desc' }
+            orderBy: { created_at: 'desc' }
           },
           agency: true
         }
@@ -1275,56 +1188,16 @@ export class PropertyService {
       };
 
     } catch (error: any) {
-      console.error('❌ Erro na criação:', error);
-      
-      // Se a propriedade foi criada mas os documentos falharam,
-      // ainda retornamos sucesso parcial
-      if (error.message.includes('Property created but')) {
-        // Buscar propriedade mesmo com erro nos documentos
-        const propertyIdMatch = error.message.match(/property id: (\w+-\w+-\w+-\w+-\w+)/);
-        if (propertyIdMatch) {
-          const propertyId = propertyIdMatch[1];
-          const fullProperty = await prisma.property.findUnique({
-            where: { id: propertyId },
-            include: {
-              addresses: {
-                include: { address: true }
-              },
-              owner: true,
-              type: true,
-              documents: {
-                where: { deleted_at: null },
-                orderBy: { created_at: 'desc' }
-              },
-              values: {
-                where: { deleted_at: null },
-                orderBy: { reference_date: 'desc' }
-              },
-              agency: true
-            }
-          });
-          
-          throw new Error(`Propriedade criada com sucesso, mas alguns documentos falharam: ${error.message}. Property: ${propertyId}`);
-        }
-      }
-      
       throw error;
     }
   }
 
-  // Adicione também um novo método para o endpoint unificado:
   static async createUnifiedProperty(data: any) {
     try {
-      console.log('📤 Criando propriedade com dados unificados');
-      
-      // Extrair dados
       const propertyData = data.property;
       const addressData = data.address;
       const valuesData = data.values;
       const userId = data.userId;
-      
-      // Extrair arquivos do FormData (se vierem como base64)
-      // Isso será tratado no controller
       
       return await this.createPropertyWithFiles(
         { ...propertyData, address: addressData, values: valuesData },
@@ -1332,218 +1205,189 @@ export class PropertyService {
         userId
       );
     } catch (error) {
-      console.error('❌ Erro ao criar propriedade unificada:', error);
       throw error;
     }
   }
 
-static async updatePropertyWithFiles(
-  id: string, 
-  data: any, 
-  files: Record<string, Express.Multer.File[]>, 
-  userId: string,
-  removedDocuments: string[] = []
-) {
-  try {
-    console.log('📤 Iniciando atualização de propriedade com arquivos');
-    
-    // 1. Remover documentos marcados para exclusão
-    if (removedDocuments.length > 0) {
-      console.log(`🗑️ Removendo ${removedDocuments.length} documentos`);
-      await prisma.document.updateMany({
-        where: {
-          id: { in: removedDocuments },
-          property_id: id
-        },
-        data: { deleted_at: new Date() }
+  static async updatePropertyWithFiles(
+    id: string, 
+    data: any, 
+    files: Record<string, Express.Multer.File[]>, 
+    userId: string,
+    removedDocuments: string[] = []
+  ) {
+    try {
+      if (removedDocuments.length > 0) {
+        await prisma.document.updateMany({
+          where: {
+            id: { in: removedDocuments },
+            property_id: id
+          },
+          data: { deleted_at: new Date() }
+        });
+      }
+
+      const { property, address, propertyValue } = await prisma.$transaction(async (tx: any) => {
+        const existingProperty = await tx.property.findUnique({
+          where: { id, deleted_at: null }
+        });
+        if (!existingProperty) throw new Error('Propriedade não encontrada');
+
+        const owner = await tx.owner.findUnique({
+          where: { id: data.owner_id, deleted_at: null }
+        });
+        if (!owner) throw new Error('Proprietário não encontrado');
+
+        const propertyType = await tx.propertyType.findUnique({
+          where: { id: data.type_id, deleted_at: null }
+        });
+        if (!propertyType) throw new Error('Tipo de propriedade não encontrado');
+
+        if (data.agency_id) {
+          const agency = await tx.agency.findUnique({
+            where: { id: data.agency_id, deleted_at: null }
+          });
+          if (!agency) throw new Error('Agência não encontrada');
+        }
+
+        const property = await tx.property.update({
+          where: { id },
+          data: {
+            title: data.title,
+            bedrooms: parseInt(data.bedrooms),
+            bathrooms: parseInt(data.bathrooms),
+            half_bathrooms: parseInt(data.half_bathrooms || 0),
+            garage_spaces: parseInt(data.garage_spaces || 0),
+            area_total: parseFloat(data.area_total),
+            area_built: parseFloat(data.area_built || 0),
+            frontage: parseFloat(data.frontage || 0),
+            furnished: Boolean(data.furnished),
+            floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
+            tax_registration: data.tax_registration,
+            notes: data.notes,
+            owner_id: data.owner_id,
+            type_id: data.type_id,
+            agency_id: data.agency_id || null,
+          }
+        });
+
+        let address = null;
+        if (data.address) {
+          const propertyAddress = await tx.propertyAddress.findFirst({
+            where: { property_id: id, deleted_at: null },
+            include: { address: true }
+          });
+
+          if (propertyAddress) {
+            address = await tx.address.update({
+              where: { id: propertyAddress.address.id },
+              data: {
+                zip_code: data.address.zip_code,
+                street: data.address.street,
+                number: data.address.number,
+                district: data.address.district,
+                city: data.address.city,
+                state: data.address.state,
+                country: data.address.country || 'Brasil',
+              }
+            });
+          } else {
+            const newAddress = await tx.address.create({
+              data: {
+                zip_code: data.address.zip_code,
+                street: data.address.street,
+                number: data.address.number,
+                district: data.address.district,
+                city: data.address.city,
+                state: data.address.state,
+                country: data.address.country || 'Brasil',
+              }
+            });
+
+            await tx.propertyAddress.create({
+              data: {
+                property_id: property.id,
+                address_id: newAddress.id
+              }
+            });
+
+            address = newAddress;
+          }
+        }
+
+        let propertyValue = null;
+        if (data.values) {
+          const currentValue = await tx.propertyValue.findFirst({
+            where: { property_id: id, deleted_at: null }
+          });
+
+          if (currentValue) {
+            propertyValue = await tx.propertyValue.update({
+              where: { id: currentValue.id },
+              data: {
+                purchase_value: parseFloat(data.values.purchase_value),
+                rental_value: parseFloat(data.values.rental_value),
+                condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
+                property_tax: parseFloat(data.values.property_tax || 0),
+                status: data.values.status as PropertyStatus || 'AVAILABLE',
+                notes: data.values.notes,
+                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
+              }
+            });
+          } else {
+            propertyValue = await tx.propertyValue.create({
+              data: {
+                property_id: property.id,
+                purchase_value: parseFloat(data.values.purchase_value),
+                rental_value: parseFloat(data.values.rental_value),
+                condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
+                property_tax: parseFloat(data.values.property_tax || 0),
+                status: data.values.status as PropertyStatus || 'AVAILABLE',
+                notes: data.values.notes,
+                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
+                sale_value: parseFloat(data.values.sale_value || 0),
+                extra_charges: parseFloat(data.values.extra_charges || 0),
+              }
+            });
+          }
+        }
+
+        return { property, address, propertyValue };
+      }, {
+        timeout: 10000,
       });
+
+      const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
+
+      const fullProperty = await prisma.property.findUnique({
+        where: { id: property.id },
+        include: {
+          addresses: {
+            include: { address: true }
+          },
+          owner: true,
+          type: true,
+          documents: {
+            where: { deleted_at: null },
+            orderBy: { created_at: 'desc' }
+          },
+          values: {
+            where: { deleted_at: null },
+            orderBy: { created_at: 'desc' }
+          },
+          agency: true
+        }
+      });
+
+      return {
+        property: fullProperty,
+        uploadedDocuments,
+        removedDocuments,
+        message: 'Propriedade atualizada com sucesso'
+      };
+
+    } catch (error: any) {
+      throw error;
     }
-
-    // 2. Atualizar propriedade, endereço e valores
-    const { property, address, propertyValue } = await prisma.$transaction(async (tx: any) => {
-      // Verificar se a propriedade existe
-      const existingProperty = await tx.property.findUnique({
-        where: { id, deleted_at: null }
-      });
-      if (!existingProperty) throw new Error('Propriedade não encontrada');
-
-      // Verificar proprietário
-      const owner = await tx.owner.findUnique({
-        where: { id: data.owner_id, deleted_at: null }
-      });
-      if (!owner) throw new Error('Proprietário não encontrado');
-
-      // Verificar tipo de propriedade
-      const propertyType = await tx.propertyType.findUnique({
-        where: { id: data.type_id, deleted_at: null }
-      });
-      if (!propertyType) throw new Error('Tipo de propriedade não encontrado');
-
-      // Verificar agência (se fornecida)
-      if (data.agency_id) {
-        const agency = await tx.agency.findUnique({
-          where: { id: data.agency_id, deleted_at: null }
-        });
-        if (!agency) throw new Error('Agência não encontrada');
-      }
-
-      // Atualizar propriedade
-      const property = await tx.property.update({
-        where: { id },
-        data: {
-          title: data.title,
-          bedrooms: parseInt(data.bedrooms),
-          bathrooms: parseInt(data.bathrooms),
-          half_bathrooms: parseInt(data.half_bathrooms || 0),
-          garage_spaces: parseInt(data.garage_spaces || 0),
-          area_total: parseFloat(data.area_total),
-          area_built: parseFloat(data.area_built || 0),
-          frontage: parseFloat(data.frontage || 0),
-          furnished: Boolean(data.furnished),
-          floor_number: parseInt(data.floor_number || 0),
-          tax_registration: data.tax_registration,
-          notes: data.notes,
-          owner_id: data.owner_id,
-          type_id: data.type_id,
-          agency_id: data.agency_id || null,
-        }
-      });
-
-      console.log(`✅ Propriedade atualizada: ${property.id}`);
-
-      // Atualizar endereço
-      let address = null;
-      if (data.address) {
-        // Obter o endereço atual da propriedade
-        const propertyAddress = await tx.propertyAddress.findFirst({
-          where: { property_id: id, deleted_at: null },
-          include: { address: true }
-        });
-
-        if (propertyAddress) {
-          // Atualizar o endereço existente
-          address = await tx.address.update({
-            where: { id: propertyAddress.address.id },
-            data: {
-              zip_code: data.address.zip_code,
-              street: data.address.street,
-              number: data.address.number,
-              district: data.address.district,
-              city: data.address.city,
-              state: data.address.state,
-              country: data.address.country || 'Brasil',
-            }
-          });
-        } else {
-          // Criar novo endereço
-          const newAddress = await tx.address.create({
-            data: {
-              zip_code: data.address.zip_code,
-              street: data.address.street,
-              number: data.address.number,
-              district: data.address.district,
-              city: data.address.city,
-              state: data.address.state,
-              country: data.address.country || 'Brasil',
-            }
-          });
-
-          await tx.propertyAddress.create({
-            data: {
-              property_id: property.id,
-              address_id: newAddress.id
-            }
-          });
-
-          address = newAddress;
-        }
-      }
-
-      // Atualizar valores da propriedade
-      let propertyValue = null;
-      if (data.values) {
-        // Obter o valor atual da propriedade
-        const currentValue = await tx.propertyValue.findFirst({
-          where: { property_id: id, deleted_at: null }
-        });
-
-        if (currentValue) {
-          // Atualizar o valor existente
-          propertyValue = await tx.propertyValue.update({
-            where: { id: currentValue.id },
-            data: {
-              purchase_value: parseFloat(data.values.purchase_value),
-              rental_value: parseFloat(data.values.rental_value),
-              condo_fee: parseFloat(data.values.condo_fee || 0),
-              property_tax: parseFloat(data.values.property_tax || 0),
-              status: data.values.status as PropertyStatus || 'AVAILABLE',
-              notes: data.values.notes,
-              reference_date: new Date(data.values.reference_date || new Date()),
-            }
-          });
-        } else {
-          // Criar novo valor
-          propertyValue = await tx.propertyValue.create({
-            data: {
-              property_id: property.id,
-              purchase_value: parseFloat(data.values.purchase_value),
-              rental_value: parseFloat(data.values.rental_value),
-              condo_fee: parseFloat(data.values.condo_fee || 0),
-              property_tax: parseFloat(data.values.property_tax || 0),
-              status: data.values.status as PropertyStatus || 'AVAILABLE',
-              notes: data.values.notes,
-              reference_date: new Date(data.values.reference_date || new Date()),
-              sale_value: parseFloat(data.values.sale_value || 0),
-              extra_charges: parseFloat(data.values.extra_charges || 0),
-            }
-          });
-        }
-      }
-
-      return { property, address, propertyValue };
-    }, {
-      timeout: 10000,
-    });
-
-    console.log('✅ Transação de atualização concluída com sucesso');
-
-    // 3. Upload dos novos arquivos
-    console.log('🚀 Iniciando upload de arquivos...');
-    const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
-
-    console.log(`✅ Total de ${uploadedDocuments.length} novos documentos enviados`);
-
-    // 4. Buscar propriedade completa atualizada
-    const fullProperty = await prisma.property.findUnique({
-      where: { id: property.id },
-      include: {
-        addresses: {
-          include: { address: true }
-        },
-        owner: true,
-        type: true,
-        documents: {
-          where: { deleted_at: null },
-          orderBy: { created_at: 'desc' }
-        },
-        values: {
-          where: { deleted_at: null },
-          orderBy: { reference_date: 'desc' }
-        },
-        agency: true
-      }
-    });
-
-    return {
-      property: fullProperty,
-      uploadedDocuments,
-      removedDocuments,
-      message: 'Propriedade atualizada com sucesso'
-    };
-
-  } catch (error: any) {
-    console.error('❌ Erro na atualização:', error);
-    throw error;
   }
-}
 }

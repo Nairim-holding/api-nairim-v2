@@ -190,8 +190,8 @@ export type PropertyAddressWhereInput = {
   created_at?: Prisma.DateTimeFilter<"PropertyAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PropertyAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"PropertyAddress"> | Date | string | null
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }
 
 export type PropertyAddressOrderByWithRelationInput = {
@@ -201,8 +201,8 @@ export type PropertyAddressOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  property?: Prisma.PropertyOrderByWithRelationInput
   address?: Prisma.AddressOrderByWithRelationInput
+  property?: Prisma.PropertyOrderByWithRelationInput
 }
 
 export type PropertyAddressWhereUniqueInput = Prisma.AtLeast<{
@@ -215,8 +215,8 @@ export type PropertyAddressWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"PropertyAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PropertyAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"PropertyAddress"> | Date | string | null
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }, "id">
 
 export type PropertyAddressOrderByWithAggregationInput = {
@@ -248,8 +248,8 @@ export type PropertyAddressCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  property: Prisma.PropertyCreateNestedOneWithoutAddressesInput
   address: Prisma.AddressCreateNestedOneWithoutPropertyAddressesInput
+  property: Prisma.PropertyCreateNestedOneWithoutAddressesInput
 }
 
 export type PropertyAddressUncheckedCreateInput = {
@@ -266,8 +266,8 @@ export type PropertyAddressUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  property?: Prisma.PropertyUpdateOneRequiredWithoutAddressesNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutPropertyAddressesNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutAddressesNestedInput
 }
 
 export type PropertyAddressUncheckedUpdateInput = {
@@ -594,8 +594,8 @@ export type PropertyAddressSelect<ExtArgs extends runtime.Types.Extensions.Inter
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyAddress"]>
 
 export type PropertyAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -605,8 +605,8 @@ export type PropertyAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyAddress"]>
 
 export type PropertyAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -616,8 +616,8 @@ export type PropertyAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyAddress"]>
 
 export type PropertyAddressSelectScalar = {
@@ -631,23 +631,23 @@ export type PropertyAddressSelectScalar = {
 
 export type PropertyAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "address_id" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["propertyAddress"]>
 export type PropertyAddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 export type PropertyAddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 export type PropertyAddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 
 export type $PropertyAddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyAddress"
   objects: {
-    property: Prisma.$PropertyPayload<ExtArgs>
     address: Prisma.$AddressPayload<ExtArgs>
+    property: Prisma.$PropertyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1050,8 +1050,8 @@ readonly fields: PropertyAddressFieldRefs;
  */
 export interface Prisma__PropertyAddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   address<T extends Prisma.AddressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddressDefaultArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

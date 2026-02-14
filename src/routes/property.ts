@@ -16,10 +16,10 @@ router.post(
     { name: 'addressData' },
     { name: 'valuesData' },
     { name: 'userId' },
-    { name: 'arquivosImagens', maxCount: 20 },
-    { name: 'arquivosMatricula', maxCount: 1 },
-    { name: 'arquivosRegistro', maxCount: 1 },
-    { name: 'arquivosEscritura', maxCount: 1 },
+    { name: 'arquivosImagens', maxCount: 30 },
+    { name: 'arquivosMatricula', maxCount: 3 },
+    { name: 'arquivosRegistro', maxCount: 3 },
+    { name: 'arquivosEscritura', maxCount: 3 },
     { name: 'arquivosOutros', maxCount: 10 }
   ]),
   PropertyController.createUnifiedProperty
@@ -33,14 +33,14 @@ router.put('/:id', validateUpdateProperty, PropertyController.updateProperty);
 router.delete('/:id', PropertyController.deleteProperty);
 router.patch('/:id/restore', PropertyController.restoreProperty);
 
-// Upload de documentos
 router.post(
   '/:id/documents',
   upload.fields([
-    { name: 'arquivosImagens' },
-    { name: 'arquivosMatricula' },
-    { name: 'arquivosRegistro' },
-    { name: 'arquivosEscritura' }
+    { name: 'arquivosImagens', maxCount: 30 },
+    { name: 'arquivosMatricula', maxCount: 3 },
+    { name: 'arquivosRegistro', maxCount: 3 },
+    { name: 'arquivosEscritura', maxCount: 3 },
+    { name: 'arquivosOutros', maxCount: 10 }
   ]),
   PropertyController.uploadDocuments
 );
@@ -48,10 +48,11 @@ router.post(
 router.put(
   '/:id/documents',
   upload.fields([
-    { name: 'arquivosImagens' },
-    { name: 'arquivosMatricula' },
-    { name: 'arquivosRegistro' },
-    { name: 'arquivosEscritura' }
+    { name: 'arquivosImagens', maxCount: 30 },
+    { name: 'arquivosMatricula', maxCount: 3 },
+    { name: 'arquivosRegistro', maxCount: 3 },
+    { name: 'arquivosEscritura', maxCount: 3 },
+    { name: 'arquivosOutros', maxCount: 10 }
   ]),
   PropertyController.updateDocuments
 );
@@ -64,10 +65,10 @@ router.put(
     { name: 'valuesData' },
     { name: 'userId' },
     { name: 'removedDocuments' },
-    { name: 'arquivosImagens', maxCount: 20 },
-    { name: 'arquivosMatricula', maxCount: 2 },
-    { name: 'arquivosRegistro', maxCount: 2 },
-    { name: 'arquivosEscritura', maxCount: 2 },
+    { name: 'arquivosImagens', maxCount: 30 },
+    { name: 'arquivosMatricula', maxCount: 3 },
+    { name: 'arquivosRegistro', maxCount: 3 },
+    { name: 'arquivosEscritura', maxCount: 3 },
     { name: 'arquivosOutros', maxCount: 10 }
   ]),
   PropertyController.updateUnifiedProperty

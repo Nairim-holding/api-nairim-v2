@@ -190,8 +190,8 @@ export type AgencyAddressWhereInput = {
   created_at?: Prisma.DateTimeFilter<"AgencyAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"AgencyAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"AgencyAddress"> | Date | string | null
-  agency?: Prisma.XOR<Prisma.AgencyScalarRelationFilter, Prisma.AgencyWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  agency?: Prisma.XOR<Prisma.AgencyScalarRelationFilter, Prisma.AgencyWhereInput>
 }
 
 export type AgencyAddressOrderByWithRelationInput = {
@@ -201,8 +201,8 @@ export type AgencyAddressOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  agency?: Prisma.AgencyOrderByWithRelationInput
   address?: Prisma.AddressOrderByWithRelationInput
+  agency?: Prisma.AgencyOrderByWithRelationInput
 }
 
 export type AgencyAddressWhereUniqueInput = Prisma.AtLeast<{
@@ -215,8 +215,8 @@ export type AgencyAddressWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"AgencyAddress"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"AgencyAddress"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"AgencyAddress"> | Date | string | null
-  agency?: Prisma.XOR<Prisma.AgencyScalarRelationFilter, Prisma.AgencyWhereInput>
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
+  agency?: Prisma.XOR<Prisma.AgencyScalarRelationFilter, Prisma.AgencyWhereInput>
 }, "id">
 
 export type AgencyAddressOrderByWithAggregationInput = {
@@ -248,8 +248,8 @@ export type AgencyAddressCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
-  agency: Prisma.AgencyCreateNestedOneWithoutAddressesInput
   address: Prisma.AddressCreateNestedOneWithoutAgencyAddressesInput
+  agency: Prisma.AgencyCreateNestedOneWithoutAddressesInput
 }
 
 export type AgencyAddressUncheckedCreateInput = {
@@ -266,8 +266,8 @@ export type AgencyAddressUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  agency?: Prisma.AgencyUpdateOneRequiredWithoutAddressesNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutAgencyAddressesNestedInput
+  agency?: Prisma.AgencyUpdateOneRequiredWithoutAddressesNestedInput
 }
 
 export type AgencyAddressUncheckedUpdateInput = {
@@ -594,8 +594,8 @@ export type AgencyAddressSelect<ExtArgs extends runtime.Types.Extensions.Interna
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agencyAddress"]>
 
 export type AgencyAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -605,8 +605,8 @@ export type AgencyAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agencyAddress"]>
 
 export type AgencyAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -616,8 +616,8 @@ export type AgencyAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agencyAddress"]>
 
 export type AgencyAddressSelectScalar = {
@@ -631,23 +631,23 @@ export type AgencyAddressSelectScalar = {
 
 export type AgencyAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "agency_id" | "address_id" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agencyAddress"]>
 export type AgencyAddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }
 export type AgencyAddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }
 export type AgencyAddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
+  agency?: boolean | Prisma.AgencyDefaultArgs<ExtArgs>
 }
 
 export type $AgencyAddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AgencyAddress"
   objects: {
-    agency: Prisma.$AgencyPayload<ExtArgs>
     address: Prisma.$AddressPayload<ExtArgs>
+    agency: Prisma.$AgencyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1050,8 +1050,8 @@ readonly fields: AgencyAddressFieldRefs;
  */
 export interface Prisma__AgencyAddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  agency<T extends Prisma.AgencyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgencyDefaultArgs<ExtArgs>>): Prisma.Prisma__AgencyClient<runtime.Types.Result.GetResult<Prisma.$AgencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   address<T extends Prisma.AddressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddressDefaultArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  agency<T extends Prisma.AgencyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgencyDefaultArgs<ExtArgs>>): Prisma.Prisma__AgencyClient<runtime.Types.Result.GetResult<Prisma.$AgencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
