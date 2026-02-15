@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Agency {
-  id                   String          @id @default(uuid())
-  trade_name           String
-  legal_name           String
-  cnpj                 String          @db.VarChar(18)
-  state_registration   String?
+  id                     String          @id @default(uuid())
+  trade_name             String
+  legal_name             String
+  cnpj                   String          @db.VarChar(18)
+  state_registration     String?
   municipal_registration String?
-  license_number       String?         @db.VarChar(20)
-  created_at           DateTime        @default(now())
-  updated_at           DateTime        @updatedAt
-  deleted_at           DateTime?
-  addresses            AgencyAddress[]
-  contacts             Contact[]
-  properties           Property[]
+  license_number         String?         @db.VarChar(20)
+  created_at             DateTime        @default(now())
+  updated_at             DateTime        @updatedAt
+  deleted_at             DateTime?
+  addresses              AgencyAddress[]
+  contacts               Contact[]
+  properties             Property[]
 
   @@index([cnpj])
 }
@@ -95,7 +95,7 @@ model Document {
 model Owner {
   id                     String         @id @default(uuid())
   name                   String
-  internal_code          String
+  internal_code          String         @unique
   occupation             String?
   marital_status         String?
   cpf                    String?        @db.VarChar(14)
@@ -117,9 +117,9 @@ model Owner {
 model Tenant {
   id                     String          @id @default(uuid())
   name                   String
-  internal_code          String
-  occupation             String
-  marital_status         String
+  internal_code          String          @unique
+  occupation             String?
+  marital_status         String?
   cpf                    String?         @db.VarChar(14)
   cnpj                   String?         @db.VarChar(20)
   created_at             DateTime        @default(now())
@@ -199,6 +199,9 @@ model Address {
   zip_code          String            @db.VarChar(10)
   street            String
   number            String
+  complement        String?
+  block             String?
+  lot               String?
   district          String
   city              String
   state             String

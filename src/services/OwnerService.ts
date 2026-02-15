@@ -374,6 +374,14 @@ export class OwnerService {
       const isPessoaJuridica = !!data.cnpj;
       
       const owner = await prisma.$transaction(async (tx: any) => {
+
+        if (data.internal_code) {
+          const existingInternalCode = await tx.owner.findFirst({
+            where: { internal_code: data.internal_code, deleted_at: null }
+          });
+          if (existingInternalCode) throw new Error('Internal code already registered');
+        }
+
         if (isPessoaFisica && data.cpf) {
           const existingCPF = await tx.owner.findFirst({
             where: { cpf: data.cpf, deleted_at: null }
@@ -469,6 +477,13 @@ export class OwnerService {
 
         const isPessoaFisica = data.cpf || (!data.cnpj && existing.cpf);
         const isPessoaJuridica = data.cnpj || (!data.cpf && existing.cnpj);
+
+        if (data.internal_code !== undefined && data.internal_code !== existing.internal_code) {
+          const internalCodeExists = await tx.owner.findFirst({
+            where: { internal_code: data.internal_code, NOT: { id }, deleted_at: null }
+          });
+          if (internalCodeExists) throw new Error('Internal code already registered for another owner');
+        }
 
         if (isPessoaFisica && data.cpf && data.cpf !== existing.cpf) {
           const cpfExists = await tx.owner.findFirst({
@@ -727,17 +742,14 @@ export class OwnerService {
     }
   }
 
-static async getAvailableContacts(search: string = ''): Promise<any[]> {
+  static async getAvailableContacts(search: string = ''): Promise<any[]> {
     try {
       const where: any = {
         deleted_at: null,
-        // Opcional: Se quiser sugerir apenas contatos que já pertencem a outros Owners, descomente abaixo:
-        // owner_id: { not: null } 
       };
 
       if (search.trim()) {
         const normalizedSearch = this.normalizeText(search);
-        // Busca flexível
         where.OR = [
           { contact: { contains: search, mode: 'insensitive' } },
           { phone: { contains: search, mode: 'insensitive' } },
@@ -746,7 +758,6 @@ static async getAvailableContacts(search: string = ''): Promise<any[]> {
         ];
       }
 
-      // Buscamos os dados brutos
       const contacts = await prisma.contact.findMany({
         where,
         select: {
@@ -755,24 +766,20 @@ static async getAvailableContacts(search: string = ''): Promise<any[]> {
           phone: true,
           cellphone: true,
           email: true,
-          // Trazemos o ID do dono apenas para referência se necessário
           owner_id: true 
         },
-        take: 50, // Limite para não sobrecarregar o dropdown
+        take: 50,
         orderBy: { created_at: 'desc' }
       });
 
-      // Filtragem manual de duplicatas (já que o Prisma distinct nem sempre é flexível o suficiente com campos nulos)
-      // Agrupamos por uma chave única composta (ex: telefone ou email)
       const uniqueContacts = new Map();
 
       contacts.forEach(c => {
-        // Define uma chave única: preferência para celular, depois telefone, depois email
         const key = c.cellphone || c.phone || c.email;
         
         if (key && !uniqueContacts.has(key)) {
           uniqueContacts.set(key, {
-            contact: c.contact, // Nome da pessoa (ex: "Portaria", "João")
+            contact: c.contact,
             phone: c.phone,
             cellphone: c.cellphone,
             email: c.email

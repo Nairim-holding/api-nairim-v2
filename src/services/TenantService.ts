@@ -7,8 +7,6 @@ import {
 } from '../types/tenant';
 
 export class TenantService {
-  // Mapeamento atualizado para acesso direto (sem tabela pivô)
-  // 'contacts.0.phone' acessa o primeiro item do array de contatos diretamente
   static readonly FIELD_MAPPING: Record<string, { 
     type: 'direct' | 'address' | 'contact', 
     realField: string,
@@ -25,14 +23,12 @@ export class TenantService {
     'created_at': { type: 'direct', realField: 'created_at' },
     'updated_at': { type: 'direct', realField: 'updated_at' },
     
-    // Endereços
     'city': { type: 'address', realField: 'city', relationPath: 'addresses.0.address.city' },
     'state': { type: 'address', realField: 'state', relationPath: 'addresses.0.address.state' },
     'district': { type: 'address', realField: 'district', relationPath: 'addresses.0.address.district' },
     'street': { type: 'address', realField: 'street', relationPath: 'addresses.0.address.street' },
     'zip_code': { type: 'address', realField: 'zip_code', relationPath: 'addresses.0.address.zip_code' },
     
-    // Contatos (Acesso direto)
     'contact_name': { type: 'contact', realField: 'contact', relationPath: 'contacts.0.contact' },
     'phone': { type: 'contact', realField: 'phone', relationPath: 'contacts.0.phone' },
     'cellphone': { type: 'contact', realField: 'cellphone', relationPath: 'contacts.0.cellphone' },
@@ -48,7 +44,6 @@ export class TenantService {
       .trim();
   }
 
-  // Método auxiliar genérico para acesso seguro a propriedades aninhadas
   private static safeGetProperty(obj: any, path: string): any {
     return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
   }
@@ -77,7 +72,6 @@ export class TenantService {
       const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 
                                    'contact_name', 'phone', 'cellphone', 'email'];
       
-      // Se houver busca global ou ordenação por campo relacionado, processar em memória
       if (search.trim() || (sortField && contactRelatedFields.includes(sortField))) {
         
         const allTenants = await prisma.tenant.findMany({
@@ -107,7 +101,6 @@ export class TenantService {
             tenants = this.sortByDirectField(filteredTenants, sortField, sortDirection);
           }
         } else {
-          // Ordenação padrão
           tenants = filteredTenants.sort((a, b) => 
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
@@ -115,7 +108,6 @@ export class TenantService {
         
         tenants = tenants.slice(skip, skip + take);
       } else {
-        // Busca otimizada no banco para campos diretos
         const orderBy = this.buildOrderBy(sortOptions);
         
         const [tenantsData, totalCount] = await Promise.all([
@@ -149,12 +141,10 @@ export class TenantService {
       };
 
     } catch (error: any) {
-      console.error('❌ Error in TenantService.getTenants:', error);
       throw new Error('Failed to fetch tenants: ' + error.message);
     }
   }
 
-  // CORREÇÃO: Acesso direto às propriedades do contato (Contact[])
   private static filterTenantsBySearch(
     tenants: TenantWithRelations[],
     searchTerm: string
@@ -177,7 +167,6 @@ export class TenantService {
         .map(addr => [addr.street, addr.district, addr.city].filter(Boolean).join(' '))
         .join(' ') || '';
 
-      // Casting para any[] para evitar erro de tipagem caso TenantWithRelations ainda esteja desatualizado
       const contacts = (tenant.contacts as any[]) || [];
       const contactFields = contacts
         .map(c => [
@@ -249,23 +238,19 @@ export class TenantService {
     return where;
   }
 
-  // CORREÇÃO: Filtros diretos em contacts
   private static buildFilterConditions(filters: Record<string, any>): any {
     const conditions: any = {};
     
     Object.entries(filters).forEach(([key, value]) => {
       if (value === undefined || value === null || value === '') return;
 
-      // Campos diretos
       if (['name', 'internal_code', 'cpf', 'cnpj', 'marital_status', 'occupation', 'state_registration', 'municipal_registration'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' };
       }
-      // Endereços
       else if (['city', 'state', 'zip_code', 'street', 'district'].includes(key)) {
         if (!conditions.addresses) conditions.addresses = { some: { address: {} } };
         conditions.addresses.some.address[key] = { contains: String(value), mode: 'insensitive' };
       }
-      // Contatos - Acesso direto
       else if (key === 'contact_name') {
         if (!conditions.contacts) conditions.contacts = { some: {} };
         conditions.contacts.some.contact = { contains: String(value), mode: 'insensitive' };
@@ -274,7 +259,6 @@ export class TenantService {
         if (!conditions.contacts) conditions.contacts = { some: {} };
         conditions.contacts.some[key] = { contains: String(value), mode: 'insensitive' };
       }
-      // Datas
       else if (key === 'created_at') {
         conditions.created_at = this.buildDateCondition(value);
       }
@@ -329,6 +313,13 @@ export class TenantService {
   static async createTenant(data: any) {
     try {
       return await prisma.$transaction(async (tx) => {
+        if (data.internal_code) {
+          const existingInternalCode = await tx.tenant.findFirst({
+            where: { internal_code: data.internal_code, deleted_at: null }
+          });
+          if (existingInternalCode) throw new Error('Internal code already registered');
+        }
+
         if (data.cpf && await tx.tenant.findFirst({ where: { cpf: data.cpf, deleted_at: null } })) {
           throw new Error('CPF already registered');
         }
@@ -347,7 +338,6 @@ export class TenantService {
             state_registration: data.state_registration || null,       
             municipal_registration: data.municipal_registration || null, 
             
-            // Criação aninhada de contatos
             contacts: {
               create: data.contacts?.map((c: any) => ({
                 contact: c.contact,
@@ -359,17 +349,16 @@ export class TenantService {
           }
         });
 
-        // CORREÇÃO: Campos obrigatórios do endereço (number, district, city, state)
         if (data.addresses && data.addresses.length > 0) {
           for (const addr of data.addresses) {
             const newAddress = await tx.address.create({
               data: {
                 zip_code: addr.zip_code,
                 street: addr.street,
-                number: addr.number,     // Obrigatório
-                district: addr.district, // Obrigatório
-                city: addr.city,         // Obrigatório
-                state: addr.state,       // Obrigatório
+                number: addr.number,
+                district: addr.district,
+                city: addr.city,
+                state: addr.state,
                 country: addr.country || 'Brasil',
               }
             });
@@ -391,10 +380,22 @@ export class TenantService {
         const existing = await tx.tenant.findUnique({ where: { id, deleted_at: null } });
         if (!existing) throw new Error('Tenant not found');
 
+        if (data.internal_code !== undefined && data.internal_code !== existing.internal_code) {
+          const internalCodeExists = await tx.tenant.findFirst({
+            where: { internal_code: data.internal_code, NOT: { id }, deleted_at: null }
+          });
+          if (internalCodeExists) throw new Error('Internal code already registered for another tenant');
+        }
+
         if (data.cpf && data.cpf !== existing.cpf) {
            const exists = await tx.tenant.findFirst({ where: { cpf: data.cpf, NOT: { id }, deleted_at: null } });
            if (exists) throw new Error('CPF already registered for another tenant');
         }
+
+        if (data.cnpj && data.cnpj !== existing.cnpj) {
+          const cnpjExists = await tx.tenant.findFirst({ where: { cnpj: data.cnpj, NOT: { id }, deleted_at: null } });
+          if (cnpjExists) throw new Error('CNPJ already registered for another tenant');
+       }
 
         await tx.tenant.update({
           where: { id },
@@ -410,7 +411,6 @@ export class TenantService {
           }
         });
 
-        // Atualizar Contatos
         if (data.contacts !== undefined) {
           await tx.contact.deleteMany({ where: { tenant_id: id } });
           if (data.contacts.length > 0) {
@@ -426,20 +426,18 @@ export class TenantService {
           }
         }
 
-        // Atualizar Endereços
         if (data.addresses !== undefined) {
           await tx.tenantAddress.deleteMany({ where: { tenant_id: id } });
           if (data.addresses.length > 0) {
              for (const addr of data.addresses) {
-                // CORREÇÃO: Campos obrigatórios
                 const newAddress = await tx.address.create({
                   data: {
                     zip_code: addr.zip_code,
                     street: addr.street,
-                    number: addr.number,     // Obrigatório
-                    district: addr.district, // Obrigatório
-                    city: addr.city,         // Obrigatório
-                    state: addr.state,       // Obrigatório
+                    number: addr.number,
+                    district: addr.district,
+                    city: addr.city,
+                    state: addr.state,
                     country: addr.country || 'Brasil'
                   }
                 });
@@ -503,7 +501,6 @@ export class TenantService {
         if (andFilters.length) where.AND = andFilters;
       }
 
-      // Buscar tenants para preencher filtros
       const [tenants, addresses, contacts, dateRange] = await Promise.all([
         prisma.tenant.findMany({
           where,
@@ -515,7 +512,6 @@ export class TenantService {
           select: { city: true, state: true, district: true, street: true, zip_code: true },
           distinct: ['city', 'state', 'district', 'street', 'zip_code']
         }),
-        // CORREÇÃO: Filtrar contatos pelo tenant_id
         prisma.contact.findMany({
           where: { deleted_at: null, tenant_id: { not: null }, tenant: { deleted_at: null } },
           select: { contact: true, phone: true, cellphone: true, email: true },
@@ -577,16 +573,14 @@ export class TenantService {
     }
   }
 
-static async getAvailableContacts(search: string = ''): Promise<any[]> {
+  static async getAvailableContacts(search: string = ''): Promise<any[]> {
     try {
       const where: any = {
         deleted_at: null,
-        // Opcional: Se quiser sugerir apenas contatos que já foram usados em inquilinos
-        // tenant_id: { not: null } 
       };
 
       if (search.trim()) {
-        // Busca flexível por nome, telefone ou email
+        const normalizedSearch = this.normalizeText(search);
         where.OR = [
           { contact: { contains: search, mode: 'insensitive' } },
           { phone: { contains: search, mode: 'insensitive' } },
@@ -595,7 +589,6 @@ static async getAvailableContacts(search: string = ''): Promise<any[]> {
         ];
       }
 
-      // Buscamos os dados brutos (limite de 50 para performance)
       const contacts = await prisma.contact.findMany({
         where,
         select: {
@@ -604,22 +597,20 @@ static async getAvailableContacts(search: string = ''): Promise<any[]> {
           phone: true,
           cellphone: true,
           email: true,
-          tenant_id: true // Apenas para referência interna
+          tenant_id: true
         },
         take: 50,
         orderBy: { created_at: 'desc' }
       });
 
-      // Lógica de Deduplicação (Mesma usada no OwnerService)
       const uniqueContacts = new Map();
 
       contacts.forEach(c => {
-        // Define uma chave única: preferência para celular, depois telefone, depois email
         const key = c.cellphone || c.phone || c.email;
         
         if (key && !uniqueContacts.has(key)) {
           uniqueContacts.set(key, {
-            contact: c.contact, // Nome da pessoa de contato
+            contact: c.contact,
             phone: c.phone,
             cellphone: c.cellphone,
             email: c.email

@@ -265,11 +265,11 @@ export type OwnerOrderByWithRelationInput = {
 
 export type OwnerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  internal_code?: string
   AND?: Prisma.OwnerWhereInput | Prisma.OwnerWhereInput[]
   OR?: Prisma.OwnerWhereInput[]
   NOT?: Prisma.OwnerWhereInput | Prisma.OwnerWhereInput[]
   name?: Prisma.StringFilter<"Owner"> | string
-  internal_code?: Prisma.StringFilter<"Owner"> | string
   occupation?: Prisma.StringNullableFilter<"Owner"> | string | null
   marital_status?: Prisma.StringNullableFilter<"Owner"> | string | null
   cpf?: Prisma.StringNullableFilter<"Owner"> | string | null
@@ -283,7 +283,7 @@ export type OwnerWhereUniqueInput = Prisma.AtLeast<{
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.OwnerAddressListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
-}, "id">
+}, "id" | "internal_code">
 
 export type OwnerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

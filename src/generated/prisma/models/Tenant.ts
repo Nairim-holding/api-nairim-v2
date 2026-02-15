@@ -193,8 +193,8 @@ export type TenantGroupByOutputType = {
   id: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation: string | null
+  marital_status: string | null
   cpf: string | null
   cnpj: string | null
   created_at: Date
@@ -229,8 +229,8 @@ export type TenantWhereInput = {
   id?: Prisma.StringFilter<"Tenant"> | string
   name?: Prisma.StringFilter<"Tenant"> | string
   internal_code?: Prisma.StringFilter<"Tenant"> | string
-  occupation?: Prisma.StringFilter<"Tenant"> | string
-  marital_status?: Prisma.StringFilter<"Tenant"> | string
+  occupation?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Tenant"> | string | null
   cpf?: Prisma.StringNullableFilter<"Tenant"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Tenant"> | string | null
   created_at?: Prisma.DateTimeFilter<"Tenant"> | Date | string
@@ -247,8 +247,8 @@ export type TenantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
-  occupation?: Prisma.SortOrder
-  marital_status?: Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -263,13 +263,13 @@ export type TenantOrderByWithRelationInput = {
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  internal_code?: string
   AND?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   name?: Prisma.StringFilter<"Tenant"> | string
-  internal_code?: Prisma.StringFilter<"Tenant"> | string
-  occupation?: Prisma.StringFilter<"Tenant"> | string
-  marital_status?: Prisma.StringFilter<"Tenant"> | string
+  occupation?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Tenant"> | string | null
   cpf?: Prisma.StringNullableFilter<"Tenant"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Tenant"> | string | null
   created_at?: Prisma.DateTimeFilter<"Tenant"> | Date | string
@@ -280,14 +280,14 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   contacts?: Prisma.ContactListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.TenantAddressListRelationFilter
-}, "id">
+}, "id" | "internal_code">
 
 export type TenantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
-  occupation?: Prisma.SortOrder
-  marital_status?: Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -307,8 +307,8 @@ export type TenantScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   name?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   internal_code?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
-  occupation?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
-  marital_status?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
+  occupation?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  marital_status?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   cpf?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   cnpj?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
@@ -322,8 +322,8 @@ export type TenantCreateInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -340,8 +340,8 @@ export type TenantUncheckedCreateInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -358,8 +358,8 @@ export type TenantUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -376,8 +376,8 @@ export type TenantUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -394,8 +394,8 @@ export type TenantCreateManyInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -409,8 +409,8 @@ export type TenantUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -424,8 +424,8 @@ export type TenantUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -538,8 +538,8 @@ export type TenantCreateWithoutLeasesInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -555,8 +555,8 @@ export type TenantUncheckedCreateWithoutLeasesInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -588,8 +588,8 @@ export type TenantUpdateWithoutLeasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -605,8 +605,8 @@ export type TenantUncheckedUpdateWithoutLeasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -622,8 +622,8 @@ export type TenantCreateWithoutContactsInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -639,8 +639,8 @@ export type TenantUncheckedCreateWithoutContactsInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -672,8 +672,8 @@ export type TenantUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,8 +689,8 @@ export type TenantUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -706,8 +706,8 @@ export type TenantCreateWithoutAddressesInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -723,8 +723,8 @@ export type TenantUncheckedCreateWithoutAddressesInput = {
   id?: string
   name: string
   internal_code: string
-  occupation: string
-  marital_status: string
+  occupation?: string | null
+  marital_status?: string | null
   cpf?: string | null
   cnpj?: string | null
   created_at?: Date | string
@@ -756,8 +756,8 @@ export type TenantUpdateWithoutAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -773,8 +773,8 @@ export type TenantUncheckedUpdateWithoutAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
-  occupation?: Prisma.StringFieldUpdateOperationsInput | string
-  marital_status?: Prisma.StringFieldUpdateOperationsInput | string
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -920,8 +920,8 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     name: string
     internal_code: string
-    occupation: string
-    marital_status: string
+    occupation: string | null
+    marital_status: string | null
     cpf: string | null
     cnpj: string | null
     created_at: Date

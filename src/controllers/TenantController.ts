@@ -1,4 +1,3 @@
-// controllers/TenantController.ts
 import { Request, Response } from 'express';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
@@ -13,34 +12,25 @@ export class TenantController {
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      // Processar sort no formato sort[field]=direction
       const sortOptions: Record<string, 'asc' | 'desc'> = {};
       const filters: Record<string, any> = {};
       
-      console.log('📥 Query params recebidos para tenants:', req.query);
-      
-      // Processar parâmetros de ordenação
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (typeof value === 'string') {
-          // Verificar se é parâmetro de ordenação no formato sort[field]
           const sortMatch = key.match(/^sort\[(.+)\]$/);
           if (sortMatch) {
             const field = sortMatch[1];
             const direction = value.toLowerCase() as 'asc' | 'desc';
             if (direction === 'asc' || direction === 'desc') {
               sortOptions[field] = direction;
-              console.log(`📌 Ordenação detectada: ${field} -> ${direction}`);
             }
           }
-          // Processar filtros
           else if (!['limit', 'page', 'search', 'includeInactive'].includes(key) && value.trim() !== '') {
-            // Verificar se é filtro no formato filter[field]
             const filterMatch = key.match(/^filter\[(.+)\]$/);
             if (filterMatch) {
               const field = filterMatch[1];
               filters[field] = value;
             }
-            // Tratar outros parâmetros como filtros diretos
             else if (key !== 'sort' && !key.startsWith('sort[')) {
               try {
                 const parsedValue = JSON.parse(value);
@@ -53,9 +43,6 @@ export class TenantController {
         }
       });
 
-      console.log('🔍 Sort options extraídos:', sortOptions);
-      console.log('📋 Filtros extraídos:', filters);
-
       const result = await TenantService.getTenants({
         limit,
         page,
@@ -65,7 +52,6 @@ export class TenantController {
         includeInactive,
       });
 
-      // Desabilitar cache
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
@@ -73,7 +59,6 @@ export class TenantController {
       res.status(200).json(result);
 
     } catch (error: any) {
-      console.error('Error getting tenants:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }
@@ -94,7 +79,6 @@ export class TenantController {
       if (error.message === 'Tenant not found') {
         return res.status(404).json(ApiResponse.error('Tenant not found'));
       }
-      console.error('Error getting tenant:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }
@@ -114,14 +98,16 @@ export class TenantController {
         ApiResponse.success(tenant, `Tenant ${tenant.name} created successfully`)
       );
     } catch (error: any) {
-      console.error('Error creating tenant:', error);
-      
+      if (error.message === 'Internal code already registered') {
+        return res.status(409).json(ApiResponse.error('O Código Interno informado já está em uso por outro inquilino'));
+      }
+
       if (error.message === 'CPF already registered') {
-        return res.status(409).json(ApiResponse.error('CPF already registered'));
+        return res.status(409).json(ApiResponse.error('O CPF informado já está cadastrado'));
       }
       
       if (error.message === 'CNPJ already registered') {
-        return res.status(409).json(ApiResponse.error('CNPJ already registered'));
+        return res.status(409).json(ApiResponse.error('O CNPJ informado já está cadastrado'));
       }
 
       res.status(400).json(ApiResponse.error(`Error creating tenant: ${error.message}`));
@@ -148,18 +134,20 @@ export class TenantController {
         ApiResponse.success(tenant, `Tenant ${tenant.name} updated successfully`)
       );
     } catch (error: any) {
-      console.error('Error updating tenant:', error);
+      if (error.message === 'Internal code already registered for another tenant') {
+        return res.status(409).json(ApiResponse.error('O Código Interno informado já está em uso por outro inquilino'));
+      }
 
       if (error.message === 'Tenant not found') {
         return res.status(404).json(ApiResponse.error('Tenant not found'));
       }
 
       if (error.message === 'CPF already registered for another tenant') {
-        return res.status(409).json(ApiResponse.error('CPF already registered for another tenant'));
+        return res.status(409).json(ApiResponse.error('O CPF informado já está cadastrado para outro inquilino'));
       }
 
       if (error.message === 'CNPJ already registered for another tenant') {
-        return res.status(409).json(ApiResponse.error('CNPJ already registered for another tenant'));
+        return res.status(409).json(ApiResponse.error('O CNPJ informado já está cadastrado para outro inquilino'));
       }
 
       res.status(400).json(ApiResponse.error(`Error updating tenant: ${error.message}`));
@@ -179,8 +167,6 @@ export class TenantController {
         ApiResponse.success(null, `Tenant ${tenant.name} marked as deleted successfully`)
       );
     } catch (error: any) {
-      console.error('Error deleting tenant:', error);
-
       if (error.message === 'Tenant not found or already deleted') {
         return res.status(404).json(ApiResponse.error('Tenant not found or already deleted'));
       }
@@ -202,8 +188,6 @@ export class TenantController {
         ApiResponse.success(null, `Tenant ${tenant.name} restored successfully`)
       );
     } catch (error: any) {
-      console.error('Error restoring tenant:', error);
-
       if (error.message === 'Tenant not found') {
         return res.status(404).json(ApiResponse.error('Tenant not found'));
       }
@@ -218,18 +202,11 @@ export class TenantController {
 
   static async getTenantFilters(req: Request, res: Response) {
     try {
-      // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
-      
-      console.log('📥 Received query params for tenant filters:', req.query);
 
-      // Processar parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
-          console.log(`🔧 Processing filter param: ${key} =`, value);
-          
           try {
-            // Tentar parsear como JSON (para objetos como date ranges)
             const parsedValue = JSON.parse(value as string);
             if (parsedValue && typeof parsedValue === 'object') {
               filters[key] = parsedValue;
@@ -237,13 +214,10 @@ export class TenantController {
               filters[key] = value;
             }
           } catch {
-            // Se não for JSON, tratar como string
             filters[key] = value;
           }
         }
       });
-
-      console.log('📋 Parsed filters for context:', filters);
 
       const filtersData = await TenantService.getTenantFilters(filters);
       
@@ -251,25 +225,22 @@ export class TenantController {
         ApiResponse.success(filtersData, 'Filters retrieved successfully')
       );
     } catch (error) {
-      console.error('❌ Error getting tenant filters:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }
 
-static async getContactSuggestions(req: Request, res: Response) {
+  static async getContactSuggestions(req: Request, res: Response) {
     try {
       const search = ValidationUtil.parseStringParam(req.query?.search);
       
       const suggestions = await TenantService.getAvailableContacts(search);
 
-      // Cache curto para agilizar o autocomplete no front
       res.setHeader('Cache-Control', 'public, max-age=30'); 
       
       res.status(200).json(
         ApiResponse.success(suggestions, 'Contact suggestions retrieved successfully')
       );
     } catch (error: any) {
-      console.error('Error getting contact suggestions:', error);
       res.status(500).json(ApiResponse.error('Internal server error'));
     }
   }

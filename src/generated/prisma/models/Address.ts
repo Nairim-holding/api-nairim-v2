@@ -29,6 +29,9 @@ export type AddressMinAggregateOutputType = {
   zip_code: string | null
   street: string | null
   number: string | null
+  complement: string | null
+  block: string | null
+  lot: string | null
   district: string | null
   city: string | null
   state: string | null
@@ -43,6 +46,9 @@ export type AddressMaxAggregateOutputType = {
   zip_code: string | null
   street: string | null
   number: string | null
+  complement: string | null
+  block: string | null
+  lot: string | null
   district: string | null
   city: string | null
   state: string | null
@@ -57,6 +63,9 @@ export type AddressCountAggregateOutputType = {
   zip_code: number
   street: number
   number: number
+  complement: number
+  block: number
+  lot: number
   district: number
   city: number
   state: number
@@ -73,6 +82,9 @@ export type AddressMinAggregateInputType = {
   zip_code?: true
   street?: true
   number?: true
+  complement?: true
+  block?: true
+  lot?: true
   district?: true
   city?: true
   state?: true
@@ -87,6 +99,9 @@ export type AddressMaxAggregateInputType = {
   zip_code?: true
   street?: true
   number?: true
+  complement?: true
+  block?: true
+  lot?: true
   district?: true
   city?: true
   state?: true
@@ -101,6 +116,9 @@ export type AddressCountAggregateInputType = {
   zip_code?: true
   street?: true
   number?: true
+  complement?: true
+  block?: true
+  lot?: true
   district?: true
   city?: true
   state?: true
@@ -188,6 +206,9 @@ export type AddressGroupByOutputType = {
   zip_code: string
   street: string
   number: string
+  complement: string | null
+  block: string | null
+  lot: string | null
   district: string
   city: string
   state: string
@@ -223,6 +244,9 @@ export type AddressWhereInput = {
   zip_code?: Prisma.StringFilter<"Address"> | string
   street?: Prisma.StringFilter<"Address"> | string
   number?: Prisma.StringFilter<"Address"> | string
+  complement?: Prisma.StringNullableFilter<"Address"> | string | null
+  block?: Prisma.StringNullableFilter<"Address"> | string | null
+  lot?: Prisma.StringNullableFilter<"Address"> | string | null
   district?: Prisma.StringFilter<"Address"> | string
   city?: Prisma.StringFilter<"Address"> | string
   state?: Prisma.StringFilter<"Address"> | string
@@ -241,6 +265,9 @@ export type AddressOrderByWithRelationInput = {
   zip_code?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
+  complement?: Prisma.SortOrderInput | Prisma.SortOrder
+  block?: Prisma.SortOrderInput | Prisma.SortOrder
+  lot?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
@@ -262,6 +289,9 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
   zip_code?: Prisma.StringFilter<"Address"> | string
   street?: Prisma.StringFilter<"Address"> | string
   number?: Prisma.StringFilter<"Address"> | string
+  complement?: Prisma.StringNullableFilter<"Address"> | string | null
+  block?: Prisma.StringNullableFilter<"Address"> | string | null
+  lot?: Prisma.StringNullableFilter<"Address"> | string | null
   district?: Prisma.StringFilter<"Address"> | string
   city?: Prisma.StringFilter<"Address"> | string
   state?: Prisma.StringFilter<"Address"> | string
@@ -280,6 +310,9 @@ export type AddressOrderByWithAggregationInput = {
   zip_code?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
+  complement?: Prisma.SortOrderInput | Prisma.SortOrder
+  block?: Prisma.SortOrderInput | Prisma.SortOrder
+  lot?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
@@ -300,6 +333,9 @@ export type AddressScalarWhereWithAggregatesInput = {
   zip_code?: Prisma.StringWithAggregatesFilter<"Address"> | string
   street?: Prisma.StringWithAggregatesFilter<"Address"> | string
   number?: Prisma.StringWithAggregatesFilter<"Address"> | string
+  complement?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
+  block?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
+  lot?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
   district?: Prisma.StringWithAggregatesFilter<"Address"> | string
   city?: Prisma.StringWithAggregatesFilter<"Address"> | string
   state?: Prisma.StringWithAggregatesFilter<"Address"> | string
@@ -314,6 +350,9 @@ export type AddressCreateInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -332,6 +371,9 @@ export type AddressUncheckedCreateInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -350,6 +392,9 @@ export type AddressUpdateInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -368,6 +413,9 @@ export type AddressUncheckedUpdateInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -386,6 +434,9 @@ export type AddressCreateManyInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -400,6 +451,9 @@ export type AddressUpdateManyMutationInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -414,6 +468,9 @@ export type AddressUncheckedUpdateManyInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -428,6 +485,9 @@ export type AddressCountOrderByAggregateInput = {
   zip_code?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
+  complement?: Prisma.SortOrder
+  block?: Prisma.SortOrder
+  lot?: Prisma.SortOrder
   district?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
@@ -442,6 +502,9 @@ export type AddressMaxOrderByAggregateInput = {
   zip_code?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
+  complement?: Prisma.SortOrder
+  block?: Prisma.SortOrder
+  lot?: Prisma.SortOrder
   district?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
@@ -456,6 +519,9 @@ export type AddressMinOrderByAggregateInput = {
   zip_code?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
+  complement?: Prisma.SortOrder
+  block?: Prisma.SortOrder
+  lot?: Prisma.SortOrder
   district?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
@@ -531,6 +597,9 @@ export type AddressCreateWithoutAgencyAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -548,6 +617,9 @@ export type AddressUncheckedCreateWithoutAgencyAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -581,6 +653,9 @@ export type AddressUpdateWithoutAgencyAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -598,6 +673,9 @@ export type AddressUncheckedUpdateWithoutAgencyAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -615,6 +693,9 @@ export type AddressCreateWithoutPropertyAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -632,6 +713,9 @@ export type AddressUncheckedCreateWithoutPropertyAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -665,6 +749,9 @@ export type AddressUpdateWithoutPropertyAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -682,6 +769,9 @@ export type AddressUncheckedUpdateWithoutPropertyAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -699,6 +789,9 @@ export type AddressCreateWithoutOwnerAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -716,6 +809,9 @@ export type AddressUncheckedCreateWithoutOwnerAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -749,6 +845,9 @@ export type AddressUpdateWithoutOwnerAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -766,6 +865,9 @@ export type AddressUncheckedUpdateWithoutOwnerAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -783,6 +885,9 @@ export type AddressCreateWithoutTenantAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -800,6 +905,9 @@ export type AddressUncheckedCreateWithoutTenantAddressesInput = {
   zip_code: string
   street: string
   number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
   district: string
   city: string
   state: string
@@ -833,6 +941,9 @@ export type AddressUpdateWithoutTenantAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -850,6 +961,9 @@ export type AddressUncheckedUpdateWithoutTenantAddressesInput = {
   zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -925,6 +1039,9 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   zip_code?: boolean
   street?: boolean
   number?: boolean
+  complement?: boolean
+  block?: boolean
+  lot?: boolean
   district?: boolean
   city?: boolean
   state?: boolean
@@ -944,6 +1061,9 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   zip_code?: boolean
   street?: boolean
   number?: boolean
+  complement?: boolean
+  block?: boolean
+  lot?: boolean
   district?: boolean
   city?: boolean
   state?: boolean
@@ -958,6 +1078,9 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   zip_code?: boolean
   street?: boolean
   number?: boolean
+  complement?: boolean
+  block?: boolean
+  lot?: boolean
   district?: boolean
   city?: boolean
   state?: boolean
@@ -972,6 +1095,9 @@ export type AddressSelectScalar = {
   zip_code?: boolean
   street?: boolean
   number?: boolean
+  complement?: boolean
+  block?: boolean
+  lot?: boolean
   district?: boolean
   city?: boolean
   state?: boolean
@@ -981,7 +1107,7 @@ export type AddressSelectScalar = {
   deleted_at?: boolean
 }
 
-export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zip_code" | "street" | "number" | "district" | "city" | "state" | "country" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["address"]>
+export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "zip_code" | "street" | "number" | "complement" | "block" | "lot" | "district" | "city" | "state" | "country" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["address"]>
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agencyAddresses?: boolean | Prisma.Address$agencyAddressesArgs<ExtArgs>
   ownerAddresses?: boolean | Prisma.Address$ownerAddressesArgs<ExtArgs>
@@ -1005,6 +1131,9 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     zip_code: string
     street: string
     number: string
+    complement: string | null
+    block: string | null
+    lot: string | null
     district: string
     city: string
     state: string
@@ -1443,6 +1572,9 @@ export interface AddressFieldRefs {
   readonly zip_code: Prisma.FieldRef<"Address", 'String'>
   readonly street: Prisma.FieldRef<"Address", 'String'>
   readonly number: Prisma.FieldRef<"Address", 'String'>
+  readonly complement: Prisma.FieldRef<"Address", 'String'>
+  readonly block: Prisma.FieldRef<"Address", 'String'>
+  readonly lot: Prisma.FieldRef<"Address", 'String'>
   readonly district: Prisma.FieldRef<"Address", 'String'>
   readonly city: Prisma.FieldRef<"Address", 'String'>
   readonly state: Prisma.FieldRef<"Address", 'String'>
