@@ -523,17 +523,21 @@ export class UserService {
         throw new Error('User not found or already deleted');
       }
 
-      // SOFT DELETE: atualizar o campo deleted_at
-      await prisma.user.update({
+      // Gera um email único com timestamp para liberar o email original
+      const timestamp = new Date().getTime();
+      const deletedEmail = `ex_${timestamp}_${user.email}`;
+
+      // SOFT DELETE: atualizar o campo deleted_at E alterar o email
+      const deletedUser = await prisma.user.update({
         where: { id },
         data: { 
           deleted_at: new Date(),
-          // Não deletar se for o último admin
+          email: deletedEmail 
         }
       });
 
-      console.log(`✅ User soft deleted: ${id}`);
-      return user;
+      console.log(`✅ User soft deleted and email freed: ${id}`);
+      return deletedUser;
 
     } catch (error: any) {
       console.error(`❌ Error soft deleting user ${id}:`, error);
@@ -563,6 +567,7 @@ export class UserService {
       }
 
       // Restaurar: setar deleted_at para null
+      // Nota: O email continuará como "ex_..." para evitar conflitos se o email original já foi reusado.
       await prisma.user.update({
         where: { id },
         data: { 
