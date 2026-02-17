@@ -47,14 +47,6 @@ export class OwnerValidator {
       if (data.cnpj && !this.validateCNPJ(data.cnpj)) {
         errors.push('CNPJ inválido');
       }
-      
-      if (!data.state_registration?.trim()) {
-        errors.push('Inscrição Estadual é obrigatória para Pessoa Jurídica');
-      }
-      
-      if (!data.municipal_registration?.trim()) {
-        errors.push('Inscrição Municipal é obrigatória para Pessoa Jurídica');
-      }
 
       if (data.cpf) {
         errors.push('Não é permitido informar CPF para Pessoa Jurídica');
@@ -120,14 +112,6 @@ export class OwnerValidator {
         errors.push('CNPJ é obrigatório para Pessoa Jurídica');
       } else if (!this.validateCNPJ(data.cnpj)) {
         errors.push('CNPJ inválido');
-      }
-
-      if (!data.state_registration || data.state_registration.trim() === '') {
-        errors.push('Inscrição Estadual é obrigatória para Pessoa Jurídica');
-      }
-
-      if (!data.municipal_registration || data.municipal_registration.trim() === '') {
-        errors.push('Inscrição Municipal é obrigatória para Pessoa Jurídica');
       }
     } else {
       if (data.cpf && !this.validateCPF(data.cpf)) {

@@ -14,6 +14,7 @@ export interface Tenant {
 }
 
 export interface Address {
+  complement: any;
   id: string;
   zip_code: string;
   street: string;

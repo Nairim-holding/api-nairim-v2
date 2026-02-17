@@ -75,14 +75,6 @@ export class TenantValidator {
       } else if (!this.validateCNPJ(data.cnpj)) {
         errors.push('CNPJ inválido');
       }
-
-      if (!data.state_registration || data.state_registration.trim() === '') {
-        errors.push('Inscrição Estadual é obrigatória para Pessoa Jurídica');
-      }
-
-      if (!data.municipal_registration || data.municipal_registration.trim() === '') {
-        errors.push('Inscrição Municipal é obrigatória para Pessoa Jurídica');
-      }
     } else {
       if (data.cpf && !this.validateCPF(data.cpf)) {
         errors.push('CPF inválido');

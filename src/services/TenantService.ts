@@ -28,6 +28,7 @@ export class TenantService {
     'district': { type: 'address', realField: 'district', relationPath: 'addresses.0.address.district' },
     'street': { type: 'address', realField: 'street', relationPath: 'addresses.0.address.street' },
     'zip_code': { type: 'address', realField: 'zip_code', relationPath: 'addresses.0.address.zip_code' },
+    'complement': { type: 'address', realField: 'complement', relationPath: 'addresses.0.address.complement' },
     
     'contact_name': { type: 'contact', realField: 'contact', relationPath: 'contacts.0.contact' },
     'phone': { type: 'contact', realField: 'phone', relationPath: 'contacts.0.phone' },
@@ -69,8 +70,8 @@ export class TenantService {
       let tenants: TenantWithRelations[] = [];
       let total = 0;
 
-      const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 
-                                   'contact_name', 'phone', 'cellphone', 'email'];
+      const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 'complement', 
+                                    'contact_name', 'phone', 'cellphone', 'email'];
       
       if (search.trim() || (sortField && contactRelatedFields.includes(sortField))) {
         
@@ -164,7 +165,7 @@ export class TenantService {
       const addressFields = tenant.addresses
         ?.map(ta => ta.address)
         .filter(Boolean)
-        .map(addr => [addr.street, addr.district, addr.city].filter(Boolean).join(' '))
+        .map(addr => [addr.street, addr.district, addr.city, addr.complement].filter(Boolean).join(' '))
         .join(' ') || '';
 
       const contacts = (tenant.contacts as any[]) || [];
@@ -247,7 +248,7 @@ export class TenantService {
       if (['name', 'internal_code', 'cpf', 'cnpj', 'marital_status', 'occupation', 'state_registration', 'municipal_registration'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' };
       }
-      else if (['city', 'state', 'zip_code', 'street', 'district'].includes(key)) {
+      else if (['city', 'state', 'zip_code', 'street', 'district', 'complement'].includes(key)) {
         if (!conditions.addresses) conditions.addresses = { some: { address: {} } };
         conditions.addresses.some.address[key] = { contains: String(value), mode: 'insensitive' };
       }
@@ -356,6 +357,7 @@ export class TenantService {
                 zip_code: addr.zip_code,
                 street: addr.street,
                 number: addr.number,
+                complement: addr.complement || null,
                 district: addr.district,
                 city: addr.city,
                 state: addr.state,
@@ -435,6 +437,7 @@ export class TenantService {
                     zip_code: addr.zip_code,
                     street: addr.street,
                     number: addr.number,
+                    complement: addr.complement || null,
                     district: addr.district,
                     city: addr.city,
                     state: addr.state,
@@ -509,8 +512,8 @@ export class TenantService {
         }),
         prisma.address.findMany({
           where: { deleted_at: null, tenantAddresses: { some: { tenant: { deleted_at: null } } } },
-          select: { city: true, state: true, district: true, street: true, zip_code: true },
-          distinct: ['city', 'state', 'district', 'street', 'zip_code']
+          select: { city: true, state: true, district: true, street: true, zip_code: true, complement: true },
+          distinct: ['city', 'state', 'district', 'street', 'zip_code', 'complement']
         }),
         prisma.contact.findMany({
           where: { deleted_at: null, tenant_id: { not: null }, tenant: { deleted_at: null } },
@@ -539,6 +542,7 @@ export class TenantService {
         { field: 'district', type: 'string', label: 'Bairro', values: [...new Set(addresses.map(a => a.district).filter(Boolean))].sort(), searchable: true },
         { field: 'street', type: 'string', label: 'Rua', values: [...new Set(addresses.map(a => a.street).filter(Boolean))].sort(), searchable: true },
         { field: 'zip_code', type: 'string', label: 'CEP', values: [...new Set(addresses.map(a => a.zip_code).filter(Boolean))].sort(), searchable: true },
+        { field: 'complement', type: 'string', label: 'Complemento', values: [...new Set(addresses.map(a => a.complement).filter(Boolean))].sort(), searchable: true },
         
         { field: 'contact_name', type: 'string', label: 'Nome do Contato', values: [...new Set(contacts.map(c => c.contact).filter(Boolean))].sort(), searchable: true },
         { field: 'phone', type: 'string', label: 'Telefone', values: [...new Set(contacts.map(c => c.phone).filter(Boolean))].sort(), searchable: true },

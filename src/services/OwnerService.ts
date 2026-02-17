@@ -30,6 +30,7 @@ export class OwnerService {
     'district': { type: 'address', realField: 'district', relationPath: 'addresses.0.address.district' },
     'street': { type: 'address', realField: 'street', relationPath: 'addresses.0.address.street' },
     'zip_code': { type: 'address', realField: 'zip_code', relationPath: 'addresses.0.address.zip_code' },
+    'complement': { type: 'address', realField: 'complement', relationPath: 'addresses.0.address.complement' },
     
     'contact_name': { type: 'contact', realField: 'contact', relationPath: 'contacts.0.contact' },
     'phone': { type: 'contact', realField: 'phone', relationPath: 'contacts.0.phone' },
@@ -69,8 +70,8 @@ export class OwnerService {
       let owners: any[] = [];
       let total = 0;
 
-      const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 
-                                   'contact_name', 'phone', 'cellphone', 'email'];
+      const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 'complement', 
+                                    'contact_name', 'phone', 'cellphone', 'email'];
       
       if (search.trim() || (sortField && sortDirection && contactRelatedFields.includes(sortField))) {
         const allOwners = await prisma.owner.findMany({
@@ -186,7 +187,8 @@ export class OwnerService {
           addr.district,
           addr.city,
           addr.state,
-          addr.zip_code
+          addr.zip_code,
+          addr.complement
         ].filter(Boolean).join(' '))
         .join(' ') || '';
 
@@ -237,7 +239,7 @@ export class OwnerService {
            'cpf', 'cnpj', 'state_registration', 'municipal_registration'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
-      else if (['city', 'state', 'district', 'street', 'zip_code'].includes(key)) {
+      else if (['city', 'state', 'district', 'street', 'zip_code', 'complement'].includes(key)) {
         if (!conditions.addresses) conditions.addresses = { some: { address: {} } };
         conditions.addresses.some.address[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
@@ -298,7 +300,7 @@ export class OwnerService {
       let valueA = '';
       let valueB = '';
 
-      if (['city', 'state', 'district', 'street', 'zip_code'].includes(sortField)) {
+      if (['city', 'state', 'district', 'street', 'zip_code', 'complement'].includes(sortField)) {
         valueA = a.addresses?.[0]?.address?.[sortField] || '';
         valueB = b.addresses?.[0]?.address?.[sortField] || '';
       }
@@ -440,6 +442,7 @@ export class OwnerService {
                 zip_code: address.zip_code,
                 street: address.street,
                 number: address.number,
+                complement: address.complement || null,
                 district: address.district,
                 city: address.city,
                 state: address.state,
@@ -558,6 +561,7 @@ export class OwnerService {
                   zip_code: address.zip_code,
                   street: address.street,
                   number: address.number,
+                  complement: address.complement || null,
                   district: address.district,
                   city: address.city,
                   state: address.state,
@@ -660,7 +664,7 @@ export class OwnerService {
                 [key]: { contains: String(value), mode: 'insensitive' as Prisma.QueryMode }
               });
             }
-            else if (['city', 'state', 'district', 'street', 'zip_code'].includes(key)) {
+            else if (['city', 'state', 'district', 'street', 'zip_code', 'complement'].includes(key)) {
               andFilters.push({ 
                 addresses: { some: { address: { [key]: { contains: String(value), mode: 'insensitive' as Prisma.QueryMode } } } } 
               });
@@ -688,8 +692,8 @@ export class OwnerService {
         }),
         prisma.address.findMany({
           where: { deleted_at: null, ownerAddresses: { some: { owner: { deleted_at: null } } } },
-          select: { city: true, state: true, district: true, street: true, zip_code: true },
-          distinct: ['city', 'state', 'district', 'street', 'zip_code']
+          select: { city: true, state: true, district: true, street: true, zip_code: true, complement: true },
+          distinct: ['city', 'state', 'district', 'street', 'zip_code', 'complement']
         }),
         prisma.contact.findMany({
           where: { deleted_at: null, owner_id: { not: null }, owner: { deleted_at: null } },
@@ -718,6 +722,7 @@ export class OwnerService {
         { field: 'district', type: 'string', label: 'Bairro', values: [...new Set(addresses.filter(a => a.district).map(a => a.district))].sort(), searchable: true },
         { field: 'street', type: 'string', label: 'Rua', values: [...new Set(addresses.filter(a => a.street).map(a => a.street))].sort(), searchable: true },
         { field: 'zip_code', type: 'string', label: 'CEP', values: [...new Set(addresses.filter(a => a.zip_code).map(a => a.zip_code))].sort(), searchable: true },
+        { field: 'complement', type: 'string', label: 'Complemento', values: [...new Set(addresses.filter(a => a.complement).map(a => a.complement))].sort(), searchable: true },
         { field: 'contact_name', type: 'string', label: 'Nome do Contato', values: [...new Set(contacts.filter(c => c.contact).map(c => c.contact))].sort(), searchable: true },
         { field: 'phone', type: 'string', label: 'Telefone', values: [...new Set(contacts.filter(c => c.phone).map(c => c.phone))].sort(), searchable: true },
         { field: 'cellphone', type: 'string', label: 'Celular', values: [...new Set(contacts.filter(c => c.cellphone).map(c => c.cellphone))].sort(), searchable: true },
@@ -734,7 +739,7 @@ export class OwnerService {
           select: ['equals', 'in']
         },
         defaultSort: 'created_at:desc',
-        searchFields: ['name', 'internal_code', 'cpf', 'cnpj', 'state_registration', 'municipal_registration', 'occupation', 'marital_status', 'city', 'state', 'district', 'street', 'zip_code', 'contact_name', 'phone', 'cellphone', 'email']
+        searchFields: ['name', 'internal_code', 'cpf', 'cnpj', 'state_registration', 'municipal_registration', 'occupation', 'marital_status', 'city', 'state', 'district', 'street', 'zip_code', 'complement', 'contact_name', 'phone', 'cellphone', 'email']
       };
 
     } catch (error) {

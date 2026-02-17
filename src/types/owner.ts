@@ -75,6 +75,7 @@ export interface CreateOwnerInput {
     district: string;
     city: string;
     state: string;
+    complement?: string;
     country?: string;
   }>;
 }
