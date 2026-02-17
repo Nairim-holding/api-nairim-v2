@@ -474,7 +474,7 @@ export class TenantService {
 
   static async deleteTenant(id: string) {
     return prisma.$transaction(async (tx) => {
-      await tx.tenant.update({
+      const tenant = await tx.tenant.update({
         where: { id },
         data: { deleted_at: new Date() }
       });
@@ -486,15 +486,16 @@ export class TenantService {
         where: { tenant_id: id, deleted_at: null },
         data: { deleted_at: new Date() }
       });
+      return tenant;
     });
   }
 
   static async restoreTenant(id: string) {
-    const tenant = await prisma.tenant.findUnique({ where: { id } });
-    if (!tenant?.deleted_at) throw new Error('Tenant not deleted');
+    const existingTenant = await prisma.tenant.findUnique({ where: { id } });
+    if (!existingTenant?.deleted_at) throw new Error('Tenant not deleted');
 
     return prisma.$transaction(async (tx) => {
-      await tx.tenant.update({
+      const tenant = await tx.tenant.update({
         where: { id },
         data: { deleted_at: null }
       });
@@ -506,6 +507,7 @@ export class TenantService {
         where: { tenant_id: id },
         data: { deleted_at: null }
       });
+      return tenant;
     });
   }
 
