@@ -332,23 +332,28 @@ export class TenantService {
           data: {
             name: data.name,
             internal_code: data.internal_code,
-            occupation: data.occupation,
-            marital_status: data.marital_status,
+            occupation: data.occupation || null,
+            marital_status: data.marital_status || null,
             cpf: data.cpf || null,
             cnpj: data.cnpj || null,
             state_registration: data.state_registration || null,       
-            municipal_registration: data.municipal_registration || null, 
-            
-            contacts: {
-              create: data.contacts?.map((c: any) => ({
-                contact: c.contact,
-                phone: c.phone,
-                cellphone: c.cellphone,
-                email: c.email
-              })) || []
-            }
+            municipal_registration: data.municipal_registration || null
           }
         });
+
+        if (data.contacts && data.contacts.length > 0) {
+          for (const c of data.contacts) {
+            await tx.contact.create({
+              data: {
+                tenant_id: newTenant.id,
+                contact: c.contact || null,
+                phone: c.phone || null,
+                cellphone: c.cellphone || null,
+                email: c.email || null
+              }
+            });
+          }
+        }
 
         if (data.addresses && data.addresses.length > 0) {
           for (const addr of data.addresses) {
@@ -402,35 +407,45 @@ export class TenantService {
         await tx.tenant.update({
           where: { id },
           data: {
-            name: data.name,
-            internal_code: data.internal_code,
-            occupation: data.occupation,
-            marital_status: data.marital_status,
-            cpf: data.cpf,
-            cnpj: data.cnpj,
-            state_registration: data.state_registration,
-            municipal_registration: data.municipal_registration
+            name: data.name !== undefined ? data.name : existing.name,
+            internal_code: data.internal_code !== undefined ? data.internal_code : existing.internal_code,
+            occupation: data.occupation !== undefined ? data.occupation : existing.occupation,
+            marital_status: data.marital_status !== undefined ? data.marital_status : existing.marital_status,
+            cpf: data.cpf !== undefined ? data.cpf : existing.cpf,
+            cnpj: data.cnpj !== undefined ? data.cnpj : existing.cnpj,
+            state_registration: data.state_registration !== undefined ? data.state_registration : existing.state_registration,
+            municipal_registration: data.municipal_registration !== undefined ? data.municipal_registration : existing.municipal_registration
           }
         });
 
         if (data.contacts !== undefined) {
-          await tx.contact.deleteMany({ where: { tenant_id: id } });
-          if (data.contacts.length > 0) {
-            await tx.contact.createMany({
-              data: data.contacts.map((c: any) => ({
-                tenant_id: id,
-                contact: c.contact,
-                phone: c.phone,
-                cellphone: c.cellphone,
-                email: c.email
-              }))
-            });
+          await tx.contact.updateMany({ 
+            where: { tenant_id: id, deleted_at: null },
+            data: { deleted_at: new Date() }
+          });
+          
+          if (data.contacts && data.contacts.length > 0) {
+            for (const c of data.contacts) {
+              await tx.contact.create({
+                data: {
+                  tenant_id: id,
+                  contact: c.contact || null,
+                  phone: c.phone || null,
+                  cellphone: c.cellphone || null,
+                  email: c.email || null
+                }
+              });
+            }
           }
         }
 
         if (data.addresses !== undefined) {
-          await tx.tenantAddress.deleteMany({ where: { tenant_id: id } });
-          if (data.addresses.length > 0) {
+          await tx.tenantAddress.updateMany({ 
+            where: { tenant_id: id, deleted_at: null },
+            data: { deleted_at: new Date() }
+          });
+
+          if (data.addresses && data.addresses.length > 0) {
              for (const addr of data.addresses) {
                 const newAddress = await tx.address.create({
                   data: {
@@ -450,7 +465,7 @@ export class TenantService {
              }
           }
         }
-        return existing;
+        return await this.getTenantById(id);
       });
     } catch (error: any) {
       throw error;
@@ -458,17 +473,19 @@ export class TenantService {
   }
 
   static async deleteTenant(id: string) {
-    return prisma.tenant.update({
-      where: { id },
-      data: { 
-        deleted_at: new Date(),
-        contacts: {
-          updateMany: { where: { tenant_id: id }, data: { deleted_at: new Date() } }
-        },
-        addresses: {
-          updateMany: { where: { tenant_id: id }, data: { deleted_at: new Date() } }
-        }
-      },
+    return prisma.$transaction(async (tx) => {
+      await tx.tenant.update({
+        where: { id },
+        data: { deleted_at: new Date() }
+      });
+      await tx.contact.updateMany({
+        where: { tenant_id: id, deleted_at: null },
+        data: { deleted_at: new Date() }
+      });
+      await tx.tenantAddress.updateMany({
+        where: { tenant_id: id, deleted_at: null },
+        data: { deleted_at: new Date() }
+      });
     });
   }
 
@@ -476,17 +493,19 @@ export class TenantService {
     const tenant = await prisma.tenant.findUnique({ where: { id } });
     if (!tenant?.deleted_at) throw new Error('Tenant not deleted');
 
-    return prisma.tenant.update({
-      where: { id },
-      data: { 
-        deleted_at: null,
-        contacts: {
-          updateMany: { where: { tenant_id: id }, data: { deleted_at: null } }
-        },
-        addresses: {
-          updateMany: { where: { tenant_id: id }, data: { deleted_at: null } }
-        }
-      }
+    return prisma.$transaction(async (tx) => {
+      await tx.tenant.update({
+        where: { id },
+        data: { deleted_at: null }
+      });
+      await tx.contact.updateMany({
+        where: { tenant_id: id },
+        data: { deleted_at: null }
+      });
+      await tx.tenantAddress.updateMany({
+        where: { tenant_id: id },
+        data: { deleted_at: null }
+      });
     });
   }
 
