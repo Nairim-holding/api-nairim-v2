@@ -20,8 +20,6 @@ export class TenantValidator {
 
     if (isPessoaJuridica) {
       if (data.cnpj && !this.validateCNPJ(data.cnpj)) errors.push('CNPJ inválido');
-      if (!data.state_registration?.trim()) errors.push('Inscrição Estadual é obrigatória');
-      if (!data.municipal_registration?.trim()) errors.push('Inscrição Municipal é obrigatória');
     }
 
     if (data.addresses && Array.isArray(data.addresses)) {
