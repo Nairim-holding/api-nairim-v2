@@ -31,6 +31,8 @@ export interface Address {
   city: string;
   state: string;
   country: string;
+  latitude?: number | null;
+  longitude?: number | null;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -53,7 +55,8 @@ export interface PropertyValue {
   id: string;
   property_id: string;
   reference_date: Date;
-  purchase_value: number;
+  purchase_date?: Date | null;
+  purchase_value?: number | null;
   rental_value: number;
   condo_fee: number;
   property_tax: number;
@@ -101,9 +104,12 @@ export interface CreatePropertyInput {
     city: string;
     state: string;
     country?: string;
+    latitude?: number;
+    longitude?: number;
   };
   values?: {
-    purchase_value: number;
+    purchase_date?: Date | string;
+    purchase_value?: number;
     rental_value: number;
     condo_fee: number;
     property_tax: number;
@@ -159,7 +165,6 @@ export interface FilterOption {
 }
 
 export interface UnifiedPropertyInput {
-  // Dados básicos do imóvel
   title: string;
   bedrooms: number;
   bathrooms: number;
@@ -172,13 +177,9 @@ export interface UnifiedPropertyInput {
   floor_number?: number;
   tax_registration: string;
   notes?: string;
-  
-  // Relacionamentos
   owner_id: string;
   type_id: string;
   agency_id?: string;
-  
-  // Endereço
   address: {
     zip_code: string;
     street: string;
@@ -187,11 +188,12 @@ export interface UnifiedPropertyInput {
     city: string;
     state: string;
     country?: string;
+    latitude?: number;
+    longitude?: number;
   };
-  
-  // Valores
   values: {
-    purchase_value: number;
+    purchase_date?: Date | string;
+    purchase_value?: number;
     rental_value: number;
     condo_fee?: number;
     property_tax?: number;
@@ -199,8 +201,6 @@ export interface UnifiedPropertyInput {
     notes?: string;
     reference_date?: Date | string;
   };
-  
-  // Documentos (arquivos)
   documents: {
     images: File[];
     registration?: File;
@@ -208,8 +208,6 @@ export interface UnifiedPropertyInput {
     title_deed?: File;
     others?: File[];
   };
-  
-  // Metadados
   created_by: string;
 }
 

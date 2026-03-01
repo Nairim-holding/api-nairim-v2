@@ -27,14 +27,12 @@ export class LeaseService {
     'created_at': { type: 'direct', realField: 'created_at' },
     'updated_at': { type: 'direct', realField: 'updated_at' },
     
-    // Campos de relacionamento
     'property_title': { type: 'property', realField: 'title', relationPath: 'property.title' },
     'type_description': { type: 'type', realField: 'description', relationPath: 'property.type.description' },
     'owner_name': { type: 'owner', realField: 'name', relationPath: 'owner.name' },
     'tenant_name': { type: 'tenant', realField: 'name', relationPath: 'tenant.name' },
   };
 
-  // Método para normalizar texto (remover acentos e caracteres especiais)
   private static normalizeText(text: string): string {
     if (!text) return '';
     return text
@@ -46,7 +44,6 @@ export class LeaseService {
       .trim();
   }
 
-  // Método auxiliar para acesso seguro a propriedades aninhadas
   private static safeGetProperty<T>(obj: any, path: string): T | undefined {
     return path.split('.').reduce((acc, part) => {
       if (acc === null || acc === undefined) return undefined;
@@ -54,7 +51,6 @@ export class LeaseService {
     }, obj);
   }
 
-  // Método auxiliar para ordenação por relacionamento em memória
   private static sortByRelatedField<T>(
     items: T[],
     sortField: string,
@@ -87,8 +83,6 @@ export class LeaseService {
 
   static async getLeases(params: GetLeasesParams = {}): Promise<PaginatedLeaseResponse> {
     try {
-      console.log('🔍 Executing getLeases with params:', JSON.stringify(params, null, 2));
-      
       const { 
         limit = 10, 
         page = 1, 
@@ -180,7 +174,6 @@ export class LeaseService {
       };
 
     } catch (error: any) {
-      console.error('❌ Error in LeaseService.getLeases:', error);
       throw new Error(`Failed to fetch leases: ${error.message}`);
     }
   }
@@ -361,7 +354,6 @@ export class LeaseService {
               addresses: { where: { deleted_at: null }, include: { address: true } },
               contacts: { 
                 where: { deleted_at: null }
-                // CORRIGIDO: Removido include: { contact: true } pois contact não é relação
               }
             }
           },
@@ -370,7 +362,6 @@ export class LeaseService {
               addresses: { where: { deleted_at: null }, include: { address: true } },
               contacts: { 
                 where: { deleted_at: null }
-                // CORRIGIDO: Removido include: { contact: true } pois contact não é relação
               }
             }
           },
@@ -415,6 +406,19 @@ export class LeaseService {
             condo_due_day: data.condo_due_day ? Number(data.condo_due_day) : null,
           }
         });
+
+        const propertyValue = await tx.propertyValue.findFirst({
+          where: { property_id: data.property_id, deleted_at: null },
+          orderBy: { created_at: 'desc' }
+        });
+
+        if (propertyValue && propertyValue.status !== 'OCCUPIED') {
+          await tx.propertyValue.update({
+            where: { id: propertyValue.id },
+            data: { status: 'OCCUPIED' }
+          });
+        }
+
         return newLease;
       });
       return lease;
@@ -456,6 +460,20 @@ export class LeaseService {
             condo_due_day: data.condo_due_day !== undefined ? (data.condo_due_day ? Number(data.condo_due_day) : null) : existing.condo_due_day,
           }
         });
+
+        const targetPropertyId = data.property_id ?? existing.property_id;
+        const propertyValue = await tx.propertyValue.findFirst({
+          where: { property_id: targetPropertyId, deleted_at: null },
+          orderBy: { created_at: 'desc' }
+        });
+
+        if (propertyValue && propertyValue.status !== 'OCCUPIED') {
+          await tx.propertyValue.update({
+            where: { id: propertyValue.id },
+            data: { status: 'OCCUPIED' }
+          });
+        }
+
         return updatedLease;
       });
       return lease;

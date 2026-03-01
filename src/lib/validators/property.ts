@@ -25,14 +25,15 @@ export class PropertyValidator {
     }
 
     if (data.values) {
-      if (data.values.purchase_value === undefined || isNaN(data.values.purchase_value))
-        errors.push('Valor de compra é obrigatório');
       if (data.values.rental_value === undefined || isNaN(data.values.rental_value))
         errors.push('Valor de aluguel é obrigatório');
       if (!data.values.status) errors.push('Status da propriedade é obrigatório');
       
       if (data.values.sale_date && isNaN(new Date(data.values.sale_date).getTime())) {
         errors.push('Data de venda inválida');
+      }
+      if (data.values.purchase_date && isNaN(new Date(data.values.purchase_date).getTime())) {
+        errors.push('Data de compra inválida');
       }
     }
 
@@ -51,6 +52,9 @@ export class PropertyValidator {
 
     if (data.values?.sale_date && isNaN(new Date(data.values.sale_date).getTime())) {
       errors.push('Data de venda inválida');
+    }
+    if (data.values?.purchase_date && isNaN(new Date(data.values.purchase_date).getTime())) {
+      errors.push('Data de compra inválida');
     }
 
     return { isValid: errors.length === 0, errors };

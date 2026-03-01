@@ -48,7 +48,7 @@ export class PropertyService {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')  
       .replace(/[çÇ]/g, 'c')       
-      .replace(/[ñÑ]/g, 'n')           
+      .replace(/[ñÑ]/g, 'n')          
       .toLowerCase()
       .trim();
   }
@@ -158,7 +158,11 @@ export class PropertyService {
             leases: {
               where: { deleted_at: null },
               take: 1,
-              orderBy: { created_at: 'desc' }
+              orderBy: { created_at: 'desc' },
+              include: {
+                tenant: true,
+                owner: true
+              }
             },
             favorites: {
               where: { deleted_at: null },
@@ -231,7 +235,11 @@ export class PropertyService {
               leases: {
                 where: { deleted_at: null },
                 take: 1,
-                orderBy: { created_at: 'desc' }
+                orderBy: { created_at: 'desc' },
+                include: {
+                  tenant: true,
+                  owner: true
+                }
               },
               favorites: {
                 where: { deleted_at: null },
@@ -586,6 +594,8 @@ export class PropertyService {
               city: data.address.city,
               state: data.address.state,
               country: data.address.country || 'Brasil',
+              latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+              longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
             }
           });
 
@@ -601,7 +611,8 @@ export class PropertyService {
           await tx.propertyValue.create({
             data: {
               property_id: newProperty.id,
-              purchase_value: parseFloat(data.values.purchase_value),
+              purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+              purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
               rental_value: parseFloat(data.values.rental_value),
               condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
@@ -1129,6 +1140,8 @@ export class PropertyService {
               city: data.address.city,
               state: data.address.state,
               country: data.address.country || 'Brasil',
+              latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+              longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
             }
           });
 
@@ -1147,7 +1160,8 @@ export class PropertyService {
           propertyValue = await tx.propertyValue.create({
             data: {
               property_id: property.id,
-              purchase_value: parseFloat(data.values.purchase_value),
+              purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+              purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
               rental_value: parseFloat(data.values.rental_value),
               condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
@@ -1298,6 +1312,8 @@ export class PropertyService {
                 city: data.address.city,
                 state: data.address.state,
                 country: data.address.country || 'Brasil',
+                latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+                longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
               }
             });
           } else {
@@ -1313,6 +1329,8 @@ export class PropertyService {
                 city: data.address.city,
                 state: data.address.state,
                 country: data.address.country || 'Brasil',
+                latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+                longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
               }
             });
 
@@ -1337,7 +1355,8 @@ export class PropertyService {
             propertyValue = await tx.propertyValue.update({
               where: { id: currentValue.id },
               data: {
-                purchase_value: parseFloat(data.values.purchase_value),
+                purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+                purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
                 rental_value: parseFloat(data.values.rental_value),
                 condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
                 property_tax: parseFloat(data.values.property_tax || 0),
@@ -1352,7 +1371,8 @@ export class PropertyService {
             propertyValue = await tx.propertyValue.create({
               data: {
                 property_id: property.id,
-                purchase_value: parseFloat(data.values.purchase_value),
+                purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+                purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
                 rental_value: parseFloat(data.values.rental_value),
                 condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
                 property_tax: parseFloat(data.values.property_tax || 0),

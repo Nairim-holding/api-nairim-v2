@@ -223,6 +223,7 @@ export const PropertyValueScalarFieldEnum = {
   id: 'id',
   property_id: 'property_id',
   sale_date: 'sale_date',
+  purchase_date: 'purchase_date',
   purchase_value: 'purchase_value',
   rental_value: 'rental_value',
   condo_fee: 'condo_fee',
@@ -262,6 +263,8 @@ export const AddressScalarFieldEnum = {
   city: 'city',
   state: 'state',
   country: 'country',
+  latitude: 'latitude',
+  longitude: 'longitude',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'

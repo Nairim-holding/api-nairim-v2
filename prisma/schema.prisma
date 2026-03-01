@@ -168,7 +168,8 @@ model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
   sale_date      DateTime?      @db.Date
-  purchase_value Decimal        @db.Decimal(20, 2)
+  purchase_date  DateTime?      @db.Date
+  purchase_value Decimal?       @db.Decimal(20, 2)
   rental_value   Decimal        @db.Decimal(20, 2)
   condo_fee      Decimal        @db.Decimal(20, 2)
   property_tax   Decimal        @db.Decimal(20, 2)
@@ -206,6 +207,8 @@ model Address {
   city              String
   state             String
   country           String
+  latitude          Float?
+  longitude         Float?
   created_at        DateTime          @default(now())
   updated_at        DateTime          @updatedAt
   deleted_at        DateTime?

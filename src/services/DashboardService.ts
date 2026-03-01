@@ -1,4 +1,3 @@
-// src/services/DashboardService.ts
 import { Decimal } from '@prisma/client/runtime/client';
 import prisma from '../lib/prisma';
 import { 
@@ -10,17 +9,15 @@ import {
   MetricResult
 } from '../types/dashboard';
 
-// Helper para converter Decimal do Prisma para Number
 const decimalToNumber = (v: Decimal | number | null | undefined) =>
   v == null ? 0 : v instanceof Decimal ? v.toNumber() : Number(v);
 
 const REQUIRED_DOCUMENT_TYPES = [
-  'TITLE_DEED',      // Escritura
-  'REGISTRATION',    // Matrícula
-  'PROPERTY_RECORD'  // Registro do Imóvel
+  'TITLE_DEED',  
+  'REGISTRATION',   
+  'PROPERTY_RECORD'
 ];
 
-// Helper para calcular variação percentual
 const calcVariation = (current: number, previous: number, data?: any[]): MetricResult => {
   if (previous === 0 || !isFinite(previous)) {
     return { 
@@ -31,7 +28,6 @@ const calcVariation = (current: number, previous: number, data?: any[]): MetricR
     };
   }
   let variation = ((current - previous) / previous) * 100;
-  // Limitar variação para evitar distorções visuais extremas (opcional, mas recomendado)
   variation = Math.max(Math.min(variation, 100), -100);
   
   return {
@@ -41,62 +37,6 @@ const calcVariation = (current: number, previous: number, data?: any[]): MetricR
     data: data || []
   };
 };
-
-// Helper para buscar coordenadas (Geocoding)
-async function fetchCoordinatesBatch(
-  addresses: {
-    street?: string;
-    number?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    title: string;
-  }[],
-  concurrency = 3
-) {
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-  const results: { lat: number; lng: number; info: string }[] = [];
-  let active = 0;
-
-  async function worker(addr: any) {
-    const fullAddress = `${addr.street}, ${addr.number}, ${addr.city}, ${addr.state}, ${addr.country}`;
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}`;
-
-    try {
-      const res = await fetch(url, {
-        headers: {
-          "User-Agent": "NairimAPI/1.0",
-          "Accept-Language": "pt-BR",
-          Accept: "application/json",
-        },
-      });
-
-      if (!res.ok) return;
-      const data = await res.json();
-
-      if (Array.isArray(data) && data.length > 0) {
-        results.push({
-          lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon),
-          info: `${addr.title} (${addr.city}/${addr.state})`,
-        });
-      }
-    } catch (err) {
-      console.error("❌ Erro coordenadas:", err);
-    } finally {
-      active--;
-    }
-  }
-
-  for (const addr of addresses) {
-    while (active >= concurrency) await delay(300); 
-    active++;
-    worker(addr);
-  }
-
-  while (active > 0) await delay(500);
-  return results;
-}
 
 export class DashboardService {
   static getPeriodDates(startDate: Date, endDate: Date): PeriodComparison {
@@ -111,7 +51,7 @@ export class DashboardService {
   }
 
   static calculateVacancyMonths(leases: any[], referenceDate: Date): number {
-    if (!leases || leases.length === 0) return 12; // Se nunca foi alugado, assume-se 12 meses de vacância para métrica simplificada
+    if (!leases || leases.length === 0) return 12;
     
     const lastLease = leases[0];
     const leaseEnd = new Date(lastLease.end_date);
@@ -146,19 +86,16 @@ export class DashboardService {
       })
     ]);
 
-    // 1. Ticket Médio
     const avgRentalData = properties.filter(p => toNum(p.values[0]?.rental_value) > 0).map(p => ({
       id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), type: p.type?.description, areaTotal: p.area_total, valuePerSqm: p.area_total > 0 ? +(toNum(p.values[0]?.rental_value) / p.area_total).toFixed(2) : 0, owner: p.owner?.name
     }));
     const prevAvgValue = prevProperties.length > 0 ? prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.rental_value), 0) / prevProperties.length : 0;
 
-    // 2. Valor Total Aluguel
     const activeRentalData = properties.filter(p => toNum(p.values[0]?.rental_value) > 0 && p.values[0]?.status === "AVAILABLE").map(p => ({
       id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), status: p.values[0]?.status, type: p.type?.description, agency: p.agency ? { tradeName: p.agency.trade_name } : null, leaseInfo: p.leases[0] ? { contractNumber: p.leases[0].contract_number, tenantName: p.leases[0].tenant?.name } : null
     }));
     const prevTotalRent = prevProperties.reduce((acc, p) => acc + (p.values[0]?.status === "AVAILABLE" ? toNum(p.values[0]?.rental_value) : 0), 0);
 
-    // 3. Impostos e Taxas
     const taxFeeData = properties.filter(p => toNum(p.values[0]?.property_tax) > 0 || toNum(p.values[0]?.condo_fee) > 0).map(p => {
       const total = toNum(p.values[0]?.property_tax) + toNum(p.values[0]?.condo_fee);
       const rent = toNum(p.values[0]?.rental_value);
@@ -166,7 +103,6 @@ export class DashboardService {
     });
     const prevTotalTax = prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.property_tax) + toNum(p.values[0]?.condo_fee), 0);
 
-    // 4. Aquisição
     const acquisitionData = properties.filter(p => toNum(p.values[0]?.purchase_value) > 0).map(p => {
       const purchase = toNum(p.values[0]?.purchase_value);
       const annualRent = toNum(p.values[0]?.rental_value) * 12;
@@ -174,14 +110,12 @@ export class DashboardService {
     });
     const prevTotalAcq = prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.purchase_value), 0);
 
-    // 5. Vacância Financeira
     const finVacancyData = properties.filter(p => p.values[0]?.status === "AVAILABLE").map(p => ({
       id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), monthsVacant: this.calculateVacancyMonths(p.leases, endDate), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, endDate)
     }));
     const currentFinVacRate = properties.length > 0 ? (finVacancyData.length / properties.length) * 100 : 0;
     const prevFinVacRate = prevProperties.length > 0 ? (prevProperties.filter(p => p.values[0]?.status === "AVAILABLE").length / prevProperties.length) * 100 : 0;
 
-    // 6. Vacância em Meses
     const vacMonthsData = properties.filter(p => p.values[0]?.status === "AVAILABLE").map(p => ({
       id: p.id, title: p.title, vacancyMonths: this.calculateVacancyMonths(p.leases, endDate), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, endDate)
     }));
@@ -223,10 +157,8 @@ export class DashboardService {
       })
     ]);
 
-    // 1. Total de Imóveis
     const allDetails = properties.map(p => ({ id: p.id, title: p.title, type: p.type?.description, status: p.values[0]?.status, rentalValue: toNum(p.values[0]?.rental_value), areaTotal: p.area_total, documentCount: p.documents.length, agency: p.agency ? { tradeName: p.agency.trade_name } : null }));
 
-    // 2. Documentação Pendente
     const pendingDocs = properties.map(p => {
       const present = p.documents.map(d => d.type);
       const missing = REQUIRED_DOCUMENT_TYPES.filter(t => !present.includes(t as any));
@@ -237,10 +169,8 @@ export class DashboardService {
       return REQUIRED_DOCUMENT_TYPES.some(t => !present.includes(t as any));
     }).length;
 
-    // 3. Valor de Venda
     const saleValueData = properties.filter(p => toNum(p.values[0]?.sale_value) > 0).map(p => ({ id: p.id, title: p.title, saleValue: toNum(p.values[0]?.sale_value), type: p.type?.description, rentalValue: toNum(p.values[0]?.rental_value) }));
 
-    // 4. Taxas de Ocupação e Vacância
     const available = properties.filter(p => p.values[0]?.status === "AVAILABLE").map(p => ({ id: p.id, title: p.title, type: p.type?.description, rentalValue: toNum(p.values[0]?.rental_value), areaTotal: p.area_total, monthsVacant: this.calculateVacancyMonths(p.leases, endDate) }));
     const occupied = properties.filter(p => p.values[0]?.status !== "AVAILABLE").map(p => ({ id: p.id, title: p.title, type: p.type?.description, rentalValue: toNum(p.values[0]?.rental_value), status: p.values[0]?.status }));
     
@@ -253,7 +183,6 @@ export class DashboardService {
     const currentPhysVac = properties.reduce((acc, p) => acc + this.calculateVacancyMonths(p.leases, endDate), 0);
     const prevPhysVac = prevProperties.reduce((acc, p) => acc + this.calculateVacancyMonths(p.leases, periods.previous.end), 0);
 
-    // 5. Imóveis por Tipo (Donut)
     const availablePropertiesByType = Object.entries(
       properties.reduce((acc: Record<string, number>, p) => {
         const type = p.type?.description || "Outros";
@@ -280,7 +209,6 @@ export class DashboardService {
     const toNum = (v: any) => decimalToNumber(v);
 
     const [owners, prevOwnersCount, tenants, prevTenantsCount, agencies, prevAgenciesCount] = await Promise.all([
-      // 1. Proprietários com Imóveis Detalhados
       prisma.owner.findMany({
         where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
         include: {
@@ -295,7 +223,6 @@ export class DashboardService {
       }),
       prisma.owner.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } }),
 
-      // 2. Inquilinos com Contratos e Imóveis
       prisma.tenant.findMany({
         where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
         include: {
@@ -314,7 +241,6 @@ export class DashboardService {
       }),
       prisma.tenant.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } }),
 
-      // 3. Agências com Imóveis
       prisma.agency.findMany({
         where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
         include: {
@@ -330,15 +256,11 @@ export class DashboardService {
       prisma.agency.count({ where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null } })
     ]);
 
-    // --- Processamento dos Dados ---
-
-    // Detalhes dos Proprietários (incluindo a lista de imóveis)
     const ownersDetails = owners.map(o => ({
       id: o.id,
       name: o.name,
       createdAt: o.created_at,
       propertiesCount: o.properties.length,
-      // Retornando o imóvel em si para visualização
       properties: o.properties.map(p => ({
         id: p.id,
         title: p.title,
@@ -349,12 +271,11 @@ export class DashboardService {
       }))
     }));
 
-    // Detalhes dos Inquilinos (incluindo imóveis relacionados)
+
     const tenantsDetails = tenants.map(t => ({
       id: t.id,
       name: t.name,
       createdAt: t.created_at,
-      // Mapeando imóveis através dos contratos
       properties: t.leases.map(l => ({
         id: l.property.id,
         title: l.property.title,
@@ -364,7 +285,6 @@ export class DashboardService {
       }))
     }));
 
-    // Detalhes das Agências
     const agenciesDetails = agencies.map(a => ({
       id: a.id,
       legalName: a.legal_name,
@@ -373,11 +293,9 @@ export class DashboardService {
       propertiesCount: a.properties.length
     }));
 
-    // Cálculos de Variação
     const totalProperties = owners.reduce((acc, o) => acc + o.properties.length, 0);
     const propertiesPerOwnerVal = owners.length > 0 ? totalProperties / owners.length : 0;
     
-    // Estimativa anterior simplificada
     const prevTotalPropertiesEstimate = prevOwnersCount * propertiesPerOwnerVal; 
     const prevPropertiesPerOwnerVal = prevOwnersCount > 0 ? prevTotalPropertiesEstimate / prevOwnersCount : 0;
 
@@ -389,12 +307,10 @@ export class DashboardService {
       propertiesPerOwner: calcVariation(propertiesPerOwnerVal, prevPropertiesPerOwnerVal, ownersDetails), 
       
       agenciesTotal: calcVariation(agencies.length, prevAgenciesCount, agenciesDetails),
-      
-      // Imóveis por Agência (Donut/Lista)
+
       propertiesByAgency: agencies.map(a => ({
         name: a.trade_name || a.legal_name,
         value: a.properties.length,
-        // Detalhes ricos para o modal/drilldown incluindo a própria agência
         data: a.properties.map(p => ({
           id: p.id,
           title: p.title,
@@ -418,11 +334,20 @@ export class DashboardService {
       include: { addresses: { where: { deleted_at: null }, include: { address: true } } }
     });
 
-    const addresses = properties.flatMap(p => p.addresses.map(a => ({ 
-      street: a.address.street, number: a.address.number?.toString(), city: a.address.city, state: a.address.state, country: a.address.country, title: p.title 
-    })));
+    const coordinates = properties.flatMap(p => p.addresses.map(a => {
+      const lat = a.address.latitude;
+      const lng = a.address.longitude;
+      
+      if (lat != null && lng != null) {
+        return {
+          lat,
+          lng,
+          info: `${p.title} (${a.address.city}/${a.address.state})`
+        };
+      }
+      return null;
+    })).filter(coord => coord !== null) as { lat: number; lng: number; info: string }[];
 
-    const coordinates = await fetchCoordinatesBatch(addresses, 3);
     return { coordinates };
   }
 }
