@@ -24,6 +24,11 @@ export class LeaseService {
     'rent_due_day': { type: 'direct', realField: 'rent_due_day' },
     'tax_due_day': { type: 'direct', realField: 'tax_due_day' },
     'condo_due_day': { type: 'direct', realField: 'condo_due_day' },
+    'status': { type: 'direct', realField: 'status' },
+    'cancellation_penalty': { type: 'direct', realField: 'cancellation_penalty' },
+    'other_cancellation_amounts': { type: 'direct', realField: 'other_cancellation_amounts' },
+    'cancellation_justification': { type: 'direct', realField: 'cancellation_justification' },
+    'canceled_at': { type: 'direct', realField: 'canceled_at' },
     'created_at': { type: 'direct', realField: 'created_at' },
     'updated_at': { type: 'direct', realField: 'updated_at' },
     
@@ -32,6 +37,25 @@ export class LeaseService {
     'owner_name': { type: 'owner', realField: 'name', relationPath: 'owner.name' },
     'tenant_name': { type: 'tenant', realField: 'name', relationPath: 'tenant.name' },
   };
+
+  private static determineStatus(endDate: Date): 'EXPIRED' | 'EXPIRING' | 'ACTIVE' {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(0, 0, 0, 0);
+    const oneMonthFromNow = new Date(now);
+    oneMonthFromNow.setMonth(now.getMonth() + 1);
+
+    if (end < now) return 'EXPIRED';
+    if (end <= oneMonthFromNow) return 'EXPIRING';
+    return 'ACTIVE';
+  }
+
+  private static processLeaseStatus<T extends { status?: string; end_date?: Date }>(lease: T): T {
+    if (!lease) return lease;
+    if (lease.status === 'CANCELED' || !lease.end_date) return lease;
+    return { ...lease, status: this.determineStatus(lease.end_date) };
+  }
 
   private static normalizeText(text: string): string {
     if (!text) return '';
@@ -88,14 +112,13 @@ export class LeaseService {
         page = 1, 
         search = '',
         sortOptions = {},
-        includeInactive = false,
         filters = {} 
       } = params;
 
       const take = Math.max(1, Math.min(limit, 100));
       const skip = (Math.max(1, page) - 1) * take;
 
-      const where = this.buildWhereClauseWithoutSearch(filters, includeInactive);
+      const where = this.buildWhereClauseWithoutSearch(filters);
       const sortField = Object.keys(sortOptions)[0];
       const sortDirection = sortOptions[sortField];
       
@@ -118,9 +141,9 @@ export class LeaseService {
           }
         }) as unknown as LeaseWithRelations[];
 
-        let filteredLeases = allLeases;
+        let filteredLeases = allLeases.map(l => this.processLeaseStatus(l));
         if (search.trim()) {
-          filteredLeases = this.filterLeasesBySearch(allLeases, search);
+          filteredLeases = this.filterLeasesBySearch(filteredLeases, search);
         }
 
         total = filteredLeases.length;
@@ -162,7 +185,7 @@ export class LeaseService {
           prisma.lease.count({ where })
         ]);
 
-        leases = leasesData as unknown as LeaseWithRelations[];
+        leases = (leasesData as unknown as LeaseWithRelations[]).map(l => this.processLeaseStatus(l));
         total = totalCount;
       }
 
@@ -187,7 +210,7 @@ export class LeaseService {
     const normalizedSearchTerm = this.normalizeText(searchTerm);
     
     return leases.filter(lease => {
-      const directFields = [lease.contract_number, lease.id].filter(Boolean).join(' ');
+      const directFields = [lease.contract_number, lease.id, lease.status].filter(Boolean).join(' ');
       const propertyFields = [lease.property?.title, lease.property?.type?.description].filter(Boolean).join(' ');
       const ownerFields = [lease.owner?.name].filter(Boolean).join(' ');
       const tenantFields = [lease.tenant?.name].filter(Boolean).join(' ');
@@ -240,7 +263,7 @@ export class LeaseService {
       }
       else if (['id', 'contract_number', 'start_date', 'end_date', 'rent_amount', 
                 'condo_fee', 'property_tax', 'extra_charges', 'commission_amount',
-                'rent_due_day', 'tax_due_day', 'condo_due_day', 'created_at', 'updated_at'].includes(realField)) {
+                'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'created_at', 'updated_at'].includes(realField)) {
         orderBy.push({ [realField]: direction });
       }
     });
@@ -253,14 +276,9 @@ export class LeaseService {
   }
 
   private static buildWhereClauseWithoutSearch(
-    filters: Record<string, any>,
-    includeInactive: boolean
+    filters: Record<string, any>
   ): any {
-    const where: any = {};
-    
-    if (!includeInactive) {
-      where.deleted_at = null;
-    }
+    const where: any = { deleted_at: null };
     
     const filterConditions = this.buildFilterConditions(filters);
     if (Object.keys(filterConditions).length > 0) {
@@ -276,7 +294,7 @@ export class LeaseService {
     Object.entries(filters).forEach(([key, value]) => {
       if (value === undefined || value === null || value === '') return;
 
-      if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day'].includes(key)) {
+      if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day', 'status'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
       else if (['rent_amount', 'condo_fee', 'property_tax', 'extra_charges', 'commission_amount'].includes(key)) {
@@ -285,7 +303,7 @@ export class LeaseService {
           conditions[key] = floatValue;
         }
       }
-      else if (['start_date', 'end_date'].includes(key)) {
+      else if (['start_date', 'end_date', 'canceled_at'].includes(key)) {
         conditions[key] = this.buildDateCondition(value);
       }
       else if (key === 'property_title') {
@@ -370,7 +388,7 @@ export class LeaseService {
       }) as any;
 
       if (!lease) throw new Error('Lease not found');
-      return lease;
+      return this.processLeaseStatus(lease);
 
     } catch (error: any) {
       throw error;
@@ -386,6 +404,8 @@ export class LeaseService {
           });
           if (existingContract) throw new Error('Contract number already registered');
         }
+
+        const calculatedStatus = data.status === 'CANCELED' ? 'CANCELED' : this.determineStatus(new Date(data.end_date));
 
         const newLease = await tx.lease.create({
           data: {
@@ -404,6 +424,11 @@ export class LeaseService {
             rent_due_day: Number(data.rent_due_day),
             tax_due_day: data.tax_due_day ? Number(data.tax_due_day) : null,
             condo_due_day: data.condo_due_day ? Number(data.condo_due_day) : null,
+            status: calculatedStatus,
+            cancellation_penalty: data.cancellation_penalty ? Number(data.cancellation_penalty) : null,
+            other_cancellation_amounts: data.other_cancellation_amounts ? Number(data.other_cancellation_amounts) : null,
+            cancellation_justification: data.cancellation_justification || null,
+            canceled_at: calculatedStatus === 'CANCELED' ? (data.canceled_at ? new Date(data.canceled_at) : new Date()) : null,
           }
         });
 
@@ -412,7 +437,7 @@ export class LeaseService {
           orderBy: { created_at: 'desc' }
         });
 
-        if (propertyValue && propertyValue.status !== 'OCCUPIED') {
+        if (propertyValue && propertyValue.status !== 'OCCUPIED' && calculatedStatus !== 'CANCELED') {
           await tx.propertyValue.update({
             where: { id: propertyValue.id },
             data: { status: 'OCCUPIED' }
@@ -440,6 +465,8 @@ export class LeaseService {
           if (contractExists) throw new Error('Contract number already registered for another lease');
         }
 
+        const calculatedStatus = data.status === 'CANCELED' ? 'CANCELED' : this.determineStatus(new Date(data.end_date || existing.end_date));
+
         const updatedLease = await tx.lease.update({
           where: { id },
           data: {
@@ -458,6 +485,11 @@ export class LeaseService {
             rent_due_day: data.rent_due_day ? Number(data.rent_due_day) : existing.rent_due_day,
             tax_due_day: data.tax_due_day !== undefined ? (data.tax_due_day ? Number(data.tax_due_day) : null) : existing.tax_due_day,
             condo_due_day: data.condo_due_day !== undefined ? (data.condo_due_day ? Number(data.condo_due_day) : null) : existing.condo_due_day,
+            status: calculatedStatus,
+            cancellation_penalty: data.cancellation_penalty !== undefined ? (data.cancellation_penalty ? Number(data.cancellation_penalty) : null) : existing.cancellation_penalty,
+            other_cancellation_amounts: data.other_cancellation_amounts !== undefined ? (data.other_cancellation_amounts ? Number(data.other_cancellation_amounts) : null) : existing.other_cancellation_amounts,
+            cancellation_justification: data.cancellation_justification !== undefined ? data.cancellation_justification : existing.cancellation_justification,
+            canceled_at: calculatedStatus === 'CANCELED' && existing.status !== 'CANCELED' ? new Date(data.canceled_at || new Date()) : (calculatedStatus === 'CANCELED' ? existing.canceled_at : null),
           }
         });
 
@@ -467,11 +499,29 @@ export class LeaseService {
           orderBy: { created_at: 'desc' }
         });
 
-        if (propertyValue && propertyValue.status !== 'OCCUPIED') {
-          await tx.propertyValue.update({
-            where: { id: propertyValue.id },
-            data: { status: 'OCCUPIED' }
-          });
+        if (propertyValue) {
+          if (calculatedStatus !== 'CANCELED' && propertyValue.status !== 'OCCUPIED') {
+            await tx.propertyValue.update({
+              where: { id: propertyValue.id },
+              data: { status: 'OCCUPIED' }
+            });
+          } else if (calculatedStatus === 'CANCELED' && propertyValue.status === 'OCCUPIED') {
+            const activeLeases = await tx.lease.count({
+              where: {
+                property_id: targetPropertyId,
+                NOT: { id: updatedLease.id },
+                deleted_at: null,
+                status: { not: 'CANCELED' }
+              }
+            });
+
+            if (activeLeases === 0) {
+              await tx.propertyValue.update({
+                where: { id: propertyValue.id },
+                data: { status: 'AVAILABLE' }
+              });
+            }
+          }
         }
 
         return updatedLease;
@@ -484,12 +534,43 @@ export class LeaseService {
 
   static async deleteLease(id: string) {
     try {
-      const lease = await prisma.lease.findUnique({ where: { id, deleted_at: null } });
-      if (!lease) throw new Error('Lease not found or already deleted');
+      const lease = await prisma.$transaction(async (tx: any) => {
+        const existing = await tx.lease.findUnique({ where: { id, deleted_at: null } });
+        if (!existing) throw new Error('Lease not found');
+        if (existing.status === 'CANCELED') throw new Error('Lease already canceled');
 
-      await prisma.lease.update({
-        where: { id },
-        data: { deleted_at: new Date() },
+        const canceledLease = await tx.lease.update({
+          where: { id },
+          data: { 
+            status: 'CANCELED',
+            canceled_at: new Date()
+          },
+        });
+
+        const propertyValue = await tx.propertyValue.findFirst({
+          where: { property_id: existing.property_id, deleted_at: null },
+          orderBy: { created_at: 'desc' }
+        });
+
+        if (propertyValue && propertyValue.status === 'OCCUPIED') {
+          const activeLeases = await tx.lease.count({
+            where: {
+              property_id: existing.property_id,
+              NOT: { id },
+              deleted_at: null,
+              status: { not: 'CANCELED' }
+            }
+          });
+
+          if (activeLeases === 0) {
+            await tx.propertyValue.update({
+              where: { id: propertyValue.id },
+              data: { status: 'AVAILABLE' }
+            });
+          }
+        }
+
+        return canceledLease;
       });
       return lease;
     } catch (error: any) {
@@ -499,13 +580,34 @@ export class LeaseService {
 
   static async restoreLease(id: string) {
     try {
-      const lease = await prisma.lease.findUnique({ where: { id } });
-      if (!lease) throw new Error('Lease not found');
-      if (!lease.deleted_at) throw new Error('Lease is not deleted');
+      const lease = await prisma.$transaction(async (tx: any) => {
+        const existing = await tx.lease.findUnique({ where: { id } });
+        if (!existing) throw new Error('Lease not found');
 
-      await prisma.lease.update({
-        where: { id },
-        data: { deleted_at: null }
+        const updatedLease = await tx.lease.update({
+          where: { id },
+          data: { 
+            status: this.determineStatus(existing.end_date),
+            canceled_at: null,
+            cancellation_penalty: null,
+            other_cancellation_amounts: null,
+            cancellation_justification: null
+          }
+        });
+
+        const propertyValue = await tx.propertyValue.findFirst({
+          where: { property_id: existing.property_id, deleted_at: null },
+          orderBy: { created_at: 'desc' }
+        });
+
+        if (propertyValue && propertyValue.status !== 'OCCUPIED') {
+          await tx.propertyValue.update({
+            where: { id: propertyValue.id },
+            data: { status: 'OCCUPIED' }
+          });
+        }
+
+        return updatedLease;
       });
       return lease;
     } catch (error: any) {
@@ -528,13 +630,15 @@ export class LeaseService {
               where.owner = { name: { contains: String(value), mode: 'insensitive' as Prisma.QueryMode } };
             } else if (key === 'tenant_name') {
               where.tenant = { name: { contains: String(value), mode: 'insensitive' as Prisma.QueryMode } };
+            } else if (key === 'status') {
+              where.status = value;
             }
           }
         });
       }
 
       const [leases, properties, propertyTypes, owners, tenants, dateRange] = await Promise.all([
-        prisma.lease.findMany({ where, select: { contract_number: true, start_date: true, end_date: true, rent_amount: true, condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, rent_due_day: true, tax_due_day: true, condo_due_day: true } }),
+        prisma.lease.findMany({ where, select: { contract_number: true, start_date: true, end_date: true, rent_amount: true, condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, rent_due_day: true, tax_due_day: true, condo_due_day: true, status: true } }),
         prisma.property.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, title: true }, orderBy: { title: 'asc' }, distinct: ['title'] }),
         prisma.propertyType.findMany({ where: { deleted_at: null, properties: { some: { deleted_at: null, leases: { some: where } } } }, select: { id: true, description: true }, orderBy: { description: 'asc' }, distinct: ['description'] }),
         prisma.owner.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, name: true }, orderBy: { name: 'asc' }, distinct: ['name'] }),
@@ -552,6 +656,7 @@ export class LeaseService {
 
       const filtersList = [
         { field: 'contract_number', type: 'string', label: 'Número do Contrato', values: uniqueContractNumbers, searchable: true, autocomplete: true },
+        { field: 'status', type: 'select', label: 'Status', values: ['EXPIRED', 'EXPIRING', 'ACTIVE', 'CANCELED'], searchable: false, autocomplete: false },
         { field: 'start_date', type: 'date', label: 'Data de Início', dateRange: true },
         { field: 'end_date', type: 'date', label: 'Data de Término', dateRange: true },
         { field: 'rent_amount', type: 'number', label: 'Valor do Aluguel', values: uniqueRentAmounts, searchable: true },
@@ -573,7 +678,7 @@ export class LeaseService {
         filters: filtersList,
         operators: { string: ['contains', 'equals', 'startsWith', 'endsWith'], number: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'], date: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'], boolean: ['equals'], select: ['equals', 'in'] },
         defaultSort: 'created_at:desc',
-        searchFields: ['contract_number', 'property.title', 'owner.name', 'tenant.name', 'property.type.description']
+        searchFields: ['contract_number', 'property.title', 'owner.name', 'tenant.name', 'property.type.description', 'status']
       };
 
     } catch (error) {

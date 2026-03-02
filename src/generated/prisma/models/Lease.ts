@@ -35,6 +35,8 @@ export type LeaseAvgAggregateOutputType = {
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
+  cancellation_penalty: runtime.Decimal | null
+  other_cancellation_amounts: runtime.Decimal | null
 }
 
 export type LeaseSumAggregateOutputType = {
@@ -46,6 +48,8 @@ export type LeaseSumAggregateOutputType = {
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
+  cancellation_penalty: runtime.Decimal | null
+  other_cancellation_amounts: runtime.Decimal | null
 }
 
 export type LeaseMinAggregateOutputType = {
@@ -65,6 +69,11 @@ export type LeaseMinAggregateOutputType = {
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
+  status: $Enums.LeaseStatus | null
+  cancellation_penalty: runtime.Decimal | null
+  other_cancellation_amounts: runtime.Decimal | null
+  cancellation_justification: string | null
+  canceled_at: Date | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -87,6 +96,11 @@ export type LeaseMaxAggregateOutputType = {
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
+  status: $Enums.LeaseStatus | null
+  cancellation_penalty: runtime.Decimal | null
+  other_cancellation_amounts: runtime.Decimal | null
+  cancellation_justification: string | null
+  canceled_at: Date | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -109,6 +123,11 @@ export type LeaseCountAggregateOutputType = {
   rent_due_day: number
   tax_due_day: number
   condo_due_day: number
+  status: number
+  cancellation_penalty: number
+  other_cancellation_amounts: number
+  cancellation_justification: number
+  canceled_at: number
   created_at: number
   updated_at: number
   deleted_at: number
@@ -125,6 +144,8 @@ export type LeaseAvgAggregateInputType = {
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
+  cancellation_penalty?: true
+  other_cancellation_amounts?: true
 }
 
 export type LeaseSumAggregateInputType = {
@@ -136,6 +157,8 @@ export type LeaseSumAggregateInputType = {
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
+  cancellation_penalty?: true
+  other_cancellation_amounts?: true
 }
 
 export type LeaseMinAggregateInputType = {
@@ -155,6 +178,11 @@ export type LeaseMinAggregateInputType = {
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
+  status?: true
+  cancellation_penalty?: true
+  other_cancellation_amounts?: true
+  cancellation_justification?: true
+  canceled_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -177,6 +205,11 @@ export type LeaseMaxAggregateInputType = {
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
+  status?: true
+  cancellation_penalty?: true
+  other_cancellation_amounts?: true
+  cancellation_justification?: true
+  canceled_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -199,6 +232,11 @@ export type LeaseCountAggregateInputType = {
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
+  status?: true
+  cancellation_penalty?: true
+  other_cancellation_amounts?: true
+  cancellation_justification?: true
+  canceled_at?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -308,6 +346,11 @@ export type LeaseGroupByOutputType = {
   rent_due_day: number
   tax_due_day: number | null
   condo_due_day: number | null
+  status: $Enums.LeaseStatus
+  cancellation_penalty: runtime.Decimal | null
+  other_cancellation_amounts: runtime.Decimal | null
+  cancellation_justification: string | null
+  canceled_at: Date | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
@@ -353,6 +396,11 @@ export type LeaseWhereInput = {
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
+  status?: Prisma.EnumLeaseStatusFilter<"Lease"> | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.StringNullableFilter<"Lease"> | string | null
+  canceled_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
@@ -379,6 +427,11 @@ export type LeaseOrderByWithRelationInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrderInput | Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancellation_justification?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceled_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -408,6 +461,11 @@ export type LeaseWhereUniqueInput = Prisma.AtLeast<{
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
+  status?: Prisma.EnumLeaseStatusFilter<"Lease"> | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.StringNullableFilter<"Lease"> | string | null
+  canceled_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
@@ -434,6 +492,11 @@ export type LeaseOrderByWithAggregationInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrderInput | Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancellation_justification?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceled_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -464,6 +527,11 @@ export type LeaseScalarWhereWithAggregatesInput = {
   rent_due_day?: Prisma.IntWithAggregatesFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableWithAggregatesFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableWithAggregatesFilter<"Lease"> | number | null
+  status?: Prisma.EnumLeaseStatusWithAggregatesFilter<"Lease"> | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.StringNullableWithAggregatesFilter<"Lease"> | string | null
+  canceled_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Lease"> | Date | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Lease"> | Date | string | null
@@ -482,6 +550,11 @@ export type LeaseCreateInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -508,6 +581,11 @@ export type LeaseUncheckedCreateInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -526,6 +604,11 @@ export type LeaseUpdateInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -552,6 +635,11 @@ export type LeaseUncheckedUpdateInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -574,6 +662,11 @@ export type LeaseCreateManyInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -592,6 +685,11 @@ export type LeaseUpdateManyMutationInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -614,6 +712,11 @@ export type LeaseUncheckedUpdateManyInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -646,6 +749,11 @@ export type LeaseCountOrderByAggregateInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrder
+  cancellation_justification?: Prisma.SortOrder
+  canceled_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -660,6 +768,8 @@ export type LeaseAvgOrderByAggregateInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrder
 }
 
 export type LeaseMaxOrderByAggregateInput = {
@@ -679,6 +789,11 @@ export type LeaseMaxOrderByAggregateInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrder
+  cancellation_justification?: Prisma.SortOrder
+  canceled_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -701,6 +816,11 @@ export type LeaseMinOrderByAggregateInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrder
+  cancellation_justification?: Prisma.SortOrder
+  canceled_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -715,6 +835,8 @@ export type LeaseSumOrderByAggregateInput = {
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
+  cancellation_penalty?: Prisma.SortOrder
+  other_cancellation_amounts?: Prisma.SortOrder
 }
 
 export type LeaseCreateNestedManyWithoutPropertyInput = {
@@ -859,6 +981,10 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type EnumLeaseStatusFieldUpdateOperationsInput = {
+  set?: $Enums.LeaseStatus
+}
+
 export type LeaseCreateNestedManyWithoutTypeInput = {
   create?: Prisma.XOR<Prisma.LeaseCreateWithoutTypeInput, Prisma.LeaseUncheckedCreateWithoutTypeInput> | Prisma.LeaseCreateWithoutTypeInput[] | Prisma.LeaseUncheckedCreateWithoutTypeInput[]
   connectOrCreate?: Prisma.LeaseCreateOrConnectWithoutTypeInput | Prisma.LeaseCreateOrConnectWithoutTypeInput[]
@@ -914,6 +1040,11 @@ export type LeaseCreateWithoutPropertyInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -938,6 +1069,11 @@ export type LeaseUncheckedCreateWithoutPropertyInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -989,6 +1125,11 @@ export type LeaseScalarWhereInput = {
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
+  status?: Prisma.EnumLeaseStatusFilter<"Lease"> | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.StringNullableFilter<"Lease"> | string | null
+  canceled_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Lease"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Lease"> | Date | string | null
@@ -1007,6 +1148,11 @@ export type LeaseCreateWithoutOwnerInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1031,6 +1177,11 @@ export type LeaseUncheckedCreateWithoutOwnerInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1075,6 +1226,11 @@ export type LeaseCreateWithoutTenantInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1099,6 +1255,11 @@ export type LeaseUncheckedCreateWithoutTenantInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1143,6 +1304,11 @@ export type LeaseCreateWithoutTypeInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1167,6 +1333,11 @@ export type LeaseUncheckedCreateWithoutTypeInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1214,6 +1385,11 @@ export type LeaseCreateManyPropertyInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1232,6 +1408,11 @@ export type LeaseUpdateWithoutPropertyInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1256,6 +1437,11 @@ export type LeaseUncheckedUpdateWithoutPropertyInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1277,6 +1463,11 @@ export type LeaseUncheckedUpdateManyWithoutPropertyInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1298,6 +1489,11 @@ export type LeaseCreateManyOwnerInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1316,6 +1512,11 @@ export type LeaseUpdateWithoutOwnerInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1340,6 +1541,11 @@ export type LeaseUncheckedUpdateWithoutOwnerInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1361,6 +1567,11 @@ export type LeaseUncheckedUpdateManyWithoutOwnerInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1382,6 +1593,11 @@ export type LeaseCreateManyTenantInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1400,6 +1616,11 @@ export type LeaseUpdateWithoutTenantInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1424,6 +1645,11 @@ export type LeaseUncheckedUpdateWithoutTenantInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1445,6 +1671,11 @@ export type LeaseUncheckedUpdateManyWithoutTenantInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1466,6 +1697,11 @@ export type LeaseCreateManyTypeInput = {
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
+  status?: $Enums.LeaseStatus
+  cancellation_penalty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: string | null
+  canceled_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1484,6 +1720,11 @@ export type LeaseUpdateWithoutTypeInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1508,6 +1749,11 @@ export type LeaseUncheckedUpdateWithoutTypeInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1529,6 +1775,11 @@ export type LeaseUncheckedUpdateManyWithoutTypeInput = {
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumLeaseStatusFieldUpdateOperationsInput | $Enums.LeaseStatus
+  cancellation_penalty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  other_cancellation_amounts?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  cancellation_justification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceled_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1553,6 +1804,11 @@ export type LeaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
+  status?: boolean
+  cancellation_penalty?: boolean
+  other_cancellation_amounts?: boolean
+  cancellation_justification?: boolean
+  canceled_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1579,6 +1835,11 @@ export type LeaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
+  status?: boolean
+  cancellation_penalty?: boolean
+  other_cancellation_amounts?: boolean
+  cancellation_justification?: boolean
+  canceled_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1605,6 +1866,11 @@ export type LeaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
+  status?: boolean
+  cancellation_penalty?: boolean
+  other_cancellation_amounts?: boolean
+  cancellation_justification?: boolean
+  canceled_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1631,12 +1897,17 @@ export type LeaseSelectScalar = {
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
+  status?: boolean
+  cancellation_penalty?: boolean
+  other_cancellation_amounts?: boolean
+  cancellation_justification?: boolean
+  canceled_at?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type LeaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "type_id" | "owner_id" | "tenant_id" | "contract_number" | "start_date" | "end_date" | "rent_amount" | "condo_fee" | "property_tax" | "extra_charges" | "commission_amount" | "rent_due_day" | "tax_due_day" | "condo_due_day" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["lease"]>
+export type LeaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "type_id" | "owner_id" | "tenant_id" | "contract_number" | "start_date" | "end_date" | "rent_amount" | "condo_fee" | "property_tax" | "extra_charges" | "commission_amount" | "rent_due_day" | "tax_due_day" | "condo_due_day" | "status" | "cancellation_penalty" | "other_cancellation_amounts" | "cancellation_justification" | "canceled_at" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["lease"]>
 export type LeaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
@@ -1681,6 +1952,11 @@ export type $LeasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     rent_due_day: number
     tax_due_day: number | null
     condo_due_day: number | null
+    status: $Enums.LeaseStatus
+    cancellation_penalty: runtime.Decimal | null
+    other_cancellation_amounts: runtime.Decimal | null
+    cancellation_justification: string | null
+    canceled_at: Date | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
@@ -2127,6 +2403,11 @@ export interface LeaseFieldRefs {
   readonly rent_due_day: Prisma.FieldRef<"Lease", 'Int'>
   readonly tax_due_day: Prisma.FieldRef<"Lease", 'Int'>
   readonly condo_due_day: Prisma.FieldRef<"Lease", 'Int'>
+  readonly status: Prisma.FieldRef<"Lease", 'LeaseStatus'>
+  readonly cancellation_penalty: Prisma.FieldRef<"Lease", 'Decimal'>
+  readonly other_cancellation_amounts: Prisma.FieldRef<"Lease", 'Decimal'>
+  readonly cancellation_justification: Prisma.FieldRef<"Lease", 'String'>
+  readonly canceled_at: Prisma.FieldRef<"Lease", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"Lease", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Lease", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Lease", 'DateTime'>

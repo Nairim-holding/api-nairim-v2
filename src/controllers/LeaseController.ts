@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
-import { LeaseValidator } from '../lib/validators/lease';
-import { LeaseService } from '@/services/LeaseService';
 import { GetLeasesParams } from '../types/lease';
+import { LeaseValidator } from '@/lib/validators/lease';
+import { LeaseService } from '@/services/LeaseService';
 
 export class LeaseController {
   static async getLeases(req: Request, res: Response) {
@@ -11,36 +11,26 @@ export class LeaseController {
       const limit = ValidationUtil.parseNumberParam(req.query?.limit, 10);
       const page = ValidationUtil.parseNumberParam(req.query?.page, 1);
       const search = ValidationUtil.parseStringParam(req.query?.search);
-      const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      // Processar sort no formato sort[field]=direction
       const sortOptions: Record<string, 'asc' | 'desc'> = {};
       const filters: Record<string, any> = {};
       
-      console.log('📥 Query params recebidos para locações:', req.query);
-      
-      // Processar parâmetros de ordenação
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (typeof value === 'string') {
-          // Verificar se é parâmetro de ordenação no formato sort[field]
           const sortMatch = key.match(/^sort\[(.+)\]$/);
           if (sortMatch) {
             const field = sortMatch[1];
             const direction = value.toLowerCase() as 'asc' | 'desc';
             if (direction === 'asc' || direction === 'desc') {
               sortOptions[field] = direction;
-              console.log(`📌 Ordenação detectada: ${field} -> ${direction}`);
             }
           }
-          // Processar filtros
-          else if (!['limit', 'page', 'search', 'includeInactive'].includes(key) && value.trim() !== '') {
-            // Verificar se é filtro no formato filter[field]
+          else if (!['limit', 'page', 'search'].includes(key) && value.trim() !== '') {
             const filterMatch = key.match(/^filter\[(.+)\]$/);
             if (filterMatch) {
               const field = filterMatch[1];
               filters[field] = value;
             }
-            // Tratar outros parâmetros como filtros diretos
             else if (key !== 'sort' && !key.startsWith('sort[')) {
               try {
                 const parsedValue = JSON.parse(value);
@@ -53,10 +43,8 @@ export class LeaseController {
         }
       });
 
-      // Garantir que campos de relacionamento usem a notação correta
       const normalizedSortOptions: Record<string, 'asc' | 'desc'> = {};
       Object.entries(sortOptions).forEach(([field, direction]) => {
-        // Mapear campos do front-end para campos do back-end
         const fieldMap: Record<string, string> = {
           'property_title': 'property.title',
           'type_description': 'property.type.description',
@@ -67,26 +55,21 @@ export class LeaseController {
         normalizedSortOptions[fieldMap[field] || field] = direction;
       });
 
-      console.log('🔍 Sort options normalizados:', normalizedSortOptions);
-      console.log('📋 Filtros extraídos:', filters);
-
       const params: GetLeasesParams = {
         limit,
         page,
         search,
         filters,
-        sortOptions: normalizedSortOptions, // Usar os normalizados
-        includeInactive,
+        sortOptions: normalizedSortOptions,
       };
 
       const validation = LeaseValidator.validateQueryParams({ ...req.query, ...normalizedSortOptions });
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const result = await LeaseService.getLeases(params);
 
-      // Desabilitar cache
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
@@ -94,8 +77,7 @@ export class LeaseController {
       res.status(200).json(result);
 
     } catch (error: any) {
-      console.error('Error getting leases:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -103,20 +85,19 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
       
       const lease = await LeaseService.getLeaseById(id);
 
       res.status(200).json(
-        ApiResponse.success(lease, 'Lease retrieved successfully')
+        ApiResponse.success(lease, 'Locação recuperada com sucesso')
       );
     } catch (error: any) {
       if (error.message === 'Lease not found') {
-        return res.status(404).json(ApiResponse.error('Lease not found'));
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
-      console.error('Error getting lease:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -125,23 +106,21 @@ export class LeaseController {
       const validation = LeaseValidator.validateCreate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const lease = await LeaseService.createLease(req.body);
 
       res.status(201).json(
-        ApiResponse.success(lease, `Lease ${lease.contract_number} created successfully`)
+        ApiResponse.success(lease, `Locação ${lease.contract_number} criada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error creating lease:', error);
-      
       if (error.message === 'Contract number already registered') {
-        return res.status(409).json(ApiResponse.error('Contract number already registered'));
+        return res.status(409).json(ApiResponse.error('Número de contrato já registrado'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error creating lease: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao criar locação: ${error.message}`));
     }
   }
 
@@ -149,33 +128,31 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const validation = LeaseValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const lease = await LeaseService.updateLease(id, req.body);
 
       res.status(200).json(
-        ApiResponse.success(lease, `Lease ${lease.contract_number} updated successfully`)
+        ApiResponse.success(lease, `Locação ${lease.contract_number} atualizada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error updating lease:', error);
-
       if (error.message === 'Lease not found') {
-        return res.status(404).json(ApiResponse.error('Lease not found'));
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
       if (error.message === 'Contract number already registered for another lease') {
-        return res.status(409).json(ApiResponse.error('Contract number already registered for another lease'));
+        return res.status(409).json(ApiResponse.error('Número de contrato já registrado para outra locação'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error updating lease: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar locação: ${error.message}`));
     }
   }
 
@@ -183,22 +160,24 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const lease = await LeaseService.deleteLease(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Lease ${lease.contract_number} marked as deleted successfully`)
+        ApiResponse.success(null, `Locação ${lease.contract_number} cancelada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error deleting lease:', error);
-
-      if (error.message === 'Lease not found or already deleted') {
-        return res.status(404).json(ApiResponse.error('Lease not found or already deleted'));
+      if (error.message === 'Lease not found') {
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
-      res.status(500).json(ApiResponse.error('Error deleting lease'));
+      if (error.message === 'Lease already canceled') {
+        return res.status(400).json(ApiResponse.error('Locação já se encontra cancelada'));
+      }
+
+      res.status(500).json(ApiResponse.error('Erro ao cancelar locação'));
     }
   }
 
@@ -206,43 +185,30 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const lease = await LeaseService.restoreLease(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Lease ${lease.contract_number} restored successfully`)
+        ApiResponse.success(null, `Locação ${lease.contract_number} restaurada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error restoring lease:', error);
-
       if (error.message === 'Lease not found') {
-        return res.status(404).json(ApiResponse.error('Lease not found'));
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
-      if (error.message === 'Lease is not deleted') {
-        return res.status(400).json(ApiResponse.error('Lease is not deleted'));
-      }
-
-      res.status(500).json(ApiResponse.error('Error restoring lease'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar locação'));
     }
   }
 
   static async getLeaseFilters(req: Request, res: Response) {
     try {
-      // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
       
-      console.log('📥 Received query params for lease filters:', req.query);
-
-      // Processar parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
-          console.log(`🔧 Processing filter param: ${key} =`, value);
-          
           try {
-            // Tentar parsear como JSON (para objetos como date ranges)
             const parsedValue = JSON.parse(value as string);
             if (parsedValue && typeof parsedValue === 'object') {
               filters[key] = parsedValue;
@@ -250,22 +216,18 @@ export class LeaseController {
               filters[key] = value;
             }
           } catch {
-            // Se não for JSON, tratar como string
             filters[key] = value;
           }
         }
       });
 
-      console.log('📋 Parsed filters for context:', filters);
-
       const filtersData = await LeaseService.getLeaseFilters(filters);
       
       res.status(200).json(
-        ApiResponse.success(filtersData, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
-      console.error('❌ Error getting lease filters:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

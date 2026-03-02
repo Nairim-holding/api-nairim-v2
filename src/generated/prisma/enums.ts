@@ -43,3 +43,13 @@ export const DocumentType = {
 } as const
 
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+
+
+export const LeaseStatus = {
+  EXPIRED: 'EXPIRED',
+  EXPIRING: 'EXPIRING',
+  ACTIVE: 'ACTIVE',
+  CANCELED: 'CANCELED'
+} as const
+
+export type LeaseStatus = (typeof LeaseStatus)[keyof typeof LeaseStatus]
