@@ -11,7 +11,8 @@ import {
   Agency,
   Tenant,
   PropertyType,
-  LeaseStatus
+  LeaseStatus,
+  PaymentCondition
 } from "../src/generated/prisma/client";
 
 function getRandomElement<T>(array: T[]): T {
@@ -321,6 +322,11 @@ async function main() {
           tax_due_day: 20,
           condo_due_day: 10,
           status: status,
+          payment_condition: getRandomElement([
+            PaymentCondition.IN_FULL_15_DISCOUNT,
+            PaymentCondition.SECOND_INSTALLMENT_10_DISCOUNT,
+            PaymentCondition.INSTALLMENTS_12X
+          ]),
           cancellation_penalty: penalty,
           other_cancellation_amounts: otherAmounts,
           cancellation_justification: justification,

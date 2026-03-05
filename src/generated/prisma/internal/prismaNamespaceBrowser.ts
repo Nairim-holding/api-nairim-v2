@@ -212,6 +212,7 @@ export const LeaseScalarFieldEnum = {
   tax_due_day: 'tax_due_day',
   condo_due_day: 'condo_due_day',
   status: 'status',
+  payment_condition: 'payment_condition',
   cancellation_penalty: 'cancellation_penalty',
   other_cancellation_amounts: 'other_cancellation_amounts',
   cancellation_justification: 'cancellation_justification',

@@ -1,5 +1,7 @@
 export type LeaseStatus = 'EXPIRED' | 'EXPIRING' | 'ACTIVE' | 'CANCELED';
 
+export type PaymentCondition = 'IN_FULL_15_DISCOUNT' | 'SECOND_INSTALLMENT_10_DISCOUNT' | 'INSTALLMENTS_12X';
+
 export interface Lease {
   id: string;
   contract_number: string;
@@ -14,6 +16,7 @@ export interface Lease {
   tax_due_day?: number | null;
   condo_due_day?: number | null;
   status: LeaseStatus;
+  payment_condition?: PaymentCondition | null;
   cancellation_penalty?: number | null;
   other_cancellation_amounts?: number | null;
   cancellation_justification?: string | null;
@@ -63,6 +66,7 @@ export interface CreateLeaseInput {
   tax_due_day?: number;
   condo_due_day?: number;
   status?: LeaseStatus;
+  payment_condition?: PaymentCondition;
   cancellation_penalty?: number;
   other_cancellation_amounts?: number;
   cancellation_justification?: string;

@@ -22,6 +22,10 @@ export class LeaseValidator {
       }
     }
 
+    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'].includes(data.payment_condition)) {
+      errors.push('Condição de pagamento inválida');
+    }
+
     return { isValid: errors.length === 0, errors };
   }
 
@@ -34,6 +38,10 @@ export class LeaseValidator {
       if (startDate >= endDate) {
         errors.push('Data de início deve ser anterior à data de término');
       }
+    }
+
+    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'].includes(data.payment_condition)) {
+      errors.push('Condição de pagamento inválida');
     }
 
     return { isValid: errors.length === 0, errors };

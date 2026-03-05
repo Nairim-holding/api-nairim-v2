@@ -25,6 +25,7 @@ export class LeaseService {
     'tax_due_day': { type: 'direct', realField: 'tax_due_day' },
     'condo_due_day': { type: 'direct', realField: 'condo_due_day' },
     'status': { type: 'direct', realField: 'status' },
+    'payment_condition': { type: 'direct', realField: 'payment_condition' },
     'cancellation_penalty': { type: 'direct', realField: 'cancellation_penalty' },
     'other_cancellation_amounts': { type: 'direct', realField: 'other_cancellation_amounts' },
     'cancellation_justification': { type: 'direct', realField: 'cancellation_justification' },
@@ -210,7 +211,7 @@ export class LeaseService {
     const normalizedSearchTerm = this.normalizeText(searchTerm);
     
     return leases.filter(lease => {
-      const directFields = [lease.contract_number, lease.id, lease.status].filter(Boolean).join(' ');
+      const directFields = [lease.contract_number, lease.id, lease.status, lease.payment_condition].filter(Boolean).join(' ');
       const propertyFields = [lease.property?.title, lease.property?.type?.description].filter(Boolean).join(' ');
       const ownerFields = [lease.owner?.name].filter(Boolean).join(' ');
       const tenantFields = [lease.tenant?.name].filter(Boolean).join(' ');
@@ -263,7 +264,7 @@ export class LeaseService {
       }
       else if (['id', 'contract_number', 'start_date', 'end_date', 'rent_amount', 
                 'condo_fee', 'property_tax', 'extra_charges', 'commission_amount',
-                'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'created_at', 'updated_at'].includes(realField)) {
+                'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'payment_condition', 'created_at', 'updated_at'].includes(realField)) {
         orderBy.push({ [realField]: direction });
       }
     });
@@ -294,7 +295,7 @@ export class LeaseService {
     Object.entries(filters).forEach(([key, value]) => {
       if (value === undefined || value === null || value === '') return;
 
-      if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day', 'status'].includes(key)) {
+      if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'payment_condition'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
       else if (['rent_amount', 'condo_fee', 'property_tax', 'extra_charges', 'commission_amount'].includes(key)) {
@@ -425,6 +426,7 @@ export class LeaseService {
             tax_due_day: data.tax_due_day ? Number(data.tax_due_day) : null,
             condo_due_day: data.condo_due_day ? Number(data.condo_due_day) : null,
             status: calculatedStatus,
+            payment_condition: data.payment_condition || null,
             cancellation_penalty: data.cancellation_penalty ? Number(data.cancellation_penalty) : null,
             other_cancellation_amounts: data.other_cancellation_amounts ? Number(data.other_cancellation_amounts) : null,
             cancellation_justification: data.cancellation_justification || null,
@@ -486,6 +488,7 @@ export class LeaseService {
             tax_due_day: data.tax_due_day !== undefined ? (data.tax_due_day ? Number(data.tax_due_day) : null) : existing.tax_due_day,
             condo_due_day: data.condo_due_day !== undefined ? (data.condo_due_day ? Number(data.condo_due_day) : null) : existing.condo_due_day,
             status: calculatedStatus,
+            payment_condition: data.payment_condition !== undefined ? data.payment_condition : existing.payment_condition,
             cancellation_penalty: data.cancellation_penalty !== undefined ? (data.cancellation_penalty ? Number(data.cancellation_penalty) : null) : existing.cancellation_penalty,
             other_cancellation_amounts: data.other_cancellation_amounts !== undefined ? (data.other_cancellation_amounts ? Number(data.other_cancellation_amounts) : null) : existing.other_cancellation_amounts,
             cancellation_justification: data.cancellation_justification !== undefined ? data.cancellation_justification : existing.cancellation_justification,
@@ -632,13 +635,15 @@ export class LeaseService {
               where.tenant = { name: { contains: String(value), mode: 'insensitive' as Prisma.QueryMode } };
             } else if (key === 'status') {
               where.status = value;
+            } else if (key === 'payment_condition') {
+              where.payment_condition = value;
             }
           }
         });
       }
 
       const [leases, properties, propertyTypes, owners, tenants, dateRange] = await Promise.all([
-        prisma.lease.findMany({ where, select: { contract_number: true, start_date: true, end_date: true, rent_amount: true, condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, rent_due_day: true, tax_due_day: true, condo_due_day: true, status: true } }),
+        prisma.lease.findMany({ where, select: { contract_number: true, start_date: true, end_date: true, rent_amount: true, condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, rent_due_day: true, tax_due_day: true, condo_due_day: true, status: true, payment_condition: true } }),
         prisma.property.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, title: true }, orderBy: { title: 'asc' }, distinct: ['title'] }),
         prisma.propertyType.findMany({ where: { deleted_at: null, properties: { some: { deleted_at: null, leases: { some: where } } } }, select: { id: true, description: true }, orderBy: { description: 'asc' }, distinct: ['description'] }),
         prisma.owner.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, name: true }, orderBy: { name: 'asc' }, distinct: ['name'] }),
@@ -657,6 +662,7 @@ export class LeaseService {
       const filtersList = [
         { field: 'contract_number', type: 'string', label: 'Número do Contrato', values: uniqueContractNumbers, searchable: true, autocomplete: true },
         { field: 'status', type: 'select', label: 'Status', values: ['EXPIRED', 'EXPIRING', 'ACTIVE', 'CANCELED'], searchable: false, autocomplete: false },
+        { field: 'payment_condition', type: 'select', label: 'Condição de Pagamento', values: ['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'], searchable: false, autocomplete: false },
         { field: 'start_date', type: 'date', label: 'Data de Início', dateRange: true },
         { field: 'end_date', type: 'date', label: 'Data de Término', dateRange: true },
         { field: 'rent_amount', type: 'number', label: 'Valor do Aluguel', values: uniqueRentAmounts, searchable: true },
@@ -678,7 +684,7 @@ export class LeaseService {
         filters: filtersList,
         operators: { string: ['contains', 'equals', 'startsWith', 'endsWith'], number: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'], date: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'], boolean: ['equals'], select: ['equals', 'in'] },
         defaultSort: 'created_at:desc',
-        searchFields: ['contract_number', 'property.title', 'owner.name', 'tenant.name', 'property.type.description', 'status']
+        searchFields: ['contract_number', 'property.title', 'owner.name', 'tenant.name', 'property.type.description', 'status', 'payment_condition']
       };
 
     } catch (error) {

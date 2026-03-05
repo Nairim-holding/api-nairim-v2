@@ -136,34 +136,35 @@ model Tenant {
 }
 
 model Lease {
-  id                         String       @id @default(uuid())
+  id                         String            @id @default(uuid())
   property_id                String
   type_id                    String
   owner_id                   String
   tenant_id                  String
   contract_number            String
-  start_date                 DateTime     @db.Date
-  end_date                   DateTime     @db.Date
-  rent_amount                Decimal      @db.Decimal(20, 2)
-  condo_fee                  Decimal?     @db.Decimal(20, 2)
-  property_tax               Decimal?     @db.Decimal(20, 2)
-  extra_charges              Decimal?     @db.Decimal(20, 2)
-  commission_amount          Decimal?     @db.Decimal(20, 2)
+  start_date                 DateTime          @db.Date
+  end_date                   DateTime          @db.Date
+  rent_amount                Decimal           @db.Decimal(20, 2)
+  condo_fee                  Decimal?          @db.Decimal(20, 2)
+  property_tax               Decimal?          @db.Decimal(20, 2)
+  extra_charges              Decimal?          @db.Decimal(20, 2)
+  commission_amount          Decimal?          @db.Decimal(20, 2)
   rent_due_day               Int
   tax_due_day                Int?
   condo_due_day              Int?
-  status                     LeaseStatus  @default(ACTIVE)
-  cancellation_penalty       Decimal?     @db.Decimal(20, 2)
-  other_cancellation_amounts Decimal?     @db.Decimal(20, 2)
+  status                     LeaseStatus       @default(ACTIVE)
+  payment_condition          PaymentCondition?
+  cancellation_penalty       Decimal?          @db.Decimal(20, 2)
+  other_cancellation_amounts Decimal?          @db.Decimal(20, 2)
   cancellation_justification String?
   canceled_at                DateTime?
-  created_at                 DateTime     @default(now())
-  updated_at                 DateTime     @updatedAt
+  created_at                 DateTime          @default(now())
+  updated_at                 DateTime          @updatedAt
   deleted_at                 DateTime?
-  owner                      Owner        @relation(fields: [owner_id], references: [id])
-  property                   Property     @relation(fields: [property_id], references: [id])
-  tenant                     Tenant       @relation(fields: [tenant_id], references: [id])
-  type                       PropertyType @relation(fields: [type_id], references: [id])
+  owner                      Owner             @relation(fields: [owner_id], references: [id])
+  property                   Property          @relation(fields: [property_id], references: [id])
+  tenant                     Tenant            @relation(fields: [tenant_id], references: [id])
+  type                       PropertyType      @relation(fields: [type_id], references: [id])
 
   @@index([property_id])
   @@index([tenant_id])
@@ -330,4 +331,10 @@ enum LeaseStatus {
   EXPIRING
   ACTIVE
   CANCELED
+}
+
+enum PaymentCondition {
+  IN_FULL_15_DISCOUNT
+  SECOND_INSTALLMENT_10_DISCOUNT
+  INSTALLMENTS_12X
 }

@@ -309,6 +309,13 @@ export type EnumLeaseStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel> | $Enums.LeaseStatus
 }
 
+export type EnumPaymentConditionNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaymentCondition | Prisma.EnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel> | $Enums.PaymentCondition | null
+}
+
 export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel>
@@ -349,6 +356,16 @@ export type EnumLeaseStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel>
+}
+
+export type EnumPaymentConditionNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaymentCondition | Prisma.EnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPaymentConditionNullableWithAggregatesFilter<$PrismaModel> | $Enums.PaymentCondition | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel>
 }
 
 export type EnumPropertyStatusFilter<$PrismaModel = never> = {
@@ -692,6 +709,13 @@ export type NestedEnumLeaseStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel> | $Enums.LeaseStatus
 }
 
+export type NestedEnumPaymentConditionNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaymentCondition | Prisma.EnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel> | $Enums.PaymentCondition | null
+}
+
 export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel>
@@ -732,6 +756,16 @@ export type NestedEnumLeaseStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLeaseStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPaymentConditionNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaymentCondition | Prisma.EnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PaymentCondition[] | Prisma.ListEnumPaymentConditionFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPaymentConditionNullableWithAggregatesFilter<$PrismaModel> | $Enums.PaymentCondition | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPaymentConditionNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumPropertyStatusFilter<$PrismaModel = never> = {
