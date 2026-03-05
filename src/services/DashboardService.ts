@@ -162,11 +162,13 @@ export class DashboardService {
     const pendingDocs = properties.map(p => {
       const present = p.documents.map(d => d.type);
       const missing = REQUIRED_DOCUMENT_TYPES.filter(t => !present.includes(t as any));
-      return { id: p.id, title: p.title, documentCount: p.documents.length, type: p.type?.description, missingDocuments: missing, isComplete: missing.length === 0 };
+      const isComplete = REQUIRED_DOCUMENT_TYPES.some(t => present.includes(t as any));
+      return { id: p.id, title: p.title, documentCount: p.documents.length, type: p.type?.description, missingDocuments: missing, isComplete };
     }).filter(p => !p.isComplete);
+    
     const prevPendingCount = prevProperties.filter(p => {
       const present = p.documents.map(d => d.type);
-      return REQUIRED_DOCUMENT_TYPES.some(t => !present.includes(t as any));
+      return !REQUIRED_DOCUMENT_TYPES.some(t => present.includes(t as any));
     }).length;
 
     const saleValueData = properties.filter(p => toNum(p.values[0]?.sale_value) > 0).map(p => ({ id: p.id, title: p.title, saleValue: toNum(p.values[0]?.sale_value), type: p.type?.description, rentalValue: toNum(p.values[0]?.rental_value) }));
@@ -270,7 +272,6 @@ export class DashboardService {
         saleValue: toNum(p.values[0]?.sale_value)
       }))
     }));
-
 
     const tenantsDetails = tenants.map(t => ({
       id: t.id,
