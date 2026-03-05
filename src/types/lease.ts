@@ -1,3 +1,5 @@
+export type LeaseStatus = 'EXPIRED' | 'EXPIRING' | 'ACTIVE' | 'CANCELED';
+
 export interface Lease {
   id: string;
   contract_number: string;
@@ -11,6 +13,11 @@ export interface Lease {
   rent_due_day: number;
   tax_due_day?: number | null;
   condo_due_day?: number | null;
+  status: LeaseStatus;
+  cancellation_penalty?: number | null;
+  other_cancellation_amounts?: number | null;
+  cancellation_justification?: string | null;
+  canceled_at?: Date | null;
   property_id: string;
   type_id: string;
   owner_id: string;
@@ -55,6 +62,11 @@ export interface CreateLeaseInput {
   rent_due_day: number;
   tax_due_day?: number;
   condo_due_day?: number;
+  status?: LeaseStatus;
+  cancellation_penalty?: number;
+  other_cancellation_amounts?: number;
+  cancellation_justification?: string;
+  canceled_at?: Date | string;
 }
 
 export interface UpdateLeaseInput extends Partial<CreateLeaseInput> {}
