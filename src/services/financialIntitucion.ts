@@ -49,9 +49,10 @@ export class FinancialInstitutionService {
         if (sortEntries.length > 0) {
           const field = sortEntries[0][0];
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
-          filtered = filtered.sort((a, b) => {
-             const strA = String(a[field] || '');
-             const strB = String(b[field] || '');
+            filtered = filtered.sort((a, b) => {
+             const key = field as keyof typeof a;
+             const strA = String(a[key] || '');
+             const strB = String(b[key] || '');
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
