@@ -90,6 +90,7 @@ model Document {
   file_type   String
   description String?
   type        DocumentType
+  is_featured Boolean      @default(false)
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
   deleted_at  DateTime?
@@ -157,6 +158,13 @@ model Lease {
   rent_amount                Decimal           @db.Decimal(20, 2)
   condo_fee                  Decimal?          @db.Decimal(20, 2)
   property_tax               Decimal?          @db.Decimal(20, 2)
+  
+  property_tax_cash               Decimal?     @db.Decimal(20, 2)
+  property_tax_first_installment  Decimal?     @db.Decimal(20, 2)
+  property_tax_second_installment Decimal?     @db.Decimal(20, 2)
+  iptu_installments_count         Int?
+  iptu_installments               Json?
+
   extra_charges              Decimal?          @db.Decimal(20, 2)
   commission_amount          Decimal?          @db.Decimal(20, 2)
   rent_due_day               Int
@@ -180,7 +188,6 @@ model Lease {
   @@index([property_id])
   @@index([tenant_id])
 }
-
 model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
@@ -498,7 +505,7 @@ enum LeaseStatus {
 enum PaymentCondition {
   IN_FULL_15_DISCOUNT
   SECOND_INSTALLMENT_10_DISCOUNT
-  INSTALLMENTS_12X
+  INSTALLMENTS
 }
 
 enum TransactionType {

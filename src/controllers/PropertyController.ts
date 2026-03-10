@@ -14,16 +14,13 @@ export class PropertyController {
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      // Processar sort no formato sort[field]=direction
       const sortOptions: Record<string, 'asc' | 'desc'> = {};
       const filters: Record<string, any> = {};
       
       console.log('📥 Query params recebidos para propriedades:', req.query);
       
-      // Processar parâmetros de ordenação
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (typeof value === 'string') {
-          // Verificar se é parâmetro de ordenação no formato sort[field]
           const sortMatch = key.match(/^sort\[(.+)\]$/);
           if (sortMatch) {
             const field = sortMatch[1];
@@ -33,24 +30,20 @@ export class PropertyController {
               console.log(`📌 Ordenação detectada: ${field} -> ${direction}`);
             }
           }
-          // Verificar se é parâmetro de ordenação no formato antigo sort_field
           else if (key.startsWith('sort_')) {
-            const field = key.substring(5); // Remove "sort_"
+            const field = key.substring(5);
             const direction = value.toLowerCase() as 'asc' | 'desc';
             if (direction === 'asc' || direction === 'desc') {
               sortOptions[field] = direction;
               console.log(`📌 Ordenação detectada (formato antigo): ${field} -> ${direction}`);
             }
           }
-          // Processar filtros
           else if (!['limit', 'page', 'search', 'includeInactive'].includes(key) && value.trim() !== '') {
-            // Verificar se é filtro no formato filter[field]
             const filterMatch = key.match(/^filter\[(.+)\]$/);
             if (filterMatch) {
               const field = filterMatch[1];
               filters[field] = value;
             }
-            // Tratar outros parâmetros como filtros diretos
             else if (key !== 'sort' && !key.startsWith('sort[') && !key.startsWith('sort_')) {
               try {
                 const parsedValue = JSON.parse(value);
@@ -82,7 +75,6 @@ export class PropertyController {
 
       const result = await PropertyService.getProperties(params);
 
-      // Desabilitar cache
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
@@ -118,7 +110,6 @@ export class PropertyController {
 
   static async createProperty(req: Request, res: Response) {
     try {
-      // Verificar se é multipart/form-data
       if (req.is('multipart/form-data')) {
         const { dataPropertys, addressProperty, valuesProperty } = req.body;
         
@@ -149,7 +140,6 @@ export class PropertyController {
           ApiResponse.success(property, `Property "${property.title}" created successfully`)
         );
       } else {
-        // JSON request
         const validation = PropertyValidator.validateCreate(req.body);
         if (!validation.isValid) {
           return res.status(400).json(
@@ -188,7 +178,6 @@ export class PropertyController {
         return res.status(400).json(ApiResponse.error('ID is required'));
       }
 
-      // Verificar se é multipart/form-data
       if (req.is('multipart/form-data')) {
         const { dataPropertys, addressProperty, valuesProperty } = req.body;
         
@@ -220,7 +209,6 @@ export class PropertyController {
           ApiResponse.success(property, `Property "${property.title}" updated successfully`)
         );
       } else {
-        // JSON request
         const validation = PropertyValidator.validateUpdate(req.body);
         if (!validation.isValid) {
           return res.status(400).json(
@@ -297,18 +285,15 @@ export class PropertyController {
 
   static async getPropertyFilters(req: Request, res: Response) {
     try {
-      // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
       
       console.log('📥 Received query params for property filters:', req.query);
 
-      // Processar parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
           console.log(`🔧 Processing filter param: ${key} =`, value);
           
           try {
-            // Tentar parsear como JSON (para objetos como date ranges)
             const parsedValue = JSON.parse(value as string);
             if (parsedValue && typeof parsedValue === 'object') {
               filters[key] = parsedValue;
@@ -316,7 +301,6 @@ export class PropertyController {
               filters[key] = value;
             }
           } catch {
-            // Se não for JSON, tratar como string
             filters[key] = value;
           }
         }
@@ -364,11 +348,7 @@ export class PropertyController {
   static async createUnifiedProperty(req: Request, res: Response) {
     try {
       console.log('🚀 Recebendo requisição unificada para criar propriedade');
-      console.log('📦 Headers Content-Type:', req.headers['content-type']);
-      console.log('📁 Arquivos recebidos:', req.files ? Object.keys(req.files as any) : 'nenhum');
-      console.log('📝 Campos do body:', Object.keys(req.body));
       
-      // Verificar se é multipart/form-data
       if (!req.is('multipart/form-data')) {
         return res.status(400).json(ApiResponse.error(
           'Formato inválido. Use multipart/form-data para envio de arquivos'
@@ -379,18 +359,12 @@ export class PropertyController {
         propertyData,
         addressData,
         valuesData,
-        userId
+        userId,
+        featuredImageIdentifier // <-- AGORA ESTÁ EXTRAINDO CORRETAMENTE
       } = req.body;
 
       const files = req.files as Record<string, Express.Multer.File[]> | undefined;
 
-      console.log('📄 Conteúdo dos campos JSON:');
-      console.log('- propertyData:', propertyData?.substring(0, 200) + '...');
-      console.log('- addressData:', addressData?.substring(0, 200) + '...');
-      console.log('- valuesData:', valuesData?.substring(0, 200) + '...');
-      console.log('- userId:', userId);
-
-      // VALIDAÇÃO: Campos obrigatórios
       if (!propertyData || !addressData || !valuesData || !userId) {
         console.error('❌ Campos obrigatórios ausentes');
         return res.status(400).json(ApiResponse.error(
@@ -398,7 +372,6 @@ export class PropertyController {
         ));
       }
 
-      // Parse dos dados JSON
       let parsedPropertyData, parsedAddressData, parsedValuesData;
       
       try {
@@ -407,41 +380,31 @@ export class PropertyController {
         parsedValuesData = JSON.parse(valuesData);
       } catch (parseError: any) {
         console.error('❌ Erro ao fazer parse do JSON:', parseError);
-        console.error('propertyData:', propertyData);
-        console.error('addressData:', addressData);
-        console.error('valuesData:', valuesData);
         return res.status(400).json(ApiResponse.error(
           `Formato JSON inválido: ${parseError.message}`
         ));
       }
 
-      // Validar dados
       const combinedData = {
         ...parsedPropertyData,
         address: parsedAddressData,
         values: parsedValuesData
       };
 
-      console.log('✅ Dados parseados com sucesso');
-
       const validation = PropertyValidator.validateCreate(combinedData);
       if (!validation.isValid) {
-        console.error('❌ Erro de validação:', validation.errors);
         return res.status(400).json(
           ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
-      console.log('✅ Validação passada');
-
-      // Criar propriedade com arquivos
+      // Passando o featuredImageIdentifier para a Service
       const result = await PropertyService.createPropertyWithFiles(
         combinedData,
         files || {},
-        userId
+        userId,
+        featuredImageIdentifier
       );
-
-      console.log('✅ Propriedade criada com sucesso');
 
       return res.status(201).json(
         ApiResponse.success(
@@ -452,19 +415,14 @@ export class PropertyController {
 
     } catch (error: any) {
       console.error('❌ Erro na criação unificada:', error);
-      console.error('Stack trace:', error.stack);
-      
       if (error.message.includes('não encontrado')) {
         return res.status(404).json(ApiResponse.error(error.message));
       }
-      
       if (error.message.includes('já existe')) {
         return res.status(409).json(ApiResponse.error(error.message));
       }
 
-      res.status(500).json(ApiResponse.error(
-        `Erro ao criar imóvel: ${error.message}`
-      ));
+      res.status(500).json(ApiResponse.error(`Erro ao criar imóvel: ${error.message}`));
     }
   }
 
@@ -483,7 +441,8 @@ export class PropertyController {
         addressData,
         valuesData,
         userId,
-        removedDocuments
+        removedDocuments,
+        featuredImageIdentifier // <-- AGORA ESTÁ EXTRAINDO CORRETAMENTE
       } = req.body;
 
       const files = req.files as Record<string, Express.Multer.File[]> | undefined;
@@ -493,15 +452,12 @@ export class PropertyController {
         return res.status(400).json(ApiResponse.error('ID da propriedade é obrigatório'));
       }
 
-      // VALIDAÇÃO: Campos obrigatórios
       if (!propertyData || !addressData || !valuesData || !userId) {
-        console.error('❌ Campos obrigatórios ausentes');
         return res.status(400).json(ApiResponse.error(
           'Campos obrigatórios ausentes: propertyData, addressData, valuesData e userId são necessários'
         ));
       }
 
-      // Parse dos dados JSON
       let parsedPropertyData, parsedAddressData, parsedValuesData, parsedRemovedDocuments;
       
       try {
@@ -510,41 +466,29 @@ export class PropertyController {
         parsedValuesData = JSON.parse(valuesData);
         parsedRemovedDocuments = removedDocuments ? JSON.parse(removedDocuments) : [];
       } catch (parseError: any) {
-        console.error('❌ Erro ao fazer parse do JSON:', parseError);
-        return res.status(400).json(ApiResponse.error(
-          `Formato JSON inválido: ${parseError.message}`
-        ));
+        return res.status(400).json(ApiResponse.error(`Formato JSON inválido: ${parseError.message}`));
       }
 
-      // Validar dados
       const combinedData = {
         ...parsedPropertyData,
         address: parsedAddressData,
         values: parsedValuesData
       };
 
-      console.log('✅ Dados parseados com sucesso');
-
       const validation = PropertyValidator.validateUpdate(combinedData);
       if (!validation.isValid) {
-        console.error('❌ Erro de validação:', validation.errors);
-        return res.status(400).json(
-          ApiResponse.error('Erro de validação', validation.errors)
-        );
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      console.log('✅ Validação passada');
-
-      // Atualizar propriedade com arquivos
+      // Passando o featuredImageIdentifier para a Service
       const result = await PropertyService.updatePropertyWithFiles(
         id,
         combinedData,
         files || {},
         userId,
-        parsedRemovedDocuments
+        parsedRemovedDocuments,
+        featuredImageIdentifier
       );
-
-      console.log('✅ Propriedade atualizada com sucesso');
 
       return res.status(200).json(
         ApiResponse.success(
@@ -555,19 +499,14 @@ export class PropertyController {
 
     } catch (error: any) {
       console.error('❌ Erro na atualização unificada:', error);
-      console.error('Stack trace:', error.stack);
-      
       if (error.message.includes('não encontrado')) {
         return res.status(404).json(ApiResponse.error(error.message));
       }
-      
       if (error.message.includes('já existe')) {
         return res.status(409).json(ApiResponse.error(error.message));
       }
 
-      res.status(500).json(ApiResponse.error(
-        `Erro ao atualizar imóvel: ${error.message}`
-      ));
+      res.status(500).json(ApiResponse.error(`Erro ao atualizar imóvel: ${error.message}`));
     }
   }
 }

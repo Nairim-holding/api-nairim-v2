@@ -58,7 +58,7 @@ export type LeaseStatus = (typeof LeaseStatus)[keyof typeof LeaseStatus]
 export const PaymentCondition = {
   IN_FULL_15_DISCOUNT: 'IN_FULL_15_DISCOUNT',
   SECOND_INSTALLMENT_10_DISCOUNT: 'SECOND_INSTALLMENT_10_DISCOUNT',
-  INSTALLMENTS_12X: 'INSTALLMENTS_12X'
+  INSTALLMENTS: 'INSTALLMENTS'
 } as const
 
 export type PaymentCondition = (typeof PaymentCondition)[keyof typeof PaymentCondition]

@@ -2307,6 +2307,7 @@ export const DocumentScalarFieldEnum = {
   file_type: 'file_type',
   description: 'description',
   type: 'type',
+  is_featured: 'is_featured',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -2363,6 +2364,11 @@ export const LeaseScalarFieldEnum = {
   rent_amount: 'rent_amount',
   condo_fee: 'condo_fee',
   property_tax: 'property_tax',
+  property_tax_cash: 'property_tax_cash',
+  property_tax_first_installment: 'property_tax_first_installment',
+  property_tax_second_installment: 'property_tax_second_installment',
+  iptu_installments_count: 'iptu_installments_count',
+  iptu_installments: 'iptu_installments',
   extra_charges: 'extra_charges',
   commission_amount: 'commission_amount',
   rent_due_day: 'rent_due_day',
@@ -2634,6 +2640,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -2648,6 +2662,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2772,6 +2795,20 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 

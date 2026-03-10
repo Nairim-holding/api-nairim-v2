@@ -19,6 +19,12 @@ export class LeaseService {
     'rent_amount': { type: 'direct', realField: 'rent_amount' },
     'condo_fee': { type: 'direct', realField: 'condo_fee' },
     'property_tax': { type: 'direct', realField: 'property_tax' },
+    
+    'property_tax_cash': { type: 'direct', realField: 'property_tax_cash' },
+    'property_tax_first_installment': { type: 'direct', realField: 'property_tax_first_installment' },
+    'property_tax_second_installment': { type: 'direct', realField: 'property_tax_second_installment' },
+    'iptu_installments_count': { type: 'direct', realField: 'iptu_installments_count' },
+
     'extra_charges': { type: 'direct', realField: 'extra_charges' },
     'commission_amount': { type: 'direct', realField: 'commission_amount' },
     'rent_due_day': { type: 'direct', realField: 'rent_due_day' },
@@ -263,8 +269,9 @@ export class LeaseService {
         orderBy.push({ tenant: { name: direction } });
       }
       else if (['id', 'contract_number', 'start_date', 'end_date', 'rent_amount', 
-                'condo_fee', 'property_tax', 'extra_charges', 'commission_amount',
-                'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'payment_condition', 'created_at', 'updated_at'].includes(realField)) {
+                'condo_fee', 'property_tax', 'property_tax_cash', 'property_tax_first_installment', 'property_tax_second_installment', 'iptu_installments_count', 
+                'extra_charges', 'commission_amount', 'rent_due_day', 'tax_due_day', 'condo_due_day', 
+                'status', 'payment_condition', 'created_at', 'updated_at'].includes(realField)) {
         orderBy.push({ [realField]: direction });
       }
     });
@@ -298,7 +305,7 @@ export class LeaseService {
       if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'payment_condition'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
       }
-      else if (['rent_amount', 'condo_fee', 'property_tax', 'extra_charges', 'commission_amount'].includes(key)) {
+      else if (['rent_amount', 'condo_fee', 'property_tax', 'property_tax_cash', 'property_tax_first_installment', 'property_tax_second_installment', 'extra_charges', 'commission_amount'].includes(key)) {
         const floatValue = parseFloat(String(value));
         if (!isNaN(floatValue)) {
           conditions[key] = floatValue;
@@ -420,6 +427,13 @@ export class LeaseService {
             rent_amount: Number(data.rent_amount),
             condo_fee: data.condo_fee ? Number(data.condo_fee) : null,
             property_tax: data.property_tax ? Number(data.property_tax) : null,
+            
+            property_tax_cash: data.property_tax_cash ? Number(data.property_tax_cash) : null,
+            property_tax_first_installment: data.property_tax_first_installment ? Number(data.property_tax_first_installment) : null,
+            property_tax_second_installment: data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null,
+            iptu_installments_count: data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null,
+            iptu_installments: data.iptu_installments && Array.isArray(data.iptu_installments) ? data.iptu_installments : null,
+
             extra_charges: data.extra_charges ? Number(data.extra_charges) : null,
             commission_amount: data.commission_amount ? Number(data.commission_amount) : null,
             rent_due_day: Number(data.rent_due_day),
@@ -482,6 +496,13 @@ export class LeaseService {
             rent_amount: data.rent_amount ? Number(data.rent_amount) : existing.rent_amount,
             condo_fee: data.condo_fee !== undefined ? (data.condo_fee ? Number(data.condo_fee) : null) : existing.condo_fee,
             property_tax: data.property_tax !== undefined ? (data.property_tax ? Number(data.property_tax) : null) : existing.property_tax,
+            
+            property_tax_cash: data.property_tax_cash !== undefined ? (data.property_tax_cash ? Number(data.property_tax_cash) : null) : existing.property_tax_cash,
+            property_tax_first_installment: data.property_tax_first_installment !== undefined ? (data.property_tax_first_installment ? Number(data.property_tax_first_installment) : null) : existing.property_tax_first_installment,
+            property_tax_second_installment: data.property_tax_second_installment !== undefined ? (data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null) : existing.property_tax_second_installment,
+            iptu_installments_count: data.iptu_installments_count !== undefined ? (data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null) : existing.iptu_installments_count,
+            iptu_installments: data.iptu_installments !== undefined ? (Array.isArray(data.iptu_installments) ? data.iptu_installments : null) : existing.iptu_installments,
+
             extra_charges: data.extra_charges !== undefined ? (data.extra_charges ? Number(data.extra_charges) : null) : existing.extra_charges,
             commission_amount: data.commission_amount !== undefined ? (data.commission_amount ? Number(data.commission_amount) : null) : existing.commission_amount,
             rent_due_day: data.rent_due_day ? Number(data.rent_due_day) : existing.rent_due_day,
@@ -643,7 +664,14 @@ export class LeaseService {
       }
 
       const [leases, properties, propertyTypes, owners, tenants, dateRange] = await Promise.all([
-        prisma.lease.findMany({ where, select: { contract_number: true, start_date: true, end_date: true, rent_amount: true, condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, rent_due_day: true, tax_due_day: true, condo_due_day: true, status: true, payment_condition: true } }),
+        prisma.lease.findMany({ 
+          where, 
+          select: { 
+            contract_number: true, start_date: true, end_date: true, rent_amount: true, 
+            condo_fee: true, property_tax: true, extra_charges: true, commission_amount: true, 
+            rent_due_day: true, tax_due_day: true, condo_due_day: true, status: true, payment_condition: true 
+          } 
+        }),
         prisma.property.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, title: true }, orderBy: { title: 'asc' }, distinct: ['title'] }),
         prisma.propertyType.findMany({ where: { deleted_at: null, properties: { some: { deleted_at: null, leases: { some: where } } } }, select: { id: true, description: true }, orderBy: { description: 'asc' }, distinct: ['description'] }),
         prisma.owner.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, name: true }, orderBy: { name: 'asc' }, distinct: ['name'] }),
@@ -662,12 +690,12 @@ export class LeaseService {
       const filtersList = [
         { field: 'contract_number', type: 'string', label: 'Número do Contrato', values: uniqueContractNumbers, searchable: true, autocomplete: true },
         { field: 'status', type: 'select', label: 'Status', values: ['EXPIRED', 'EXPIRING', 'ACTIVE', 'CANCELED'], searchable: false, autocomplete: false },
-        { field: 'payment_condition', type: 'select', label: 'Condição de Pagamento', values: ['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'], searchable: false, autocomplete: false },
+        { field: 'payment_condition', type: 'select', label: 'Condição de Pagamento', values: ['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'], searchable: false, autocomplete: false },
         { field: 'start_date', type: 'date', label: 'Data de Início', dateRange: true },
         { field: 'end_date', type: 'date', label: 'Data de Término', dateRange: true },
         { field: 'rent_amount', type: 'number', label: 'Valor do Aluguel', values: uniqueRentAmounts, searchable: true },
         { field: 'condo_fee', type: 'number', label: 'Valor do Condomínio', searchable: true },
-        { field: 'property_tax', type: 'number', label: 'Valor do IPTU', searchable: true },
+        { field: 'property_tax', type: 'number', label: 'Valor do IPTU Base', searchable: true },
         { field: 'extra_charges', type: 'number', label: 'Taxas Extras', searchable: true },
         { field: 'commission_amount', type: 'number', label: 'Comissão', searchable: true },
         { field: 'rent_due_day', type: 'number', label: 'Dia de Vencimento do Aluguel', values: uniqueRentDueDays, searchable: true },

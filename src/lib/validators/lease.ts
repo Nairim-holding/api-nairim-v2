@@ -22,7 +22,8 @@ export class LeaseValidator {
       }
     }
 
-    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'].includes(data.payment_condition)) {
+    // ATUALIZADO: Removido o _12X do INSTALLMENTS
+    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'].includes(data.payment_condition)) {
       errors.push('Condição de pagamento inválida');
     }
 
@@ -40,7 +41,8 @@ export class LeaseValidator {
       }
     }
 
-    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS_12X'].includes(data.payment_condition)) {
+    // ATUALIZADO: Removido o _12X do INSTALLMENTS
+    if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'].includes(data.payment_condition)) {
       errors.push('Condição de pagamento inválida');
     }
 

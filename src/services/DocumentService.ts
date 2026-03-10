@@ -141,6 +141,42 @@ export class DocumentService {
     }
   }
 
+  static async setFeaturedDocument(propertyId: string, documentId: string) {
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        
+        await tx.document.updateMany({
+          where: { 
+            property_id: propertyId,
+            is_featured: true 
+          },
+          data: { 
+            is_featured: false 
+          }
+        });
+
+        const featuredDocument = await tx.document.update({
+          where: { 
+            id: documentId,
+            property_id: propertyId 
+          },
+          data: { 
+            is_featured: true 
+          }
+        });
+
+        return featuredDocument;
+      });
+
+      console.log(`✅ Document ${documentId} is now featured for property ${propertyId}`);
+      return result;
+
+    } catch (error: any) {
+      console.error('❌ Error setting featured document:', error);
+      throw new Error(`Failed to set featured document: ${error.message}`);
+    }
+  }
+
   private static async deleteDocumentFile(fileUrl: string) {
     try {
       const uploadService = UploadServiceFactory.create();
@@ -205,4 +241,5 @@ export class DocumentService {
         return 'properties/documents';
     }
   }
+  
 }

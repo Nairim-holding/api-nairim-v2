@@ -67,6 +67,32 @@ export class PropertyService {
     }, obj);
   }
 
+  // ==========================================
+  // FUNÇÃO DE ORDENAÇÃO DE MÍDIAS
+  // ==========================================
+  private static sortPropertyDocuments(documents: any[]) {
+    if (!documents || !Array.isArray(documents)) return documents;
+
+    return [...documents].sort((a, b) => {
+      // 1. Imagem em destaque vem primeiro
+      if (a.is_featured && !b.is_featured) return -1;
+      if (!a.is_featured && b.is_featured) return 1;
+
+      // 2. Vídeos vêm antes de imagens comuns
+      const aIsVideo = typeof a.file_type === 'string' && a.file_type.includes('video');
+      const bIsVideo = typeof b.file_type === 'string' && b.file_type.includes('video');
+      
+      if (aIsVideo && !bIsVideo) return -1;
+      if (!aIsVideo && bIsVideo) return 1;
+
+      // 3. Ordem de upload (mais recentes primeiro / DESC)
+      const timeA = new Date(a.created_at).getTime();
+      const timeB = new Date(b.created_at).getTime();
+      
+      return timeB - timeA;
+    });
+  }
+
   private static sortByRelatedField<T>(
     items: T[],
     sortField: string,
@@ -149,7 +175,6 @@ export class PropertyService {
             },
             documents: {
               where: { deleted_at: null },
-              orderBy: { created_at: 'desc' }
             },
             values: {
               where: { deleted_at: null },
@@ -225,8 +250,7 @@ export class PropertyService {
                 }
               },
               documents: {
-                where: { deleted_at: null },
-                orderBy: { created_at: 'desc' }
+                where: { deleted_at: null }
               },
               values: {
                 where: { deleted_at: null },
@@ -253,6 +277,13 @@ export class PropertyService {
         properties = propertiesData as unknown as PropertyWithRelations[];
         total = totalCount;
       }
+
+      // Aplica a ordenação das mídias (Vídeos primeiro -> Imagens novas -> Imagens velhas)
+      properties.forEach(p => {
+        if (p.documents) {
+          p.documents = this.sortPropertyDocuments(p.documents);
+        }
+      });
 
       return {
         data: properties,
@@ -490,8 +521,7 @@ export class PropertyService {
           owner: true,
           type: true,
           documents: {
-            where: { deleted_at: null },
-            orderBy: { created_at: 'desc' }
+            where: { deleted_at: null }
           },
           values: {
             where: { deleted_at: null },
@@ -514,6 +544,11 @@ export class PropertyService {
 
       if (!property) {
         throw new Error('Property not found');
+      }
+
+      // Aplica a ordenação das mídias (Vídeos primeiro -> Imagens novas -> Imagens velhas)
+      if (property.documents) {
+        property.documents = this.sortPropertyDocuments(property.documents);
       }
 
       return property;
@@ -993,7 +1028,7 @@ export class PropertyService {
         {
           field: 'agency_id',
           type: 'select',
-          label: 'Agência',
+          label: 'Imobiliária',
           description: 'Agência responsável',
           options: agencies.map(a => ({ value: a.id, label: a.trade_name })),
           searchable: true
@@ -1086,7 +1121,12 @@ export class PropertyService {
     }
   }
 
-  static async createPropertyWithFiles(data: any, files: Record<string, Express.Multer.File[]>, userId: string) {
+  static async createPropertyWithFiles(
+    data: any, 
+    files: Record<string, Express.Multer.File[]>, 
+    userId: string,
+    featuredImageIdentifier?: string
+  ) {
     try {
       const { property, address, propertyValue } = await prisma.$transaction(async (tx: any) => {
         const owner = await tx.owner.findUnique({
@@ -1181,6 +1221,24 @@ export class PropertyService {
 
       const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
 
+      if (featuredImageIdentifier) {
+        const matchedNewDoc = uploadedDocuments.find(d => 
+          d.filename === featuredImageIdentifier || d.name === featuredImageIdentifier
+        );
+        
+        if (matchedNewDoc) {
+          await prisma.document.updateMany({
+            where: { property_id: property.id, type: 'IMAGE' },
+            data: { is_featured: false }
+          });
+          
+          await prisma.document.update({
+            where: { id: matchedNewDoc.id },
+            data: { is_featured: true }
+          });
+        }
+      }
+
       const fullProperty = await prisma.property.findUnique({
         where: { id: property.id },
         include: {
@@ -1190,8 +1248,7 @@ export class PropertyService {
           owner: true,
           type: true,
           documents: {
-            where: { deleted_at: null },
-            orderBy: { created_at: 'desc' }
+            where: { deleted_at: null }
           },
           values: {
             where: { deleted_at: null },
@@ -1200,6 +1257,10 @@ export class PropertyService {
           agency: true
         }
       });
+
+      if (fullProperty && fullProperty.documents) {
+        fullProperty.documents = this.sortPropertyDocuments(fullProperty.documents) as any;
+      }
 
       return {
         property: fullProperty,
@@ -1214,15 +1275,17 @@ export class PropertyService {
 
   static async createUnifiedProperty(data: any) {
     try {
-      const propertyData = data.property;
-      const addressData = data.address;
-      const valuesData = data.values;
+      const propertyData = data.propertyData || data.property;
+      const addressData = data.addressData || data.address;
+      const valuesData = data.valuesData || data.values;
       const userId = data.userId;
+      const featuredImageIdentifier = data.featuredImageIdentifier;
       
       return await this.createPropertyWithFiles(
         { ...propertyData, address: addressData, values: valuesData },
         data.files || {},
-        userId
+        userId,
+        featuredImageIdentifier
       );
     } catch (error) {
       throw error;
@@ -1234,7 +1297,8 @@ export class PropertyService {
     data: any, 
     files: Record<string, Express.Multer.File[]>, 
     userId: string,
-    removedDocuments: string[] = []
+    removedDocuments: string[] = [],
+    featuredImageIdentifier?: string
   ) {
     try {
       if (removedDocuments.length > 0) {
@@ -1393,6 +1457,32 @@ export class PropertyService {
 
       const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
 
+      if (featuredImageIdentifier) {
+        await prisma.document.updateMany({
+          where: { property_id: id, type: 'IMAGE' },
+          data: { is_featured: false }
+        });
+
+        const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(featuredImageIdentifier);
+
+        if (isUuid) {
+          await prisma.document.update({
+            where: { id: featuredImageIdentifier },
+            data: { is_featured: true }
+          });
+        } else {
+          const matchedNewDoc = uploadedDocuments.find(d => 
+            d.filename === featuredImageIdentifier || d.name === featuredImageIdentifier
+          );
+          if (matchedNewDoc) {
+            await prisma.document.update({
+              where: { id: matchedNewDoc.id },
+              data: { is_featured: true }
+            });
+          }
+        }
+      }
+
       const fullProperty = await prisma.property.findUnique({
         where: { id: property.id },
         include: {
@@ -1402,8 +1492,7 @@ export class PropertyService {
           owner: true,
           type: true,
           documents: {
-            where: { deleted_at: null },
-            orderBy: { created_at: 'desc' }
+            where: { deleted_at: null }
           },
           values: {
             where: { deleted_at: null },
@@ -1412,6 +1501,10 @@ export class PropertyService {
           agency: true
         }
       });
+
+      if (fullProperty && fullProperty.documents) {
+        fullProperty.documents = this.sortPropertyDocuments(fullProperty.documents) as any;
+      }
 
       return {
         property: fullProperty,
