@@ -119,3 +119,43 @@ export type OwnerAddress = Prisma.OwnerAddressModel
  * 
  */
 export type TenantAddress = Prisma.TenantAddressModel
+/**
+ * Model FinancialInstitution
+ * 
+ */
+export type FinancialInstitution = Prisma.FinancialInstitutionModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Subcategory
+ * 
+ */
+export type Subcategory = Prisma.SubcategoryModel
+/**
+ * Model Card
+ * 
+ */
+export type Card = Prisma.CardModel
+/**
+ * Model Center
+ * 
+ */
+export type Center = Prisma.CenterModel
+/**
+ * Model Supplier
+ * 
+ */
+export type Supplier = Prisma.SupplierModel
+/**
+ * Model SupplierAddress
+ * 
+ */
+export type SupplierAddress = Prisma.SupplierAddressModel
+/**
+ * Model Transaction
+ * 
+ */
+export type Transaction = Prisma.TransactionModel

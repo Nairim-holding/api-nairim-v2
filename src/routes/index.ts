@@ -9,6 +9,7 @@ import propertyRoutes from './property';
 import dashboardRoutes from "./dashboard";
 import favoriteRoutes from "./favorite";
 import authRoutes from "./auth";
+import FinancialInstitution from "./financialIntitucion";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/properties', propertyRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/favorites", favoriteRoutes);
 router.use("/auth", authRoutes);
+router.use("/financial-institution", FinancialInstitution);
 
 export default router;

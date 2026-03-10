@@ -66,7 +66,15 @@ export const ModelName = {
   AgencyAddress: 'AgencyAddress',
   PropertyAddress: 'PropertyAddress',
   OwnerAddress: 'OwnerAddress',
-  TenantAddress: 'TenantAddress'
+  TenantAddress: 'TenantAddress',
+  FinancialInstitution: 'FinancialInstitution',
+  Category: 'Category',
+  Subcategory: 'Subcategory',
+  Card: 'Card',
+  Center: 'Center',
+  Supplier: 'Supplier',
+  SupplierAddress: 'SupplierAddress',
+  Transaction: 'Transaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -290,7 +298,8 @@ export const ContactScalarFieldEnum = {
   cellphone: 'cellphone',
   agency_id: 'agency_id',
   owner_id: 'owner_id',
-  tenant_id: 'tenant_id'
+  tenant_id: 'tenant_id',
+  supplier_id: 'supplier_id'
 } as const
 
 export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
@@ -354,6 +363,118 @@ export const TenantAddressScalarFieldEnum = {
 } as const
 
 export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)[keyof typeof TenantAddressScalarFieldEnum]
+
+
+export const FinancialInstitutionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type FinancialInstitutionScalarFieldEnum = (typeof FinancialInstitutionScalarFieldEnum)[keyof typeof FinancialInstitutionScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  is_active: 'is_active',
+  is_system: 'is_system',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const SubcategoryScalarFieldEnum = {
+  id: 'id',
+  category_id: 'category_id',
+  name: 'name',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type SubcategoryScalarFieldEnum = (typeof SubcategoryScalarFieldEnum)[keyof typeof SubcategoryScalarFieldEnum]
+
+
+export const CardScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  limit: 'limit',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
+
+
+export const CenterScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type CenterScalarFieldEnum = (typeof CenterScalarFieldEnum)[keyof typeof CenterScalarFieldEnum]
+
+
+export const SupplierScalarFieldEnum = {
+  id: 'id',
+  sequential_id: 'sequential_id',
+  legal_name: 'legal_name',
+  trade_name: 'trade_name',
+  cnpj: 'cnpj',
+  state_registration: 'state_registration',
+  municipal_registration: 'municipal_registration',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
+
+
+export const SupplierAddressScalarFieldEnum = {
+  id: 'id',
+  supplier_id: 'supplier_id',
+  address_id: 'address_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type SupplierAddressScalarFieldEnum = (typeof SupplierAddressScalarFieldEnum)[keyof typeof SupplierAddressScalarFieldEnum]
+
+
+export const TransactionScalarFieldEnum = {
+  id: 'id',
+  event_date: 'event_date',
+  effective_date: 'effective_date',
+  description: 'description',
+  amount: 'amount',
+  status: 'status',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
+  financial_institution_id: 'financial_institution_id',
+  card_id: 'card_id',
+  center_id: 'center_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
 export const SortOrder = {

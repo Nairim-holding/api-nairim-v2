@@ -36,6 +36,7 @@ export type ContactMinAggregateOutputType = {
   agency_id: string | null
   owner_id: string | null
   tenant_id: string | null
+  supplier_id: string | null
 }
 
 export type ContactMaxAggregateOutputType = {
@@ -50,6 +51,7 @@ export type ContactMaxAggregateOutputType = {
   agency_id: string | null
   owner_id: string | null
   tenant_id: string | null
+  supplier_id: string | null
 }
 
 export type ContactCountAggregateOutputType = {
@@ -64,6 +66,7 @@ export type ContactCountAggregateOutputType = {
   agency_id: number
   owner_id: number
   tenant_id: number
+  supplier_id: number
   _all: number
 }
 
@@ -80,6 +83,7 @@ export type ContactMinAggregateInputType = {
   agency_id?: true
   owner_id?: true
   tenant_id?: true
+  supplier_id?: true
 }
 
 export type ContactMaxAggregateInputType = {
@@ -94,6 +98,7 @@ export type ContactMaxAggregateInputType = {
   agency_id?: true
   owner_id?: true
   tenant_id?: true
+  supplier_id?: true
 }
 
 export type ContactCountAggregateInputType = {
@@ -108,6 +113,7 @@ export type ContactCountAggregateInputType = {
   agency_id?: true
   owner_id?: true
   tenant_id?: true
+  supplier_id?: true
   _all?: true
 }
 
@@ -195,6 +201,7 @@ export type ContactGroupByOutputType = {
   agency_id: string | null
   owner_id: string | null
   tenant_id: string | null
+  supplier_id: string | null
   _count: ContactCountAggregateOutputType | null
   _min: ContactMinAggregateOutputType | null
   _max: ContactMaxAggregateOutputType | null
@@ -230,9 +237,11 @@ export type ContactWhereInput = {
   agency_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   owner_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   tenant_id?: Prisma.StringNullableFilter<"Contact"> | string | null
+  supplier_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   agency?: Prisma.XOR<Prisma.AgencyNullableScalarRelationFilter, Prisma.AgencyWhereInput> | null
   owner?: Prisma.XOR<Prisma.OwnerNullableScalarRelationFilter, Prisma.OwnerWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
+  supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
 }
 
 export type ContactOrderByWithRelationInput = {
@@ -247,9 +256,11 @@ export type ContactOrderByWithRelationInput = {
   agency_id?: Prisma.SortOrderInput | Prisma.SortOrder
   owner_id?: Prisma.SortOrderInput | Prisma.SortOrder
   tenant_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  supplier_id?: Prisma.SortOrderInput | Prisma.SortOrder
   agency?: Prisma.AgencyOrderByWithRelationInput
   owner?: Prisma.OwnerOrderByWithRelationInput
   tenant?: Prisma.TenantOrderByWithRelationInput
+  supplier?: Prisma.SupplierOrderByWithRelationInput
 }
 
 export type ContactWhereUniqueInput = Prisma.AtLeast<{
@@ -267,9 +278,11 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   agency_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   owner_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   tenant_id?: Prisma.StringNullableFilter<"Contact"> | string | null
+  supplier_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   agency?: Prisma.XOR<Prisma.AgencyNullableScalarRelationFilter, Prisma.AgencyWhereInput> | null
   owner?: Prisma.XOR<Prisma.OwnerNullableScalarRelationFilter, Prisma.OwnerWhereInput> | null
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
+  supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
 }, "id">
 
 export type ContactOrderByWithAggregationInput = {
@@ -284,6 +297,7 @@ export type ContactOrderByWithAggregationInput = {
   agency_id?: Prisma.SortOrderInput | Prisma.SortOrder
   owner_id?: Prisma.SortOrderInput | Prisma.SortOrder
   tenant_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  supplier_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ContactCountOrderByAggregateInput
   _max?: Prisma.ContactMaxOrderByAggregateInput
   _min?: Prisma.ContactMinOrderByAggregateInput
@@ -304,6 +318,7 @@ export type ContactScalarWhereWithAggregatesInput = {
   agency_id?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
   owner_id?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
   tenant_id?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
+  supplier_id?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
 }
 
 export type ContactCreateInput = {
@@ -318,6 +333,7 @@ export type ContactCreateInput = {
   agency?: Prisma.AgencyCreateNestedOneWithoutContactsInput
   owner?: Prisma.OwnerCreateNestedOneWithoutContactsInput
   tenant?: Prisma.TenantCreateNestedOneWithoutContactsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutContactsInput
 }
 
 export type ContactUncheckedCreateInput = {
@@ -332,6 +348,7 @@ export type ContactUncheckedCreateInput = {
   agency_id?: string | null
   owner_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactUpdateInput = {
@@ -346,6 +363,7 @@ export type ContactUpdateInput = {
   agency?: Prisma.AgencyUpdateOneWithoutContactsNestedInput
   owner?: Prisma.OwnerUpdateOneWithoutContactsNestedInput
   tenant?: Prisma.TenantUpdateOneWithoutContactsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutContactsNestedInput
 }
 
 export type ContactUncheckedUpdateInput = {
@@ -360,6 +378,7 @@ export type ContactUncheckedUpdateInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactCreateManyInput = {
@@ -374,6 +393,7 @@ export type ContactCreateManyInput = {
   agency_id?: string | null
   owner_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactUpdateManyMutationInput = {
@@ -399,6 +419,7 @@ export type ContactUncheckedUpdateManyInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactListRelationFilter = {
@@ -423,6 +444,7 @@ export type ContactCountOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  supplier_id?: Prisma.SortOrder
 }
 
 export type ContactMaxOrderByAggregateInput = {
@@ -437,6 +459,7 @@ export type ContactMaxOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  supplier_id?: Prisma.SortOrder
 }
 
 export type ContactMinOrderByAggregateInput = {
@@ -451,6 +474,7 @@ export type ContactMinOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   owner_id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  supplier_id?: Prisma.SortOrder
 }
 
 export type ContactCreateNestedManyWithoutAgencyInput = {
@@ -579,6 +603,48 @@ export type ContactUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
 }
 
+export type ContactCreateNestedManyWithoutSupplierInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput> | Prisma.ContactCreateWithoutSupplierInput[] | Prisma.ContactUncheckedCreateWithoutSupplierInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutSupplierInput | Prisma.ContactCreateOrConnectWithoutSupplierInput[]
+  createMany?: Prisma.ContactCreateManySupplierInputEnvelope
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+}
+
+export type ContactUncheckedCreateNestedManyWithoutSupplierInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput> | Prisma.ContactCreateWithoutSupplierInput[] | Prisma.ContactUncheckedCreateWithoutSupplierInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutSupplierInput | Prisma.ContactCreateOrConnectWithoutSupplierInput[]
+  createMany?: Prisma.ContactCreateManySupplierInputEnvelope
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+}
+
+export type ContactUpdateManyWithoutSupplierNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput> | Prisma.ContactCreateWithoutSupplierInput[] | Prisma.ContactUncheckedCreateWithoutSupplierInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutSupplierInput | Prisma.ContactCreateOrConnectWithoutSupplierInput[]
+  upsert?: Prisma.ContactUpsertWithWhereUniqueWithoutSupplierInput | Prisma.ContactUpsertWithWhereUniqueWithoutSupplierInput[]
+  createMany?: Prisma.ContactCreateManySupplierInputEnvelope
+  set?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  disconnect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  delete?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  update?: Prisma.ContactUpdateWithWhereUniqueWithoutSupplierInput | Prisma.ContactUpdateWithWhereUniqueWithoutSupplierInput[]
+  updateMany?: Prisma.ContactUpdateManyWithWhereWithoutSupplierInput | Prisma.ContactUpdateManyWithWhereWithoutSupplierInput[]
+  deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
+}
+
+export type ContactUncheckedUpdateManyWithoutSupplierNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput> | Prisma.ContactCreateWithoutSupplierInput[] | Prisma.ContactUncheckedCreateWithoutSupplierInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutSupplierInput | Prisma.ContactCreateOrConnectWithoutSupplierInput[]
+  upsert?: Prisma.ContactUpsertWithWhereUniqueWithoutSupplierInput | Prisma.ContactUpsertWithWhereUniqueWithoutSupplierInput[]
+  createMany?: Prisma.ContactCreateManySupplierInputEnvelope
+  set?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  disconnect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  delete?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  update?: Prisma.ContactUpdateWithWhereUniqueWithoutSupplierInput | Prisma.ContactUpdateWithWhereUniqueWithoutSupplierInput[]
+  updateMany?: Prisma.ContactUpdateManyWithWhereWithoutSupplierInput | Prisma.ContactUpdateManyWithWhereWithoutSupplierInput[]
+  deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
+}
+
 export type ContactCreateWithoutAgencyInput = {
   id?: string
   contact?: string | null
@@ -590,6 +656,7 @@ export type ContactCreateWithoutAgencyInput = {
   cellphone?: string | null
   owner?: Prisma.OwnerCreateNestedOneWithoutContactsInput
   tenant?: Prisma.TenantCreateNestedOneWithoutContactsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutContactsInput
 }
 
 export type ContactUncheckedCreateWithoutAgencyInput = {
@@ -603,6 +670,7 @@ export type ContactUncheckedCreateWithoutAgencyInput = {
   cellphone?: string | null
   owner_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactCreateOrConnectWithoutAgencyInput = {
@@ -646,6 +714,7 @@ export type ContactScalarWhereInput = {
   agency_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   owner_id?: Prisma.StringNullableFilter<"Contact"> | string | null
   tenant_id?: Prisma.StringNullableFilter<"Contact"> | string | null
+  supplier_id?: Prisma.StringNullableFilter<"Contact"> | string | null
 }
 
 export type ContactCreateWithoutOwnerInput = {
@@ -659,6 +728,7 @@ export type ContactCreateWithoutOwnerInput = {
   cellphone?: string | null
   agency?: Prisma.AgencyCreateNestedOneWithoutContactsInput
   tenant?: Prisma.TenantCreateNestedOneWithoutContactsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutContactsInput
 }
 
 export type ContactUncheckedCreateWithoutOwnerInput = {
@@ -672,6 +742,7 @@ export type ContactUncheckedCreateWithoutOwnerInput = {
   cellphone?: string | null
   agency_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactCreateOrConnectWithoutOwnerInput = {
@@ -711,6 +782,7 @@ export type ContactCreateWithoutTenantInput = {
   cellphone?: string | null
   agency?: Prisma.AgencyCreateNestedOneWithoutContactsInput
   owner?: Prisma.OwnerCreateNestedOneWithoutContactsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutContactsInput
 }
 
 export type ContactUncheckedCreateWithoutTenantInput = {
@@ -724,6 +796,7 @@ export type ContactUncheckedCreateWithoutTenantInput = {
   cellphone?: string | null
   agency_id?: string | null
   owner_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactCreateOrConnectWithoutTenantInput = {
@@ -752,6 +825,60 @@ export type ContactUpdateManyWithWhereWithoutTenantInput = {
   data: Prisma.XOR<Prisma.ContactUpdateManyMutationInput, Prisma.ContactUncheckedUpdateManyWithoutTenantInput>
 }
 
+export type ContactCreateWithoutSupplierInput = {
+  id?: string
+  contact?: string | null
+  phone?: string | null
+  email?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cellphone?: string | null
+  agency?: Prisma.AgencyCreateNestedOneWithoutContactsInput
+  owner?: Prisma.OwnerCreateNestedOneWithoutContactsInput
+  tenant?: Prisma.TenantCreateNestedOneWithoutContactsInput
+}
+
+export type ContactUncheckedCreateWithoutSupplierInput = {
+  id?: string
+  contact?: string | null
+  phone?: string | null
+  email?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cellphone?: string | null
+  agency_id?: string | null
+  owner_id?: string | null
+  tenant_id?: string | null
+}
+
+export type ContactCreateOrConnectWithoutSupplierInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput>
+}
+
+export type ContactCreateManySupplierInputEnvelope = {
+  data: Prisma.ContactCreateManySupplierInput | Prisma.ContactCreateManySupplierInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContactUpsertWithWhereUniqueWithoutSupplierInput = {
+  where: Prisma.ContactWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutSupplierInput, Prisma.ContactUncheckedUpdateWithoutSupplierInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutSupplierInput, Prisma.ContactUncheckedCreateWithoutSupplierInput>
+}
+
+export type ContactUpdateWithWhereUniqueWithoutSupplierInput = {
+  where: Prisma.ContactWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutSupplierInput, Prisma.ContactUncheckedUpdateWithoutSupplierInput>
+}
+
+export type ContactUpdateManyWithWhereWithoutSupplierInput = {
+  where: Prisma.ContactScalarWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateManyMutationInput, Prisma.ContactUncheckedUpdateManyWithoutSupplierInput>
+}
+
 export type ContactCreateManyAgencyInput = {
   id?: string
   contact?: string | null
@@ -763,6 +890,7 @@ export type ContactCreateManyAgencyInput = {
   cellphone?: string | null
   owner_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactUpdateWithoutAgencyInput = {
@@ -776,6 +904,7 @@ export type ContactUpdateWithoutAgencyInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner?: Prisma.OwnerUpdateOneWithoutContactsNestedInput
   tenant?: Prisma.TenantUpdateOneWithoutContactsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutContactsNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutAgencyInput = {
@@ -789,6 +918,7 @@ export type ContactUncheckedUpdateWithoutAgencyInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactUncheckedUpdateManyWithoutAgencyInput = {
@@ -802,6 +932,7 @@ export type ContactUncheckedUpdateManyWithoutAgencyInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactCreateManyOwnerInput = {
@@ -815,6 +946,7 @@ export type ContactCreateManyOwnerInput = {
   cellphone?: string | null
   agency_id?: string | null
   tenant_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactUpdateWithoutOwnerInput = {
@@ -828,6 +960,7 @@ export type ContactUpdateWithoutOwnerInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency?: Prisma.AgencyUpdateOneWithoutContactsNestedInput
   tenant?: Prisma.TenantUpdateOneWithoutContactsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutContactsNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutOwnerInput = {
@@ -841,6 +974,7 @@ export type ContactUncheckedUpdateWithoutOwnerInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactUncheckedUpdateManyWithoutOwnerInput = {
@@ -854,6 +988,7 @@ export type ContactUncheckedUpdateManyWithoutOwnerInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactCreateManyTenantInput = {
@@ -867,6 +1002,7 @@ export type ContactCreateManyTenantInput = {
   cellphone?: string | null
   agency_id?: string | null
   owner_id?: string | null
+  supplier_id?: string | null
 }
 
 export type ContactUpdateWithoutTenantInput = {
@@ -880,6 +1016,7 @@ export type ContactUpdateWithoutTenantInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency?: Prisma.AgencyUpdateOneWithoutContactsNestedInput
   owner?: Prisma.OwnerUpdateOneWithoutContactsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutContactsNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutTenantInput = {
@@ -893,6 +1030,7 @@ export type ContactUncheckedUpdateWithoutTenantInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContactUncheckedUpdateManyWithoutTenantInput = {
@@ -906,6 +1044,63 @@ export type ContactUncheckedUpdateManyWithoutTenantInput = {
   cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ContactCreateManySupplierInput = {
+  id?: string
+  contact?: string | null
+  phone?: string | null
+  email?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cellphone?: string | null
+  agency_id?: string | null
+  owner_id?: string | null
+  tenant_id?: string | null
+}
+
+export type ContactUpdateWithoutSupplierInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency?: Prisma.AgencyUpdateOneWithoutContactsNestedInput
+  owner?: Prisma.OwnerUpdateOneWithoutContactsNestedInput
+  tenant?: Prisma.TenantUpdateOneWithoutContactsNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutSupplierInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ContactUncheckedUpdateManyWithoutSupplierInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cellphone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenant_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -922,9 +1117,11 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   agency_id?: boolean
   owner_id?: boolean
   tenant_id?: boolean
+  supplier_id?: boolean
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -939,9 +1136,11 @@ export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   agency_id?: boolean
   owner_id?: boolean
   tenant_id?: boolean
+  supplier_id?: boolean
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -956,9 +1155,11 @@ export type ContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   agency_id?: boolean
   owner_id?: boolean
   tenant_id?: boolean
+  supplier_id?: boolean
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectScalar = {
@@ -973,23 +1174,27 @@ export type ContactSelectScalar = {
   agency_id?: boolean
   owner_id?: boolean
   tenant_id?: boolean
+  supplier_id?: boolean
 }
 
-export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contact" | "phone" | "email" | "created_at" | "updated_at" | "deleted_at" | "cellphone" | "agency_id" | "owner_id" | "tenant_id", ExtArgs["result"]["contact"]>
+export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contact" | "phone" | "email" | "created_at" | "updated_at" | "deleted_at" | "cellphone" | "agency_id" | "owner_id" | "tenant_id" | "supplier_id", ExtArgs["result"]["contact"]>
 export type ContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }
 export type ContactIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }
 export type ContactIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agency?: boolean | Prisma.Contact$agencyArgs<ExtArgs>
   owner?: boolean | Prisma.Contact$ownerArgs<ExtArgs>
   tenant?: boolean | Prisma.Contact$tenantArgs<ExtArgs>
+  supplier?: boolean | Prisma.Contact$supplierArgs<ExtArgs>
 }
 
 export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -998,6 +1203,7 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     agency: Prisma.$AgencyPayload<ExtArgs> | null
     owner: Prisma.$OwnerPayload<ExtArgs> | null
     tenant: Prisma.$TenantPayload<ExtArgs> | null
+    supplier: Prisma.$SupplierPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1011,6 +1217,7 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     agency_id: string | null
     owner_id: string | null
     tenant_id: string | null
+    supplier_id: string | null
   }, ExtArgs["result"]["contact"]>
   composites: {}
 }
@@ -1408,6 +1615,7 @@ export interface Prisma__ContactClient<T, Null = never, ExtArgs extends runtime.
   agency<T extends Prisma.Contact$agencyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$agencyArgs<ExtArgs>>): Prisma.Prisma__AgencyClient<runtime.Types.Result.GetResult<Prisma.$AgencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.Contact$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$ownerArgs<ExtArgs>>): Prisma.Prisma__OwnerClient<runtime.Types.Result.GetResult<Prisma.$OwnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.Contact$tenantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$tenantArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  supplier<T extends Prisma.Contact$supplierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$supplierArgs<ExtArgs>>): Prisma.Prisma__SupplierClient<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1448,6 +1656,7 @@ export interface ContactFieldRefs {
   readonly agency_id: Prisma.FieldRef<"Contact", 'String'>
   readonly owner_id: Prisma.FieldRef<"Contact", 'String'>
   readonly tenant_id: Prisma.FieldRef<"Contact", 'String'>
+  readonly supplier_id: Prisma.FieldRef<"Contact", 'String'>
 }
     
 
@@ -1898,6 +2107,25 @@ export type Contact$tenantArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.TenantInclude<ExtArgs> | null
   where?: Prisma.TenantWhereInput
+}
+
+/**
+ * Contact.supplier
+ */
+export type Contact$supplierArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Supplier
+   */
+  select?: Prisma.SupplierSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Supplier
+   */
+  omit?: Prisma.SupplierOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupplierInclude<ExtArgs> | null
+  where?: Prisma.SupplierWhereInput
 }
 
 /**

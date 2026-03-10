@@ -312,6 +312,7 @@ export type AddressWhereInput = {
   ownerAddresses?: Prisma.OwnerAddressListRelationFilter
   propertyAddresses?: Prisma.PropertyAddressListRelationFilter
   tenantAddresses?: Prisma.TenantAddressListRelationFilter
+  supplierAddresses?: Prisma.SupplierAddressListRelationFilter
 }
 
 export type AddressOrderByWithRelationInput = {
@@ -335,6 +336,7 @@ export type AddressOrderByWithRelationInput = {
   ownerAddresses?: Prisma.OwnerAddressOrderByRelationAggregateInput
   propertyAddresses?: Prisma.PropertyAddressOrderByRelationAggregateInput
   tenantAddresses?: Prisma.TenantAddressOrderByRelationAggregateInput
+  supplierAddresses?: Prisma.SupplierAddressOrderByRelationAggregateInput
 }
 
 export type AddressWhereUniqueInput = Prisma.AtLeast<{
@@ -361,6 +363,7 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
   ownerAddresses?: Prisma.OwnerAddressListRelationFilter
   propertyAddresses?: Prisma.PropertyAddressListRelationFilter
   tenantAddresses?: Prisma.TenantAddressListRelationFilter
+  supplierAddresses?: Prisma.SupplierAddressListRelationFilter
 }, "id">
 
 export type AddressOrderByWithAggregationInput = {
@@ -430,6 +433,7 @@ export type AddressCreateInput = {
   ownerAddresses?: Prisma.OwnerAddressCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateInput = {
@@ -453,6 +457,7 @@ export type AddressUncheckedCreateInput = {
   ownerAddresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUpdateInput = {
@@ -476,6 +481,7 @@ export type AddressUpdateInput = {
   ownerAddresses?: Prisma.OwnerAddressUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateInput = {
@@ -499,6 +505,7 @@ export type AddressUncheckedUpdateInput = {
   ownerAddresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateManyInput = {
@@ -694,6 +701,20 @@ export type AddressUpdateOneRequiredWithoutTenantAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AddressUpdateToOneWithWhereWithoutTenantAddressesInput, Prisma.AddressUpdateWithoutTenantAddressesInput>, Prisma.AddressUncheckedUpdateWithoutTenantAddressesInput>
 }
 
+export type AddressCreateNestedOneWithoutSupplierAddressesInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutSupplierAddressesInput, Prisma.AddressUncheckedCreateWithoutSupplierAddressesInput>
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutSupplierAddressesInput
+  connect?: Prisma.AddressWhereUniqueInput
+}
+
+export type AddressUpdateOneRequiredWithoutSupplierAddressesNestedInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutSupplierAddressesInput, Prisma.AddressUncheckedCreateWithoutSupplierAddressesInput>
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutSupplierAddressesInput
+  upsert?: Prisma.AddressUpsertWithoutSupplierAddressesInput
+  connect?: Prisma.AddressWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AddressUpdateToOneWithWhereWithoutSupplierAddressesInput, Prisma.AddressUpdateWithoutSupplierAddressesInput>, Prisma.AddressUncheckedUpdateWithoutSupplierAddressesInput>
+}
+
 export type AddressCreateWithoutAgencyAddressesInput = {
   id?: string
   zip_code: string
@@ -714,6 +735,7 @@ export type AddressCreateWithoutAgencyAddressesInput = {
   ownerAddresses?: Prisma.OwnerAddressCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutAgencyAddressesInput = {
@@ -736,6 +758,7 @@ export type AddressUncheckedCreateWithoutAgencyAddressesInput = {
   ownerAddresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressCreateOrConnectWithoutAgencyAddressesInput = {
@@ -774,6 +797,7 @@ export type AddressUpdateWithoutAgencyAddressesInput = {
   ownerAddresses?: Prisma.OwnerAddressUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutAgencyAddressesInput = {
@@ -796,6 +820,7 @@ export type AddressUncheckedUpdateWithoutAgencyAddressesInput = {
   ownerAddresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateWithoutPropertyAddressesInput = {
@@ -818,6 +843,7 @@ export type AddressCreateWithoutPropertyAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressCreateNestedManyWithoutAddressInput
   ownerAddresses?: Prisma.OwnerAddressCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutPropertyAddressesInput = {
@@ -840,6 +866,7 @@ export type AddressUncheckedCreateWithoutPropertyAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAddressInput
   ownerAddresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressCreateOrConnectWithoutPropertyAddressesInput = {
@@ -878,6 +905,7 @@ export type AddressUpdateWithoutPropertyAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUpdateManyWithoutAddressNestedInput
   ownerAddresses?: Prisma.OwnerAddressUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutPropertyAddressesInput = {
@@ -900,6 +928,7 @@ export type AddressUncheckedUpdateWithoutPropertyAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAddressNestedInput
   ownerAddresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateWithoutOwnerAddressesInput = {
@@ -922,6 +951,7 @@ export type AddressCreateWithoutOwnerAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutOwnerAddressesInput = {
@@ -944,6 +974,7 @@ export type AddressUncheckedCreateWithoutOwnerAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutAddressInput
   tenantAddresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressCreateOrConnectWithoutOwnerAddressesInput = {
@@ -982,6 +1013,7 @@ export type AddressUpdateWithoutOwnerAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutOwnerAddressesInput = {
@@ -1004,6 +1036,7 @@ export type AddressUncheckedUpdateWithoutOwnerAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutAddressNestedInput
   tenantAddresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateWithoutTenantAddressesInput = {
@@ -1026,6 +1059,7 @@ export type AddressCreateWithoutTenantAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressCreateNestedManyWithoutAddressInput
   ownerAddresses?: Prisma.OwnerAddressCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutTenantAddressesInput = {
@@ -1048,6 +1082,7 @@ export type AddressUncheckedCreateWithoutTenantAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAddressInput
   ownerAddresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutAddressInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutAddressInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressCreateOrConnectWithoutTenantAddressesInput = {
@@ -1086,6 +1121,7 @@ export type AddressUpdateWithoutTenantAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUpdateManyWithoutAddressNestedInput
   ownerAddresses?: Prisma.OwnerAddressUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutTenantAddressesInput = {
@@ -1108,6 +1144,115 @@ export type AddressUncheckedUpdateWithoutTenantAddressesInput = {
   agencyAddresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAddressNestedInput
   ownerAddresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutAddressNestedInput
   propertyAddresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutAddressNestedInput
+  supplierAddresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutAddressNestedInput
+}
+
+export type AddressCreateWithoutSupplierAddressesInput = {
+  id?: string
+  zip_code: string
+  street: string
+  number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
+  district: string
+  city: string
+  state: string
+  country: string
+  latitude?: number | null
+  longitude?: number | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  agencyAddresses?: Prisma.AgencyAddressCreateNestedManyWithoutAddressInput
+  ownerAddresses?: Prisma.OwnerAddressCreateNestedManyWithoutAddressInput
+  propertyAddresses?: Prisma.PropertyAddressCreateNestedManyWithoutAddressInput
+  tenantAddresses?: Prisma.TenantAddressCreateNestedManyWithoutAddressInput
+}
+
+export type AddressUncheckedCreateWithoutSupplierAddressesInput = {
+  id?: string
+  zip_code: string
+  street: string
+  number: string
+  complement?: string | null
+  block?: string | null
+  lot?: string | null
+  district: string
+  city: string
+  state: string
+  country: string
+  latitude?: number | null
+  longitude?: number | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  agencyAddresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAddressInput
+  ownerAddresses?: Prisma.OwnerAddressUncheckedCreateNestedManyWithoutAddressInput
+  propertyAddresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutAddressInput
+  tenantAddresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutAddressInput
+}
+
+export type AddressCreateOrConnectWithoutSupplierAddressesInput = {
+  where: Prisma.AddressWhereUniqueInput
+  create: Prisma.XOR<Prisma.AddressCreateWithoutSupplierAddressesInput, Prisma.AddressUncheckedCreateWithoutSupplierAddressesInput>
+}
+
+export type AddressUpsertWithoutSupplierAddressesInput = {
+  update: Prisma.XOR<Prisma.AddressUpdateWithoutSupplierAddressesInput, Prisma.AddressUncheckedUpdateWithoutSupplierAddressesInput>
+  create: Prisma.XOR<Prisma.AddressCreateWithoutSupplierAddressesInput, Prisma.AddressUncheckedCreateWithoutSupplierAddressesInput>
+  where?: Prisma.AddressWhereInput
+}
+
+export type AddressUpdateToOneWithWhereWithoutSupplierAddressesInput = {
+  where?: Prisma.AddressWhereInput
+  data: Prisma.XOR<Prisma.AddressUpdateWithoutSupplierAddressesInput, Prisma.AddressUncheckedUpdateWithoutSupplierAddressesInput>
+}
+
+export type AddressUpdateWithoutSupplierAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  street?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  agencyAddresses?: Prisma.AgencyAddressUpdateManyWithoutAddressNestedInput
+  ownerAddresses?: Prisma.OwnerAddressUpdateManyWithoutAddressNestedInput
+  propertyAddresses?: Prisma.PropertyAddressUpdateManyWithoutAddressNestedInput
+  tenantAddresses?: Prisma.TenantAddressUpdateManyWithoutAddressNestedInput
+}
+
+export type AddressUncheckedUpdateWithoutSupplierAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  street?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.StringFieldUpdateOperationsInput | string
+  complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  agencyAddresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAddressNestedInput
+  ownerAddresses?: Prisma.OwnerAddressUncheckedUpdateManyWithoutAddressNestedInput
+  propertyAddresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutAddressNestedInput
+  tenantAddresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 
@@ -1120,6 +1265,7 @@ export type AddressCountOutputType = {
   ownerAddresses: number
   propertyAddresses: number
   tenantAddresses: number
+  supplierAddresses: number
 }
 
 export type AddressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1127,6 +1273,7 @@ export type AddressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   ownerAddresses?: boolean | AddressCountOutputTypeCountOwnerAddressesArgs
   propertyAddresses?: boolean | AddressCountOutputTypeCountPropertyAddressesArgs
   tenantAddresses?: boolean | AddressCountOutputTypeCountTenantAddressesArgs
+  supplierAddresses?: boolean | AddressCountOutputTypeCountSupplierAddressesArgs
 }
 
 /**
@@ -1167,6 +1314,13 @@ export type AddressCountOutputTypeCountTenantAddressesArgs<ExtArgs extends runti
   where?: Prisma.TenantAddressWhereInput
 }
 
+/**
+ * AddressCountOutputType without action
+ */
+export type AddressCountOutputTypeCountSupplierAddressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupplierAddressWhereInput
+}
+
 
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1189,6 +1343,7 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   ownerAddresses?: boolean | Prisma.Address$ownerAddressesArgs<ExtArgs>
   propertyAddresses?: boolean | Prisma.Address$propertyAddressesArgs<ExtArgs>
   tenantAddresses?: boolean | Prisma.Address$tenantAddressesArgs<ExtArgs>
+  supplierAddresses?: boolean | Prisma.Address$supplierAddressesArgs<ExtArgs>
   _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
@@ -1255,6 +1410,7 @@ export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   ownerAddresses?: boolean | Prisma.Address$ownerAddressesArgs<ExtArgs>
   propertyAddresses?: boolean | Prisma.Address$propertyAddressesArgs<ExtArgs>
   tenantAddresses?: boolean | Prisma.Address$tenantAddressesArgs<ExtArgs>
+  supplierAddresses?: boolean | Prisma.Address$supplierAddressesArgs<ExtArgs>
   _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1267,6 +1423,7 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     ownerAddresses: Prisma.$OwnerAddressPayload<ExtArgs>[]
     propertyAddresses: Prisma.$PropertyAddressPayload<ExtArgs>[]
     tenantAddresses: Prisma.$TenantAddressPayload<ExtArgs>[]
+    supplierAddresses: Prisma.$SupplierAddressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1683,6 +1840,7 @@ export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.
   ownerAddresses<T extends Prisma.Address$ownerAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$ownerAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   propertyAddresses<T extends Prisma.Address$propertyAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$propertyAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenantAddresses<T extends Prisma.Address$tenantAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$tenantAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supplierAddresses<T extends Prisma.Address$supplierAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$supplierAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupplierAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2209,6 +2367,30 @@ export type Address$tenantAddressesArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.TenantAddressScalarFieldEnum | Prisma.TenantAddressScalarFieldEnum[]
+}
+
+/**
+ * Address.supplierAddresses
+ */
+export type Address$supplierAddressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupplierAddress
+   */
+  select?: Prisma.SupplierAddressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupplierAddress
+   */
+  omit?: Prisma.SupplierAddressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupplierAddressInclude<ExtArgs> | null
+  where?: Prisma.SupplierAddressWhereInput
+  orderBy?: Prisma.SupplierAddressOrderByWithRelationInput | Prisma.SupplierAddressOrderByWithRelationInput[]
+  cursor?: Prisma.SupplierAddressWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupplierAddressScalarFieldEnum | Prisma.SupplierAddressScalarFieldEnum[]
 }
 
 /**
