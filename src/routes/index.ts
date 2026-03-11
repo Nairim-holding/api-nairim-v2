@@ -10,6 +10,12 @@ import dashboardRoutes from "./dashboard";
 import favoriteRoutes from "./favorite";
 import authRoutes from "./auth";
 import FinancialInstitution from "./financialIntitucion";
+import FinancialCategory from "./category";
+import FinancialSubCategory from "./subcategory";
+import FinancialCard from "./card";
+import FinancialCenter from "./center";
+import FinancialSupplier from "./supplier";
+import FinancialTransaction from "./transaction";
 
 const router = Router();
 
@@ -24,5 +30,11 @@ router.use("/dashboard", dashboardRoutes);
 router.use("/favorites", favoriteRoutes);
 router.use("/auth", authRoutes);
 router.use("/financial-institution", FinancialInstitution);
+router.use("/financial-category", FinancialCategory);
+router.use("/financial-subcategory", FinancialSubCategory);
+router.use("/financial-card", FinancialCard);
+router.use("/financial-center", FinancialCenter);
+router.use("/financial-supplier", FinancialSupplier);
+router.use("/financial-transaction", FinancialTransaction);
 
 export default router;
