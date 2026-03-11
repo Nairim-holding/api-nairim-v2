@@ -35,83 +35,83 @@ export class FinancialInstitutionController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getInstitutionById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await FinancialInstitutionService.getInstitutionById(id);
-      res.status(200).json(ApiResponse.success(data, 'Institution retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Instituição recuperada com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Institution not found') return res.status(404).json(ApiResponse.error('Institution not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Institution not found') return res.status(404).json(ApiResponse.error('Instituição não encontrada'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async createInstitution(req: Request, res: Response) {
     try {
       const validation = FinancialInstitutionValidator.validateCreate(req.body);
-      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
 
       const data = await FinancialInstitutionService.createInstitution(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Institution created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Instituição criada com sucesso'));
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateInstitution(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = FinancialInstitutionValidator.validateUpdate(req.body);
-      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
 
       const data = await FinancialInstitutionService.updateInstitution(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Institution updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Instituição atualizada com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Institution not found') return res.status(404).json(ApiResponse.error('Institution not found'));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      if (error.message === 'Institution not found') return res.status(404).json(ApiResponse.error('Instituição não encontrada'));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteInstitution(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await FinancialInstitutionService.deleteInstitution(id);
-      res.status(200).json(ApiResponse.success(null, 'Instituição financeira deletada com sucesso.'));
+      res.status(200).json(ApiResponse.success(null, 'Instituição financeira excluída com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Institution not found or already deleted') return res.status(404).json(ApiResponse.error('Institution not found'));
+      if (error.message === 'Institution not found or already deleted') return res.status(404).json(ApiResponse.error('Instituição não encontrada ou já excluída'));
       if (error.message.includes('lançamentos relacionados')) return res.status(409).json(ApiResponse.error(error.message));
-      res.status(500).json(ApiResponse.error('Error deleting institution'));
+      res.status(500).json(ApiResponse.error('Erro ao excluir a instituição'));
     }
   }
 
   static async restoreInstitution(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await FinancialInstitutionService.restoreInstitution(id);
-      res.status(200).json(ApiResponse.success(null, 'Institution restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Instituição restaurada com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring institution'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar a instituição'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
       const filtersData = await FinancialInstitutionService.getInstitutionFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }
