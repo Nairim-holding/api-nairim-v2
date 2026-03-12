@@ -11,8 +11,7 @@ services:
       - .env
     volumes:
       - ./.env:/app/.env
-    environment:
-      - DATABASE_URL=postgresql://nairim:nairim@postgres:5432/nairim_db?schema=public
+      - ./uploads:/app/uploads
 
   postgres:
     image: postgres:16-alpine
@@ -25,7 +24,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./uploads:/app/uploads
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
