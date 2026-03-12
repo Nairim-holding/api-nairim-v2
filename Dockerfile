@@ -23,14 +23,12 @@ RUN apk add --no-cache openssl
 COPY package*.json ./
 RUN npm ci --omit=dev && npm install prisma
 
-# Copia os arquivos compilados e as pastas do prisma
 COPY --from=builder /app/dist ./dist 
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./
-
-RUN npx prisma generate
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 5000
 
-# Agora ele vai achar a config e rodar lindamente!
 CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
