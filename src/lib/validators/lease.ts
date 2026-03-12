@@ -1,4 +1,113 @@
 export class LeaseValidator {
+  private static parseDecimal(value: any): number {
+    if (value === null || value === undefined) return 0;
+    if (typeof value === 'number') return value;
+    const strValue = String(value).trim();
+    if (!strValue.includes(',') && strValue.includes('.')) {
+      const parsed = parseFloat(strValue);
+      if (!isNaN(parsed)) return parsed;
+    }
+    const cleaned = strValue.replace(/[^\d,-]/g, '').replace(',', '.');
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  private static validateIptuConditions(data: any, errors: string[]) {
+    const baseIptu = this.parseDecimal(data.property_tax);
+
+    if (!baseIptu || baseIptu <= 0) {
+      if (data.payment_condition) {
+        errors.push('Para configurar as opções de pagamento, preencha o "Valor do IPTU (Base)" primeiro.');
+      }
+      return;
+    }
+
+    const formattedBase = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(baseIptu);
+
+    // ==========================================
+    // VALIDAÇÃO 1: À VISTA (Até 15% desc)
+    // ==========================================
+    if (data.payment_condition === 'IN_FULL_15_DISCOUNT') {
+      const cashVal = this.parseDecimal(data.property_tax_cash);
+      const minExpectedVal = baseIptu * 0.85;
+      const maxExpectedVal = baseIptu;
+
+      if (!cashVal || cashVal <= 0) {
+        errors.push('Por favor, informe o valor da cobrança à vista.');
+      } else {
+        if (cashVal < (minExpectedVal - 0.10) || cashVal > (maxExpectedVal + 0.10)) { 
+          const formattedMin = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(minExpectedVal);
+          const formattedCurrent = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cashVal);
+          
+          errors.push(`O valor à vista informado (${formattedCurrent}) não é válido. O limite permitido é entre ${formattedMin} (aplicando 15% de desconto) e ${formattedBase} (sem desconto).`);
+        }
+      }
+    } 
+    // ==========================================
+    // VALIDAÇÃO 2: SEGUNDA PARCELA (Até 10% desc)
+    // ==========================================
+    else if (data.payment_condition === 'SECOND_INSTALLMENT_10_DISCOUNT') {
+      const firstVal = this.parseDecimal(data.property_tax_first_installment);
+      const secondVal = this.parseDecimal(data.property_tax_second_installment);
+      const total = firstVal + secondVal;
+      
+      const minExpectedTotal = baseIptu * 0.90;
+      const maxExpectedTotal = baseIptu;
+      
+      if (!firstVal || firstVal <= 0) {
+        errors.push('Por favor, informe o valor da 1ª Parcela.');
+      }
+      if (!secondVal || secondVal <= 0) {
+        errors.push('Por favor, informe o valor da 2ª Parcela.');
+      }
+
+      if (firstVal > 0 && secondVal > 0) {
+        if (total < (minExpectedTotal - 0.10) || total > (maxExpectedTotal + 0.10)) {
+          const formattedMin = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(minExpectedTotal);
+          const formattedCurrent = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total);
+          
+          errors.push(`A soma das duas parcelas (${formattedCurrent}) não é válida. O total deve ficar entre ${formattedMin} (aplicando 10% de desconto) e ${formattedBase} (sem desconto).`);
+        }
+      }
+    }
+    // ==========================================
+    // VALIDAÇÃO 3: PARCELAMENTO LIVRE (Exato)
+    // ==========================================
+    else if (data.payment_condition === 'INSTALLMENTS') {
+      if (!data.iptu_installments || !Array.isArray(data.iptu_installments) || data.iptu_installments.length === 0) {
+        errors.push('Por favor, preencha os valores de todas as parcelas no detalhamento.');
+        return;
+      }
+
+      let totalInstallments = 0;
+      for (const val of data.iptu_installments) {
+        const numVal = this.parseDecimal(val);
+        if (numVal <= 0) {
+          errors.push('Todas as parcelas do IPTU devem ter um valor maior que zero.');
+          return;
+        }
+        totalInstallments += numVal;
+      }
+
+      const diff = Math.abs(baseIptu - totalInstallments);
+      
+      if (diff > 0.10) { 
+        const formattedTotal = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalInstallments);
+        
+        let diferencaMsg = '';
+        if (totalInstallments > baseIptu) {
+          const sobra = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalInstallments - baseIptu);
+          diferencaMsg = `Passou ${sobra} do valor correto`;
+        } else {
+          const falta = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(baseIptu - totalInstallments);
+          diferencaMsg = `Falta ${falta} para fechar o valor correto`;
+        }
+        
+        errors.push(`A soma das parcelas informadas (${formattedTotal}) está diferente do valor base do IPTU (${formattedBase}). ${diferencaMsg}. Ajuste as parcelas para bater a conta exata.`);
+      }
+    }
+  }
+
   static validateCreate(data: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
@@ -22,10 +131,11 @@ export class LeaseValidator {
       }
     }
 
-    // ATUALIZADO: Removido o _12X do INSTALLMENTS
     if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'].includes(data.payment_condition)) {
       errors.push('Condição de pagamento inválida');
     }
+
+    this.validateIptuConditions(data, errors);
 
     return { isValid: errors.length === 0, errors };
   }
@@ -41,10 +151,11 @@ export class LeaseValidator {
       }
     }
 
-    // ATUALIZADO: Removido o _12X do INSTALLMENTS
     if (data.payment_condition && !['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'].includes(data.payment_condition)) {
       errors.push('Condição de pagamento inválida');
     }
+
+    this.validateIptuConditions(data, errors);
 
     return { isValid: errors.length === 0, errors };
   }
