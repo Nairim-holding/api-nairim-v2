@@ -58,7 +58,7 @@ app.get('/health', (_req: Request, res: Response) => {
 // Routes
 app.use(routes);
 
-// Error handling - este deve vir antes do 404 handler
+// Error handling - este deve vir antes do 404 handler 
 app.use(errorHandler);
 
 // 404 handler - usar função regular em vez de app.use('*')
