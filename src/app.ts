@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
 import { rateLimit } from 'express-rate-limit';
 import pinoHttp from 'pino-http';
 import routes from './routes';
@@ -27,11 +28,12 @@ app.use(
   })
 );
 
-// Security
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Rate limiting
 const limiter = rateLimit({

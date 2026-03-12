@@ -25,6 +25,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - ./uploads:/app/uploads
       - postgres_data:/var/lib/postgresql/data
 
 volumes:

@@ -1,5 +1,5 @@
-import { put } from '@vercel/blob';
-import { env } from '@/env';
+import fs from 'fs/promises';
+import path from 'path';
 
 export interface UploadResult {
   url: string;
@@ -15,50 +15,35 @@ export class BlobService {
     folder: string = 'properties'
   ): Promise<UploadResult> {
     try {
-      if (!env.BLOB_READ_WRITE_TOKEN) {
-        throw new Error('BLOB_READ_WRITE_TOKEN não configurado');
-      }
-
       // Usar nome de arquivo seguro
-      const safeFilename = filename
-        .replace(/[^a-zA-Z0-9._-]/g, '_')
-        .toLowerCase();
+      const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+      const uniqueFilename = `${Date.now()}-${safeFilename}`;
       
-      const pathname = `${folder}/${Date.now()}-${safeFilename}`;
+      // Define os caminhos
+      const relativePath = path.posix.join(folder, uniqueFilename);
+      const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
+
+      // Garante que a pasta exista (cria se não existir)
+      await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+
+      // Salva o arquivo no disco do servidor
+      await fs.writeFile(absolutePath, file.buffer);
+
+      // Pega a BASE_URL do .env (ex: http://187.77.236.241:5000)
+      const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
       
-      // Timeout para o fetch
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos
-
-      try {
-        const blob = await put(pathname, file.buffer, {
-          access: 'public',
-          token: env.BLOB_READ_WRITE_TOKEN,
-          contentType: file.mimetype,
-        });
-
-        clearTimeout(timeoutId);
-
-        return {
-          url: blob.url,
-          pathname: blob.pathname,
-          contentType: file.mimetype,
-          contentDisposition: `inline; filename="${safeFilename}"`,
-        };
-      } catch (fetchError: any) {
-        clearTimeout(timeoutId);
-        if (fetchError.name === 'AbortError') {
-          throw new Error('Timeout ao fazer upload para o Vercel Blob');
-        }
-        throw fetchError;
-      }
+      return {
+        url: `${baseUrl}/uploads/${relativePath}`,
+        pathname: relativePath,
+        contentType: file.mimetype,
+        contentDisposition: `inline; filename="${safeFilename}"`,
+      };
     } catch (error: any) {
-      console.error('❌ Erro ao fazer upload para Vercel Blob:', error);
+      console.error('❌ Erro ao salvar arquivo localmente:', error);
       throw new Error(`Falha no upload do arquivo: ${error.message}`);
     }
   }
 
-  // Método para upload em paralelo com limite de concorrência
   static async uploadMultipleFilesWithLimit(
     files: Express.Multer.File[],
     folder: string = 'properties',
@@ -76,13 +61,11 @@ export class BlobService {
             results.push(result);
           } catch (error) {
             console.error(`❌ Erro no upload de ${file.originalname}:`, error);
-            // Continue apesar do erro
           }
         }
       }
     };
     
-    // Criar workers concorrentes
     const workers = Array(maxConcurrent).fill(null).map(() => worker());
     await Promise.all(workers);
     

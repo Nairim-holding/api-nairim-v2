@@ -1,61 +1,47 @@
-import multer from 'multer';
+import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { put, del } from '@vercel/blob';
 
-// Configuração para upload local
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, '../../uploads');
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  }
-});
-
-export const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-});
-
-// Configuração para Vercel Blob
-export class VercelBlobService {
-
-  async uploadFile(
-    file: Express.Multer.File,
-    folder: string
-  ): Promise<string> {
+export class LocalUploadService {
+  async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
     try {
-      const fileName = `${folder}/${uuidv4()}${path.extname(file.originalname)}`;
+      const fileName = `${uuidv4()}${path.extname(file.originalname)}`;
+      const relativePath = path.posix.join(folder, fileName);
+      const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
 
-      const blob = await put(fileName, file.buffer, {
-        access: 'public',
-        contentType: file.mimetype,
-      });
+      // Cria a pasta se não existir
+      fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+      
+      // Salva o arquivo
+      fs.writeFileSync(absolutePath, file.buffer);
 
-      return blob.url;
+      const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+      return `${baseUrl}/uploads/${relativePath}`;
     } catch (error) {
-      console.error('Error uploading to Vercel Blob:', error);
+      console.error('Error uploading locally:', error);
       throw error;
     }
   }
 
   async deleteFile(url: string): Promise<void> {
     try {
-      await del(url);
+      const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+      const filePath = url.replace(`${baseUrl}/uploads/`, '');
+      const absolutePath = path.join(process.cwd(), 'uploads', filePath);
+
+      if (fs.existsSync(absolutePath)) {
+        fs.unlinkSync(absolutePath);
+      }
     } catch (error) {
-      console.error('Error deleting from Vercel Blob:', error);
+      console.error('Error deleting local file:', error);
       throw error;
     }
   }
 }
 
-// Factory para escolher o serviço de upload
+// Factory agora sempre retorna o serviço local
 export class UploadServiceFactory {
   static create() {
-    const useVercelBlob = process.env.USE_VERCEL_BLOB === 'true';
-    return useVercelBlob ? new VercelBlobService() : null;
+    return new LocalUploadService();
   }
 }
