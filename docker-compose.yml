@@ -9,11 +9,10 @@ services:
       - postgres
     env_file:
       - .env
+    volumes:
+      - ./.env:/app/.env
     environment:
       - DATABASE_URL=postgresql://nairim:nairim@postgres:5432/nairim_db?schema=public
-      - PORT=5000
-    command: >
-      sh -c "DATABASE_URL=postgresql://nairim:nairim@postgres:5432/nairim_db?schema=public npx prisma migrate deploy && npm run start"
 
   postgres:
     image: postgres:16-alpine
