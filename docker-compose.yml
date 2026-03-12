@@ -8,7 +8,9 @@ services:
     depends_on:
       - postgres
     env_file:
-      - .env 
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://nairim:nairim@postgres:5432/nairim_db?schema=public
 
   postgres:
     image: postgres:16-alpine
