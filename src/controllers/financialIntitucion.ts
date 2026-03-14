@@ -108,7 +108,7 @@ export class FinancialInstitutionController {
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await FinancialInstitutionService.getInstitutionFilters(req.query);
+      const filtersData = await FinancialInstitutionService.getInstitutionFilters();
       res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
