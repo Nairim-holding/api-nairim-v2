@@ -26,11 +26,10 @@ export class CenterService {
         if (value !== undefined && value !== '') {
           if (key === 'name') {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
-          }
-          if (key === 'type') {
+          } else if (key === 'type') {
+            // Filtro invisível das abas do Frontend (INCOME / EXPENSE)
             where[key] = value;
-          }
-          if (key === 'is_active') {
+          } else if (key === 'is_active') {
             where[key] = value === 'true' || value === true;
           }
         }
@@ -44,8 +43,17 @@ export class CenterService {
         const normalizedSearch = this.normalizeText(search);
         
         let filtered = allCenters.filter(center => {
-          const normalizedName = this.normalizeText(center.name);
-          return normalizedName.includes(normalizedSearch);
+          // Busca inteligente: Traduz o type para a busca e concatena com o nome
+          const typePt = center.type === 'INCOME' ? 'receita' : (center.type === 'EXPENSE' ? 'despesa' : '');
+          const statusPt = center.is_active ? 'ativo' : 'inativo';
+          
+          const fieldsToSearch = [
+            center.name,
+            typePt,
+            statusPt
+          ].join(' ');
+
+          return this.normalizeText(fieldsToSearch).includes(normalizedSearch);
         });
 
         total = filtered.length;
@@ -169,18 +177,34 @@ export class CenterService {
     } catch (error: any) { throw error; }
   }
 
-  static async getCenterFilters(filters?: Record<string, any>) {
+  static async getCenterFilters() {
     try {
       const where: any = { deleted_at: null };
       const centers = await prisma.center.findMany({
-        where, select: { name: true }, distinct: ['name']
+        where, select: { name: true }, orderBy: { name: 'asc' }
       });
+
+      const uniqueNames = Array.from(new Set(centers.map(c => c.name)));
+      const nameOptions = uniqueNames.map(name => ({ label: name, value: name }));
 
       return {
         filters: [
-          { field: 'name', type: 'string', label: 'Nome do Centro', values: [...new Set(centers.map(c => c.name))].sort(), searchable: true },
-          { field: 'type', type: 'select', label: 'Tipo', values: ['INCOME', 'EXPENSE'] },
-          { field: 'is_active', type: 'boolean', label: 'Ativo' }
+          { 
+            field: 'name', 
+            type: 'select', 
+            label: 'Nome do Centro', 
+            values: nameOptions,
+            searchable: true
+          },
+          { 
+            field: 'is_active', 
+            type: 'select', 
+            label: 'Status',
+            values: [
+              { value: 'true', label: 'Ativo' },
+              { value: 'false', label: 'Inativo' }
+            ]
+          }
         ],
         defaultSort: 'created_at:desc',
         searchFields: ['name']

@@ -35,21 +35,21 @@ export class SupplierController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Error getting suppliers:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar fornecedores:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getSupplierById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await SupplierService.getSupplierById(id);
-      res.status(200).json(ApiResponse.success(data, 'Supplier retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Fornecedor recuperado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Supplier not found') return res.status(404).json(ApiResponse.error('Supplier not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Supplier not found') return res.status(404).json(ApiResponse.error('Fornecedor não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -57,67 +57,67 @@ export class SupplierController {
     try {
       const validation = SupplierValidator.validateCreate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await SupplierService.createSupplier(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Supplier created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Fornecedor criado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'CNPJ already registered') return res.status(409).json(ApiResponse.error(error.message));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      if (error.message === 'CNPJ already registered') return res.status(409).json(ApiResponse.error('Este CNPJ já está cadastrado'));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateSupplier(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = SupplierValidator.validateUpdate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await SupplierService.updateSupplier(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Supplier updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Fornecedor atualizado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Supplier not found') return res.status(404).json(ApiResponse.error('Supplier not found'));
-      if (error.message.includes('CNPJ already registered')) return res.status(409).json(ApiResponse.error(error.message));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      if (error.message === 'Supplier not found') return res.status(404).json(ApiResponse.error('Fornecedor não encontrado'));
+      if (error.message.includes('CNPJ already registered')) return res.status(409).json(ApiResponse.error('Este CNPJ já está cadastrado para outro fornecedor'));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteSupplier(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await SupplierService.deleteSupplier(id);
       res.status(200).json(ApiResponse.success(null, 'Fornecedor deletado com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Supplier not found or already deleted') return res.status(404).json(ApiResponse.error('Supplier not found'));
-      res.status(500).json(ApiResponse.error('Error deleting supplier'));
+      if (error.message === 'Supplier not found or already deleted') return res.status(404).json(ApiResponse.error('Fornecedor não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro ao deletar fornecedor'));
     }
   }
 
   static async restoreSupplier(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await SupplierService.restoreSupplier(id);
-      res.status(200).json(ApiResponse.success(null, 'Supplier restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Fornecedor restaurado com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring supplier'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar fornecedor'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await SupplierService.getSupplierFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      const filtersData = await SupplierService.getSupplierFilters();
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
     }
   }
 }

@@ -35,21 +35,21 @@ export class SubcategoryController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Error getting subcategories:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar subcategorias:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getSubcategoryById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await SubcategoryService.getSubcategoryById(id);
-      res.status(200).json(ApiResponse.success(data, 'Subcategory retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Subcategoria recuperada com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Subcategory not found') return res.status(404).json(ApiResponse.error('Subcategory not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Subcategory not found') return res.status(404).json(ApiResponse.error('Subcategoria não encontrada'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -57,70 +57,70 @@ export class SubcategoryController {
     try {
       const validation = SubcategoryValidator.validateCreate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await SubcategoryService.createSubcategory(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Subcategory created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Subcategoria criada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Categoria pai não encontrada') return res.status(404).json(ApiResponse.error(error.message));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateSubcategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = SubcategoryValidator.validateUpdate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await SubcategoryService.updateSubcategory(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Subcategory updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Subcategoria atualizada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Subcategory not found' || error.message === 'Categoria pai não encontrada') {
         return res.status(404).json(ApiResponse.error(error.message));
       }
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteSubcategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await SubcategoryService.deleteSubcategory(id);
       res.status(200).json(ApiResponse.success(null, 'Subcategoria deletada com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Subcategory not found or already deleted') return res.status(404).json(ApiResponse.error('Subcategory not found'));
+      if (error.message === 'Subcategory not found or already deleted') return res.status(404).json(ApiResponse.error('Subcategoria não encontrada'));
       if (error.message.includes('lançamentos')) return res.status(409).json(ApiResponse.error(error.message));
       
-      res.status(500).json(ApiResponse.error('Error deleting subcategory'));
+      res.status(500).json(ApiResponse.error('Erro ao deletar subcategoria'));
     }
   }
 
   static async restoreSubcategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await SubcategoryService.restoreSubcategory(id);
-      res.status(200).json(ApiResponse.success(null, 'Subcategory restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Subcategoria restaurada com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring subcategory'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar subcategoria'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await SubcategoryService.getSubcategoryFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      const filtersData = await SubcategoryService.getSubcategoryFilters();
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
     }
   }
 }

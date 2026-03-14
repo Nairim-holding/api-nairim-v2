@@ -2,6 +2,33 @@ import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
 
 export class SupplierService {
+  // Mapa de campos para ensinar ao backend onde encontrar cada dado (incluindo relações)
+  static readonly FIELD_MAPPING: Record<string, { 
+    type: 'direct' | 'address' | 'contact', 
+    realField: string,
+    relationPath?: string 
+  }> = {
+    'legal_name': { type: 'direct', realField: 'legal_name' },
+    'trade_name': { type: 'direct', realField: 'trade_name' },
+    'cnpj': { type: 'direct', realField: 'cnpj' },
+    'state_registration': { type: 'direct', realField: 'state_registration' },
+    'municipal_registration': { type: 'direct', realField: 'municipal_registration' },
+    'created_at': { type: 'direct', realField: 'created_at' },
+    'updated_at': { type: 'direct', realField: 'updated_at' },
+    
+    'city': { type: 'address', realField: 'city', relationPath: 'addresses.0.address.city' },
+    'state': { type: 'address', realField: 'state', relationPath: 'addresses.0.address.state' },
+    'district': { type: 'address', realField: 'district', relationPath: 'addresses.0.address.district' },
+    'street': { type: 'address', realField: 'street', relationPath: 'addresses.0.address.street' },
+    'zip_code': { type: 'address', realField: 'zip_code', relationPath: 'addresses.0.address.zip_code' },
+    'complement': { type: 'address', realField: 'complement', relationPath: 'addresses.0.address.complement' },
+    
+    'contact_name': { type: 'contact', realField: 'contact', relationPath: 'contacts.0.contact' },
+    'phone': { type: 'contact', realField: 'phone', relationPath: 'contacts.0.phone' },
+    'cellphone': { type: 'contact', realField: 'cellphone', relationPath: 'contacts.0.cellphone' },
+    'email': { type: 'contact', realField: 'email', relationPath: 'contacts.0.email' }
+  };
+
   private static normalizeText(text: string): string {
     if (!text) return '';
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
@@ -9,6 +36,88 @@ export class SupplierService {
 
   private static normalizeSortDirection(direction: string): 'asc' | 'desc' {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
+  }
+
+  private static safeGetProperty(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
+  }
+
+  // NOVA FUNÇÃO: Busca inteligente varrendo todas as informações (incluindo endereços e contatos)
+  private static filterSuppliersBySearch(suppliers: any[], searchTerm: string): any[] {
+    if (!searchTerm.trim()) return suppliers;
+    const normalizedSearch = this.normalizeText(searchTerm);
+
+    return suppliers.filter(supplier => {
+      const directFields = [
+        supplier.legal_name,
+        supplier.trade_name,
+        supplier.cnpj,
+        supplier.state_registration,
+        supplier.municipal_registration
+      ].filter(Boolean).join(' ');
+
+      const addressFields = supplier.addresses
+        ?.map((sa: any) => sa.address)
+        .filter(Boolean)
+        .map((addr: any) => [addr.street, addr.district, addr.city, addr.state, addr.zip_code, addr.complement].filter(Boolean).join(' '))
+        .join(' ') || '';
+
+      const contactFields = supplier.contacts
+        ?.map((c: any) => [c.contact, c.phone, c.cellphone, c.email].filter(Boolean).join(' '))
+        .join(' ') || '';
+
+      const allFields = [directFields, addressFields, contactFields].join(' ');
+      return this.normalizeText(allFields).includes(normalizedSearch);
+    });
+  }
+
+  private static buildFilterConditions(filters: Record<string, any>): any {
+    const conditions: any = {};
+    
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') return;
+
+      if (['legal_name', 'trade_name', 'cnpj', 'state_registration', 'municipal_registration'].includes(key)) {
+        conditions[key] = { contains: String(value), mode: 'insensitive' };
+      }
+      else if (['city', 'state', 'zip_code', 'street', 'district', 'complement'].includes(key)) {
+        if (!conditions.addresses) conditions.addresses = { some: { address: {} } };
+        conditions.addresses.some.address[key] = { contains: String(value), mode: 'insensitive' };
+      }
+      else if (key === 'contact_name') {
+        if (!conditions.contacts) conditions.contacts = { some: {} };
+        conditions.contacts.some.contact = { contains: String(value), mode: 'insensitive' };
+      }
+      else if (['phone', 'cellphone', 'email'].includes(key)) {
+        if (!conditions.contacts) conditions.contacts = { some: {} };
+        conditions.contacts.some[key] = { contains: String(value), mode: 'insensitive' };
+      }
+      else if (key === 'created_at') {
+        conditions.created_at = this.buildDateCondition(value);
+      }
+    });
+    return conditions;
+  }
+
+  private static buildDateCondition(value: any): any {
+    if (typeof value === 'object' && value && 'from' in value && 'to' in value) {
+      const dateRange = value as { from: string; to: string };
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      toDate.setHours(23, 59, 59, 999);
+      if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+        return { gte: fromDate, lte: toDate };
+      }
+    } 
+    else if (typeof value === 'string') {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const start = new Date(date); start.setHours(0,0,0,0);
+        const end = new Date(date); end.setHours(23,59,59,999);
+        return { gte: start, lte: end };
+      }
+    }
+    return {};
   }
 
   static async getSuppliers(params: any = {}) {
@@ -19,48 +128,85 @@ export class SupplierService {
       const skip = (Math.max(1, page) - 1) * take;
 
       const where: any = {};
-      
       if (!includeInactive) where.deleted_at = null;
 
-      if (search.trim()) {
-        where.OR = [
-          { legal_name: { contains: search, mode: 'insensitive' as Prisma.QueryMode } },
-          { trade_name: { contains: search, mode: 'insensitive' as Prisma.QueryMode } },
-          { cnpj: { contains: search, mode: 'insensitive' as Prisma.QueryMode } }
-        ];
+      const filterConditions = this.buildFilterConditions(filters);
+      if (Object.keys(filterConditions).length > 0) {
+        where.AND = [filterConditions];
       }
 
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== '') {
-          if (['legal_name', 'trade_name', 'cnpj'].includes(key)) {
-            where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
-          }
-        }
-      });
+      const sortField = Object.keys(sortOptions)[0];
+      const sortDirection = sortField ? this.normalizeSortDirection(sortOptions[sortField]) : 'desc';
 
-      const orderBy: any[] = [];
-      Object.entries(sortOptions).forEach(([field, direction]) => {
-        if (['legal_name', 'trade_name', 'cnpj', 'created_at'].includes(field)) {
-          orderBy.push({ [field]: this.normalizeSortDirection(direction as string) });
-        }
-      });
-      if (orderBy.length === 0) orderBy.push({ created_at: 'desc' });
+      const contactRelatedFields = ['city', 'state', 'district', 'street', 'zip_code', 'complement', 'contact_name', 'phone', 'cellphone', 'email'];
 
-      const [data, count] = await Promise.all([
-        prisma.supplier.findMany({ 
-          where, skip, take, orderBy,
+      let suppliersData: any[] = [];
+      let total = 0;
+
+      // Se houver busca escrita ou se a ordenação for por um campo de tabela estrangeira (contato/endereço)
+      if (search.trim() || (sortField && contactRelatedFields.includes(sortField))) {
+        const allSuppliers = await prisma.supplier.findMany({ 
+          where,
           include: { 
             addresses: { where: { deleted_at: null }, include: { address: true } },
             contacts: { where: { deleted_at: null } }
           }
-        }),
-        prisma.supplier.count({ where })
-      ]);
+        });
+
+        let filtered = this.filterSuppliersBySearch(allSuppliers, search);
+        total = filtered.length;
+
+        if (sortField) {
+          filtered = filtered.sort((a, b) => {
+             const fieldInfo = this.FIELD_MAPPING[sortField];
+             let valA, valB;
+             
+             if (fieldInfo?.relationPath) {
+               valA = this.safeGetProperty(a, fieldInfo.relationPath);
+               valB = this.safeGetProperty(b, fieldInfo.relationPath);
+             } else {
+               valA = a[sortField];
+               valB = b[sortField];
+             }
+
+             const strA = this.normalizeText(String(valA || ''));
+             const strB = this.normalizeText(String(valB || ''));
+             return sortDirection === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
+          });
+        } else {
+          filtered = filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        }
+        
+        suppliersData = filtered.slice(skip, skip + take);
+
+      } else {
+        // Fluxo Otimizado: Só banco de dados
+        const orderBy: any[] = [];
+        if (sortField && ['legal_name', 'trade_name', 'cnpj', 'created_at'].includes(sortField)) {
+          orderBy.push({ [sortField]: sortDirection });
+        } else {
+          orderBy.push({ created_at: 'desc' });
+        }
+
+        const [data, count] = await Promise.all([
+          prisma.supplier.findMany({ 
+            where, skip, take, orderBy,
+            include: { 
+              addresses: { where: { deleted_at: null }, include: { address: true } },
+              contacts: { where: { deleted_at: null } }
+            }
+          }),
+          prisma.supplier.count({ where })
+        ]);
+
+        suppliersData = data;
+        total = count;
+      }
 
       return {
-        data,
-        count,
-        totalPages: Math.ceil(count / take),
+        data: suppliersData,
+        count: total,
+        totalPages: Math.ceil(total / take),
         currentPage: page,
       };
 
@@ -190,8 +336,6 @@ export class SupplierService {
       const supplier = await prisma.supplier.findUnique({ where: { id, deleted_at: null } });
       if (!supplier) throw new Error('Supplier not found or already deleted');
 
-      // (Se houver futuramente Lançamentos atrelados ao Fornecedor, a validação de bloqueio entra aqui)
-
       await prisma.supplier.update({
         where: { id },
         data: { 
@@ -229,18 +373,84 @@ export class SupplierService {
   static async getSupplierFilters(filters?: Record<string, any>) {
     try {
       const where: any = { deleted_at: null };
-      const suppliers = await prisma.supplier.findMany({
-        where, select: { legal_name: true, trade_name: true }, distinct: ['legal_name']
-      });
+
+      if (filters) {
+        const andFilters: any[] = [];
+        Object.entries(filters).forEach(([key, value]) => {
+           if (!value) return;
+           const conditions = this.buildFilterConditions({ [key]: value });
+           if (Object.keys(conditions).length) andFilters.push(conditions);
+        });
+        if (andFilters.length) where.AND = andFilters;
+      }
+
+      const [suppliers, addresses, contacts, dateRange] = await Promise.all([
+        prisma.supplier.findMany({
+          where,
+          select: { legal_name: true, trade_name: true, cnpj: true, state_registration: true, municipal_registration: true },
+          distinct: ['legal_name', 'trade_name', 'cnpj', 'state_registration', 'municipal_registration']
+        }),
+        prisma.address.findMany({
+          where: { deleted_at: null, supplierAddresses: { some: { supplier: { deleted_at: null } } } },
+          select: { city: true, state: true, district: true, street: true, zip_code: true, complement: true },
+          distinct: ['city', 'state', 'district', 'street', 'zip_code', 'complement']
+        }),
+        prisma.contact.findMany({
+          where: { deleted_at: null, supplier_id: { not: null }, supplier: { deleted_at: null } },
+          select: { contact: true, phone: true, cellphone: true, email: true },
+          distinct: ['contact', 'phone', 'cellphone', 'email']
+        }),
+        prisma.supplier.aggregate({
+          where,
+          _min: { created_at: true },
+          _max: { created_at: true }
+        })
+      ]);
+
+      const filtersList = [
+        { field: 'legal_name', type: 'string', label: 'Razão Social', values: [...new Set(suppliers.map(s => s.legal_name).filter(Boolean))].sort(), searchable: true },
+        { field: 'trade_name', type: 'string', label: 'Nome Fantasia', values: [...new Set(suppliers.map(s => s.trade_name).filter(Boolean))].sort(), searchable: true },
+        { field: 'cnpj', type: 'string', label: 'CNPJ', values: [...new Set(suppliers.map(s => s.cnpj).filter(Boolean))].sort(), searchable: true },
+        { field: 'state_registration', type: 'string', label: 'Inscrição Estadual', values: [...new Set(suppliers.map(s => s.state_registration).filter(Boolean))].sort(), searchable: true },
+        { field: 'municipal_registration', type: 'string', label: 'Inscrição Municipal', values: [...new Set(suppliers.map(s => s.municipal_registration).filter(Boolean))].sort(), searchable: true },
+        
+        { field: 'city', type: 'string', label: 'Cidade', values: [...new Set(addresses.map(a => a.city).filter(Boolean))].sort(), searchable: true },
+        { field: 'state', type: 'string', label: 'Estado', values: [...new Set(addresses.map(a => a.state).filter(Boolean))].sort(), searchable: true },
+        { field: 'district', type: 'string', label: 'Bairro', values: [...new Set(addresses.map(a => a.district).filter(Boolean))].sort(), searchable: true },
+        { field: 'street', type: 'string', label: 'Rua', values: [...new Set(addresses.map(a => a.street).filter(Boolean))].sort(), searchable: true },
+        { field: 'zip_code', type: 'string', label: 'CEP', values: [...new Set(addresses.map(a => a.zip_code).filter(Boolean))].sort(), searchable: true },
+        { field: 'complement', type: 'string', label: 'Complemento', values: [...new Set(addresses.map(a => a.complement).filter(Boolean))].sort(), searchable: true },
+        
+        { field: 'contact_name', type: 'string', label: 'Nome do Contato', values: [...new Set(contacts.map(c => c.contact).filter(Boolean))].sort(), searchable: true },
+        { field: 'phone', type: 'string', label: 'Telefone', values: [...new Set(contacts.map(c => c.phone).filter(Boolean))].sort(), searchable: true },
+        { field: 'cellphone', type: 'string', label: 'Celular', values: [...new Set(contacts.map(c => c.cellphone).filter(Boolean))].sort(), searchable: true },
+        { field: 'email', type: 'string', label: 'E-mail', values: [...new Set(contacts.map(c => c.email).filter(Boolean))].sort(), searchable: true },
+        
+        { 
+          field: 'created_at', 
+          type: 'date', 
+          label: 'Criado em', 
+          min: dateRange._min.created_at?.toISOString().split('T')[0], 
+          max: dateRange._max.created_at?.toISOString().split('T')[0], 
+          dateRange: true 
+        }
+      ];
 
       return {
-        filters: [
-          { field: 'legal_name', type: 'string', label: 'Razão Social', values: [...new Set(suppliers.map(s => s.legal_name))].sort(), searchable: true },
-          { field: 'trade_name', type: 'string', label: 'Nome Fantasia', searchable: true }
-        ],
+        filters: filtersList,
+        operators: {
+          string: ['contains', 'equals', 'startsWith', 'endsWith'],
+          number: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'],
+          date: ['equals', 'gt', 'gte', 'lt', 'lte', 'between'],
+          boolean: ['equals'],
+          select: ['equals', 'in']
+        },
         defaultSort: 'created_at:desc',
-        searchFields: ['legal_name', 'trade_name', 'cnpj']
+        searchFields: ['legal_name', 'trade_name', 'cnpj', 'city', 'state', 'contact_name', 'phone', 'cellphone', 'email']
       };
-    } catch (error) { throw error; }
+
+    } catch (error) {
+      throw error;
+    }
   }
 }

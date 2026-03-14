@@ -11,6 +11,24 @@ export class CategoryService {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
   }
 
+  private static filterCategoriesBySearch(categories: any[], searchTerm: string): any[] {
+    if (!searchTerm.trim()) return categories;
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+
+    return categories.filter(cat => {
+      const typePt = cat.type === 'INCOME' ? 'receita' : (cat.type === 'EXPENSE' ? 'despesa' : '');
+      const statusPt = cat.is_active ? 'ativo' : 'inativo';
+      
+      const fieldsToSearch = [
+        cat.name,
+        typePt,
+        statusPt
+      ].join(' ');
+
+      return this.normalizeText(fieldsToSearch).includes(normalizedSearchTerm);
+    });
+  }
+
   static async getCategories(params: any = {}) {
     try {
       const { limit = 30, page = 1, search = '', filters = {}, sortOptions = {}, includeInactive = false } = params;
@@ -20,19 +38,15 @@ export class CategoryService {
 
       const where: any = {};
       
-      // Se includeInactive for false, traz apenas os que não foram deletados
       if (!includeInactive) where.deleted_at = null;
 
-      // Filtros exatos
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== '') {
           if (key === 'name') {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
-          }
-          if (key === 'type') {
+          } else if (key === 'type') {
             where[key] = value;
-          }
-          if (key === 'is_active') {
+          } else if (key === 'is_active') {
             where[key] = value === 'true' || value === true;
           }
         }
@@ -43,13 +57,8 @@ export class CategoryService {
 
       if (search.trim()) {
         const allCategories = await prisma.category.findMany({ where });
-        const normalizedSearch = this.normalizeText(search);
         
-        let filtered = allCategories.filter(cat => {
-          const normalizedName = this.normalizeText(cat.name);
-          return normalizedName.includes(normalizedSearch);
-        });
-
+        let filtered = this.filterCategoriesBySearch(allCategories, search);
         total = filtered.length;
 
         const sortEntries = Object.entries(sortOptions) as any;
@@ -57,8 +66,15 @@ export class CategoryService {
           const field = sortEntries[0][0];
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
           filtered = filtered.sort((a, b) => {
-             const strA = String((a as any)[field] || '');
-             const strB = String((b as any)[field] || '');
+             const valA = (a as any)[field];
+             const valB = (b as any)[field];
+             
+             if (typeof valA === 'boolean' || typeof valB === 'boolean') {
+               return direction === 'asc' ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
+             }
+
+             const strA = String(valA || '');
+             const strB = String(valB || '');
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
@@ -116,7 +132,7 @@ export class CategoryService {
           name: data.name,
           type: data.type,
           is_active: data.is_active ?? true,
-          is_system: false // Categorias criadas pelo usuário nunca são de sistema
+          is_system: false 
         }
       });
       return newCategory;
@@ -128,7 +144,6 @@ export class CategoryService {
       const existing = await prisma.category.findUnique({ where: { id, deleted_at: null } });
       if (!existing) throw new Error('Category not found');
       
-      // Regra de segurança: Não permitir alteração de categorias de sistema (ex: Transferências)
       if (existing.is_system) {
         throw new Error('Não é possível alterar categorias internas do sistema.');
       }
@@ -149,12 +164,10 @@ export class CategoryService {
       const category = await prisma.category.findUnique({ where: { id, deleted_at: null } });
       if (!category) throw new Error('Category not found or already deleted');
 
-      // Regra de segurança: Não permitir exclusão de categorias de sistema
       if (category.is_system) {
         throw new Error('Não é possível excluir categorias internas do sistema.');
       }
 
-      // Regra do Financeiro: não excluir se houver lançamentos ou subcategorias vinculadas
       const hasTransactions = await prisma.transaction.findFirst({
         where: { category_id: id, deleted_at: null }
       });
@@ -193,18 +206,34 @@ export class CategoryService {
     } catch (error: any) { throw error; }
   }
 
-  static async getCategoryFilters(filters?: Record<string, any>) {
+  static async getCategoryFilters() {
     try {
       const where: any = { deleted_at: null };
       const categories = await prisma.category.findMany({
-        where, select: { name: true }, distinct: ['name']
+        where, select: { name: true }, orderBy: { name: 'asc' }
       });
+
+      const uniqueNames = Array.from(new Set(categories.map(c => c.name)));
+      const nameOptions = uniqueNames.map(name => ({ label: name, value: name }));
 
       return {
         filters: [
-          { field: 'name', type: 'string', label: 'Nome da Categoria', values: [...new Set(categories.map(c => c.name))].sort(), searchable: true },
-          { field: 'type', type: 'select', label: 'Tipo', values: ['INCOME', 'EXPENSE'] },
-          { field: 'is_active', type: 'boolean', label: 'Ativo' }
+          { 
+            field: 'name', 
+            type: 'select',
+            label: 'Nome da Categoria', 
+            values: nameOptions,
+            searchable: true 
+          },
+          { 
+            field: 'is_active', 
+            type: 'select', 
+            label: 'Status',
+            values: [
+              { value: 'true', label: 'Ativo' },
+              { value: 'false', label: 'Inativo' }
+            ]
+          }
         ],
         defaultSort: 'created_at:desc',
         searchFields: ['name']

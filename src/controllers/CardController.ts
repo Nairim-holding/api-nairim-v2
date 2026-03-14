@@ -35,21 +35,21 @@ export class CardController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Error getting cards:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar cartões:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getCardById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await CardService.getCardById(id);
-      res.status(200).json(ApiResponse.success(data, 'Card retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Cartão encontrado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Card not found') return res.status(404).json(ApiResponse.error('Card not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Card not found') return res.status(404).json(ApiResponse.error('Cartão não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -57,67 +57,67 @@ export class CardController {
     try {
       const validation = CardValidator.validateCreate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CardService.createCard(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Card created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Cartão criado com sucesso'));
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateCard(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = CardValidator.validateUpdate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CardService.updateCard(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Card updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Cartão atualizado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Card not found') return res.status(404).json(ApiResponse.error('Card not found'));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      if (error.message === 'Card not found') return res.status(404).json(ApiResponse.error('Cartão não encontrado'));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteCard(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CardService.deleteCard(id);
       res.status(200).json(ApiResponse.success(null, 'Cartão deletado com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Card not found or already deleted') return res.status(404).json(ApiResponse.error('Card not found'));
+      if (error.message === 'Card not found or already deleted') return res.status(404).json(ApiResponse.error('Cartão não encontrado'));
       if (error.message.includes('lançamentos')) return res.status(409).json(ApiResponse.error(error.message));
       
-      res.status(500).json(ApiResponse.error('Error deleting card'));
+      res.status(500).json(ApiResponse.error('Erro ao deletar cartão'));
     }
   }
 
   static async restoreCard(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CardService.restoreCard(id);
-      res.status(200).json(ApiResponse.success(null, 'Card restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Cartão restaurado com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring card'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar cartão'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await CardService.getCardFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      const filtersData = await CardService.getCardFilters();
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

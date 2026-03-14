@@ -11,6 +11,27 @@ export class CardService {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
   }
 
+  private static filterCardsBySearch(cards: any[], searchTerm: string): any[] {
+    if (!searchTerm.trim()) return cards;
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+
+    return cards.filter(card => {
+      const statusPt = card.is_active ? 'ativo' : 'inativo';
+      const formattedLimit = card.limit && Number(card.limit) > 0 
+        ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(card.limit)) 
+        : 'sem limite';
+
+      const fieldsToSearch = [
+        card.name,
+        String(card.limit),
+        formattedLimit,
+        statusPt
+      ].filter(Boolean).join(' ');
+
+      return this.normalizeText(fieldsToSearch).includes(normalizedSearchTerm);
+    });
+  }
+
   static async getCards(params: any = {}) {
     try {
       const { limit = 30, page = 1, search = '', filters = {}, sortOptions = {}, includeInactive = false } = params;
@@ -23,12 +44,28 @@ export class CardService {
       if (!includeInactive) where.deleted_at = null;
 
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== '') {
+        if (value !== undefined && value !== null && value !== '') {
           if (key === 'name') {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
-          }
-          if (key === 'is_active') {
+          } else if (key === 'is_active') {
             where[key] = value === 'true' || value === true;
+          } else if (key === 'card_limit') { 
+            let strValue = String(value);
+            if (strValue.includes(',')) {
+              strValue = strValue.replace(/\./g, '').replace(',', '.');
+            }
+            const numericValue = Number(strValue.replace(/[^\d.-]/g, ''));
+            
+            if (!isNaN(numericValue)) {
+              if (numericValue === 0) {
+                where.OR = [
+                  { limit: 0 },
+                  { limit: null }
+                ];
+              } else {
+                where.limit = numericValue;
+              }
+            }
           }
         }
       });
@@ -38,13 +75,8 @@ export class CardService {
 
       if (search.trim()) {
         const allCards = await prisma.card.findMany({ where });
-        const normalizedSearch = this.normalizeText(search);
         
-        let filtered = allCards.filter(card => {
-          const normalizedName = this.normalizeText(card.name);
-          return normalizedName.includes(normalizedSearch);
-        });
-
+        let filtered = this.filterCardsBySearch(allCards, search);
         total = filtered.length;
 
         const sortEntries = Object.entries(sortOptions) as any;
@@ -52,8 +84,18 @@ export class CardService {
           const field = sortEntries[0][0];
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
           filtered = filtered.sort((a, b) => {
-             const strA = String((a as any)[field] || '');
-             const strB = String((b as any)[field] || '');
+             const valA = (a as any)[field];
+             const valB = (b as any)[field];
+             
+             if (typeof valA === 'number' || typeof valB === 'number') {
+               return direction === 'asc' ? Number(valA || 0) - Number(valB || 0) : Number(valB || 0) - Number(valA || 0);
+             }
+             if (typeof valA === 'boolean' || typeof valB === 'boolean') {
+               return direction === 'asc' ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
+             }
+
+             const strA = String(valA || '');
+             const strB = String(valB || '');
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
@@ -106,7 +148,7 @@ export class CardService {
       const newCard = await prisma.card.create({
         data: { 
           name: data.name,
-          limit: data.limit ? Number(data.limit) : null,
+          limit: data.limit !== null && data.limit !== undefined ? Number(data.limit) : null,
           is_active: data.is_active ?? true
         }
       });
@@ -123,7 +165,7 @@ export class CardService {
         where: { id },
         data: { 
           name: data.name,
-          limit: data.limit !== undefined ? (data.limit ? Number(data.limit) : null) : undefined,
+          limit: data.limit !== undefined ? (data.limit !== null ? Number(data.limit) : null) : undefined,
           is_active: data.is_active
         }
       });
@@ -135,13 +177,12 @@ export class CardService {
       const card = await prisma.card.findUnique({ where: { id, deleted_at: null } });
       if (!card) throw new Error('Card not found or already deleted');
 
-      // Regra da Sprint de Março/2026: Bloquear exclusão se existirem lançamentos vinculados
       const hasTransactions = await prisma.transaction.findFirst({
         where: { card_id: id, deleted_at: null }
       });
 
       if (hasTransactions) {
-        throw new Error('Não é possível excluir o cartão pois existem lançamentos relacionados.');
+        throw new Error('Não é possível excluir o cartão pois existem lançamentos vinculados.');
       }
 
       await prisma.card.update({
@@ -166,21 +207,75 @@ export class CardService {
     } catch (error: any) { throw error; }
   }
 
-  static async getCardFilters(filters?: Record<string, any>) {
+  static async getCardFilters() {
     try {
-      const where: any = { deleted_at: null };
-      const cards = await prisma.card.findMany({
-        where, select: { name: true }, distinct: ['name']
+      const existingCards = await prisma.card.findMany({
+        where: { deleted_at: null },
+        select: { id: true, name: true, limit: true },
+        orderBy: { name: 'asc' },
       });
+
+      const uniqueNames = Array.from(new Set(existingCards.map(c => c.name)));
+      const nameOptions = uniqueNames.map(name => ({
+        label: name,
+        value: name 
+      }));
+
+      const uniqueLimits = Array.from(
+        new Set(
+          existingCards
+            .map(c => c.limit !== null && c.limit !== undefined ? Number(c.limit) : null)
+            .filter(val => val !== null)
+        )
+      ).sort((a, b) => (a as number) - (b as number));
+
+      const limitOptions = uniqueLimits.map(limit => ({
+        label: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(limit as number),
+        value: String(limit) 
+      }));
+
+      const hasNoLimit = existingCards.some(c => !c.limit || Number(c.limit) === 0);
+      if (hasNoLimit) {
+        limitOptions.unshift({ label: 'Sem limite / R$ 0,00', value: '0' });
+      }
 
       return {
         filters: [
-          { field: 'name', type: 'string', label: 'Nome do Cartão', values: [...new Set(cards.map(c => c.name))].sort(), searchable: true },
-          { field: 'is_active', type: 'boolean', label: 'Ativo' }
+          { 
+            field: 'name', 
+            type: 'select', 
+            label: 'Nome do Cartão',
+            values: nameOptions,
+            searchable: true
+          },
+          { 
+            field: 'is_active', 
+            type: 'select', 
+            label: 'Status', 
+            values: [
+              { value: 'true', label: 'Ativo' },
+              { value: 'false', label: 'Inativo' }
+            ] 
+          },
+          {
+            field: 'card_limit', 
+            type: 'select',
+            label: 'Limite',
+            values: limitOptions,
+            searchable: true
+          },
+          { 
+            field: 'created_at', 
+            type: 'date', 
+            label: 'Data de Criação', 
+            dateRange: true 
+          }
         ],
         defaultSort: 'created_at:desc',
         searchFields: ['name']
       };
-    } catch (error) { throw error; }
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -35,21 +35,21 @@ export class CategoryController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Error getting categories:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar categorias:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getCategoryById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await CategoryService.getCategoryById(id);
-      res.status(200).json(ApiResponse.success(data, 'Category retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Categoria recuperada com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Category not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -57,69 +57,69 @@ export class CategoryController {
     try {
       const validation = CategoryValidator.validateCreate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CategoryService.createCategory(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Category created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Categoria criada com sucesso'));
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateCategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = CategoryValidator.validateUpdate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CategoryService.updateCategory(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Category updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Categoria atualizada com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Category not found'));
+      if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
       if (error.message.includes('sistema')) return res.status(403).json(ApiResponse.error(error.message));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteCategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CategoryService.deleteCategory(id);
       res.status(200).json(ApiResponse.success(null, 'Categoria deletada com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Category not found or already deleted') return res.status(404).json(ApiResponse.error('Category not found'));
+      if (error.message === 'Category not found or already deleted') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
       if (error.message.includes('lançamentos') || error.message.includes('subcategorias')) return res.status(409).json(ApiResponse.error(error.message));
       if (error.message.includes('sistema')) return res.status(403).json(ApiResponse.error(error.message));
       
-      res.status(500).json(ApiResponse.error('Error deleting category'));
+      res.status(500).json(ApiResponse.error('Erro ao deletar categoria'));
     }
   }
 
   static async restoreCategory(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CategoryService.restoreCategory(id);
-      res.status(200).json(ApiResponse.success(null, 'Category restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Categoria restaurada com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring category'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar categoria'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await CategoryService.getCategoryFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      const filtersData = await CategoryService.getCategoryFilters();
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
     }
   }
 }

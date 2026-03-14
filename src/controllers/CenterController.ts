@@ -35,21 +35,21 @@ export class CenterController {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Error getting centers:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar centros:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getCenterById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       
       const data = await CenterService.getCenterById(id);
-      res.status(200).json(ApiResponse.success(data, 'Center retrieved successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Centro recuperado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Center not found') return res.status(404).json(ApiResponse.error('Center not found'));
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      if (error.message === 'Center not found') return res.status(404).json(ApiResponse.error('Centro não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -57,67 +57,67 @@ export class CenterController {
     try {
       const validation = CenterValidator.validateCreate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CenterService.createCenter(req.body);
-      res.status(201).json(ApiResponse.success(data, 'Center created successfully'));
+      res.status(201).json(ApiResponse.success(data, 'Centro criado com sucesso'));
     } catch (error: any) {
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async updateCenter(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       const validation = CenterValidator.validateUpdate(req.body);
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const data = await CenterService.updateCenter(id, req.body);
-      res.status(200).json(ApiResponse.success(data, 'Center updated successfully'));
+      res.status(200).json(ApiResponse.success(data, 'Centro atualizado com sucesso'));
     } catch (error: any) {
-      if (error.message === 'Center not found') return res.status(404).json(ApiResponse.error('Center not found'));
-      res.status(400).json(ApiResponse.error(`Error: ${error.message}`));
+      if (error.message === 'Center not found') return res.status(404).json(ApiResponse.error('Centro não encontrado'));
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
 
   static async deleteCenter(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CenterService.deleteCenter(id);
       res.status(200).json(ApiResponse.success(null, 'Centro deletado com sucesso.'));
     } catch (error: any) {
-      if (error.message === 'Center not found or already deleted') return res.status(404).json(ApiResponse.error('Center not found'));
+      if (error.message === 'Center not found or already deleted') return res.status(404).json(ApiResponse.error('Centro não encontrado'));
       if (error.message.includes('lançamentos')) return res.status(409).json(ApiResponse.error(error.message));
       
-      res.status(500).json(ApiResponse.error('Error deleting center'));
+      res.status(500).json(ApiResponse.error('Erro ao deletar centro'));
     }
   }
 
   static async restoreCenter(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
-      if (!id) return res.status(400).json(ApiResponse.error('ID is required'));
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
 
       await CenterService.restoreCenter(id);
-      res.status(200).json(ApiResponse.success(null, 'Center restored successfully'));
+      res.status(200).json(ApiResponse.success(null, 'Centro restaurado com sucesso'));
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Error restoring center'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar centro'));
     }
   }
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await CenterService.getCenterFilters(req.query);
-      res.status(200).json(ApiResponse.success(filtersData, 'Filters retrieved successfully'));
+      const filtersData = await CenterService.getCenterFilters();
+      res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

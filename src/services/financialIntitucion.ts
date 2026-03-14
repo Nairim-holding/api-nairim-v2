@@ -11,6 +11,19 @@ export class FinancialInstitutionService {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
   }
 
+  private static filterInstitutionsBySearch(institutions: any[], searchTerm: string): any[] {
+    if (!searchTerm.trim()) return institutions;
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+
+    return institutions.filter(inst => {
+      const fieldsToSearch = [
+        inst.name
+      ].join(' ');
+
+      return this.normalizeText(fieldsToSearch).includes(normalizedSearchTerm);
+    });
+  }
+
   static async getInstitutions(params: any = {}) {
     try {
       const { limit = 30, page = 1, search = '', filters = {}, sortOptions = {}, includeInactive = false } = params;
@@ -21,28 +34,21 @@ export class FinancialInstitutionService {
       const where: any = {};
       if (!includeInactive) where.deleted_at = null;
 
-      // Filtros
       Object.entries(filters).forEach(([key, value]) => {
         if (value && value !== '') {
           if (key === 'name') {
-            where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+            where[key] = String(value);
           }
         }
       });
 
-      // Busca e Ordenação
       let institutions: any[] = [];
       let total = 0;
 
       if (search.trim()) {
         const allInstitutions = await prisma.financialInstitution.findMany({ where });
-        const normalizedSearch = this.normalizeText(search);
         
-        let filtered = allInstitutions.filter(inst => {
-          const normalizedName = this.normalizeText(inst.name);
-          return normalizedName.includes(normalizedSearch);
-        });
-
+        let filtered = this.filterInstitutionsBySearch(allInstitutions, search);
         total = filtered.length;
 
         const sortEntries = Object.entries(sortOptions) as any;
@@ -51,8 +57,8 @@ export class FinancialInstitutionService {
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
             filtered = filtered.sort((a, b) => {
              const key = field as keyof typeof a;
-             const strA = String(a[key] || '');
-             const strB = String(b[key] || '');
+             const strA = this.normalizeText(String(a[key] || ''));
+             const strB = this.normalizeText(String(b[key] || ''));
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
@@ -126,7 +132,6 @@ export class FinancialInstitutionService {
       const institution = await prisma.financialInstitution.findUnique({ where: { id, deleted_at: null } });
       if (!institution) throw new Error('Institution not found or already deleted');
 
-      // Regra de negócio: não excluir se houver lançamentos
       const hasTransactions = await prisma.transaction.findFirst({
         where: { financial_institution_id: id, deleted_at: null }
       });
@@ -157,16 +162,25 @@ export class FinancialInstitutionService {
     } catch (error: any) { throw error; }
   }
 
-  static async getInstitutionFilters(filters?: Record<string, any>) {
+  static async getInstitutionFilters() {
     try {
       const where: any = { deleted_at: null };
       const institutions = await prisma.financialInstitution.findMany({
-        where, select: { name: true }, distinct: ['name']
+        where, select: { name: true }, orderBy: { name: 'asc' }
       });
+
+      const uniqueNames = Array.from(new Set(institutions.map(i => i.name)));
+      const nameOptions = uniqueNames.map(name => ({ label: name, value: name }));
 
       return {
         filters: [
-          { field: 'name', type: 'string', label: 'Nome da Instituição', values: [...new Set(institutions.map(i => i.name))].sort(), searchable: true }
+          { 
+            field: 'name', 
+            type: 'select', 
+            label: 'Nome da Instituição', 
+            values: nameOptions, 
+            searchable: true 
+          }
         ],
         defaultSort: 'created_at:desc',
         searchFields: ['name']

@@ -11,6 +11,29 @@ export class SubcategoryService {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
   }
 
+  private static safeGetProperty(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
+  }
+
+  private static filterSubcategoriesBySearch(subcategories: any[], searchTerm: string): any[] {
+    if (!searchTerm.trim()) return subcategories;
+    const normalizedSearchTerm = this.normalizeText(searchTerm);
+
+    return subcategories.filter(sub => {
+      const statusPt = sub.is_active ? 'ativo' : 'inativo';
+      const typePt = sub.category?.type === 'INCOME' ? 'receita' : (sub.category?.type === 'EXPENSE' ? 'despesa' : '');
+      
+      const fieldsToSearch = [
+        sub.name,
+        sub.category?.name,
+        typePt,
+        statusPt
+      ].filter(Boolean).join(' ');
+
+      return this.normalizeText(fieldsToSearch).includes(normalizedSearchTerm);
+    });
+  }
+
   static async getSubcategories(params: any = {}) {
     try {
       const { limit = 30, page = 1, search = '', filters = {}, sortOptions = {}, includeInactive = false } = params;
@@ -26,11 +49,9 @@ export class SubcategoryService {
         if (value !== undefined && value !== '') {
           if (key === 'name') {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
-          }
-          if (key === 'category_id') {
+          } else if (key === 'category_id') {
             where[key] = String(value);
-          }
-          if (key === 'is_active') {
+          } else if (key === 'is_active') {
             where[key] = value === 'true' || value === true;
           }
         }
@@ -42,15 +63,10 @@ export class SubcategoryService {
       if (search.trim()) {
         const allSubcategories = await prisma.subcategory.findMany({ 
           where,
-          include: { category: true } // Inclui a categoria pai
+          include: { category: true }
         });
-        const normalizedSearch = this.normalizeText(search);
         
-        let filtered = allSubcategories.filter(sub => {
-          const normalizedName = this.normalizeText(sub.name);
-          return normalizedName.includes(normalizedSearch);
-        });
-
+        let filtered = this.filterSubcategoriesBySearch(allSubcategories, search);
         total = filtered.length;
 
         const sortEntries = Object.entries(sortOptions) as any;
@@ -58,8 +74,20 @@ export class SubcategoryService {
           const field = sortEntries[0][0];
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
           filtered = filtered.sort((a, b) => {
-             const strA = String((a as any)[field] || '');
-             const strB = String((b as any)[field] || '');
+             const realField = field === 'category_id' ? 'category.name' : field;
+             
+             let valA = this.safeGetProperty(a, realField);
+             let valB = this.safeGetProperty(b, realField);
+
+             if (valA === undefined) valA = (a as any)[field];
+             if (valB === undefined) valB = (b as any)[field];
+
+             if (typeof valA === 'boolean' || typeof valB === 'boolean') {
+               return direction === 'asc' ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
+             }
+
+             const strA = this.normalizeText(String(valA || ''));
+             const strB = this.normalizeText(String(valB || ''));
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
@@ -70,8 +98,12 @@ export class SubcategoryService {
       } else {
         const orderBy: any[] = [];
         Object.entries(sortOptions).forEach(([field, direction]) => {
+          const dir = this.normalizeSortDirection(direction as string);
+          
           if (['name', 'is_active', 'created_at'].includes(field)) {
-            orderBy.push({ [field]: this.normalizeSortDirection(direction as string) });
+            orderBy.push({ [field]: dir });
+          } else if (field === 'category_id') {
+            orderBy.push({ category: { name: dir } }); // Ensina o Prisma a ordenar pelo nome da categoria
           }
         });
         if (orderBy.length === 0) orderBy.push({ created_at: 'desc' });
@@ -113,7 +145,6 @@ export class SubcategoryService {
 
   static async createSubcategory(data: any) {
     try {
-      // Verifica se a categoria pai existe
       const categoryExists = await prisma.category.findUnique({ 
         where: { id: data.category_id, deleted_at: null } 
       });
@@ -158,7 +189,6 @@ export class SubcategoryService {
       const subcategory = await prisma.subcategory.findUnique({ where: { id, deleted_at: null } });
       if (!subcategory) throw new Error('Subcategory not found or already deleted');
 
-      // Regra do Financeiro: não excluir se houver lançamentos vinculados
       const hasTransactions = await prisma.transaction.findFirst({
         where: { subcategory_id: id, deleted_at: null }
       });
@@ -189,23 +219,52 @@ export class SubcategoryService {
     } catch (error: any) { throw error; }
   }
 
-  static async getSubcategoryFilters(filters?: Record<string, any>) {
+  static async getSubcategoryFilters() {
     try {
       const where: any = { deleted_at: null };
       const subcategories = await prisma.subcategory.findMany({
-        where, select: { name: true }, distinct: ['name']
+        where, select: { name: true }, orderBy: { name: 'asc' }
       });
       
-      // Busca categorias para popular o filtro de category_id
       const categories = await prisma.category.findMany({
-        where: { deleted_at: null }, select: { id: true, name: true, type: true }
+        where: { deleted_at: null }, select: { id: true, name: true, type: true }, orderBy: { name: 'asc' }
+      });
+
+      const uniqueNames = Array.from(new Set(subcategories.map(s => s.name)));
+      const nameOptions = uniqueNames.map(name => ({ label: name, value: name }));
+
+      const categoryOptions = categories.map(c => {
+        const tipoTraduzido = c.type === 'INCOME' ? 'Receita' : 'Despesa';
+        return { 
+          label: `${c.name} (${tipoTraduzido})`, 
+          value: c.id 
+        };
       });
 
       return {
         filters: [
-          { field: 'name', type: 'string', label: 'Nome da Subcategoria', values: [...new Set(subcategories.map(s => s.name))].sort(), searchable: true },
-          { field: 'category_id', type: 'select', label: 'Categoria', values: categories.map(c => ({ value: c.id, label: `${c.name} (${c.type})` })) },
-          { field: 'is_active', type: 'boolean', label: 'Ativo' }
+          { 
+            field: 'name', 
+            type: 'select',
+            label: 'Nome da Subcategoria', 
+            values: nameOptions,
+            searchable: true
+          },
+          { 
+            field: 'category_id', 
+            type: 'select', 
+            label: 'Categoria Pai', 
+            values: categoryOptions 
+          },
+          { 
+            field: 'is_active', 
+            type: 'select', 
+            label: 'Status',
+            values: [
+              { value: 'true', label: 'Ativo' },
+              { value: 'false', label: 'Inativo' }
+            ]
+          }
         ],
         defaultSort: 'created_at:desc',
         searchFields: ['name']
