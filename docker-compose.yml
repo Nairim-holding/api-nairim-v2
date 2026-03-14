@@ -13,6 +13,17 @@ services:
       - ./.env:/app/.env
       - ./uploads:/app/uploads
 
+  api-nairim-test:
+    container_name: nairim-api-test
+    build: .
+    restart: always
+    ports:
+      - "5001:5000" 
+    env_file:
+      - .env.test
+    volumes:
+      - ./.env.test:/app/.env 
+      - ./uploads-test:/app/uploads 
   postgres:
     image: postgres:16-alpine
     container_name: nairim-postgres
