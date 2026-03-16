@@ -28,16 +28,22 @@ export type AggregateCard = {
 
 export type CardAvgAggregateOutputType = {
   limit: runtime.Decimal | null
+  closing_day: number | null
+  due_day: number | null
 }
 
 export type CardSumAggregateOutputType = {
   limit: runtime.Decimal | null
+  closing_day: number | null
+  due_day: number | null
 }
 
 export type CardMinAggregateOutputType = {
   id: string | null
   name: string | null
   limit: runtime.Decimal | null
+  closing_day: number | null
+  due_day: number | null
   is_active: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -48,6 +54,8 @@ export type CardMaxAggregateOutputType = {
   id: string | null
   name: string | null
   limit: runtime.Decimal | null
+  closing_day: number | null
+  due_day: number | null
   is_active: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -58,6 +66,8 @@ export type CardCountAggregateOutputType = {
   id: number
   name: number
   limit: number
+  closing_day: number
+  due_day: number
   is_active: number
   created_at: number
   updated_at: number
@@ -68,16 +78,22 @@ export type CardCountAggregateOutputType = {
 
 export type CardAvgAggregateInputType = {
   limit?: true
+  closing_day?: true
+  due_day?: true
 }
 
 export type CardSumAggregateInputType = {
   limit?: true
+  closing_day?: true
+  due_day?: true
 }
 
 export type CardMinAggregateInputType = {
   id?: true
   name?: true
   limit?: true
+  closing_day?: true
+  due_day?: true
   is_active?: true
   created_at?: true
   updated_at?: true
@@ -88,6 +104,8 @@ export type CardMaxAggregateInputType = {
   id?: true
   name?: true
   limit?: true
+  closing_day?: true
+  due_day?: true
   is_active?: true
   created_at?: true
   updated_at?: true
@@ -98,6 +116,8 @@ export type CardCountAggregateInputType = {
   id?: true
   name?: true
   limit?: true
+  closing_day?: true
+  due_day?: true
   is_active?: true
   created_at?: true
   updated_at?: true
@@ -195,6 +215,8 @@ export type CardGroupByOutputType = {
   id: string
   name: string
   limit: runtime.Decimal | null
+  closing_day: number | null
+  due_day: number | null
   is_active: boolean
   created_at: Date
   updated_at: Date
@@ -228,6 +250,8 @@ export type CardWhereInput = {
   id?: Prisma.StringFilter<"Card"> | string
   name?: Prisma.StringFilter<"Card"> | string
   limit?: Prisma.DecimalNullableFilter<"Card"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.IntNullableFilter<"Card"> | number | null
+  due_day?: Prisma.IntNullableFilter<"Card"> | number | null
   is_active?: Prisma.BoolFilter<"Card"> | boolean
   created_at?: Prisma.DateTimeFilter<"Card"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Card"> | Date | string
@@ -239,6 +263,8 @@ export type CardOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   limit?: Prisma.SortOrderInput | Prisma.SortOrder
+  closing_day?: Prisma.SortOrderInput | Prisma.SortOrder
+  due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -253,6 +279,8 @@ export type CardWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CardWhereInput | Prisma.CardWhereInput[]
   name?: Prisma.StringFilter<"Card"> | string
   limit?: Prisma.DecimalNullableFilter<"Card"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.IntNullableFilter<"Card"> | number | null
+  due_day?: Prisma.IntNullableFilter<"Card"> | number | null
   is_active?: Prisma.BoolFilter<"Card"> | boolean
   created_at?: Prisma.DateTimeFilter<"Card"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Card"> | Date | string
@@ -264,6 +292,8 @@ export type CardOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   limit?: Prisma.SortOrderInput | Prisma.SortOrder
+  closing_day?: Prisma.SortOrderInput | Prisma.SortOrder
+  due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -282,6 +312,8 @@ export type CardScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Card"> | string
   name?: Prisma.StringWithAggregatesFilter<"Card"> | string
   limit?: Prisma.DecimalNullableWithAggregatesFilter<"Card"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.IntNullableWithAggregatesFilter<"Card"> | number | null
+  due_day?: Prisma.IntNullableWithAggregatesFilter<"Card"> | number | null
   is_active?: Prisma.BoolWithAggregatesFilter<"Card"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Card"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Card"> | Date | string
@@ -292,6 +324,8 @@ export type CardCreateInput = {
   id?: string
   name: string
   limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: number | null
+  due_day?: number | null
   is_active?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -303,6 +337,8 @@ export type CardUncheckedCreateInput = {
   id?: string
   name: string
   limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: number | null
+  due_day?: number | null
   is_active?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -314,6 +350,8 @@ export type CardUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -325,6 +363,8 @@ export type CardUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -336,6 +376,8 @@ export type CardCreateManyInput = {
   id?: string
   name: string
   limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: number | null
+  due_day?: number | null
   is_active?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -346,6 +388,8 @@ export type CardUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -356,6 +400,8 @@ export type CardUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -366,6 +412,8 @@ export type CardCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   limit?: Prisma.SortOrder
+  closing_day?: Prisma.SortOrder
+  due_day?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -374,12 +422,16 @@ export type CardCountOrderByAggregateInput = {
 
 export type CardAvgOrderByAggregateInput = {
   limit?: Prisma.SortOrder
+  closing_day?: Prisma.SortOrder
+  due_day?: Prisma.SortOrder
 }
 
 export type CardMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   limit?: Prisma.SortOrder
+  closing_day?: Prisma.SortOrder
+  due_day?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -390,6 +442,8 @@ export type CardMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   limit?: Prisma.SortOrder
+  closing_day?: Prisma.SortOrder
+  due_day?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -398,6 +452,8 @@ export type CardMinOrderByAggregateInput = {
 
 export type CardSumOrderByAggregateInput = {
   limit?: Prisma.SortOrder
+  closing_day?: Prisma.SortOrder
+  due_day?: Prisma.SortOrder
 }
 
 export type CardNullableScalarRelationFilter = {
@@ -425,6 +481,8 @@ export type CardCreateWithoutTransactionsInput = {
   id?: string
   name: string
   limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: number | null
+  due_day?: number | null
   is_active?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -435,6 +493,8 @@ export type CardUncheckedCreateWithoutTransactionsInput = {
   id?: string
   name: string
   limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: number | null
+  due_day?: number | null
   is_active?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -461,6 +521,8 @@ export type CardUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -471,6 +533,8 @@ export type CardUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  closing_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -512,6 +576,8 @@ export type CardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   limit?: boolean
+  closing_day?: boolean
+  due_day?: boolean
   is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -524,6 +590,8 @@ export type CardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   limit?: boolean
+  closing_day?: boolean
+  due_day?: boolean
   is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -534,6 +602,8 @@ export type CardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   limit?: boolean
+  closing_day?: boolean
+  due_day?: boolean
   is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -544,13 +614,15 @@ export type CardSelectScalar = {
   id?: boolean
   name?: boolean
   limit?: boolean
+  closing_day?: boolean
+  due_day?: boolean
   is_active?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type CardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "limit" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["card"]>
+export type CardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "limit" | "closing_day" | "due_day" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["card"]>
 export type CardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactions?: boolean | Prisma.Card$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.CardCountOutputTypeDefaultArgs<ExtArgs>
@@ -567,6 +639,8 @@ export type $CardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     name: string
     limit: runtime.Decimal | null
+    closing_day: number | null
+    due_day: number | null
     is_active: boolean
     created_at: Date
     updated_at: Date
@@ -998,6 +1072,8 @@ export interface CardFieldRefs {
   readonly id: Prisma.FieldRef<"Card", 'String'>
   readonly name: Prisma.FieldRef<"Card", 'String'>
   readonly limit: Prisma.FieldRef<"Card", 'Decimal'>
+  readonly closing_day: Prisma.FieldRef<"Card", 'Int'>
+  readonly due_day: Prisma.FieldRef<"Card", 'Int'>
   readonly is_active: Prisma.FieldRef<"Card", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"Card", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Card", 'DateTime'>

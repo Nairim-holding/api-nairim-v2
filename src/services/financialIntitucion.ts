@@ -17,8 +17,11 @@ export class FinancialInstitutionService {
 
     return institutions.filter(inst => {
       const fieldsToSearch = [
-        inst.name
-      ].join(' ');
+        inst.name,
+        inst.bank_number,
+        inst.agency_number,
+        inst.account_number
+      ].filter(Boolean).join(' ');
 
       return this.normalizeText(fieldsToSearch).includes(normalizedSearchTerm);
     });
@@ -38,6 +41,8 @@ export class FinancialInstitutionService {
         if (value && value !== '') {
           if (key === 'name') {
             where[key] = String(value);
+          } else if (['bank_number', 'agency_number', 'account_number'].includes(key)) {
+            where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
           }
         }
       });
@@ -69,7 +74,7 @@ export class FinancialInstitutionService {
       } else {
         const orderBy: any[] = [];
         Object.entries(sortOptions).forEach(([field, direction]) => {
-          if (['name', 'created_at'].includes(field)) {
+          if (['name', 'bank_number', 'agency_number', 'account_number', 'created_at'].includes(field)) {
             orderBy.push({ [field]: this.normalizeSortDirection(direction as string) });
           }
         });
@@ -109,7 +114,12 @@ export class FinancialInstitutionService {
   static async createInstitution(data: any) {
     try {
       const newInstitution = await prisma.financialInstitution.create({
-        data: { name: data.name }
+        data: { 
+          name: data.name,
+          bank_number: data.bank_number || null,
+          agency_number: data.agency_number || null,
+          account_number: data.account_number || null
+        }
       });
       return newInstitution;
     } catch (error: any) { throw error; }
@@ -122,7 +132,12 @@ export class FinancialInstitutionService {
 
       return await prisma.financialInstitution.update({
         where: { id },
-        data: { name: data.name }
+        data: { 
+          name: data.name,
+          bank_number: data.bank_number !== undefined ? data.bank_number : undefined,
+          agency_number: data.agency_number !== undefined ? data.agency_number : undefined,
+          account_number: data.account_number !== undefined ? data.account_number : undefined
+        }
       });
     } catch (error: any) { throw error; }
   }
@@ -183,7 +198,7 @@ export class FinancialInstitutionService {
           }
         ],
         defaultSort: 'created_at:desc',
-        searchFields: ['name']
+        searchFields: ['name', 'bank_number', 'agency_number', 'account_number']
       };
     } catch (error) { throw error; }
   }

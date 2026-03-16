@@ -374,7 +374,11 @@ export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)
 export const FinancialInstitutionScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  bank_number: 'bank_number',
+  agency_number: 'agency_number',
+  account_number: 'account_number',
   created_at: 'created_at',
+  is_active: 'is_active',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
 } as const
@@ -413,6 +417,8 @@ export const CardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   limit: 'limit',
+  closing_day: 'closing_day',
+  due_day: 'due_day',
   is_active: 'is_active',
   created_at: 'created_at',
   updated_at: 'updated_at',

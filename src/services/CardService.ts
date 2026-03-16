@@ -20,11 +20,18 @@ export class CardService {
       const formattedLimit = card.limit && Number(card.limit) > 0 
         ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(card.limit)) 
         : 'sem limite';
+        
+      const fechamentoPt = card.closing_day ? `fechamento dia ${card.closing_day}` : '';
+      const vencimentoPt = card.due_day ? `vencimento dia ${card.due_day}` : '';
 
       const fieldsToSearch = [
         card.name,
         String(card.limit),
         formattedLimit,
+        String(card.closing_day),
+        String(card.due_day),
+        fechamentoPt,
+        vencimentoPt,
         statusPt
       ].filter(Boolean).join(' ');
 
@@ -49,6 +56,10 @@ export class CardService {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
           } else if (key === 'is_active') {
             where[key] = value === 'true' || value === true;
+          } else if (key === 'closing_day') {
+            where.closing_day = Number(value);
+          } else if (key === 'due_day') {
+            where.due_day = Number(value);
           } else if (key === 'card_limit') { 
             let strValue = String(value);
             if (strValue.includes(',')) {
@@ -106,7 +117,7 @@ export class CardService {
       } else {
         const orderBy: any[] = [];
         Object.entries(sortOptions).forEach(([field, direction]) => {
-          if (['name', 'limit', 'is_active', 'created_at'].includes(field)) {
+          if (['name', 'limit', 'closing_day', 'due_day', 'is_active', 'created_at'].includes(field)) {
             orderBy.push({ [field]: this.normalizeSortDirection(direction as string) });
           }
         });
@@ -149,6 +160,8 @@ export class CardService {
         data: { 
           name: data.name,
           limit: data.limit !== null && data.limit !== undefined ? Number(data.limit) : null,
+          closing_day: data.closing_day !== null && data.closing_day !== undefined ? Number(data.closing_day) : null,
+          due_day: data.due_day !== null && data.due_day !== undefined ? Number(data.due_day) : null,
           is_active: data.is_active ?? true
         }
       });
@@ -166,6 +179,8 @@ export class CardService {
         data: { 
           name: data.name,
           limit: data.limit !== undefined ? (data.limit !== null ? Number(data.limit) : null) : undefined,
+          closing_day: data.closing_day !== undefined ? (data.closing_day !== null ? Number(data.closing_day) : null) : undefined,
+          due_day: data.due_day !== undefined ? (data.due_day !== null ? Number(data.due_day) : null) : undefined,
           is_active: data.is_active
         }
       });
@@ -216,10 +231,7 @@ export class CardService {
       });
 
       const uniqueNames = Array.from(new Set(existingCards.map(c => c.name)));
-      const nameOptions = uniqueNames.map(name => ({
-        label: name,
-        value: name 
-      }));
+      const nameOptions = uniqueNames.map(name => ({ label: name, value: name }));
 
       const uniqueLimits = Array.from(
         new Set(

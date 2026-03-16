@@ -340,11 +340,15 @@ model TenantAddress {
 // ==========================================
 
 model FinancialInstitution {
-  id         String        @id @default(uuid())
-  name       String
-  created_at DateTime      @default(now())
-  updated_at DateTime      @updatedAt
-  deleted_at DateTime?
+  id               String        @id @default(uuid())
+  name             String
+  bank_number      String?       @db.VarChar(20)
+  agency_number    String?       @db.VarChar(20) 
+  account_number   String?       @db.VarChar(50)
+  created_at       DateTime      @default(now())
+  is_active    Boolean       @default(true)
+  updated_at       DateTime      @updatedAt
+  deleted_at       DateTime?
 
   transactions Transaction[]
 }
@@ -379,13 +383,15 @@ model Subcategory {
 }
 
 model Card {
-  id         String        @id @default(uuid())
-  name       String
-  limit      Decimal?      @db.Decimal(20, 2)
-  is_active  Boolean       @default(true)
-  created_at DateTime      @default(now())
-  updated_at DateTime      @updatedAt
-  deleted_at DateTime?
+  id           String        @id @default(uuid())
+  name         String
+  limit        Decimal?      @db.Decimal(20, 2)
+  closing_day  Int?          
+  due_day      Int?          
+  is_active    Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  deleted_at   DateTime?
 
   transactions Transaction[]
 }

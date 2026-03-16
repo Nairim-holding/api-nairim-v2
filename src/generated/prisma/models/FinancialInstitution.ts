@@ -27,7 +27,11 @@ export type AggregateFinancialInstitution = {
 export type FinancialInstitutionMinAggregateOutputType = {
   id: string | null
   name: string | null
+  bank_number: string | null
+  agency_number: string | null
+  account_number: string | null
   created_at: Date | null
+  is_active: boolean | null
   updated_at: Date | null
   deleted_at: Date | null
 }
@@ -35,7 +39,11 @@ export type FinancialInstitutionMinAggregateOutputType = {
 export type FinancialInstitutionMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  bank_number: string | null
+  agency_number: string | null
+  account_number: string | null
   created_at: Date | null
+  is_active: boolean | null
   updated_at: Date | null
   deleted_at: Date | null
 }
@@ -43,7 +51,11 @@ export type FinancialInstitutionMaxAggregateOutputType = {
 export type FinancialInstitutionCountAggregateOutputType = {
   id: number
   name: number
+  bank_number: number
+  agency_number: number
+  account_number: number
   created_at: number
+  is_active: number
   updated_at: number
   deleted_at: number
   _all: number
@@ -53,7 +65,11 @@ export type FinancialInstitutionCountAggregateOutputType = {
 export type FinancialInstitutionMinAggregateInputType = {
   id?: true
   name?: true
+  bank_number?: true
+  agency_number?: true
+  account_number?: true
   created_at?: true
+  is_active?: true
   updated_at?: true
   deleted_at?: true
 }
@@ -61,7 +77,11 @@ export type FinancialInstitutionMinAggregateInputType = {
 export type FinancialInstitutionMaxAggregateInputType = {
   id?: true
   name?: true
+  bank_number?: true
+  agency_number?: true
+  account_number?: true
   created_at?: true
+  is_active?: true
   updated_at?: true
   deleted_at?: true
 }
@@ -69,7 +89,11 @@ export type FinancialInstitutionMaxAggregateInputType = {
 export type FinancialInstitutionCountAggregateInputType = {
   id?: true
   name?: true
+  bank_number?: true
+  agency_number?: true
+  account_number?: true
   created_at?: true
+  is_active?: true
   updated_at?: true
   deleted_at?: true
   _all?: true
@@ -150,7 +174,11 @@ export type FinancialInstitutionGroupByArgs<ExtArgs extends runtime.Types.Extens
 export type FinancialInstitutionGroupByOutputType = {
   id: string
   name: string
+  bank_number: string | null
+  agency_number: string | null
+  account_number: string | null
   created_at: Date
+  is_active: boolean
   updated_at: Date
   deleted_at: Date | null
   _count: FinancialInstitutionCountAggregateOutputType | null
@@ -179,7 +207,11 @@ export type FinancialInstitutionWhereInput = {
   NOT?: Prisma.FinancialInstitutionWhereInput | Prisma.FinancialInstitutionWhereInput[]
   id?: Prisma.StringFilter<"FinancialInstitution"> | string
   name?: Prisma.StringFilter<"FinancialInstitution"> | string
+  bank_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  agency_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  account_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
   created_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
+  is_active?: Prisma.BoolFilter<"FinancialInstitution"> | boolean
   updated_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"FinancialInstitution"> | Date | string | null
   transactions?: Prisma.TransactionListRelationFilter
@@ -188,7 +220,11 @@ export type FinancialInstitutionWhereInput = {
 export type FinancialInstitutionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  bank_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  agency_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  account_number?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
@@ -200,7 +236,11 @@ export type FinancialInstitutionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.FinancialInstitutionWhereInput[]
   NOT?: Prisma.FinancialInstitutionWhereInput | Prisma.FinancialInstitutionWhereInput[]
   name?: Prisma.StringFilter<"FinancialInstitution"> | string
+  bank_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  agency_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  account_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
   created_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
+  is_active?: Prisma.BoolFilter<"FinancialInstitution"> | boolean
   updated_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"FinancialInstitution"> | Date | string | null
   transactions?: Prisma.TransactionListRelationFilter
@@ -209,7 +249,11 @@ export type FinancialInstitutionWhereUniqueInput = Prisma.AtLeast<{
 export type FinancialInstitutionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  bank_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  agency_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  account_number?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.FinancialInstitutionCountOrderByAggregateInput
@@ -223,7 +267,11 @@ export type FinancialInstitutionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.FinancialInstitutionScalarWhereWithAggregatesInput | Prisma.FinancialInstitutionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"FinancialInstitution"> | string
   name?: Prisma.StringWithAggregatesFilter<"FinancialInstitution"> | string
+  bank_number?: Prisma.StringNullableWithAggregatesFilter<"FinancialInstitution"> | string | null
+  agency_number?: Prisma.StringNullableWithAggregatesFilter<"FinancialInstitution"> | string | null
+  account_number?: Prisma.StringNullableWithAggregatesFilter<"FinancialInstitution"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"FinancialInstitution"> | Date | string
+  is_active?: Prisma.BoolWithAggregatesFilter<"FinancialInstitution"> | boolean
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"FinancialInstitution"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"FinancialInstitution"> | Date | string | null
 }
@@ -231,7 +279,11 @@ export type FinancialInstitutionScalarWhereWithAggregatesInput = {
 export type FinancialInstitutionCreateInput = {
   id?: string
   name: string
+  bank_number?: string | null
+  agency_number?: string | null
+  account_number?: string | null
   created_at?: Date | string
+  is_active?: boolean
   updated_at?: Date | string
   deleted_at?: Date | string | null
   transactions?: Prisma.TransactionCreateNestedManyWithoutFinancial_institutionInput
@@ -240,7 +292,11 @@ export type FinancialInstitutionCreateInput = {
 export type FinancialInstitutionUncheckedCreateInput = {
   id?: string
   name: string
+  bank_number?: string | null
+  agency_number?: string | null
+  account_number?: string | null
   created_at?: Date | string
+  is_active?: boolean
   updated_at?: Date | string
   deleted_at?: Date | string | null
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFinancial_institutionInput
@@ -249,7 +305,11 @@ export type FinancialInstitutionUncheckedCreateInput = {
 export type FinancialInstitutionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transactions?: Prisma.TransactionUpdateManyWithoutFinancial_institutionNestedInput
@@ -258,7 +318,11 @@ export type FinancialInstitutionUpdateInput = {
 export type FinancialInstitutionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFinancial_institutionNestedInput
@@ -267,7 +331,11 @@ export type FinancialInstitutionUncheckedUpdateInput = {
 export type FinancialInstitutionCreateManyInput = {
   id?: string
   name: string
+  bank_number?: string | null
+  agency_number?: string | null
+  account_number?: string | null
   created_at?: Date | string
+  is_active?: boolean
   updated_at?: Date | string
   deleted_at?: Date | string | null
 }
@@ -275,7 +343,11 @@ export type FinancialInstitutionCreateManyInput = {
 export type FinancialInstitutionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -283,7 +355,11 @@ export type FinancialInstitutionUpdateManyMutationInput = {
 export type FinancialInstitutionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -291,7 +367,11 @@ export type FinancialInstitutionUncheckedUpdateManyInput = {
 export type FinancialInstitutionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  bank_number?: Prisma.SortOrder
+  agency_number?: Prisma.SortOrder
+  account_number?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
 }
@@ -299,7 +379,11 @@ export type FinancialInstitutionCountOrderByAggregateInput = {
 export type FinancialInstitutionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  bank_number?: Prisma.SortOrder
+  agency_number?: Prisma.SortOrder
+  account_number?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
 }
@@ -307,7 +391,11 @@ export type FinancialInstitutionMaxOrderByAggregateInput = {
 export type FinancialInstitutionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  bank_number?: Prisma.SortOrder
+  agency_number?: Prisma.SortOrder
+  account_number?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
 }
@@ -334,7 +422,11 @@ export type FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput 
 export type FinancialInstitutionCreateWithoutTransactionsInput = {
   id?: string
   name: string
+  bank_number?: string | null
+  agency_number?: string | null
+  account_number?: string | null
   created_at?: Date | string
+  is_active?: boolean
   updated_at?: Date | string
   deleted_at?: Date | string | null
 }
@@ -342,7 +434,11 @@ export type FinancialInstitutionCreateWithoutTransactionsInput = {
 export type FinancialInstitutionUncheckedCreateWithoutTransactionsInput = {
   id?: string
   name: string
+  bank_number?: string | null
+  agency_number?: string | null
+  account_number?: string | null
   created_at?: Date | string
+  is_active?: boolean
   updated_at?: Date | string
   deleted_at?: Date | string | null
 }
@@ -366,7 +462,11 @@ export type FinancialInstitutionUpdateToOneWithWhereWithoutTransactionsInput = {
 export type FinancialInstitutionUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -374,7 +474,11 @@ export type FinancialInstitutionUpdateWithoutTransactionsInput = {
 export type FinancialInstitutionUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -413,7 +517,11 @@ export type FinancialInstitutionCountOutputTypeCountTransactionsArgs<ExtArgs ext
 export type FinancialInstitutionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  bank_number?: boolean
+  agency_number?: boolean
+  account_number?: boolean
   created_at?: boolean
+  is_active?: boolean
   updated_at?: boolean
   deleted_at?: boolean
   transactions?: boolean | Prisma.FinancialInstitution$transactionsArgs<ExtArgs>
@@ -423,7 +531,11 @@ export type FinancialInstitutionSelect<ExtArgs extends runtime.Types.Extensions.
 export type FinancialInstitutionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  bank_number?: boolean
+  agency_number?: boolean
+  account_number?: boolean
   created_at?: boolean
+  is_active?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }, ExtArgs["result"]["financialInstitution"]>
@@ -431,7 +543,11 @@ export type FinancialInstitutionSelectCreateManyAndReturn<ExtArgs extends runtim
 export type FinancialInstitutionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  bank_number?: boolean
+  agency_number?: boolean
+  account_number?: boolean
   created_at?: boolean
+  is_active?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }, ExtArgs["result"]["financialInstitution"]>
@@ -439,12 +555,16 @@ export type FinancialInstitutionSelectUpdateManyAndReturn<ExtArgs extends runtim
 export type FinancialInstitutionSelectScalar = {
   id?: boolean
   name?: boolean
+  bank_number?: boolean
+  agency_number?: boolean
+  account_number?: boolean
   created_at?: boolean
+  is_active?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type FinancialInstitutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["financialInstitution"]>
+export type FinancialInstitutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "bank_number" | "agency_number" | "account_number" | "created_at" | "is_active" | "updated_at" | "deleted_at", ExtArgs["result"]["financialInstitution"]>
 export type FinancialInstitutionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactions?: boolean | Prisma.FinancialInstitution$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.FinancialInstitutionCountOutputTypeDefaultArgs<ExtArgs>
@@ -460,7 +580,11 @@ export type $FinancialInstitutionPayload<ExtArgs extends runtime.Types.Extension
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    bank_number: string | null
+    agency_number: string | null
+    account_number: string | null
     created_at: Date
+    is_active: boolean
     updated_at: Date
     deleted_at: Date | null
   }, ExtArgs["result"]["financialInstitution"]>
@@ -889,7 +1013,11 @@ export interface Prisma__FinancialInstitutionClient<T, Null = never, ExtArgs ext
 export interface FinancialInstitutionFieldRefs {
   readonly id: Prisma.FieldRef<"FinancialInstitution", 'String'>
   readonly name: Prisma.FieldRef<"FinancialInstitution", 'String'>
+  readonly bank_number: Prisma.FieldRef<"FinancialInstitution", 'String'>
+  readonly agency_number: Prisma.FieldRef<"FinancialInstitution", 'String'>
+  readonly account_number: Prisma.FieldRef<"FinancialInstitution", 'String'>
   readonly created_at: Prisma.FieldRef<"FinancialInstitution", 'DateTime'>
+  readonly is_active: Prisma.FieldRef<"FinancialInstitution", 'Boolean'>
   readonly updated_at: Prisma.FieldRef<"FinancialInstitution", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"FinancialInstitution", 'DateTime'>
 }
