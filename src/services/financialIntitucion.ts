@@ -38,11 +38,13 @@ export class FinancialInstitutionService {
       if (!includeInactive) where.deleted_at = null;
 
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== '') {
+        if (value !== undefined && value !== null && value !== '') {
           if (key === 'name') {
             where[key] = String(value);
           } else if (['bank_number', 'agency_number', 'account_number'].includes(key)) {
             where[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+          } else if (key === 'is_active') {
+            where[key] = value === 'true' || value === true; // Suporte para filtro de ativos/inativos
           }
         }
       });
@@ -74,7 +76,7 @@ export class FinancialInstitutionService {
       } else {
         const orderBy: any[] = [];
         Object.entries(sortOptions).forEach(([field, direction]) => {
-          if (['name', 'bank_number', 'agency_number', 'account_number', 'created_at'].includes(field)) {
+          if (['name', 'bank_number', 'agency_number', 'account_number', 'created_at', 'is_active'].includes(field)) {
             orderBy.push({ [field]: this.normalizeSortDirection(direction as string) });
           }
         });
@@ -118,7 +120,8 @@ export class FinancialInstitutionService {
           name: data.name,
           bank_number: data.bank_number || null,
           agency_number: data.agency_number || null,
-          account_number: data.account_number || null
+          account_number: data.account_number || null,
+          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true // <-- CORRIGIDO AQUI
         }
       });
       return newInstitution;
@@ -133,10 +136,11 @@ export class FinancialInstitutionService {
       return await prisma.financialInstitution.update({
         where: { id },
         data: { 
-          name: data.name,
+          name: data.name !== undefined ? data.name : undefined,
           bank_number: data.bank_number !== undefined ? data.bank_number : undefined,
           agency_number: data.agency_number !== undefined ? data.agency_number : undefined,
-          account_number: data.account_number !== undefined ? data.account_number : undefined
+          account_number: data.account_number !== undefined ? data.account_number : undefined,
+          is_active: data.is_active !== undefined ? Boolean(data.is_active) : undefined // <-- CORRIGIDO AQUI
         }
       });
     } catch (error: any) { throw error; }
@@ -195,6 +199,15 @@ export class FinancialInstitutionService {
             label: 'Nome da Instituição', 
             values: nameOptions, 
             searchable: true 
+          },
+          {
+            field: 'is_active',
+            type: 'select',
+            label: 'Status',
+            values: [
+              { label: 'Ativo', value: 'true' },
+              { label: 'Inativo', value: 'false' }
+            ]
           }
         ],
         defaultSort: 'created_at:desc',
