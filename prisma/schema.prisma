@@ -414,6 +414,10 @@ model Supplier {
   legal_name             String
   trade_name             String?
   cnpj                   String?           @db.VarChar(20)
+  cpf                    String?           @db.VarChar(14)
+  internal_code          String?           @unique // <-- ADICIONADO
+  occupation             String?                   // <-- ADICIONADO
+  marital_status         String?                   // <-- ADICIONADO
   state_registration     String?
   municipal_registration String?
   created_at             DateTime          @default(now())
@@ -424,6 +428,7 @@ model Supplier {
   addresses              SupplierAddress[]
 
   @@index([cnpj])
+  @@index([cpf])
 }
 
 model SupplierAddress {

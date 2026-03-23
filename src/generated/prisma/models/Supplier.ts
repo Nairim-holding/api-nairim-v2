@@ -40,6 +40,10 @@ export type SupplierMinAggregateOutputType = {
   legal_name: string | null
   trade_name: string | null
   cnpj: string | null
+  cpf: string | null
+  internal_code: string | null
+  occupation: string | null
+  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date | null
@@ -53,6 +57,10 @@ export type SupplierMaxAggregateOutputType = {
   legal_name: string | null
   trade_name: string | null
   cnpj: string | null
+  cpf: string | null
+  internal_code: string | null
+  occupation: string | null
+  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date | null
@@ -66,6 +74,10 @@ export type SupplierCountAggregateOutputType = {
   legal_name: number
   trade_name: number
   cnpj: number
+  cpf: number
+  internal_code: number
+  occupation: number
+  marital_status: number
   state_registration: number
   municipal_registration: number
   created_at: number
@@ -89,6 +101,10 @@ export type SupplierMinAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
+  cpf?: true
+  internal_code?: true
+  occupation?: true
+  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
@@ -102,6 +118,10 @@ export type SupplierMaxAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
+  cpf?: true
+  internal_code?: true
+  occupation?: true
+  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
@@ -115,6 +135,10 @@ export type SupplierCountAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
+  cpf?: true
+  internal_code?: true
+  occupation?: true
+  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
@@ -215,6 +239,10 @@ export type SupplierGroupByOutputType = {
   legal_name: string
   trade_name: string | null
   cnpj: string | null
+  cpf: string | null
+  internal_code: string | null
+  occupation: string | null
+  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date
@@ -251,6 +279,10 @@ export type SupplierWhereInput = {
   legal_name?: Prisma.StringFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  internal_code?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
@@ -266,6 +298,10 @@ export type SupplierOrderByWithRelationInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
+  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
+  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -277,6 +313,7 @@ export type SupplierOrderByWithRelationInput = {
 
 export type SupplierWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  internal_code?: string
   AND?: Prisma.SupplierWhereInput | Prisma.SupplierWhereInput[]
   OR?: Prisma.SupplierWhereInput[]
   NOT?: Prisma.SupplierWhereInput | Prisma.SupplierWhereInput[]
@@ -284,6 +321,9 @@ export type SupplierWhereUniqueInput = Prisma.AtLeast<{
   legal_name?: Prisma.StringFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
@@ -291,7 +331,7 @@ export type SupplierWhereUniqueInput = Prisma.AtLeast<{
   deleted_at?: Prisma.DateTimeNullableFilter<"Supplier"> | Date | string | null
   contacts?: Prisma.ContactListRelationFilter
   addresses?: Prisma.SupplierAddressListRelationFilter
-}, "id">
+}, "id" | "internal_code">
 
 export type SupplierOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -299,6 +339,10 @@ export type SupplierOrderByWithAggregationInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
+  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
+  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -320,6 +364,10 @@ export type SupplierScalarWhereWithAggregatesInput = {
   legal_name?: Prisma.StringWithAggregatesFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  cpf?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  internal_code?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Supplier"> | Date | string
@@ -333,6 +381,10 @@ export type SupplierCreateInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -348,6 +400,10 @@ export type SupplierUncheckedCreateInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -363,6 +419,10 @@ export type SupplierUpdateInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,6 +438,10 @@ export type SupplierUncheckedUpdateInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -393,6 +457,10 @@ export type SupplierCreateManyInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -406,6 +474,10 @@ export type SupplierUpdateManyMutationInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -419,6 +491,10 @@ export type SupplierUncheckedUpdateManyInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -437,6 +513,10 @@ export type SupplierCountOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -454,6 +534,10 @@ export type SupplierMaxOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -467,6 +551,10 @@ export type SupplierMinOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -519,6 +607,10 @@ export type SupplierCreateWithoutContactsInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -533,6 +625,10 @@ export type SupplierUncheckedCreateWithoutContactsInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -563,6 +659,10 @@ export type SupplierUpdateWithoutContactsInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -577,6 +677,10 @@ export type SupplierUncheckedUpdateWithoutContactsInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -591,6 +695,10 @@ export type SupplierCreateWithoutAddressesInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -605,6 +713,10 @@ export type SupplierUncheckedCreateWithoutAddressesInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
+  cpf?: string | null
+  internal_code?: string | null
+  occupation?: string | null
+  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
@@ -635,6 +747,10 @@ export type SupplierUpdateWithoutAddressesInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -649,6 +765,10 @@ export type SupplierUncheckedUpdateWithoutAddressesInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -703,6 +823,10 @@ export type SupplierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  occupation?: boolean
+  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
@@ -719,6 +843,10 @@ export type SupplierSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  occupation?: boolean
+  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
@@ -732,6 +860,10 @@ export type SupplierSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  occupation?: boolean
+  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
@@ -745,6 +877,10 @@ export type SupplierSelectScalar = {
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  occupation?: boolean
+  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
@@ -752,7 +888,7 @@ export type SupplierSelectScalar = {
   deleted_at?: boolean
 }
 
-export type SupplierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sequential_id" | "legal_name" | "trade_name" | "cnpj" | "state_registration" | "municipal_registration" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["supplier"]>
+export type SupplierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sequential_id" | "legal_name" | "trade_name" | "cnpj" | "cpf" | "internal_code" | "occupation" | "marital_status" | "state_registration" | "municipal_registration" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["supplier"]>
 export type SupplierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | Prisma.Supplier$contactsArgs<ExtArgs>
   addresses?: boolean | Prisma.Supplier$addressesArgs<ExtArgs>
@@ -773,6 +909,10 @@ export type $SupplierPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     legal_name: string
     trade_name: string | null
     cnpj: string | null
+    cpf: string | null
+    internal_code: string | null
+    occupation: string | null
+    marital_status: string | null
     state_registration: string | null
     municipal_registration: string | null
     created_at: Date
@@ -1208,6 +1348,10 @@ export interface SupplierFieldRefs {
   readonly legal_name: Prisma.FieldRef<"Supplier", 'String'>
   readonly trade_name: Prisma.FieldRef<"Supplier", 'String'>
   readonly cnpj: Prisma.FieldRef<"Supplier", 'String'>
+  readonly cpf: Prisma.FieldRef<"Supplier", 'String'>
+  readonly internal_code: Prisma.FieldRef<"Supplier", 'String'>
+  readonly occupation: Prisma.FieldRef<"Supplier", 'String'>
+  readonly marital_status: Prisma.FieldRef<"Supplier", 'String'>
   readonly state_registration: Prisma.FieldRef<"Supplier", 'String'>
   readonly municipal_registration: Prisma.FieldRef<"Supplier", 'String'>
   readonly created_at: Prisma.FieldRef<"Supplier", 'DateTime'>

@@ -2,7 +2,6 @@ import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
 
 export class SupplierService {
-  // Mapa de campos para ensinar ao backend onde encontrar cada dado (incluindo relações)
   static readonly FIELD_MAPPING: Record<string, { 
     type: 'direct' | 'address' | 'contact', 
     realField: string,
@@ -11,6 +10,7 @@ export class SupplierService {
     'legal_name': { type: 'direct', realField: 'legal_name' },
     'trade_name': { type: 'direct', realField: 'trade_name' },
     'cnpj': { type: 'direct', realField: 'cnpj' },
+    'cpf': { type: 'direct', realField: 'cpf' }, // <-- ADICIONADO
     'state_registration': { type: 'direct', realField: 'state_registration' },
     'municipal_registration': { type: 'direct', realField: 'municipal_registration' },
     'created_at': { type: 'direct', realField: 'created_at' },
@@ -42,7 +42,6 @@ export class SupplierService {
     return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
   }
 
-  // NOVA FUNÇÃO: Busca inteligente varrendo todas as informações (incluindo endereços e contatos)
   private static filterSuppliersBySearch(suppliers: any[], searchTerm: string): any[] {
     if (!searchTerm.trim()) return suppliers;
     const normalizedSearch = this.normalizeText(searchTerm);
@@ -52,6 +51,7 @@ export class SupplierService {
         supplier.legal_name,
         supplier.trade_name,
         supplier.cnpj,
+        supplier.cpf, // <-- ADICIONADO
         supplier.state_registration,
         supplier.municipal_registration
       ].filter(Boolean).join(' ');
@@ -77,7 +77,7 @@ export class SupplierService {
     Object.entries(filters).forEach(([key, value]) => {
       if (value === undefined || value === null || value === '') return;
 
-      if (['legal_name', 'trade_name', 'cnpj', 'state_registration', 'municipal_registration'].includes(key)) {
+      if (['legal_name', 'trade_name', 'cnpj', 'cpf', 'state_registration', 'municipal_registration'].includes(key)) {
         conditions[key] = { contains: String(value), mode: 'insensitive' };
       }
       else if (['city', 'state', 'zip_code', 'street', 'district', 'complement'].includes(key)) {
@@ -143,7 +143,6 @@ export class SupplierService {
       let suppliersData: any[] = [];
       let total = 0;
 
-      // Se houver busca escrita ou se a ordenação for por um campo de tabela estrangeira (contato/endereço)
       if (search.trim() || (sortField && contactRelatedFields.includes(sortField))) {
         const allSuppliers = await prisma.supplier.findMany({ 
           where,
@@ -180,9 +179,8 @@ export class SupplierService {
         suppliersData = filtered.slice(skip, skip + take);
 
       } else {
-        // Fluxo Otimizado: Só banco de dados
         const orderBy: any[] = [];
-        if (sortField && ['legal_name', 'trade_name', 'cnpj', 'created_at'].includes(sortField)) {
+        if (sortField && ['legal_name', 'trade_name', 'cnpj', 'cpf', 'created_at'].includes(sortField)) {
           orderBy.push({ [sortField]: sortDirection });
         } else {
           orderBy.push({ created_at: 'desc' });
@@ -237,11 +235,20 @@ export class SupplierService {
           if (existing) throw new Error('CNPJ already registered');
         }
 
+        if (data.cpf) { // <-- VERIFICAÇÃO DE CPF ADICIONADA
+          const existing = await tx.supplier.findFirst({ where: { cpf: data.cpf, deleted_at: null } });
+          if (existing) throw new Error('CPF already registered');
+        }
+
         const newSupplier = await tx.supplier.create({
           data: {
             legal_name: data.legal_name,
             trade_name: data.trade_name,
             cnpj: data.cnpj,
+            cpf: data.cpf,
+            internal_code: data.internal_code, // <-- NOVO
+            occupation: data.occupation,       // <-- NOVO
+            marital_status: data.marital_status, // <-- NOVO
             state_registration: data.state_registration,
             municipal_registration: data.municipal_registration,
           }
@@ -284,12 +291,23 @@ export class SupplierService {
           if (cnpjExists) throw new Error('CNPJ already registered for another supplier');
         }
 
+        if (data.cpf && data.cpf !== existing.cpf) { // <-- VERIFICAÇÃO DE CPF ADICIONADA
+          const cpfExists = await tx.supplier.findFirst({
+            where: { cpf: data.cpf, NOT: { id }, deleted_at: null }
+          });
+          if (cpfExists) throw new Error('CPF already registered for another supplier');
+        }
+
         const updatedSupplier = await tx.supplier.update({
           where: { id },
           data: {
             legal_name: data.legal_name,
             trade_name: data.trade_name,
             cnpj: data.cnpj,
+            cpf: data.cpf,
+            internal_code: data.internal_code, // <-- NOVO
+            occupation: data.occupation,       // <-- NOVO
+            marital_status: data.marital_status, // <-- NOVO
             state_registration: data.state_registration,
             municipal_registration: data.municipal_registration,
           }
@@ -387,8 +405,8 @@ export class SupplierService {
       const [suppliers, addresses, contacts, dateRange] = await Promise.all([
         prisma.supplier.findMany({
           where,
-          select: { legal_name: true, trade_name: true, cnpj: true, state_registration: true, municipal_registration: true },
-          distinct: ['legal_name', 'trade_name', 'cnpj', 'state_registration', 'municipal_registration']
+          select: { legal_name: true, trade_name: true, cnpj: true, cpf: true, state_registration: true, municipal_registration: true },
+          distinct: ['legal_name', 'trade_name', 'cnpj', 'cpf', 'state_registration', 'municipal_registration']
         }),
         prisma.address.findMany({
           where: { deleted_at: null, supplierAddresses: { some: { supplier: { deleted_at: null } } } },
@@ -408,9 +426,10 @@ export class SupplierService {
       ]);
 
       const filtersList = [
-        { field: 'legal_name', type: 'string', label: 'Razão Social', values: [...new Set(suppliers.map(s => s.legal_name).filter(Boolean))].sort(), searchable: true },
+        { field: 'legal_name', type: 'string', label: 'Nome / Razão Social', values: [...new Set(suppliers.map(s => s.legal_name).filter(Boolean))].sort(), searchable: true },
         { field: 'trade_name', type: 'string', label: 'Nome Fantasia', values: [...new Set(suppliers.map(s => s.trade_name).filter(Boolean))].sort(), searchable: true },
         { field: 'cnpj', type: 'string', label: 'CNPJ', values: [...new Set(suppliers.map(s => s.cnpj).filter(Boolean))].sort(), searchable: true },
+        { field: 'cpf', type: 'string', label: 'CPF', values: [...new Set(suppliers.map(s => s.cpf).filter(Boolean))].sort(), searchable: true },
         { field: 'state_registration', type: 'string', label: 'Inscrição Estadual', values: [...new Set(suppliers.map(s => s.state_registration).filter(Boolean))].sort(), searchable: true },
         { field: 'municipal_registration', type: 'string', label: 'Inscrição Municipal', values: [...new Set(suppliers.map(s => s.municipal_registration).filter(Boolean))].sort(), searchable: true },
         
@@ -446,7 +465,7 @@ export class SupplierService {
           select: ['equals', 'in']
         },
         defaultSort: 'created_at:desc',
-        searchFields: ['legal_name', 'trade_name', 'cnpj', 'city', 'state', 'contact_name', 'phone', 'cellphone', 'email']
+        searchFields: ['legal_name', 'trade_name', 'cnpj', 'cpf', 'city', 'state', 'contact_name', 'phone', 'cellphone', 'email']
       };
 
     } catch (error) {

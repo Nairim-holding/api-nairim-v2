@@ -2,8 +2,9 @@ export class SupplierValidator {
   static validateCreate(data: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
+    // Apenas a Razão Social / Nome Completo é obrigatório agora
     if (!data.legal_name?.trim()) {
-      errors.push('A Razão Social é obrigatória');
+      errors.push('O Nome / Razão Social é obrigatório');
     }
     
     if (data.cnpj) {
@@ -13,29 +14,20 @@ export class SupplierValidator {
       }
     }
 
-    if (data.contacts && Array.isArray(data.contacts)) {
-      data.contacts.forEach((contact: any, index: number) => {
-        if (!contact.contact?.trim()) {
-          errors.push(`Contacto ${index + 1}: O nome do contacto é obrigatório`);
-        }
-      });
+    if (data.cpf) { 
+      const cleanCPF = data.cpf.replace(/[^\d]/g, '');
+      if (cleanCPF.length !== 11) {
+        errors.push('CPF inválido. Deve conter 11 dígitos.');
+      }
     }
 
-    if (data.addresses && Array.isArray(data.addresses)) {
-      data.addresses.forEach((addr: any, index: number) => {
-        if (!addr.zip_code?.trim()) errors.push(`Endereço ${index + 1}: O CEP é obrigatório`);
-        if (!addr.street?.trim()) errors.push(`Endereço ${index + 1}: A Rua é obrigatória`);
-        if (!addr.number?.trim()) errors.push(`Endereço ${index + 1}: O Número é obrigatório`);
-        if (!addr.district?.trim()) errors.push(`Endereço ${index + 1}: O Bairro é obrigatório`);
-        if (!addr.city?.trim()) errors.push(`Endereço ${index + 1}: A Cidade é obrigatória`);
-        if (!addr.state?.trim()) errors.push(`Endereço ${index + 1}: O Estado é obrigatório`);
-      });
-    }
+    // Removida a validação que obrigava o preenchimento de endereços e contatos.
+    // Se eles forem enviados parcialmente preenchidos, o banco aceitará normalmente.
 
     return { isValid: errors.length === 0, errors };
   }
 
   static validateUpdate(data: any): { isValid: boolean; errors: string[] } {
-    return this.validateCreate(data); // As regras de atualização mantêm a mesma integridade estrutural
+    return this.validateCreate(data); 
   }
 }
