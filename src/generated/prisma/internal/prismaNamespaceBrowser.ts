@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Agency: 'Agency',
   Property: 'Property',
+  PropertyIptu: 'PropertyIptu',
   User: 'User',
   Document: 'Document',
   Owner: 'Owner',
@@ -132,6 +133,24 @@ export const PropertyScalarFieldEnum = {
 } as const
 
 export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typeof PropertyScalarFieldEnum]
+
+
+export const PropertyIptuScalarFieldEnum = {
+  id: 'id',
+  property_id: 'property_id',
+  year: 'year',
+  property_tax_cash: 'property_tax_cash',
+  property_tax_first_installment: 'property_tax_first_installment',
+  property_tax_second_installment: 'property_tax_second_installment',
+  iptu_installments_count: 'iptu_installments_count',
+  iptu_installments: 'iptu_installments',
+  payment_condition: 'payment_condition',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type PropertyIptuScalarFieldEnum = (typeof PropertyIptuScalarFieldEnum)[keyof typeof PropertyIptuScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

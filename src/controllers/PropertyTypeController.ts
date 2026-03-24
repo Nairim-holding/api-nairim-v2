@@ -74,12 +74,12 @@ export class PropertyTypeController {
         }
       });
 
-      console.log('🔍 Sort options extraídos:', sortOptions);
+      console.log('🔍 Opções de ordenação extraídas:', sortOptions);
       console.log('📋 Filtros extraídos:', filters);
 
       const validation = PropertyTypeValidator.validateQueryParams({ ...req.query, ...sortOptions });
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const result = await PropertyTypeService.getPropertyTypes({
@@ -99,8 +99,8 @@ export class PropertyTypeController {
       res.status(200).json(result);
 
     } catch (error: any) {
-      console.error('Error getting property types:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar tipos de imóvel:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -108,20 +108,20 @@ export class PropertyTypeController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
       
       const propertyType = await PropertyTypeService.getPropertyTypeById(id);
 
       res.status(200).json(
-        ApiResponse.success(propertyType, 'Property type retrieved successfully')
+        ApiResponse.success(propertyType, 'Tipo de imóvel recuperado com sucesso')
       );
     } catch (error: any) {
-      if (error.message === 'Property type not found') {
-        return res.status(404).json(ApiResponse.error('Property type not found'));
+      if (error.message === 'Property type not found' || error.message === 'Tipo de imóvel não encontrado') {
+        return res.status(404).json(ApiResponse.error('Tipo de imóvel não encontrado'));
       }
-      console.error('Error getting property type:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar tipo de imóvel:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -130,23 +130,23 @@ export class PropertyTypeController {
       const validation = PropertyTypeValidator.validateCreate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const propertyType = await PropertyTypeService.createPropertyType(req.body);
 
       res.status(201).json(
-        ApiResponse.success(propertyType, `Property type "${propertyType.description}" created successfully`)
+        ApiResponse.success(propertyType, `Tipo de imóvel "${propertyType.description}" criado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error creating property type:', error);
+      console.error('Erro ao criar tipo de imóvel:', error);
       
-      if (error.message === 'Property type already exists') {
-        return res.status(409).json(ApiResponse.error('Property type already exists'));
+      if (error.message === 'Property type already exists' || error.message === 'Tipo de imóvel já existe') {
+        return res.status(409).json(ApiResponse.error('Este tipo de imóvel já existe'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error creating property type: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao criar tipo de imóvel: ${error.message}`));
     }
   }
 
@@ -154,33 +154,33 @@ export class PropertyTypeController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const validation = PropertyTypeValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const propertyType = await PropertyTypeService.updatePropertyType(id, req.body);
 
       res.status(200).json(
-        ApiResponse.success(propertyType, `Property type "${propertyType.description}" updated successfully`)
+        ApiResponse.success(propertyType, `Tipo de imóvel "${propertyType.description}" atualizado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error updating property type:', error);
+      console.error('Erro ao atualizar tipo de imóvel:', error);
 
-      if (error.message === 'Property type not found') {
-        return res.status(404).json(ApiResponse.error('Property type not found'));
+      if (error.message === 'Property type not found' || error.message === 'Tipo de imóvel não encontrado') {
+        return res.status(404).json(ApiResponse.error('Tipo de imóvel não encontrado'));
       }
 
-      if (error.message === 'Property type already exists') {
-        return res.status(409).json(ApiResponse.error('Property type already exists'));
+      if (error.message === 'Property type already exists' || error.message === 'Tipo de imóvel já existe') {
+        return res.status(409).json(ApiResponse.error('Este tipo de imóvel já existe'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error updating property type: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar tipo de imóvel: ${error.message}`));
     }
   }
 
@@ -188,22 +188,22 @@ export class PropertyTypeController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const propertyType = await PropertyTypeService.deletePropertyType(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Property type "${propertyType.description}" marked as deleted successfully`)
+        ApiResponse.success(null, `Tipo de imóvel "${propertyType.description}" marcado como excluído com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error deleting property type:', error);
+      console.error('Erro ao excluir tipo de imóvel:', error);
 
-      if (error.message === 'Property type not found or already deleted') {
-        return res.status(404).json(ApiResponse.error('Property type not found or already deleted'));
+      if (error.message === 'Property type not found or already deleted' || error.message === 'Tipo de imóvel não encontrado ou já excluído') {
+        return res.status(404).json(ApiResponse.error('Tipo de imóvel não encontrado ou já excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error deleting property type'));
+      res.status(500).json(ApiResponse.error('Erro ao excluir tipo de imóvel'));
     }
   }
 
@@ -211,26 +211,26 @@ export class PropertyTypeController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const propertyType = await PropertyTypeService.restorePropertyType(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Property type "${propertyType.description}" restored successfully`)
+        ApiResponse.success(null, `Tipo de imóvel "${propertyType.description}" restaurado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error restoring property type:', error);
+      console.error('Erro ao restaurar tipo de imóvel:', error);
 
-      if (error.message === 'Property type not found') {
-        return res.status(404).json(ApiResponse.error('Property type not found'));
+      if (error.message === 'Property type not found' || error.message === 'Tipo de imóvel não encontrado') {
+        return res.status(404).json(ApiResponse.error('Tipo de imóvel não encontrado'));
       }
 
-      if (error.message === 'Property type is not deleted') {
-        return res.status(400).json(ApiResponse.error('Property type is not deleted'));
+      if (error.message === 'Property type is not deleted' || error.message === 'O tipo de imóvel não está excluído') {
+        return res.status(400).json(ApiResponse.error('O tipo de imóvel não está excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error restoring property type'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar tipo de imóvel'));
     }
   }
 
@@ -239,12 +239,12 @@ export class PropertyTypeController {
       // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
       
-      console.log('📥 Received query params for property type filters:', req.query);
+      console.log('📥 Query params recebidos para filtros de tipos de imóvel:', req.query);
 
       // Processar parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
-          console.log(`🔧 Processing filter param: ${key} =`, value);
+          console.log(`🔧 Processando parâmetro de filtro: ${key} =`, value);
           
           try {
             const parsedValue = JSON.parse(value as string);
@@ -259,16 +259,16 @@ export class PropertyTypeController {
         }
       });
 
-      console.log('📋 Parsed filters for context:', filters);
+      console.log('📋 Filtros processados para o contexto:', filters);
 
       const filtersData = await PropertyTypeService.getPropertyTypeFilters(filters);
       
       res.status(200).json(
-        ApiResponse.success(filtersData, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
-      console.error('❌ Error getting property type filters:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('❌ Erro ao buscar filtros de tipos de imóvel:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

@@ -70,6 +70,7 @@ export class LeaseController {
 
       const result = await LeaseService.getLeases(params);
 
+      // Configuração de headers para evitar cache de dados dinâmicos
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
@@ -77,6 +78,7 @@ export class LeaseController {
       res.status(200).json(result);
 
     } catch (error: any) {
+      console.error('Erro ao buscar locações:', error);
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
@@ -85,7 +87,7 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
       
       const lease = await LeaseService.getLeaseById(id);
@@ -94,9 +96,10 @@ export class LeaseController {
         ApiResponse.success(lease, 'Locação recuperada com sucesso')
       );
     } catch (error: any) {
-      if (error.message === 'Lease not found') {
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
         return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
+      console.error('Erro ao buscar locação por ID:', error);
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
@@ -116,8 +119,10 @@ export class LeaseController {
         ApiResponse.success(lease, `Locação ${lease.contract_number} criada com sucesso`)
       );
     } catch (error: any) {
-      if (error.message === 'Contract number already registered') {
-        return res.status(409).json(ApiResponse.error('Número de contrato já registrado'));
+      console.error('Erro ao criar locação:', error);
+
+      if (error.message === 'Contract number already registered' || error.message === 'Número de contrato já registrado') {
+        return res.status(409).json(ApiResponse.error('Este número de contrato já está registrado'));
       }
 
       res.status(400).json(ApiResponse.error(`Erro ao criar locação: ${error.message}`));
@@ -128,7 +133,7 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const validation = LeaseValidator.validateUpdate(req.body);
@@ -144,11 +149,13 @@ export class LeaseController {
         ApiResponse.success(lease, `Locação ${lease.contract_number} atualizada com sucesso`)
       );
     } catch (error: any) {
-      if (error.message === 'Lease not found') {
+      console.error('Erro ao atualizar locação:', error);
+
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
         return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
-      if (error.message === 'Contract number already registered for another lease') {
+      if (error.message === 'Contract number already registered for another lease' || error.message === 'Número de contrato já registrado para outra locação') {
         return res.status(409).json(ApiResponse.error('Número de contrato já registrado para outra locação'));
       }
 
@@ -160,7 +167,7 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const lease = await LeaseService.deleteLease(id);
@@ -169,12 +176,14 @@ export class LeaseController {
         ApiResponse.success(null, `Locação ${lease.contract_number} cancelada com sucesso`)
       );
     } catch (error: any) {
-      if (error.message === 'Lease not found') {
+      console.error('Erro ao cancelar locação:', error);
+
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
         return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
-      if (error.message === 'Lease already canceled') {
-        return res.status(400).json(ApiResponse.error('Locação já se encontra cancelada'));
+      if (error.message === 'Lease already canceled' || error.message === 'Locação já se encontra cancelada') {
+        return res.status(400).json(ApiResponse.error('Esta locação já se encontra cancelada'));
       }
 
       res.status(500).json(ApiResponse.error('Erro ao cancelar locação'));
@@ -185,7 +194,7 @@ export class LeaseController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const lease = await LeaseService.restoreLease(id);
@@ -194,7 +203,9 @@ export class LeaseController {
         ApiResponse.success(null, `Locação ${lease.contract_number} restaurada com sucesso`)
       );
     } catch (error: any) {
-      if (error.message === 'Lease not found') {
+      console.error('Erro ao restaurar locação:', error);
+
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
         return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
 
@@ -227,6 +238,7 @@ export class LeaseController {
         ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
+      console.error('Erro ao recuperar filtros de locação:', error);
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }

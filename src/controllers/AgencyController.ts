@@ -16,7 +16,7 @@ export class AgencyController {
       const sortOptions: Record<string, 'asc' | 'desc'> = {};
       const filters: Record<string, any> = {};
       
-      console.log('📥 Query params recebidos para agências:', req.query);
+      console.log('📥 Query params recebidos para imobiliárias:', req.query);
       
       // Processar parâmetros de ordenação
       Object.entries(req.query || {}).forEach(([key, value]) => {
@@ -52,7 +52,7 @@ export class AgencyController {
         }
       });
 
-      console.log('🔍 Sort options extraídos:', sortOptions);
+      console.log('🔍 Opções de ordenação extraídas:', sortOptions);
       console.log('📋 Filtros extraídos:', filters);
 
       const params = {
@@ -74,8 +74,8 @@ export class AgencyController {
       res.status(200).json(result);
 
     } catch (error: any) {
-      console.error('Error getting agencies:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar imobiliárias:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -83,20 +83,20 @@ export class AgencyController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
       
       const agency = await AgencyService.getAgencyById(id);
 
       res.status(200).json(
-        ApiResponse.success(agency, 'Agency retrieved successfully')
+        ApiResponse.success(agency, 'Imobiliária recuperada com sucesso')
       );
     } catch (error: any) {
-      if (error.message === 'Agency not found' || error.message === 'Agency not found or deleted') {
-        return res.status(404).json(ApiResponse.error('Agency not found'));
+      if (error.message === 'Agency not found' || error.message === 'Imobiliária não encontrada') {
+        return res.status(404).json(ApiResponse.error('Imobiliária não encontrada'));
       }
-      console.error('Error getting agency:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar imobiliária:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -105,23 +105,23 @@ export class AgencyController {
       const validation = AgencyValidator.validateCreate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const agency = await AgencyService.createAgency(req.body);
 
       res.status(201).json(
-        ApiResponse.success(agency, `Agency ${agency.legal_name} created successfully`)
+        ApiResponse.success(agency, `Imobiliária ${agency.legal_name} criada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error creating agency:', error);
+      console.error('Erro ao criar imobiliária:', error);
 
-      if (error.message === 'CNPJ already registered' || error.message === 'CNPJ already exists') {
-        return res.status(409).json(ApiResponse.error('CNPJ already registered'));
+      if (error.message === 'CNPJ already registered' || error.message === 'CNPJ já cadastrado') {
+        return res.status(409).json(ApiResponse.error('CNPJ já cadastrado'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error creating agency: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao criar imobiliária: ${error.message}`));
     }
   }
 
@@ -129,33 +129,33 @@ export class AgencyController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const validation = AgencyValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const agency = await AgencyService.updateAgency(id, req.body);
 
       res.status(200).json(
-        ApiResponse.success(agency, `Agency ${agency.legal_name} updated successfully`)
+        ApiResponse.success(agency, `Imobiliária ${agency.legal_name} atualizada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error updating agency:', error);
+      console.error('Erro ao atualizar imobiliária:', error);
 
-      if (error.message === 'Agency not found') {
-        return res.status(404).json(ApiResponse.error('Agency not found'));
+      if (error.message === 'Agency not found' || error.message === 'Imobiliária não encontrada') {
+        return res.status(404).json(ApiResponse.error('Imobiliária não encontrada'));
       }
 
-      if (error.message === 'CNPJ already registered for another agency' || error.message === 'CNPJ already used by another agency') {
-        return res.status(409).json(ApiResponse.error('CNPJ already registered for another agency'));
+      if (error.message === 'CNPJ already registered for another agency' || error.message === 'CNPJ já cadastrado para outra imobiliária') {
+        return res.status(409).json(ApiResponse.error('CNPJ já cadastrado para outra imobiliária'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error updating agency: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar imobiliária: ${error.message}`));
     }
   }
 
@@ -163,22 +163,22 @@ export class AgencyController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const agency = await AgencyService.deleteAgency(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Agency ${agency.legal_name} marked as deleted successfully (soft delete)`)
+        ApiResponse.success(null, `Imobiliária ${agency.legal_name} marcada como excluída com sucesso (soft delete)`)
       );
     } catch (error: any) {
-      console.error('Error deleting agency:', error);
+      console.error('Erro ao excluir imobiliária:', error);
 
-      if (error.message === 'Agency not found or already deleted') {
-        return res.status(404).json(ApiResponse.error('Agency not found or already deleted'));
+      if (error.message === 'Agency not found or already deleted' || error.message === 'Imobiliária não encontrada ou já excluída') {
+        return res.status(404).json(ApiResponse.error('Imobiliária não encontrada ou já excluída'));
       }
 
-      res.status(500).json(ApiResponse.error('Error deleting agency'));
+      res.status(500).json(ApiResponse.error('Erro ao excluir imobiliária'));
     }
   }
 
@@ -187,12 +187,12 @@ export class AgencyController {
       // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
       
-      console.log('📥 Received query params for agency filters:', req.query);
+      console.log('📥 Query params recebidos para filtros de imobiliárias:', req.query);
 
       // Processar parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
-          console.log(`🔧 Processing filter param: ${key} =`, value);
+          console.log(`🔧 Processando parâmetro de filtro: ${key} =`, value);
           
           try {
             const parsedValue = JSON.parse(value as string);
@@ -207,44 +207,44 @@ export class AgencyController {
         }
       });
 
-      console.log('📋 Parsed filters for context:', filters);
+      console.log('📋 Filtros processados para o contexto:', filters);
 
       const filtersData = await AgencyService.getAgencyFilters(filters);
       
       res.status(200).json(
-        ApiResponse.success(filtersData, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
-      console.error('❌ Error getting agency filters:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('❌ Erro ao buscar filtros de imobiliárias:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
-  // Método opcional para restaurar agência
+  // Método opcional para restaurar imobiliária
   static async restoreAgency(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const agency = await AgencyService.restoreAgency(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Agency ${agency.legal_name} restored successfully`)
+        ApiResponse.success(null, `Imobiliária ${agency.legal_name} restaurada com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error restoring agency:', error);
+      console.error('Erro ao restaurar imobiliária:', error);
 
-      if (error.message === 'Agency not found') {
-        return res.status(404).json(ApiResponse.error('Agency not found'));
+      if (error.message === 'Agency not found' || error.message === 'Imobiliária não encontrada') {
+        return res.status(404).json(ApiResponse.error('Imobiliária não encontrada'));
       }
 
-      if (error.message === 'Agency is not deleted') {
-        return res.status(400).json(ApiResponse.error('Agency is not deleted'));
+      if (error.message === 'Agency is not deleted' || error.message === 'A imobiliária não está excluída') {
+        return res.status(400).json(ApiResponse.error('A imobiliária não está excluída'));
       }
 
-      res.status(500).json(ApiResponse.error('Error restoring agency'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar imobiliária'));
     }
   }
 
@@ -258,11 +258,11 @@ export class AgencyController {
       res.setHeader('Cache-Control', 'public, max-age=30'); 
       
       res.status(200).json(
-        ApiResponse.success(suggestions, 'Contact suggestions retrieved successfully')
+        ApiResponse.success(suggestions, 'Sugestões de contato recuperadas com sucesso')
       );
     } catch (error: any) {
-      console.error('Error getting contact suggestions:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar sugestões de contato:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

@@ -9,19 +9,10 @@ export class AuthService {
     try {
       console.log(`🔐 Attempting login for email: ${email}`);
       
-      // Buscar usuário pelo email
       const user = await prisma.user.findFirst({
-        where: { 
-          email,
-          deleted_at: null
-        },
+        where: { email, deleted_at: null },
         select: {
-          id: true,
-          name: true,
-          email: true,
-          password: true,
-          role: true,
-          created_at: true
+          id: true, name: true, email: true, password: true, role: true, created_at: true
         }
       });
 
@@ -30,20 +21,15 @@ export class AuthService {
         throw new Error('Credenciais inválidas');
       }
 
-      // Verificar senha
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         console.log('❌ Invalid password');
         throw new Error('Credenciais inválidas');
       }
 
-      // Gerar token JWT
       const secretKey = env.JWT_SECRET as string;
-      if (!secretKey) {
-        throw new Error('JWT_SECRET_KEY não configurada');
-      }
+      if (!secretKey) throw new Error('JWT_SECRET_KEY não configurada');
 
-      // Mapear role para português
       const roleMap: Record<string, string> = {
         'ADMIN': 'administrador',
         'DEFAULT': 'usuário'
@@ -56,17 +42,16 @@ export class AuthService {
         role: roleMap[user.role] || user.role
       };
 
-      const token = jwt.sign(payload, secretKey, { expiresIn: '8h' });
+      const token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
 
       console.log(`✅ Login successful for user: ${user.email}`);
 
-      // Retornar dados do usuário sem a senha
       const { password: _, ...userWithoutPassword } = user;
 
       return {
         user: userWithoutPassword,
         token,
-        expiresIn: '8h'
+        expiresIn: '2h'
       };
 
     } catch (error: any) {
@@ -84,7 +69,6 @@ export class AuthService {
         throw new Error('JWT_SECRET_KEY não configurada');
       }
 
-      // Verificar token
       const decoded = jwt.verify(token, secretKey);
       
       console.log(`✅ Token is valid`);
@@ -114,14 +98,10 @@ export class AuthService {
       console.log(`🔄 Refreshing token...`);
       
       const secretKey = env.JWT_SECRET as string;
-      if (!secretKey) {
-        throw new Error('JWT_SECRET_KEY não configurada');
-      }
+      if (!secretKey) throw new Error('JWT_SECRET_KEY não configurada');
 
-      // Verificar token antigo
       const decoded: any = jwt.verify(oldToken, secretKey);
       
-      // Gerar novo token com os mesmos dados
       const payload = {
         id: decoded.id,
         name: decoded.name,
@@ -129,13 +109,14 @@ export class AuthService {
         role: decoded.role
       };
 
-      const newToken = jwt.sign(payload, secretKey, { expiresIn: '8h' });
+      // ✅ MUDANÇA AQUI: Alterado de '8h' para '2h'
+      const newToken = jwt.sign(payload, secretKey, { expiresIn: '2h' });
 
       console.log(`✅ Token refreshed for user: ${decoded.email}`);
       
       return {
         token: newToken,
-        expiresIn: '8h'
+        expiresIn: '2h' // ✅ MUDANÇA AQUI
       };
 
     } catch (error: any) {

@@ -28,6 +28,11 @@ export type Agency = Prisma.AgencyModel
  */
 export type Property = Prisma.PropertyModel
 /**
+ * Model PropertyIptu
+ * 
+ */
+export type PropertyIptu = Prisma.PropertyIptuModel
+/**
  * Model User
  * 
  */

@@ -453,6 +453,7 @@ export class LeaseService {
           orderBy: { created_at: 'desc' }
         });
 
+        // Se criou e está ativa/expirando, garante que o imóvel fique OCUPADO
         if (propertyValue && propertyValue.status !== 'OCCUPIED' && calculatedStatus !== 'CANCELED') {
           await tx.propertyValue.update({
             where: { id: propertyValue.id },
@@ -524,21 +525,25 @@ export class LeaseService {
         });
 
         if (propertyValue) {
+          // Se não for cancelado, garante que o imóvel fique OCUPADO
           if (calculatedStatus !== 'CANCELED' && propertyValue.status !== 'OCCUPIED') {
             await tx.propertyValue.update({
               where: { id: propertyValue.id },
               data: { status: 'OCCUPIED' }
             });
-          } else if (calculatedStatus === 'CANCELED' && propertyValue.status === 'OCCUPIED') {
+          } 
+          // Se FOR cancelado, checamos se podemos liberar o imóvel (se não houver outras locações ativas)
+          else if (calculatedStatus === 'CANCELED' && propertyValue.status === 'OCCUPIED') {
             const activeLeases = await tx.lease.count({
               where: {
                 property_id: targetPropertyId,
-                NOT: { id: updatedLease.id },
+                NOT: { id: updatedLease.id }, // Ignora a locação que acabamos de cancelar
                 deleted_at: null,
-                status: { not: 'CANCELED' }
+                status: { not: 'CANCELED' } // Só nos importamos se existir outras que NÃO estão canceladas
               }
             });
 
+            // Se não encontrou nenhuma outra locação ativa, Libera o Imóvel!
             if (activeLeases === 0) {
               await tx.propertyValue.update({
                 where: { id: propertyValue.id },
@@ -561,13 +566,14 @@ export class LeaseService {
       const lease = await prisma.$transaction(async (tx: any) => {
         const existing = await tx.lease.findUnique({ where: { id, deleted_at: null } });
         if (!existing) throw new Error('Lease not found');
-        if (existing.status === 'CANCELED') throw new Error('Lease already canceled');
 
-        const canceledLease = await tx.lease.update({
+        // Soft delete de verdade (marca como excluído e cancela o status por precaução)
+        const deletedLease = await tx.lease.update({
           where: { id },
           data: { 
+            deleted_at: new Date(),
             status: 'CANCELED',
-            canceled_at: new Date()
+            canceled_at: existing.canceled_at || new Date()
           },
         });
 
@@ -576,6 +582,7 @@ export class LeaseService {
           orderBy: { created_at: 'desc' }
         });
 
+        // Libera o imóvel caso estivesse ocupado por esta locação excluída
         if (propertyValue && propertyValue.status === 'OCCUPIED') {
           const activeLeases = await tx.lease.count({
             where: {
@@ -586,6 +593,7 @@ export class LeaseService {
             }
           });
 
+          // Se não há outras locações ativas para este imóvel, deixa ele disponível
           if (activeLeases === 0) {
             await tx.propertyValue.update({
               where: { id: propertyValue.id },
@@ -594,7 +602,7 @@ export class LeaseService {
           }
         }
 
-        return canceledLease;
+        return deletedLease;
       });
       return lease;
     } catch (error: any) {
@@ -624,6 +632,7 @@ export class LeaseService {
           orderBy: { created_at: 'desc' }
         });
 
+        // Como restaurou a locação, garante que o imóvel fique OCUPADO
         if (propertyValue && propertyValue.status !== 'OCCUPIED') {
           await tx.propertyValue.update({
             where: { id: propertyValue.id },

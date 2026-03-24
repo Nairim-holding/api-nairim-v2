@@ -59,9 +59,33 @@ model Property {
   type             PropertyType      @relation(fields: [type_id], references: [id])
   addresses        PropertyAddress[]
   values           PropertyValue[]
+  iptus            PropertyIptu[]   
 
   @@index([owner_id])
   @@index([agency_id])
+}
+
+model PropertyIptu {
+  id                              String            @id @default(uuid())
+  property_id                     String
+  year                            Int              
+  
+  property_tax_cash               Decimal?          @db.Decimal(20, 2)
+  property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
+  property_tax_second_installment Decimal?          @db.Decimal(20, 2)
+  iptu_installments_count         Int?
+  iptu_installments               Json?
+  
+  payment_condition               PaymentCondition?
+  
+  created_at                      DateTime          @default(now())
+  updated_at                      DateTime          @updatedAt
+  deleted_at                      DateTime?
+
+  property                        Property          @relation(fields: [property_id], references: [id])
+
+  @@unique([property_id, year]) // Garante que não tenha dois registros pro mesmo ano no mesmo imóvel
+  @@index([property_id])
 }
 
 model User {
@@ -147,17 +171,17 @@ model Tenant {
 }
 
 model Lease {
-  id                         String            @id @default(uuid())
-  property_id                String
-  type_id                    String
-  owner_id                   String
-  tenant_id                  String
-  contract_number            String
-  start_date                 DateTime          @db.Date
-  end_date                   DateTime          @db.Date
-  rent_amount                Decimal           @db.Decimal(20, 2)
-  condo_fee                  Decimal?          @db.Decimal(20, 2)
-  property_tax               Decimal?          @db.Decimal(20, 2)
+  id                              String            @id @default(uuid())
+  property_id                     String
+  type_id                         String
+  owner_id                        String
+  tenant_id                       String
+  contract_number                 String
+  start_date                      DateTime          @db.Date
+  end_date                        DateTime          @db.Date
+  rent_amount                     Decimal           @db.Decimal(20, 2)
+  condo_fee                       Decimal?          @db.Decimal(20, 2)
+  property_tax                    Decimal?          @db.Decimal(20, 2)
   
   property_tax_cash               Decimal?     @db.Decimal(20, 2)
   property_tax_first_installment  Decimal?     @db.Decimal(20, 2)
@@ -165,29 +189,30 @@ model Lease {
   iptu_installments_count         Int?
   iptu_installments               Json?
 
-  extra_charges              Decimal?          @db.Decimal(20, 2)
-  commission_amount          Decimal?          @db.Decimal(20, 2)
-  rent_due_day               Int
-  tax_due_day                Int?
-  condo_due_day              Int?
-  status                     LeaseStatus       @default(ACTIVE)
-  payment_condition          PaymentCondition?
-  cancellation_penalty       Decimal?          @db.Decimal(20, 2)
-  other_cancellation_amounts Decimal?          @db.Decimal(20, 2)
-  cancellation_justification String?
-  canceled_at                DateTime?
-  created_at                 DateTime          @default(now())
-  updated_at                 DateTime          @updatedAt
-  deleted_at                 DateTime?
+  extra_charges                   Decimal?          @db.Decimal(20, 2)
+  commission_amount               Decimal?          @db.Decimal(20, 2)
+  rent_due_day                    Int
+  tax_due_day                     Int?
+  condo_due_day                   Int?
+  status                          LeaseStatus       @default(ACTIVE)
+  payment_condition               PaymentCondition?
+  cancellation_penalty            Decimal?          @db.Decimal(20, 2)
+  other_cancellation_amounts      Decimal?          @db.Decimal(20, 2)
+  cancellation_justification      String?
+  canceled_at                     DateTime?
+  created_at                      DateTime          @default(now())
+  updated_at                      DateTime          @updatedAt
+  deleted_at                      DateTime?
   
-  owner                      Owner             @relation(fields: [owner_id], references: [id])
-  property                   Property          @relation(fields: [property_id], references: [id])
-  tenant                     Tenant            @relation(fields: [tenant_id], references: [id])
-  type                       PropertyType      @relation(fields: [type_id], references: [id])
+  owner                           Owner             @relation(fields: [owner_id], references: [id])
+  property                        Property          @relation(fields: [property_id], references: [id])
+  tenant                          Tenant            @relation(fields: [tenant_id], references: [id])
+  type                            PropertyType      @relation(fields: [type_id], references: [id])
 
   @@index([property_id])
   @@index([tenant_id])
 }
+
 model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
@@ -243,7 +268,7 @@ model Address {
   ownerAddresses    OwnerAddress[]
   propertyAddresses PropertyAddress[]
   tenantAddresses   TenantAddress[]
-  supplierAddresses SupplierAddress[] // Adicionado para o módulo financeiro
+  supplierAddresses SupplierAddress[] 
 }
 
 model Contact {
@@ -259,12 +284,12 @@ model Contact {
   agency_id   String?
   owner_id    String?
   tenant_id   String?
-  supplier_id String?   // Adicionado para o módulo financeiro
+  supplier_id String?   
   
   agency      Agency?   @relation(fields: [agency_id], references: [id])
   owner       Owner?    @relation(fields: [owner_id], references: [id])
   tenant      Tenant?   @relation(fields: [tenant_id], references: [id])
-  supplier    Supplier? @relation(fields: [supplier_id], references: [id]) // Adicionado para o módulo financeiro
+  supplier    Supplier? @relation(fields: [supplier_id], references: [id]) 
 
   @@index([agency_id])
   @@index([owner_id])
@@ -340,15 +365,15 @@ model TenantAddress {
 // ==========================================
 
 model FinancialInstitution {
-  id               String        @id @default(uuid())
-  name             String
-  bank_number      String?       @db.VarChar(20)
-  agency_number    String?       @db.VarChar(20) 
-  account_number   String?       @db.VarChar(50)
-  created_at       DateTime      @default(now())
+  id             String        @id @default(uuid())
+  name           String
+  bank_number    String?       @db.VarChar(20)
+  agency_number  String?       @db.VarChar(20) 
+  account_number String?       @db.VarChar(50)
+  created_at     DateTime      @default(now())
   is_active    Boolean       @default(true)
-  updated_at       DateTime      @updatedAt
-  deleted_at       DateTime?
+  updated_at     DateTime      @updatedAt
+  deleted_at     DateTime?
 
   transactions Transaction[]
 }
@@ -383,15 +408,15 @@ model Subcategory {
 }
 
 model Card {
-  id           String        @id @default(uuid())
-  name         String
-  limit        Decimal?      @db.Decimal(20, 2)
-  closing_day  Int?          
-  due_day      Int?          
-  is_active    Boolean       @default(true)
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  deleted_at   DateTime?
+  id          String        @id @default(uuid())
+  name        String
+  limit       Decimal?      @db.Decimal(20, 2)
+  closing_day Int?          
+  due_day     Int?          
+  is_active   Boolean       @default(true)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  deleted_at  DateTime?
 
   transactions Transaction[]
 }
@@ -415,9 +440,9 @@ model Supplier {
   trade_name             String?
   cnpj                   String?           @db.VarChar(20)
   cpf                    String?           @db.VarChar(14)
-  internal_code          String?           @unique // <-- ADICIONADO
-  occupation             String?                   // <-- ADICIONADO
-  marital_status         String?                   // <-- ADICIONADO
+  internal_code          String?           @unique 
+  occupation             String?                   
+  marital_status         String?                   
   state_registration     String?
   municipal_registration String?
   created_at             DateTime          @default(now())

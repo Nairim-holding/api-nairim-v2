@@ -1,4 +1,4 @@
-import { DocumentType, PropertyStatus } from '@/generated/prisma/enums';
+import { DocumentType, PropertyStatus, PaymentCondition } from '@/generated/prisma/enums';
 import prisma from '../lib/prisma';
 import { 
   GetPropertiesParams, 
@@ -180,6 +180,9 @@ export class PropertyService {
               where: { deleted_at: null },
               orderBy: { created_at: 'desc' }
             },
+            iptus: {
+              orderBy: { year: 'desc' }
+            },
             leases: {
               where: { deleted_at: null },
               take: 1,
@@ -255,6 +258,9 @@ export class PropertyService {
               values: {
                 where: { deleted_at: null },
                 orderBy: { created_at: 'desc' }
+              },
+              iptus: {
+                orderBy: { year: 'desc' }
               },
               leases: {
                 where: { deleted_at: null },
@@ -527,6 +533,9 @@ export class PropertyService {
             where: { deleted_at: null },
             orderBy: { created_at: 'desc' }
           },
+          iptus: {
+            orderBy: { year: 'desc' }
+          },
           agency: true,
           leases: {
             where: { deleted_at: null },
@@ -651,10 +660,10 @@ export class PropertyService {
               rental_value: parseFloat(data.values.rental_value),
               condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
-              sale_value: parseFloat(data.values.sale_value || 0),
-              extra_charges: parseFloat(data.values.extra_charges || 0),
               status: data.values.status as PropertyStatus || 'AVAILABLE',
               notes: data.values.notes,
+              sale_value: parseFloat(data.values.sale_value || 0),
+              extra_charges: parseFloat(data.values.extra_charges || 0),
               sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
             }
           });
@@ -1214,6 +1223,24 @@ export class PropertyService {
           });
         }
 
+        // SALVA O HISTÓRICO ANUAL DO IPTU
+        if (data.iptus && Array.isArray(data.iptus)) {
+          for (const iptu of data.iptus) {
+            await tx.propertyIptu.create({
+              data: {
+                property_id: property.id,
+                year: parseInt(iptu.year),
+                property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
+                property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
+                property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
+                iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
+                iptu_installments: iptu.iptu_installments || null,
+                payment_condition: iptu.payment_condition as PaymentCondition || null
+              }
+            });
+          }
+        }
+
         return { property, address, propertyValue };
       }, {
         timeout: 10000, 
@@ -1254,6 +1281,9 @@ export class PropertyService {
             where: { deleted_at: null },
             orderBy: { created_at: 'desc' }
           },
+          iptus: {
+            orderBy: { year: 'desc' }
+          },
           agency: true
         }
       });
@@ -1278,11 +1308,12 @@ export class PropertyService {
       const propertyData = data.propertyData || data.property;
       const addressData = data.addressData || data.address;
       const valuesData = data.valuesData || data.values;
+      const iptusData = data.iptusData || data.iptus || [];
       const userId = data.userId;
       const featuredImageIdentifier = data.featuredImageIdentifier;
       
       return await this.createPropertyWithFiles(
-        { ...propertyData, address: addressData, values: valuesData },
+        { ...propertyData, address: addressData, values: valuesData, iptus: iptusData },
         data.files || {},
         userId,
         featuredImageIdentifier
@@ -1397,14 +1428,12 @@ export class PropertyService {
                 longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
               }
             });
-
             await tx.propertyAddress.create({
               data: {
                 property_id: property.id,
                 address_id: newAddress.id
               }
             });
-
             address = newAddress;
           }
         }
@@ -1426,9 +1455,9 @@ export class PropertyService {
                 property_tax: parseFloat(data.values.property_tax || 0),
                 status: data.values.status as PropertyStatus || 'AVAILABLE',
                 notes: data.values.notes,
-                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
                 sale_value: parseFloat(data.values.sale_value || 0),
                 extra_charges: parseFloat(data.values.extra_charges || 0),
+                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
               }
             });
           } else {
@@ -1442,18 +1471,37 @@ export class PropertyService {
                 property_tax: parseFloat(data.values.property_tax || 0),
                 status: data.values.status as PropertyStatus || 'AVAILABLE',
                 notes: data.values.notes,
-                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
                 sale_value: parseFloat(data.values.sale_value || 0),
                 extra_charges: parseFloat(data.values.extra_charges || 0),
+                sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
+              }
+            });
+          }
+        }
+
+        // ATUALIZA O HISTÓRICO ANUAL DO IPTU
+        if (data.iptus && Array.isArray(data.iptus)) {
+          // Exclui os antigos e recria para garantir uma atualização limpa (sub-form behavior)
+          await tx.propertyIptu.deleteMany({ where: { property_id: property.id } });
+          
+          for (const iptu of data.iptus) {
+            await tx.propertyIptu.create({
+              data: {
+                property_id: property.id,
+                year: parseInt(iptu.year),
+                property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
+                property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
+                property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
+                iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
+                iptu_installments: iptu.iptu_installments || null,
+                payment_condition: iptu.payment_condition as PaymentCondition || null
               }
             });
           }
         }
 
         return { property, address, propertyValue };
-      }, {
-        timeout: 10000,
-      });
+      }, { timeout: 10000 });
 
       const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
 
@@ -1497,6 +1545,9 @@ export class PropertyService {
           values: {
             where: { deleted_at: null },
             orderBy: { created_at: 'desc' }
+          },
+          iptus: {
+            orderBy: { year: 'desc' }
           },
           agency: true
         }

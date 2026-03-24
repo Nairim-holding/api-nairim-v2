@@ -13,7 +13,7 @@ export class UserController {
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
 
-      // **CORREÇÃO: Processar sort no formato sort[name]=desc**
+      // Processar sort no formato sort[name]=desc
       const sortOptions: any = {};
       
       console.log('📥 Query params recebidos:', req.query);
@@ -44,7 +44,7 @@ export class UserController {
         }
       });
 
-      console.log('🔍 Sort options extraídos:', sortOptions);
+      console.log('🔍 Opções de ordenação extraídas:', sortOptions);
 
       // Extrair filtros
       const filters: Record<string, any> = {};
@@ -89,7 +89,7 @@ export class UserController {
 
       const validation = UserValidator.validateQueryParams({ ...req.query, ...sortOptions });
       if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
       const result = await UserService.getUsers({
@@ -113,8 +113,8 @@ export class UserController {
         currentPage: result.currentPage
       });
     } catch (error: any) {
-      console.error('Error getting users:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar usuários:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -122,37 +122,34 @@ export class UserController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
       
       const user = await UserService.getUserById(id);
 
       res.status(200).json(
-        ApiResponse.success(user, 'User retrieved successfully')
+        ApiResponse.success(user, 'Usuário recuperado com sucesso')
       );
     } catch (error: any) {
-      if (error.message === 'User not found') {
-        return res.status(404).json(ApiResponse.error('User not found'));
+      if (error.message === 'User not found' || error.message === 'Usuário não encontrado') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
       }
-      console.error('Error getting user:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('Erro ao buscar usuário:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getUserFilters(req: Request, res: Response) {
     try {
-      // Extrair filtros dos query params para contexto
       const filters: Record<string, any> = {};
       
-      console.log('📥 Received query params:', req.query);
+      console.log('📥 Parâmetros de consulta recebidos:', req.query);
 
-      // Processar todos os parâmetros de filtro
       Object.entries(req.query || {}).forEach(([key, value]) => {
         if (value && value !== '' && value !== 'undefined' && value !== 'null') {
-          console.log(`🔧 Processing param: ${key} =`, value);
+          console.log(`🔧 Processando parâmetro: ${key} =`, value);
           
           try {
-            // Tentar parsear como JSON (para objetos como date ranges)
             const parsedValue = JSON.parse(value as string);
             if (parsedValue && typeof parsedValue === 'object') {
               filters[key] = parsedValue;
@@ -166,16 +163,16 @@ export class UserController {
         }
       });
 
-      console.log('📋 Parsed filters for context:', filters);
+      console.log('📋 Filtros processados para o contexto:', filters);
 
       const filtersData = await UserService.getUserFilters(filters);
       
       res.status(200).json(
-        ApiResponse.success(filtersData, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
-      console.error('❌ Error getting filters:', error);
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      console.error('❌ Erro ao buscar filtros:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -184,23 +181,23 @@ export class UserController {
       const validation = UserValidator.validateCreate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const user = await UserService.createUser(req.body);
 
       res.status(201).json(
-        ApiResponse.success(user, `User ${user.name} created successfully`)
+        ApiResponse.success(user, `Usuário ${user.name} criado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error creating user:', error);
+      console.error('Erro ao criar usuário:', error);
 
-      if (error.message === 'Email already registered') {
-        return res.status(409).json(ApiResponse.error('Email already registered'));
+      if (error.message === 'Email already registered' || error.message === 'E-mail já cadastrado') {
+        return res.status(409).json(ApiResponse.error('E-mail já cadastrado'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error creating user: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao criar usuário: ${error.message}`));
     }
   }
 
@@ -208,33 +205,33 @@ export class UserController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const validation = UserValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const user = await UserService.updateUser(id, req.body);
 
       res.status(200).json(
-        ApiResponse.success(user, `User ${user.name} updated successfully`)
+        ApiResponse.success(user, `Usuário ${user.name} atualizado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error updating user:', error);
+      console.error('Erro ao atualizar usuário:', error);
 
-      if (error.message === 'User not found') {
-        return res.status(404).json(ApiResponse.error('User not found'));
+      if (error.message === 'User not found' || error.message === 'Usuário não encontrado') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
       }
 
-      if (error.message === 'Email already registered for another user') {
-        return res.status(409).json(ApiResponse.error('Email already registered for another user'));
+      if (error.message === 'Email already registered for another user' || error.message === 'E-mail já cadastrado para outro usuário') {
+        return res.status(409).json(ApiResponse.error('E-mail já cadastrado para outro usuário'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error updating user: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar usuário: ${error.message}`));
     }
   }
 
@@ -242,22 +239,22 @@ export class UserController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const user = await UserService.deleteUser(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `User ${user.name} marked as deleted successfully (soft delete)`)
+        ApiResponse.success(null, `Usuário ${user.name} marcado como excluído com sucesso (soft delete)`)
       );
     } catch (error: any) {
-      console.error('Error deleting user:', error);
+      console.error('Erro ao excluir usuário:', error);
 
-      if (error.message === 'User not found or already deleted') {
-        return res.status(404).json(ApiResponse.error('User not found or already deleted'));
+      if (error.message === 'User not found or already deleted' || error.message === 'Usuário não encontrado ou já excluído') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado ou já excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error deleting user'));
+      res.status(500).json(ApiResponse.error('Erro ao excluir usuário'));
     }
   }
 
@@ -265,26 +262,26 @@ export class UserController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
       const user = await UserService.restoreUser(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `User ${user.name} restored successfully`)
+        ApiResponse.success(null, `Usuário ${user.name} restaurado com sucesso`)
       );
     } catch (error: any) {
-      console.error('Error restoring user:', error);
+      console.error('Erro ao restaurar usuário:', error);
 
-      if (error.message === 'User not found') {
-        return res.status(404).json(ApiResponse.error('User not found'));
+      if (error.message === 'User not found' || error.message === 'Usuário não encontrado') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
       }
 
-      if (error.message === 'User is not deleted') {
-        return res.status(400).json(ApiResponse.error('User is not deleted'));
+      if (error.message === 'User is not deleted' || error.message === 'O usuário não está excluído') {
+        return res.status(400).json(ApiResponse.error('O usuário não está excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error restoring user'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar usuário'));
     }
   }
 
@@ -305,20 +302,19 @@ export class UserController {
         return res.status(400).json(ApiResponse.error('Nova senha deve ter no mínimo 6 caracteres'));
       }
 
-      // Usar AuthService para alterar senha
       await AuthService.changePassword(id, oldPassword, newPassword);
 
       res.status(200).json(
         ApiResponse.success(null, 'Senha alterada com sucesso')
       );
     } catch (error: any) {
-      console.error('Error changing password:', error);
+      console.error('Erro ao alterar senha:', error);
 
-      if (error.message === 'Usuário não encontrado') {
+      if (error.message === 'Usuário não encontrado' || error.message === 'User not found') {
         return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
       }
 
-      if (error.message === 'Senha atual incorreta') {
+      if (error.message === 'Senha atual incorreta' || error.message === 'Incorrect current password') {
         return res.status(400).json(ApiResponse.error('Senha atual incorreta'));
       }
 

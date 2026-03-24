@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Agency: 'Agency',
   Property: 'Property',
+  PropertyIptu: 'PropertyIptu',
   User: 'User',
   Document: 'Document',
   Owner: 'Owner',
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction"
+    modelProps: "agency" | "property" | "propertyIptu" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -572,6 +573,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PropertyCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PropertyCountAggregateOutputType> | number
+        }
+      }
+    }
+    PropertyIptu: {
+      payload: Prisma.$PropertyIptuPayload<ExtArgs>
+      fields: Prisma.PropertyIptuFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PropertyIptuFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PropertyIptuFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        findFirst: {
+          args: Prisma.PropertyIptuFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PropertyIptuFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        findMany: {
+          args: Prisma.PropertyIptuFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>[]
+        }
+        create: {
+          args: Prisma.PropertyIptuCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        createMany: {
+          args: Prisma.PropertyIptuCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PropertyIptuCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>[]
+        }
+        delete: {
+          args: Prisma.PropertyIptuDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        update: {
+          args: Prisma.PropertyIptuUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        deleteMany: {
+          args: Prisma.PropertyIptuDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PropertyIptuUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PropertyIptuUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>[]
+        }
+        upsert: {
+          args: Prisma.PropertyIptuUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyIptuPayload>
+        }
+        aggregate: {
+          args: Prisma.PropertyIptuAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePropertyIptu>
+        }
+        groupBy: {
+          args: Prisma.PropertyIptuGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyIptuGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PropertyIptuCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyIptuCountAggregateOutputType> | number
         }
       }
     }
@@ -2283,6 +2358,24 @@ export const PropertyScalarFieldEnum = {
 export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typeof PropertyScalarFieldEnum]
 
 
+export const PropertyIptuScalarFieldEnum = {
+  id: 'id',
+  property_id: 'property_id',
+  year: 'year',
+  property_tax_cash: 'property_tax_cash',
+  property_tax_first_installment: 'property_tax_first_installment',
+  property_tax_second_installment: 'property_tax_second_installment',
+  iptu_installments_count: 'iptu_installments_count',
+  iptu_installments: 'iptu_installments',
+  payment_condition: 'payment_condition',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type PropertyIptuScalarFieldEnum = (typeof PropertyIptuScalarFieldEnum)[keyof typeof PropertyIptuScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2753,6 +2846,48 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentCondition'
+ */
+export type EnumPaymentConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentCondition'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentCondition[]'
+ */
+export type ListEnumPaymentConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentCondition[]'>
+    
+
+
+/**
  * Reference to a field of type 'Gender'
  */
 export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender'>
@@ -2795,34 +2930,6 @@ export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
  * Reference to a field of type 'LeaseStatus'
  */
 export type EnumLeaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaseStatus'>
@@ -2833,20 +2940,6 @@ export type EnumLeaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'LeaseStatus[]'
  */
 export type ListEnumLeaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaseStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'PaymentCondition'
- */
-export type EnumPaymentConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentCondition'>
-    
-
-
-/**
- * Reference to a field of type 'PaymentCondition[]'
- */
-export type ListEnumPaymentConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentCondition[]'>
     
 
 
@@ -2988,6 +3081,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   agency?: Prisma.AgencyOmit
   property?: Prisma.PropertyOmit
+  propertyIptu?: Prisma.PropertyIptuOmit
   user?: Prisma.UserOmit
   document?: Prisma.DocumentOmit
   owner?: Prisma.OwnerOmit

@@ -59,7 +59,7 @@ export class TenantController {
       res.status(200).json(result);
 
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -67,19 +67,19 @@ export class TenantController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
       
       const tenant = await TenantService.getTenantById(id);
 
       res.status(200).json(
-        ApiResponse.success(tenant, 'Tenant retrieved successfully')
+        ApiResponse.success(tenant, 'Inquilino recuperado com sucesso')
       );
     } catch (error: any) {
       if (error.message === 'Tenant not found') {
-        return res.status(404).json(ApiResponse.error('Tenant not found'));
+        return res.status(404).json(ApiResponse.error('Inquilino não encontrado'));
       }
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -88,14 +88,14 @@ export class TenantController {
       const validation = TenantValidator.validateCreate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const tenant = await TenantService.createTenant(req.body);
 
       res.status(201).json(
-        ApiResponse.success(tenant, `Tenant ${tenant.name} created successfully`)
+        ApiResponse.success(tenant, `Inquilino ${tenant.name} criado com sucesso`)
       );
     } catch (error: any) {
       if (error.message === 'Internal code already registered') {
@@ -110,7 +110,7 @@ export class TenantController {
         return res.status(409).json(ApiResponse.error('O CNPJ informado já está cadastrado'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error creating tenant: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao criar inquilino: ${error.message}`));
     }
   }
 
@@ -118,20 +118,20 @@ export class TenantController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const validation = TenantValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
-          ApiResponse.error('Validation error', validation.errors)
+          ApiResponse.error('Erro de validação', validation.errors)
         );
       }
 
       const tenant = await TenantService.updateTenant(id, req.body);
 
       res.status(200).json(
-        ApiResponse.success(tenant, `Tenant ${tenant.name} updated successfully`)
+        ApiResponse.success(tenant, `Inquilino ${tenant.name} atualizado com sucesso`)
       );
     } catch (error: any) {
       if (error.message === 'Internal code already registered for another tenant') {
@@ -139,7 +139,7 @@ export class TenantController {
       }
 
       if (error.message === 'Tenant not found') {
-        return res.status(404).json(ApiResponse.error('Tenant not found'));
+        return res.status(404).json(ApiResponse.error('Inquilino não encontrado'));
       }
 
       if (error.message === 'CPF already registered for another tenant') {
@@ -150,7 +150,7 @@ export class TenantController {
         return res.status(409).json(ApiResponse.error('O CNPJ informado já está cadastrado para outro inquilino'));
       }
 
-      res.status(400).json(ApiResponse.error(`Error updating tenant: ${error.message}`));
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar inquilino: ${error.message}`));
     }
   }
 
@@ -158,20 +158,20 @@ export class TenantController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const tenant = await TenantService.deleteTenant(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Tenant ${tenant.name} marked as deleted successfully`)
+        ApiResponse.success(null, `Inquilino ${tenant.name} marcado como excluído com sucesso`)
       );
     } catch (error: any) {
       if (error.message === 'Tenant not found or already deleted') {
-        return res.status(404).json(ApiResponse.error('Tenant not found or already deleted'));
+        return res.status(404).json(ApiResponse.error('Inquilino não encontrado ou já excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error deleting tenant'));
+      res.status(500).json(ApiResponse.error('Erro ao excluir inquilino'));
     }
   }
 
@@ -179,24 +179,24 @@ export class TenantController {
     try {
       const id = String(req.params?.id || '');
       if (!id) {
-        return res.status(400).json(ApiResponse.error('ID is required'));
+        return res.status(400).json(ApiResponse.error('ID é obrigatório'));
       }
 
       const tenant = await TenantService.restoreTenant(id);
 
       res.status(200).json(
-        ApiResponse.success(null, `Tenant ${tenant.name} restored successfully`)
+        ApiResponse.success(null, `Inquilino ${tenant.name} restaurado com sucesso`)
       );
     } catch (error: any) {
       if (error.message === 'Tenant not found') {
-        return res.status(404).json(ApiResponse.error('Tenant not found'));
+        return res.status(404).json(ApiResponse.error('Inquilino não encontrado'));
       }
 
       if (error.message === 'Tenant is not deleted') {
-        return res.status(400).json(ApiResponse.error('Tenant is not deleted'));
+        return res.status(400).json(ApiResponse.error('O inquilino não está excluído'));
       }
 
-      res.status(500).json(ApiResponse.error('Error restoring tenant'));
+      res.status(500).json(ApiResponse.error('Erro ao restaurar inquilino'));
     }
   }
 
@@ -222,10 +222,10 @@ export class TenantController {
       const filtersData = await TenantService.getTenantFilters(filters);
       
       res.status(200).json(
-        ApiResponse.success(filtersData, 'Filters retrieved successfully')
+        ApiResponse.success(filtersData, 'Filtros recuperados com sucesso')
       );
     } catch (error) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
@@ -238,10 +238,10 @@ export class TenantController {
       res.setHeader('Cache-Control', 'public, max-age=30'); 
       
       res.status(200).json(
-        ApiResponse.success(suggestions, 'Contact suggestions retrieved successfully')
+        ApiResponse.success(suggestions, 'Sugestões de contatos recuperadas com sucesso')
       );
     } catch (error: any) {
-      res.status(500).json(ApiResponse.error('Internal server error'));
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 }

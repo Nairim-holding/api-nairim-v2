@@ -10,6 +10,7 @@
  */
 export type * from './models/Agency'
 export type * from './models/Property'
+export type * from './models/PropertyIptu'
 export type * from './models/User'
 export type * from './models/Document'
 export type * from './models/Owner'

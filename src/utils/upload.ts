@@ -8,7 +8,6 @@ const storage = multer.memoryStorage();
 // Middleware principal do Multer
 const multerUpload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
 // Middleware personalizado para processar multipart completo

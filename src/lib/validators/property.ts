@@ -37,6 +37,15 @@ export class PropertyValidator {
       }
     }
 
+    // VALIDAÇÃO DE IPTUS (NOVO)
+    if (data.iptus && Array.isArray(data.iptus)) {
+      data.iptus.forEach((iptu: any, index: number) => {
+        if (!iptu.year || isNaN(parseInt(iptu.year))) {
+          errors.push(`IPTU (Posição ${index + 1}): O ano é obrigatório`);
+        }
+      });
+    }
+
     return { isValid: errors.length === 0, errors };
   }
 
@@ -55,6 +64,14 @@ export class PropertyValidator {
     }
     if (data.values?.purchase_date && isNaN(new Date(data.values.purchase_date).getTime())) {
       errors.push('Data de compra inválida');
+    }
+
+    if (data.iptus && Array.isArray(data.iptus)) {
+      data.iptus.forEach((iptu: any, index: number) => {
+        if (!iptu.year || isNaN(parseInt(iptu.year))) {
+          errors.push(`IPTU (Posição ${index + 1}): O ano é obrigatório`);
+        }
+      });
     }
 
     return { isValid: errors.length === 0, errors };
