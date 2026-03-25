@@ -12,6 +12,7 @@ services:
     volumes:
       - ./.env:/app/.env
       - ./uploads:/app/uploads
+    command: sh -c "npx prisma db push && npm run start"
 
   api-nairim-test:
     container_name: nairim-api-test
@@ -20,7 +21,8 @@ services:
     ports:
       - "5001:5000" 
     volumes:
-      - ./uploads-test:/app/uploads 
+      - ./uploads-test:/app/uploads
+
   postgres:
     image: postgres:16-alpine
     container_name: nairim-postgres
