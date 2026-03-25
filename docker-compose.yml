@@ -12,7 +12,8 @@ services:
     volumes:
       - ./.env:/app/.env
       - ./uploads:/app/uploads
-    command: sh -c "npx prisma db push && npm run start"
+    # Solução: 10 segundos de espera para o banco ligar antes do Prisma rodar
+    command: sh -c "sleep 10 && npx prisma db push && npm run start"
 
   api-nairim-test:
     container_name: nairim-api-test
