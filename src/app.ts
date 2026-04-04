@@ -6,6 +6,7 @@ import { rateLimit } from 'express-rate-limit';
 import pinoHttp from 'pino-http';
 import routes from './routes';
 import { errorHandler } from './middlewares/error';
+import { env } from './env';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -38,10 +39,11 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
+  windowMs: env.RATE_LIMIT_WINDOW_MS,
+  limit: env.RATE_LIMIT_MAX_REQUESTS,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  skipSuccessfulRequests: true,
   message: { message: 'Too many requests, please try again later.' },
 });
 app.use(limiter);

@@ -19,4 +19,8 @@ export const env = {
   BASE_URL: process.env.BASE_URL ?? "http://localhost:5000",
   USE_VERCEL_BLOB: process.env.USE_VERCEL_BLOB === "true",
   BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
+
+  // Rate limiting configuration
+  RATE_LIMIT_WINDOW_MS: Number(process.env.RATE_LIMIT_WINDOW_MS ?? 5 * 60 * 1000), // 5 minutes
+  RATE_LIMIT_MAX_REQUESTS: Number(process.env.RATE_LIMIT_MAX_REQUESTS ?? 10000), // 10,000 requests per window
 } as const;
