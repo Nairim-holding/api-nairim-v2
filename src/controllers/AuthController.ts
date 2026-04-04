@@ -20,12 +20,22 @@ export class AuthController {
       // Autenticar usuário
       const result = await AuthService.login(email, password);
 
+      // Reset failed attempts on successful login
+      if ((req as any).resetFailedLogin) {
+        (req as any).resetFailedLogin();
+      }
+
       return res.status(200).json(
         ApiResponse.success(result, 'Login realizado com sucesso!')
       );
 
     } catch (error: any) {
       console.error('❌ Error in AuthController.login:', error);
+      
+      // Track failed attempt
+      if ((req as any).trackFailedLogin) {
+        (req as any).trackFailedLogin();
+      }
       
       if (error.message === 'Credenciais inválidas') {
         return res.status(401).json(

@@ -3,6 +3,7 @@ import express from "express";
 import { AuthValidator } from "../lib/validators/auth";
 import { ApiResponse } from "../utils/api-response";
 import { AuthController } from "@/controllers/AuthController";
+import { authRateLimitMiddleware } from "../middlewares/authRateLimit";
 
 const router = express.Router();
 
@@ -51,7 +52,7 @@ const authenticateToken = (req: express.Request, res: express.Response, next: ex
 };
 
 // Rotas públicas
-router.post("/login", validateLogin, AuthController.login);
+router.post("/login", authRateLimitMiddleware, validateLogin, AuthController.login);
 router.post("/verify-token", validateToken, AuthController.verifyToken);
 router.post("/logout", AuthController.logout);
 router.post("/refresh-token", AuthController.refreshToken);
