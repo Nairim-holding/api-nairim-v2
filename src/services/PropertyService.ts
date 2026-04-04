@@ -706,6 +706,13 @@ export class PropertyService {
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
       if (files[fieldName] && files[fieldName].length > 0) {
         for (const file of files[fieldName]) {
+          
+          // ==============================================================
+          // CORREÇÃO DE ENCODING: Converte de latin1 para utf8
+          // Garante que caracteres como 'ç', 'ã', 'é' fiquem corretos.
+          // ==============================================================
+          file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+
           let blobResult;
 
           try {
