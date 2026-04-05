@@ -9,7 +9,7 @@ import propertyRoutes from './property';
 import dashboardRoutes from "./dashboard";
 import favoriteRoutes from "./favorite";
 import authRoutes from "./auth";
-import FinancialInstitution from "./financialIntitucion";
+import FinancialInstitution from "./financial-intitucion";
 import FinancialCategory from "./category";
 import FinancialSubCategory from "./subcategory";
 import FinancialCard from "./card";

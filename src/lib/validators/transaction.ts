@@ -4,8 +4,7 @@ export class TransactionValidator {
 
     if (!data.event_date) errors.push('A Data do Evento é obrigatória');
     if (!data.effective_date) errors.push('A Data de Efetivação é obrigatória');
-    if (!data.description?.trim()) errors.push('A Descrição é obrigatória');
-    
+
     if (data.amount === undefined || data.amount === null || isNaN(Number(data.amount))) {
       errors.push('O Valor deve ser numérico e é obrigatório');
     }
@@ -22,10 +21,6 @@ export class TransactionValidator {
 
   static validateUpdate(data: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-
-    if (data.description !== undefined && !data.description?.trim()) {
-      errors.push('A Descrição não pode ser vazia');
-    }
     
     if (data.amount !== undefined && isNaN(Number(data.amount))) {
       errors.push('O Valor deve ser numérico');

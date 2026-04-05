@@ -223,15 +223,6 @@ export class TransactionService {
             type: 'select', 
             label: 'Status', 
             values: statusOptions 
-          },
-          { 
-            field: 'type', 
-            type: 'select', 
-            label: 'Tipo Geral', 
-            values: [
-              { value: 'INCOME', label: 'Receita' },
-              { value: 'EXPENSE', label: 'Despesa' }
-            ] 
           }
         ],
         operators: {
