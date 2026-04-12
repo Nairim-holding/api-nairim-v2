@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { FinancialInstitutionValidator } from '@/lib/validators/financialIntitucion';
-import { FinancialInstitutionService } from '@/services/financialIntitucion';
+import { FinancialInstitutionService } from '@/services/FinancialIntitucion';
 
 export class FinancialInstitutionController {
   static async getInstitutions(req: Request, res: Response) {

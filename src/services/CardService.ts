@@ -159,7 +159,7 @@ export class CardService {
       const newCard = await prisma.card.create({
         data: { 
           name: data.name,
-          limit: data.limit !== null && data.limit !== undefined ? Number(data.limit) : null,
+          limit: data.limit !== null && data.limit !== undefined ? Number(data.limit) : undefined,
           closing_day: data.closing_day !== null && data.closing_day !== undefined ? Number(data.closing_day) : null,
           due_day: data.due_day !== null && data.due_day !== undefined ? Number(data.due_day) : null,
           is_active: data.is_active ?? true
@@ -178,7 +178,7 @@ export class CardService {
         where: { id },
         data: { 
           name: data.name,
-          limit: data.limit !== undefined ? (data.limit !== null ? Number(data.limit) : null) : undefined,
+          limit: data.limit !== undefined ? (data.limit !== null ? Number(data.limit) : undefined) : undefined,
           closing_day: data.closing_day !== undefined ? (data.closing_day !== null ? Number(data.closing_day) : null) : undefined,
           due_day: data.due_day !== undefined ? (data.due_day !== null ? Number(data.due_day) : null) : undefined,
           is_active: data.is_active
