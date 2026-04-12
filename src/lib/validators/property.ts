@@ -25,8 +25,6 @@ export class PropertyValidator {
     }
 
     if (data.values) {
-      if (data.values.rental_value === undefined || isNaN(data.values.rental_value))
-        errors.push('Valor de aluguel é obrigatório');
       if (!data.values.status) errors.push('Status da propriedade é obrigatório');
       
       if (data.values.sale_date && isNaN(new Date(data.values.sale_date).getTime())) {

@@ -33,6 +33,7 @@ export class PropertyService {
     'owner_name': { type: 'relation', realField: 'name', relationPath: 'owner.name' },
     'type_description': { type: 'relation', realField: 'description', relationPath: 'type.description' },
     'agency_trade_name': { type: 'relation', realField: 'trade_name', relationPath: 'agency.trade_name' },
+    'status': { type: 'relation', realField: 'status', relationPath: 'values.0.status' },
     
     'city': { type: 'address', realField: 'city', relationPath: 'addresses.0.address.city' },
     'state': { type: 'address', realField: 'state', relationPath: 'addresses.0.address.state' },
@@ -47,7 +48,7 @@ export class PropertyService {
     return text
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')  
-      .replace(/[çÇ]/g, 'c')       
+      .replace(/[çÇ]/g, 'c')      
       .replace(/[ñÑ]/g, 'n')          
       .toLowerCase()
       .trim();
@@ -443,6 +444,14 @@ export class PropertyService {
           mode: 'insensitive' as Prisma.QueryMode 
         };
       }
+      else if (key === 'status') {
+        conditions.values = {
+          some: {
+            status: value as PropertyStatus,
+            deleted_at: null
+          }
+        };
+      }
       else if (key === 'created_at') {
         conditions.created_at = this.buildDateCondition(value);
       }
@@ -610,14 +619,15 @@ export class PropertyService {
             title: data.title,
             bedrooms: parseInt(data.bedrooms),
             bathrooms: parseInt(data.bathrooms),
-            half_bathrooms: parseInt(data.half_bathrooms || 0),
-            garage_spaces: parseInt(data.garage_spaces || 0),
+            half_bathrooms: parseInt(data.half_bathrooms ?? 0),
+            garage_spaces: parseInt(data.garage_spaces ?? 0),
             area_total: parseFloat(data.area_total),
-            area_built: parseFloat(data.area_built || 0),
-            frontage: parseFloat(data.frontage || 0),
+            area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+            frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
             furnished: Boolean(data.furnished),
             floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
+            registration_number: data.registration_number || null,
             notes: data.notes,
             owner_id: data.owner_id,
             type_id: data.type_id,
@@ -657,7 +667,8 @@ export class PropertyService {
               property_id: newProperty.id,
               purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
               purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
-              rental_value: parseFloat(data.values.rental_value),
+              market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+              rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
               condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
               status: data.values.status as PropertyStatus || 'AVAILABLE',
@@ -791,11 +802,12 @@ export class PropertyService {
             half_bathrooms: parseInt(data.half_bathrooms || 0),
             garage_spaces: parseInt(data.garage_spaces || 0),
             area_total: parseFloat(data.area_total),
-            area_built: parseFloat(data.area_built || 0),
-            frontage: parseFloat(data.frontage || 0),
+            area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+            frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
             furnished: Boolean(data.furnished),
             floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
+            registration_number: data.registration_number || null,
             notes: data.notes,
             owner_id: data.owner_id,
             type_id: data.type_id,
@@ -1009,6 +1021,17 @@ export class PropertyService {
           searchable: true
         },
         {
+          field: 'status',
+          type: 'select',
+          label: 'Disponibilidade',
+          description: 'Status de ocupação do imóvel',
+          options: [
+            { value: 'AVAILABLE', label: 'Disponível' },
+            { value: 'OCCUPIED', label: 'Ocupado' }
+          ],
+          searchable: false
+        },
+        {
           field: 'furnished',
           type: 'boolean',
           label: 'Mobiliado',
@@ -1128,7 +1151,8 @@ export class PropertyService {
           'address.state',
           'address.district',
           'address.street',
-          'address.zip_code'
+          'address.zip_code',
+          'status'
         ]
       };
 
@@ -1167,14 +1191,15 @@ export class PropertyService {
             title: data.title,
             bedrooms: parseInt(data.bedrooms),
             bathrooms: parseInt(data.bathrooms),
-            half_bathrooms: parseInt(data.half_bathrooms || 0),
-            garage_spaces: parseInt(data.garage_spaces || 0),
+            half_bathrooms: parseInt(data.half_bathrooms ?? 0),
+            garage_spaces: parseInt(data.garage_spaces ?? 0),
             area_total: parseFloat(data.area_total),
-            area_built: parseFloat(data.area_built || 0),
-            frontage: parseFloat(data.frontage || 0),
+            area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+            frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
             furnished: Boolean(data.furnished),
             floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
+            registration_number: data.registration_number || null,
             notes: data.notes,
             owner_id: data.owner_id,
             type_id: data.type_id,
@@ -1218,7 +1243,8 @@ export class PropertyService {
               property_id: property.id,
               purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
               purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
-              rental_value: parseFloat(data.values.rental_value),
+              market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+              rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
               condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
               property_tax: parseFloat(data.values.property_tax || 0),
               status: data.values.status as PropertyStatus || 'AVAILABLE',
@@ -1378,14 +1404,15 @@ export class PropertyService {
             title: data.title,
             bedrooms: parseInt(data.bedrooms),
             bathrooms: parseInt(data.bathrooms),
-            half_bathrooms: parseInt(data.half_bathrooms || 0),
-            garage_spaces: parseInt(data.garage_spaces || 0),
+            half_bathrooms: parseInt(data.half_bathrooms ?? 0),
+            garage_spaces: parseInt(data.garage_spaces ?? 0),
             area_total: parseFloat(data.area_total),
-            area_built: parseFloat(data.area_built || 0),
-            frontage: parseFloat(data.frontage || 0),
+            area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+            frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
             furnished: Boolean(data.furnished),
             floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
             tax_registration: data.tax_registration,
+            registration_number: data.registration_number || null,
             notes: data.notes,
             owner_id: data.owner_id,
             type_id: data.type_id,
@@ -1457,7 +1484,8 @@ export class PropertyService {
               data: {
                 purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
                 purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
-                rental_value: parseFloat(data.values.rental_value),
+                market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+                rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
                 condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
                 property_tax: parseFloat(data.values.property_tax || 0),
                 status: data.values.status as PropertyStatus || 'AVAILABLE',
@@ -1473,7 +1501,8 @@ export class PropertyService {
                 property_id: property.id,
                 purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
                 purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
-                rental_value: parseFloat(data.values.rental_value),
+                market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+                rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
                 condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
                 property_tax: parseFloat(data.values.property_tax || 0),
                 status: data.values.status as PropertyStatus || 'AVAILABLE',

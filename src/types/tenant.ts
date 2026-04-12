@@ -2,12 +2,14 @@ export interface Tenant {
   id: string;
   name: string;
   internal_code: string;
+  nationality?: string | null;
   occupation: string;
   marital_status: string;
   cpf?: string | null;
+  rg?: string | null;
   cnpj?: string | null;
-  state_registration?: string | null;     
-  municipal_registration?: string | null; 
+  state_registration?: string | null;
+  municipal_registration?: string | null;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -52,11 +54,13 @@ export interface TenantWithRelations extends Tenant {
 export interface CreateTenantInput {
   name: string;
   internal_code: string;
+  nationality?: string | null;
   occupation: string;
   marital_status: string;
   cpf?: string;
+  rg?: string;
   cnpj?: string;
-  state_registration?: string | null;     
+  state_registration?: string | null;
   municipal_registration?: string | null;
   contacts?: {
     contact: string;

@@ -16,6 +16,8 @@ export class TenantValidator {
       if (!data.occupation?.trim()) errors.push('Profissão é obrigatória');
       if (!data.marital_status?.trim()) errors.push('Estado civil é obrigatório');
       if (data.cpf && !this.validateCPF(data.cpf)) errors.push('CPF inválido');
+      if (data.rg && data.rg.length > 20) errors.push('RG deve ter no máximo 20 caracteres');
+      if (data.nationality && data.nationality.length > 100) errors.push('Nacionalidade deve ter no máximo 100 caracteres');
     }
 
     if (isPessoaJuridica) {
@@ -67,6 +69,14 @@ export class TenantValidator {
       if (!data.marital_status || data.marital_status.trim() === '') {
         errors.push('Estado civil é obrigatório para Pessoa Física');
       }
+
+      if (data.rg && data.rg.length > 20) {
+        errors.push('RG deve ter no máximo 20 caracteres');
+      }
+
+      if (data.nationality && data.nationality.length > 100) {
+        errors.push('Nacionalidade deve ter no máximo 100 caracteres');
+      }
     } else if (isPessoaJuridica) {
       if (!data.cnpj || data.cnpj.trim() === '') {
         errors.push('CNPJ é obrigatório para Pessoa Jurídica');
@@ -80,6 +90,14 @@ export class TenantValidator {
       if (data.cnpj && !this.validateCNPJ(data.cnpj)) {
         errors.push('CNPJ inválido');
       }
+    }
+
+    if (data.rg !== undefined && data.rg !== null && data.rg.length > 20) {
+      errors.push('RG deve ter no máximo 20 caracteres');
+    }
+
+    if (data.nationality !== undefined && data.nationality !== null && data.nationality.length > 100) {
+      errors.push('Nacionalidade deve ter no máximo 100 caracteres');
     }
 
     if (data.contacts && Array.isArray(data.contacts)) {

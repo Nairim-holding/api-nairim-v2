@@ -26,22 +26,23 @@ model Agency {
 }
 
 model Property {
-  id               String            @id @default(uuid())
-  owner_id         String
-  agency_id        String?
-  type_id          String
-  title            String
-  bedrooms         Int
-  bathrooms        Int
-  half_bathrooms   Int
-  garage_spaces    Int
-  area_total       Float
-  area_built       Float
-  frontage         Float
-  furnished        Boolean
-  floor_number     Int?
-  tax_registration String            @db.VarChar(20)
-  notes            String?
+  id                 String            @id @default(uuid())
+  owner_id           String
+  agency_id          String?
+  type_id            String
+  title              String
+  registration_number String?         @db.VarChar(50)
+  bedrooms           Int
+  bathrooms          Int
+  half_bathrooms     Int
+  garage_spaces      Int
+  area_total         Float
+  area_built         Float
+  frontage           Float
+  furnished          Boolean
+  floor_number       Int?
+  tax_registration   String            @db.VarChar(20)
+  notes              String?
   created_at       DateTime          @default(now())
   updated_at       DateTime          @updatedAt
   deleted_at       DateTime?
@@ -74,8 +75,8 @@ model PropertyIptu {
   deleted_at                      DateTime?
   property                        Property          @relation(fields: [property_id], references: [id])
 
-  @@unique([property_id, year])
   @@index([property_id])
+  @@index([year])
 }
 
 model User {
@@ -139,9 +140,11 @@ model Tenant {
   id                     String          @id @default(uuid())
   name                   String
   internal_code          String          @unique
+  nationality            String?         @db.VarChar(100)
   occupation             String?
   marital_status         String?
   cpf                    String?         @db.VarChar(14)
+  rg                     String?         @db.VarChar(20)
   cnpj                   String?         @db.VarChar(20)
   created_at             DateTime        @default(now())
   updated_at             DateTime        @updatedAt
@@ -200,7 +203,8 @@ model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
   purchase_value Decimal?       @db.Decimal(20, 2)
-  rental_value   Decimal        @db.Decimal(20, 2)
+  market_value   Decimal?       @db.Decimal(20, 2)
+  rental_value   Decimal?       @db.Decimal(20, 2)
   condo_fee      Decimal        @db.Decimal(20, 2)
   property_tax   Decimal        @db.Decimal(20, 2)
   status         PropertyStatus

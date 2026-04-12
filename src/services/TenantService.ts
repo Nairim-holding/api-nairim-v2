@@ -332,11 +332,13 @@ export class TenantService {
           data: {
             name: data.name,
             internal_code: data.internal_code,
+            nationality: data.nationality || null,
             occupation: data.occupation || null,
             marital_status: data.marital_status || null,
             cpf: data.cpf || null,
+            rg: data.rg || null,
             cnpj: data.cnpj || null,
-            state_registration: data.state_registration || null,       
+            state_registration: data.state_registration || null,
             municipal_registration: data.municipal_registration || null
           }
         });
@@ -409,9 +411,11 @@ export class TenantService {
           data: {
             name: data.name !== undefined ? data.name : existing.name,
             internal_code: data.internal_code !== undefined ? data.internal_code : existing.internal_code,
+            nationality: data.nationality !== undefined ? data.nationality : existing.nationality,
             occupation: data.occupation !== undefined ? data.occupation : existing.occupation,
             marital_status: data.marital_status !== undefined ? data.marital_status : existing.marital_status,
             cpf: data.cpf !== undefined ? data.cpf : existing.cpf,
+            rg: data.rg !== undefined ? data.rg : existing.rg,
             cnpj: data.cnpj !== undefined ? data.cnpj : existing.cnpj,
             state_registration: data.state_registration !== undefined ? data.state_registration : existing.state_registration,
             municipal_registration: data.municipal_registration !== undefined ? data.municipal_registration : existing.municipal_registration

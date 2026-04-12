@@ -6,6 +6,7 @@ export interface Property {
   agency_id?: string | null;
   type_id: string;
   title: string;
+  registration_number?: string | null;
   bedrooms: number;
   bathrooms: number;
   half_bathrooms: number;
@@ -57,7 +58,8 @@ export interface PropertyValue {
   reference_date: Date;
   purchase_date?: Date | null;
   purchase_value?: number | null;
-  rental_value: number;
+  market_value?: number | null;
+  rental_value?: number | null;
   condo_fee: number;
   property_tax: number;
   status: PropertyStatus;
@@ -82,6 +84,7 @@ export interface Document {
 
 export interface CreatePropertyInput {
   title: string;
+  registration_number?: string;
   bedrooms: number;
   bathrooms: number;
   half_bathrooms: number;
@@ -110,7 +113,8 @@ export interface CreatePropertyInput {
   values?: {
     purchase_date?: Date | string;
     purchase_value?: number;
-    rental_value: number;
+    market_value?: number;
+    rental_value?: number;
     condo_fee: number;
     property_tax: number;
     status: PropertyStatus;
@@ -166,6 +170,7 @@ export interface FilterOption {
 
 export interface UnifiedPropertyInput {
   title: string;
+  registration_number?: string;
   bedrooms: number;
   bathrooms: number;
   half_bathrooms?: number;
@@ -194,7 +199,8 @@ export interface UnifiedPropertyInput {
   values: {
     purchase_date?: Date | string;
     purchase_value?: number;
-    rental_value: number;
+    market_value?: number;
+    rental_value?: number;
     condo_fee?: number;
     property_tax?: number;
     status: PropertyStatus;

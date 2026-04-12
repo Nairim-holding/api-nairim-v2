@@ -28,6 +28,7 @@ export type AggregatePropertyValue = {
 
 export type PropertyValueAvgAggregateOutputType = {
   purchase_value: runtime.Decimal | null
+  market_value: runtime.Decimal | null
   rental_value: runtime.Decimal | null
   condo_fee: runtime.Decimal | null
   property_tax: runtime.Decimal | null
@@ -37,6 +38,7 @@ export type PropertyValueAvgAggregateOutputType = {
 
 export type PropertyValueSumAggregateOutputType = {
   purchase_value: runtime.Decimal | null
+  market_value: runtime.Decimal | null
   rental_value: runtime.Decimal | null
   condo_fee: runtime.Decimal | null
   property_tax: runtime.Decimal | null
@@ -48,6 +50,7 @@ export type PropertyValueMinAggregateOutputType = {
   id: string | null
   property_id: string | null
   purchase_value: runtime.Decimal | null
+  market_value: runtime.Decimal | null
   rental_value: runtime.Decimal | null
   condo_fee: runtime.Decimal | null
   property_tax: runtime.Decimal | null
@@ -66,6 +69,7 @@ export type PropertyValueMaxAggregateOutputType = {
   id: string | null
   property_id: string | null
   purchase_value: runtime.Decimal | null
+  market_value: runtime.Decimal | null
   rental_value: runtime.Decimal | null
   condo_fee: runtime.Decimal | null
   property_tax: runtime.Decimal | null
@@ -84,6 +88,7 @@ export type PropertyValueCountAggregateOutputType = {
   id: number
   property_id: number
   purchase_value: number
+  market_value: number
   rental_value: number
   condo_fee: number
   property_tax: number
@@ -102,6 +107,7 @@ export type PropertyValueCountAggregateOutputType = {
 
 export type PropertyValueAvgAggregateInputType = {
   purchase_value?: true
+  market_value?: true
   rental_value?: true
   condo_fee?: true
   property_tax?: true
@@ -111,6 +117,7 @@ export type PropertyValueAvgAggregateInputType = {
 
 export type PropertyValueSumAggregateInputType = {
   purchase_value?: true
+  market_value?: true
   rental_value?: true
   condo_fee?: true
   property_tax?: true
@@ -122,6 +129,7 @@ export type PropertyValueMinAggregateInputType = {
   id?: true
   property_id?: true
   purchase_value?: true
+  market_value?: true
   rental_value?: true
   condo_fee?: true
   property_tax?: true
@@ -140,6 +148,7 @@ export type PropertyValueMaxAggregateInputType = {
   id?: true
   property_id?: true
   purchase_value?: true
+  market_value?: true
   rental_value?: true
   condo_fee?: true
   property_tax?: true
@@ -158,6 +167,7 @@ export type PropertyValueCountAggregateInputType = {
   id?: true
   property_id?: true
   purchase_value?: true
+  market_value?: true
   rental_value?: true
   condo_fee?: true
   property_tax?: true
@@ -263,7 +273,8 @@ export type PropertyValueGroupByOutputType = {
   id: string
   property_id: string
   purchase_value: runtime.Decimal | null
-  rental_value: runtime.Decimal
+  market_value: runtime.Decimal | null
+  rental_value: runtime.Decimal | null
   condo_fee: runtime.Decimal
   property_tax: runtime.Decimal
   status: $Enums.PropertyStatus
@@ -304,7 +315,8 @@ export type PropertyValueWhereInput = {
   id?: Prisma.StringFilter<"PropertyValue"> | string
   property_id?: Prisma.StringFilter<"PropertyValue"> | string
   purchase_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFilter<"PropertyValue"> | $Enums.PropertyStatus
@@ -323,7 +335,8 @@ export type PropertyValueOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   purchase_value?: Prisma.SortOrderInput | Prisma.SortOrder
-  rental_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrderInput | Prisma.SortOrder
+  rental_value?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -345,7 +358,8 @@ export type PropertyValueWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PropertyValueWhereInput | Prisma.PropertyValueWhereInput[]
   property_id?: Prisma.StringFilter<"PropertyValue"> | string
   purchase_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFilter<"PropertyValue"> | $Enums.PropertyStatus
@@ -364,7 +378,8 @@ export type PropertyValueOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   purchase_value?: Prisma.SortOrderInput | Prisma.SortOrder
-  rental_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrderInput | Prisma.SortOrder
+  rental_value?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -390,7 +405,8 @@ export type PropertyValueScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"PropertyValue"> | string
   property_id?: Prisma.StringWithAggregatesFilter<"PropertyValue"> | string
   purchase_value?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalWithAggregatesFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusWithAggregatesFilter<"PropertyValue"> | $Enums.PropertyStatus
@@ -407,7 +423,8 @@ export type PropertyValueScalarWhereWithAggregatesInput = {
 export type PropertyValueCreateInput = {
   id?: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -426,7 +443,8 @@ export type PropertyValueUncheckedCreateInput = {
   id?: string
   property_id: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -443,7 +461,8 @@ export type PropertyValueUncheckedCreateInput = {
 export type PropertyValueUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -462,7 +481,8 @@ export type PropertyValueUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -480,7 +500,8 @@ export type PropertyValueCreateManyInput = {
   id?: string
   property_id: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -497,7 +518,8 @@ export type PropertyValueCreateManyInput = {
 export type PropertyValueUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -515,7 +537,8 @@ export type PropertyValueUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -543,6 +566,7 @@ export type PropertyValueCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   purchase_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrder
   rental_value?: Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
@@ -559,6 +583,7 @@ export type PropertyValueCountOrderByAggregateInput = {
 
 export type PropertyValueAvgOrderByAggregateInput = {
   purchase_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrder
   rental_value?: Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
@@ -570,6 +595,7 @@ export type PropertyValueMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   purchase_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrder
   rental_value?: Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
@@ -588,6 +614,7 @@ export type PropertyValueMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   purchase_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrder
   rental_value?: Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
@@ -604,6 +631,7 @@ export type PropertyValueMinOrderByAggregateInput = {
 
 export type PropertyValueSumOrderByAggregateInput = {
   purchase_value?: Prisma.SortOrder
+  market_value?: Prisma.SortOrder
   rental_value?: Prisma.SortOrder
   condo_fee?: Prisma.SortOrder
   property_tax?: Prisma.SortOrder
@@ -660,7 +688,8 @@ export type EnumPropertyStatusFieldUpdateOperationsInput = {
 export type PropertyValueCreateWithoutPropertyInput = {
   id?: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -677,7 +706,8 @@ export type PropertyValueCreateWithoutPropertyInput = {
 export type PropertyValueUncheckedCreateWithoutPropertyInput = {
   id?: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -724,7 +754,8 @@ export type PropertyValueScalarWhereInput = {
   id?: Prisma.StringFilter<"PropertyValue"> | string
   property_id?: Prisma.StringFilter<"PropertyValue"> | string
   purchase_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.DecimalNullableFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFilter<"PropertyValue"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFilter<"PropertyValue"> | $Enums.PropertyStatus
@@ -741,7 +772,8 @@ export type PropertyValueScalarWhereInput = {
 export type PropertyValueCreateManyPropertyInput = {
   id?: string
   purchase_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value: runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.PropertyStatus
@@ -758,7 +790,8 @@ export type PropertyValueCreateManyPropertyInput = {
 export type PropertyValueUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -775,7 +808,8 @@ export type PropertyValueUpdateWithoutPropertyInput = {
 export type PropertyValueUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -792,7 +826,8 @@ export type PropertyValueUncheckedUpdateWithoutPropertyInput = {
 export type PropertyValueUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   purchase_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  rental_value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  market_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  rental_value?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   condo_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   property_tax?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
@@ -812,6 +847,7 @@ export type PropertyValueSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   property_id?: boolean
   purchase_value?: boolean
+  market_value?: boolean
   rental_value?: boolean
   condo_fee?: boolean
   property_tax?: boolean
@@ -831,6 +867,7 @@ export type PropertyValueSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   property_id?: boolean
   purchase_value?: boolean
+  market_value?: boolean
   rental_value?: boolean
   condo_fee?: boolean
   property_tax?: boolean
@@ -850,6 +887,7 @@ export type PropertyValueSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   property_id?: boolean
   purchase_value?: boolean
+  market_value?: boolean
   rental_value?: boolean
   condo_fee?: boolean
   property_tax?: boolean
@@ -869,6 +907,7 @@ export type PropertyValueSelectScalar = {
   id?: boolean
   property_id?: boolean
   purchase_value?: boolean
+  market_value?: boolean
   rental_value?: boolean
   condo_fee?: boolean
   property_tax?: boolean
@@ -883,7 +922,7 @@ export type PropertyValueSelectScalar = {
   purchase_date?: boolean
 }
 
-export type PropertyValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "purchase_value" | "rental_value" | "condo_fee" | "property_tax" | "status" | "notes" | "created_at" | "updated_at" | "deleted_at" | "extra_charges" | "sale_value" | "sale_date" | "purchase_date", ExtArgs["result"]["propertyValue"]>
+export type PropertyValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "purchase_value" | "market_value" | "rental_value" | "condo_fee" | "property_tax" | "status" | "notes" | "created_at" | "updated_at" | "deleted_at" | "extra_charges" | "sale_value" | "sale_date" | "purchase_date", ExtArgs["result"]["propertyValue"]>
 export type PropertyValueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
@@ -903,7 +942,8 @@ export type $PropertyValuePayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     property_id: string
     purchase_value: runtime.Decimal | null
-    rental_value: runtime.Decimal
+    market_value: runtime.Decimal | null
+    rental_value: runtime.Decimal | null
     condo_fee: runtime.Decimal
     property_tax: runtime.Decimal
     status: $Enums.PropertyStatus
@@ -1342,6 +1382,7 @@ export interface PropertyValueFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyValue", 'String'>
   readonly property_id: Prisma.FieldRef<"PropertyValue", 'String'>
   readonly purchase_value: Prisma.FieldRef<"PropertyValue", 'Decimal'>
+  readonly market_value: Prisma.FieldRef<"PropertyValue", 'Decimal'>
   readonly rental_value: Prisma.FieldRef<"PropertyValue", 'Decimal'>
   readonly condo_fee: Prisma.FieldRef<"PropertyValue", 'Decimal'>
   readonly property_tax: Prisma.FieldRef<"PropertyValue", 'Decimal'>

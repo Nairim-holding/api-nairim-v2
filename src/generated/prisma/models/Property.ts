@@ -54,6 +54,7 @@ export type PropertyMinAggregateOutputType = {
   agency_id: string | null
   type_id: string | null
   title: string | null
+  registration_number: string | null
   bedrooms: number | null
   bathrooms: number | null
   half_bathrooms: number | null
@@ -76,6 +77,7 @@ export type PropertyMaxAggregateOutputType = {
   agency_id: string | null
   type_id: string | null
   title: string | null
+  registration_number: string | null
   bedrooms: number | null
   bathrooms: number | null
   half_bathrooms: number | null
@@ -98,6 +100,7 @@ export type PropertyCountAggregateOutputType = {
   agency_id: number
   type_id: number
   title: number
+  registration_number: number
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -144,6 +147,7 @@ export type PropertyMinAggregateInputType = {
   agency_id?: true
   type_id?: true
   title?: true
+  registration_number?: true
   bedrooms?: true
   bathrooms?: true
   half_bathrooms?: true
@@ -166,6 +170,7 @@ export type PropertyMaxAggregateInputType = {
   agency_id?: true
   type_id?: true
   title?: true
+  registration_number?: true
   bedrooms?: true
   bathrooms?: true
   half_bathrooms?: true
@@ -188,6 +193,7 @@ export type PropertyCountAggregateInputType = {
   agency_id?: true
   type_id?: true
   title?: true
+  registration_number?: true
   bedrooms?: true
   bathrooms?: true
   half_bathrooms?: true
@@ -297,6 +303,7 @@ export type PropertyGroupByOutputType = {
   agency_id: string | null
   type_id: string
   title: string
+  registration_number: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -342,6 +349,7 @@ export type PropertyWhereInput = {
   agency_id?: Prisma.StringNullableFilter<"Property"> | string | null
   type_id?: Prisma.StringFilter<"Property"> | string
   title?: Prisma.StringFilter<"Property"> | string
+  registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
   bathrooms?: Prisma.IntFilter<"Property"> | number
   half_bathrooms?: Prisma.IntFilter<"Property"> | number
@@ -373,6 +381,7 @@ export type PropertyOrderByWithRelationInput = {
   agency_id?: Prisma.SortOrderInput | Prisma.SortOrder
   type_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  registration_number?: Prisma.SortOrderInput | Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
   bathrooms?: Prisma.SortOrder
   half_bathrooms?: Prisma.SortOrder
@@ -407,6 +416,7 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   agency_id?: Prisma.StringNullableFilter<"Property"> | string | null
   type_id?: Prisma.StringFilter<"Property"> | string
   title?: Prisma.StringFilter<"Property"> | string
+  registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
   bathrooms?: Prisma.IntFilter<"Property"> | number
   half_bathrooms?: Prisma.IntFilter<"Property"> | number
@@ -438,6 +448,7 @@ export type PropertyOrderByWithAggregationInput = {
   agency_id?: Prisma.SortOrderInput | Prisma.SortOrder
   type_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  registration_number?: Prisma.SortOrderInput | Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
   bathrooms?: Prisma.SortOrder
   half_bathrooms?: Prisma.SortOrder
@@ -468,6 +479,7 @@ export type PropertyScalarWhereWithAggregatesInput = {
   agency_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   type_id?: Prisma.StringWithAggregatesFilter<"Property"> | string
   title?: Prisma.StringWithAggregatesFilter<"Property"> | string
+  registration_number?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   bedrooms?: Prisma.IntWithAggregatesFilter<"Property"> | number
   bathrooms?: Prisma.IntWithAggregatesFilter<"Property"> | number
   half_bathrooms?: Prisma.IntWithAggregatesFilter<"Property"> | number
@@ -487,6 +499,7 @@ export type PropertyScalarWhereWithAggregatesInput = {
 export type PropertyCreateInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -518,6 +531,7 @@ export type PropertyUncheckedCreateInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -543,6 +557,7 @@ export type PropertyUncheckedCreateInput = {
 export type PropertyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -574,6 +589,7 @@ export type PropertyUncheckedUpdateInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -602,6 +618,7 @@ export type PropertyCreateManyInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -621,6 +638,7 @@ export type PropertyCreateManyInput = {
 export type PropertyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -643,6 +661,7 @@ export type PropertyUncheckedUpdateManyInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -675,6 +694,7 @@ export type PropertyCountOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   type_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
   bathrooms?: Prisma.SortOrder
   half_bathrooms?: Prisma.SortOrder
@@ -708,6 +728,7 @@ export type PropertyMaxOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   type_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
   bathrooms?: Prisma.SortOrder
   half_bathrooms?: Prisma.SortOrder
@@ -730,6 +751,7 @@ export type PropertyMinOrderByAggregateInput = {
   agency_id?: Prisma.SortOrder
   type_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
   bathrooms?: Prisma.SortOrder
   half_bathrooms?: Prisma.SortOrder
@@ -1003,6 +1025,7 @@ export type PropertyUpdateOneRequiredWithoutAddressesNestedInput = {
 export type PropertyCreateWithoutAgencyInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1032,6 +1055,7 @@ export type PropertyUncheckedCreateWithoutAgencyInput = {
   owner_id: string
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1089,6 +1113,7 @@ export type PropertyScalarWhereInput = {
   agency_id?: Prisma.StringNullableFilter<"Property"> | string | null
   type_id?: Prisma.StringFilter<"Property"> | string
   title?: Prisma.StringFilter<"Property"> | string
+  registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
   bathrooms?: Prisma.IntFilter<"Property"> | number
   half_bathrooms?: Prisma.IntFilter<"Property"> | number
@@ -1108,6 +1133,7 @@ export type PropertyScalarWhereInput = {
 export type PropertyCreateWithoutIptusInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1138,6 +1164,7 @@ export type PropertyUncheckedCreateWithoutIptusInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1178,6 +1205,7 @@ export type PropertyUpdateToOneWithWhereWithoutIptusInput = {
 export type PropertyUpdateWithoutIptusInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1208,6 +1236,7 @@ export type PropertyUncheckedUpdateWithoutIptusInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1232,6 +1261,7 @@ export type PropertyUncheckedUpdateWithoutIptusInput = {
 export type PropertyCreateWithoutDocumentsInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1262,6 +1292,7 @@ export type PropertyUncheckedCreateWithoutDocumentsInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1302,6 +1333,7 @@ export type PropertyUpdateToOneWithWhereWithoutDocumentsInput = {
 export type PropertyUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1332,6 +1364,7 @@ export type PropertyUncheckedUpdateWithoutDocumentsInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1356,6 +1389,7 @@ export type PropertyUncheckedUpdateWithoutDocumentsInput = {
 export type PropertyCreateWithoutOwnerInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1385,6 +1419,7 @@ export type PropertyUncheckedCreateWithoutOwnerInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1436,6 +1471,7 @@ export type PropertyUpdateManyWithWhereWithoutOwnerInput = {
 export type PropertyCreateWithoutLeasesInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1466,6 +1502,7 @@ export type PropertyUncheckedCreateWithoutLeasesInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1506,6 +1543,7 @@ export type PropertyUpdateToOneWithWhereWithoutLeasesInput = {
 export type PropertyUpdateWithoutLeasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1536,6 +1574,7 @@ export type PropertyUncheckedUpdateWithoutLeasesInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1560,6 +1599,7 @@ export type PropertyUncheckedUpdateWithoutLeasesInput = {
 export type PropertyCreateWithoutValuesInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1590,6 +1630,7 @@ export type PropertyUncheckedCreateWithoutValuesInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1630,6 +1671,7 @@ export type PropertyUpdateToOneWithWhereWithoutValuesInput = {
 export type PropertyUpdateWithoutValuesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1660,6 +1702,7 @@ export type PropertyUncheckedUpdateWithoutValuesInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1684,6 +1727,7 @@ export type PropertyUncheckedUpdateWithoutValuesInput = {
 export type PropertyCreateWithoutTypeInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1713,6 +1757,7 @@ export type PropertyUncheckedCreateWithoutTypeInput = {
   owner_id: string
   agency_id?: string | null
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1764,6 +1809,7 @@ export type PropertyUpdateManyWithWhereWithoutTypeInput = {
 export type PropertyCreateWithoutFavoritesInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1794,6 +1840,7 @@ export type PropertyUncheckedCreateWithoutFavoritesInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1834,6 +1881,7 @@ export type PropertyUpdateToOneWithWhereWithoutFavoritesInput = {
 export type PropertyUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1864,6 +1912,7 @@ export type PropertyUncheckedUpdateWithoutFavoritesInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1888,6 +1937,7 @@ export type PropertyUncheckedUpdateWithoutFavoritesInput = {
 export type PropertyCreateWithoutAddressesInput = {
   id?: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1918,6 +1968,7 @@ export type PropertyUncheckedCreateWithoutAddressesInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -1958,6 +2009,7 @@ export type PropertyUpdateToOneWithWhereWithoutAddressesInput = {
 export type PropertyUpdateWithoutAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1988,6 +2040,7 @@ export type PropertyUncheckedUpdateWithoutAddressesInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2014,6 +2067,7 @@ export type PropertyCreateManyAgencyInput = {
   owner_id: string
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -2033,6 +2087,7 @@ export type PropertyCreateManyAgencyInput = {
 export type PropertyUpdateWithoutAgencyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2062,6 +2117,7 @@ export type PropertyUncheckedUpdateWithoutAgencyInput = {
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2089,6 +2145,7 @@ export type PropertyUncheckedUpdateManyWithoutAgencyInput = {
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2110,6 +2167,7 @@ export type PropertyCreateManyOwnerInput = {
   agency_id?: string | null
   type_id: string
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -2129,6 +2187,7 @@ export type PropertyCreateManyOwnerInput = {
 export type PropertyUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2158,6 +2217,7 @@ export type PropertyUncheckedUpdateWithoutOwnerInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2185,6 +2245,7 @@ export type PropertyUncheckedUpdateManyWithoutOwnerInput = {
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2206,6 +2267,7 @@ export type PropertyCreateManyTypeInput = {
   owner_id: string
   agency_id?: string | null
   title: string
+  registration_number?: string | null
   bedrooms: number
   bathrooms: number
   half_bathrooms: number
@@ -2225,6 +2287,7 @@ export type PropertyCreateManyTypeInput = {
 export type PropertyUpdateWithoutTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2254,6 +2317,7 @@ export type PropertyUncheckedUpdateWithoutTypeInput = {
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2281,6 +2345,7 @@ export type PropertyUncheckedUpdateManyWithoutTypeInput = {
   owner_id?: Prisma.StringFieldUpdateOperationsInput | string
   agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
   bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
   half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2379,6 +2444,7 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   agency_id?: boolean
   type_id?: boolean
   title?: boolean
+  registration_number?: boolean
   bedrooms?: boolean
   bathrooms?: boolean
   half_bathrooms?: boolean
@@ -2411,6 +2477,7 @@ export type PropertySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   agency_id?: boolean
   type_id?: boolean
   title?: boolean
+  registration_number?: boolean
   bedrooms?: boolean
   bathrooms?: boolean
   half_bathrooms?: boolean
@@ -2436,6 +2503,7 @@ export type PropertySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   agency_id?: boolean
   type_id?: boolean
   title?: boolean
+  registration_number?: boolean
   bedrooms?: boolean
   bathrooms?: boolean
   half_bathrooms?: boolean
@@ -2461,6 +2529,7 @@ export type PropertySelectScalar = {
   agency_id?: boolean
   type_id?: boolean
   title?: boolean
+  registration_number?: boolean
   bedrooms?: boolean
   bathrooms?: boolean
   half_bathrooms?: boolean
@@ -2477,7 +2546,7 @@ export type PropertySelectScalar = {
   deleted_at?: boolean
 }
 
-export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "owner_id" | "agency_id" | "type_id" | "title" | "bedrooms" | "bathrooms" | "half_bathrooms" | "garage_spaces" | "area_total" | "area_built" | "frontage" | "furnished" | "floor_number" | "tax_registration" | "notes" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["property"]>
+export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "owner_id" | "agency_id" | "type_id" | "title" | "registration_number" | "bedrooms" | "bathrooms" | "half_bathrooms" | "garage_spaces" | "area_total" | "area_built" | "frontage" | "furnished" | "floor_number" | "tax_registration" | "notes" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["property"]>
 export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Property$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.Property$favoritesArgs<ExtArgs>
@@ -2520,6 +2589,7 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     agency_id: string | null
     type_id: string
     title: string
+    registration_number: string | null
     bedrooms: number
     bathrooms: number
     half_bathrooms: number
@@ -2971,6 +3041,7 @@ export interface PropertyFieldRefs {
   readonly agency_id: Prisma.FieldRef<"Property", 'String'>
   readonly type_id: Prisma.FieldRef<"Property", 'String'>
   readonly title: Prisma.FieldRef<"Property", 'String'>
+  readonly registration_number: Prisma.FieldRef<"Property", 'String'>
   readonly bedrooms: Prisma.FieldRef<"Property", 'Int'>
   readonly bathrooms: Prisma.FieldRef<"Property", 'Int'>
   readonly half_bathrooms: Prisma.FieldRef<"Property", 'Int'>
