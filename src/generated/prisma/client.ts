@@ -164,3 +164,13 @@ export type SupplierAddress = Prisma.SupplierAddressModel
  * 
  */
 export type Transaction = Prisma.TransactionModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model RecurringConfig
+ * 
+ */
+export type RecurringConfig = Prisma.RecurringConfigModel

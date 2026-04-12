@@ -40,15 +40,15 @@ export type SupplierMinAggregateOutputType = {
   legal_name: string | null
   trade_name: string | null
   cnpj: string | null
-  cpf: string | null
-  internal_code: string | null
-  occupation: string | null
-  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  cpf: string | null
+  internal_code: string | null
+  marital_status: string | null
+  occupation: string | null
 }
 
 export type SupplierMaxAggregateOutputType = {
@@ -57,15 +57,15 @@ export type SupplierMaxAggregateOutputType = {
   legal_name: string | null
   trade_name: string | null
   cnpj: string | null
-  cpf: string | null
-  internal_code: string | null
-  occupation: string | null
-  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  cpf: string | null
+  internal_code: string | null
+  marital_status: string | null
+  occupation: string | null
 }
 
 export type SupplierCountAggregateOutputType = {
@@ -74,15 +74,15 @@ export type SupplierCountAggregateOutputType = {
   legal_name: number
   trade_name: number
   cnpj: number
-  cpf: number
-  internal_code: number
-  occupation: number
-  marital_status: number
   state_registration: number
   municipal_registration: number
   created_at: number
   updated_at: number
   deleted_at: number
+  cpf: number
+  internal_code: number
+  marital_status: number
+  occupation: number
   _all: number
 }
 
@@ -101,15 +101,15 @@ export type SupplierMinAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
-  cpf?: true
-  internal_code?: true
-  occupation?: true
-  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  cpf?: true
+  internal_code?: true
+  marital_status?: true
+  occupation?: true
 }
 
 export type SupplierMaxAggregateInputType = {
@@ -118,15 +118,15 @@ export type SupplierMaxAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
-  cpf?: true
-  internal_code?: true
-  occupation?: true
-  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  cpf?: true
+  internal_code?: true
+  marital_status?: true
+  occupation?: true
 }
 
 export type SupplierCountAggregateInputType = {
@@ -135,15 +135,15 @@ export type SupplierCountAggregateInputType = {
   legal_name?: true
   trade_name?: true
   cnpj?: true
-  cpf?: true
-  internal_code?: true
-  occupation?: true
-  marital_status?: true
   state_registration?: true
   municipal_registration?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  cpf?: true
+  internal_code?: true
+  marital_status?: true
+  occupation?: true
   _all?: true
 }
 
@@ -239,15 +239,15 @@ export type SupplierGroupByOutputType = {
   legal_name: string
   trade_name: string | null
   cnpj: string | null
-  cpf: string | null
-  internal_code: string | null
-  occupation: string | null
-  marital_status: string | null
   state_registration: string | null
   municipal_registration: string | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+  cpf: string | null
+  internal_code: string | null
+  marital_status: string | null
+  occupation: string | null
   _count: SupplierCountAggregateOutputType | null
   _avg: SupplierAvgAggregateOutputType | null
   _sum: SupplierSumAggregateOutputType | null
@@ -279,17 +279,19 @@ export type SupplierWhereInput = {
   legal_name?: Prisma.StringFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  internal_code?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Supplier"> | Date | string | null
+  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  internal_code?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
   contacts?: Prisma.ContactListRelationFilter
+  recurring_configs?: Prisma.RecurringConfigListRelationFilter
   addresses?: Prisma.SupplierAddressListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }
 
 export type SupplierOrderByWithRelationInput = {
@@ -298,17 +300,19 @@ export type SupplierOrderByWithRelationInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
-  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
-  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
-  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
-  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
+  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
   contacts?: Prisma.ContactOrderByRelationAggregateInput
+  recurring_configs?: Prisma.RecurringConfigOrderByRelationAggregateInput
   addresses?: Prisma.SupplierAddressOrderByRelationAggregateInput
+  transactions?: Prisma.TransactionOrderByRelationAggregateInput
 }
 
 export type SupplierWhereUniqueInput = Prisma.AtLeast<{
@@ -321,16 +325,18 @@ export type SupplierWhereUniqueInput = Prisma.AtLeast<{
   legal_name?: Prisma.StringFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
-  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Supplier"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Supplier"> | Date | string | null
+  cpf?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableFilter<"Supplier"> | string | null
   contacts?: Prisma.ContactListRelationFilter
+  recurring_configs?: Prisma.RecurringConfigListRelationFilter
   addresses?: Prisma.SupplierAddressListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }, "id" | "internal_code">
 
 export type SupplierOrderByWithAggregationInput = {
@@ -339,15 +345,15 @@ export type SupplierOrderByWithAggregationInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrderInput | Prisma.SortOrder
-  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
-  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
-  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
-  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  cpf?: Prisma.SortOrderInput | Prisma.SortOrder
+  internal_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  marital_status?: Prisma.SortOrderInput | Prisma.SortOrder
+  occupation?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SupplierCountOrderByAggregateInput
   _avg?: Prisma.SupplierAvgOrderByAggregateInput
   _max?: Prisma.SupplierMaxOrderByAggregateInput
@@ -364,15 +370,15 @@ export type SupplierScalarWhereWithAggregatesInput = {
   legal_name?: Prisma.StringWithAggregatesFilter<"Supplier"> | string
   trade_name?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   cnpj?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
-  cpf?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
-  internal_code?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
-  occupation?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
-  marital_status?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   state_registration?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   municipal_registration?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Supplier"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Supplier"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Supplier"> | Date | string | null
+  cpf?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  internal_code?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  marital_status?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
+  occupation?: Prisma.StringNullableWithAggregatesFilter<"Supplier"> | string | null
 }
 
 export type SupplierCreateInput = {
@@ -381,17 +387,19 @@ export type SupplierCreateInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSupplierInput
   addresses?: Prisma.SupplierAddressCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierUncheckedCreateInput = {
@@ -400,17 +408,19 @@ export type SupplierUncheckedCreateInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSupplierInput
   addresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierUpdateInput = {
@@ -419,17 +429,19 @@ export type SupplierUpdateInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSupplierNestedInput
   addresses?: Prisma.SupplierAddressUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSupplierNestedInput
 }
 
 export type SupplierUncheckedUpdateInput = {
@@ -438,17 +450,19 @@ export type SupplierUncheckedUpdateInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSupplierNestedInput
   addresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSupplierNestedInput
 }
 
 export type SupplierCreateManyInput = {
@@ -457,15 +471,15 @@ export type SupplierCreateManyInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
 }
 
 export type SupplierUpdateManyMutationInput = {
@@ -474,15 +488,15 @@ export type SupplierUpdateManyMutationInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SupplierUncheckedUpdateManyInput = {
@@ -491,15 +505,15 @@ export type SupplierUncheckedUpdateManyInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SupplierNullableScalarRelationFilter = {
@@ -513,15 +527,15 @@ export type SupplierCountOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  cpf?: Prisma.SortOrder
-  internal_code?: Prisma.SortOrder
-  occupation?: Prisma.SortOrder
-  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
 }
 
 export type SupplierAvgOrderByAggregateInput = {
@@ -534,15 +548,15 @@ export type SupplierMaxOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  cpf?: Prisma.SortOrder
-  internal_code?: Prisma.SortOrder
-  occupation?: Prisma.SortOrder
-  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
 }
 
 export type SupplierMinOrderByAggregateInput = {
@@ -551,15 +565,15 @@ export type SupplierMinOrderByAggregateInput = {
   legal_name?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
-  cpf?: Prisma.SortOrder
-  internal_code?: Prisma.SortOrder
-  occupation?: Prisma.SortOrder
-  marital_status?: Prisma.SortOrder
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  cpf?: Prisma.SortOrder
+  internal_code?: Prisma.SortOrder
+  marital_status?: Prisma.SortOrder
+  occupation?: Prisma.SortOrder
 }
 
 export type SupplierSumOrderByAggregateInput = {
@@ -601,22 +615,56 @@ export type SupplierUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SupplierUpdateToOneWithWhereWithoutAddressesInput, Prisma.SupplierUpdateWithoutAddressesInput>, Prisma.SupplierUncheckedUpdateWithoutAddressesInput>
 }
 
+export type SupplierCreateNestedOneWithoutTransactionsInput = {
+  create?: Prisma.XOR<Prisma.SupplierCreateWithoutTransactionsInput, Prisma.SupplierUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.SupplierCreateOrConnectWithoutTransactionsInput
+  connect?: Prisma.SupplierWhereUniqueInput
+}
+
+export type SupplierUpdateOneWithoutTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.SupplierCreateWithoutTransactionsInput, Prisma.SupplierUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.SupplierCreateOrConnectWithoutTransactionsInput
+  upsert?: Prisma.SupplierUpsertWithoutTransactionsInput
+  disconnect?: Prisma.SupplierWhereInput | boolean
+  delete?: Prisma.SupplierWhereInput | boolean
+  connect?: Prisma.SupplierWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SupplierUpdateToOneWithWhereWithoutTransactionsInput, Prisma.SupplierUpdateWithoutTransactionsInput>, Prisma.SupplierUncheckedUpdateWithoutTransactionsInput>
+}
+
+export type SupplierCreateNestedOneWithoutRecurring_configsInput = {
+  create?: Prisma.XOR<Prisma.SupplierCreateWithoutRecurring_configsInput, Prisma.SupplierUncheckedCreateWithoutRecurring_configsInput>
+  connectOrCreate?: Prisma.SupplierCreateOrConnectWithoutRecurring_configsInput
+  connect?: Prisma.SupplierWhereUniqueInput
+}
+
+export type SupplierUpdateOneWithoutRecurring_configsNestedInput = {
+  create?: Prisma.XOR<Prisma.SupplierCreateWithoutRecurring_configsInput, Prisma.SupplierUncheckedCreateWithoutRecurring_configsInput>
+  connectOrCreate?: Prisma.SupplierCreateOrConnectWithoutRecurring_configsInput
+  upsert?: Prisma.SupplierUpsertWithoutRecurring_configsInput
+  disconnect?: Prisma.SupplierWhereInput | boolean
+  delete?: Prisma.SupplierWhereInput | boolean
+  connect?: Prisma.SupplierWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SupplierUpdateToOneWithWhereWithoutRecurring_configsInput, Prisma.SupplierUpdateWithoutRecurring_configsInput>, Prisma.SupplierUncheckedUpdateWithoutRecurring_configsInput>
+}
+
 export type SupplierCreateWithoutContactsInput = {
   id?: string
   sequential_id?: number
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSupplierInput
   addresses?: Prisma.SupplierAddressCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierUncheckedCreateWithoutContactsInput = {
@@ -625,16 +673,18 @@ export type SupplierUncheckedCreateWithoutContactsInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSupplierInput
   addresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierCreateOrConnectWithoutContactsInput = {
@@ -659,16 +709,18 @@ export type SupplierUpdateWithoutContactsInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSupplierNestedInput
   addresses?: Prisma.SupplierAddressUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSupplierNestedInput
 }
 
 export type SupplierUncheckedUpdateWithoutContactsInput = {
@@ -677,16 +729,18 @@ export type SupplierUncheckedUpdateWithoutContactsInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSupplierNestedInput
   addresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSupplierNestedInput
 }
 
 export type SupplierCreateWithoutAddressesInput = {
@@ -695,16 +749,18 @@ export type SupplierCreateWithoutAddressesInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierUncheckedCreateWithoutAddressesInput = {
@@ -713,16 +769,18 @@ export type SupplierUncheckedCreateWithoutAddressesInput = {
   legal_name: string
   trade_name?: string | null
   cnpj?: string | null
-  cpf?: string | null
-  internal_code?: string | null
-  occupation?: string | null
-  marital_status?: string | null
   state_registration?: string | null
   municipal_registration?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSupplierInput
 }
 
 export type SupplierCreateOrConnectWithoutAddressesInput = {
@@ -747,16 +805,18 @@ export type SupplierUpdateWithoutAddressesInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSupplierNestedInput
 }
 
 export type SupplierUncheckedUpdateWithoutAddressesInput = {
@@ -765,16 +825,210 @@ export type SupplierUncheckedUpdateWithoutAddressesInput = {
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSupplierNestedInput
+}
+
+export type SupplierCreateWithoutTransactionsInput = {
+  id?: string
+  sequential_id?: number
+  legal_name: string
+  trade_name?: string | null
+  cnpj?: string | null
+  state_registration?: string | null
+  municipal_registration?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  contacts?: Prisma.ContactCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSupplierInput
+  addresses?: Prisma.SupplierAddressCreateNestedManyWithoutSupplierInput
+}
+
+export type SupplierUncheckedCreateWithoutTransactionsInput = {
+  id?: string
+  sequential_id?: number
+  legal_name: string
+  trade_name?: string | null
+  cnpj?: string | null
+  state_registration?: string | null
+  municipal_registration?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSupplierInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSupplierInput
+  addresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutSupplierInput
+}
+
+export type SupplierCreateOrConnectWithoutTransactionsInput = {
+  where: Prisma.SupplierWhereUniqueInput
+  create: Prisma.XOR<Prisma.SupplierCreateWithoutTransactionsInput, Prisma.SupplierUncheckedCreateWithoutTransactionsInput>
+}
+
+export type SupplierUpsertWithoutTransactionsInput = {
+  update: Prisma.XOR<Prisma.SupplierUpdateWithoutTransactionsInput, Prisma.SupplierUncheckedUpdateWithoutTransactionsInput>
+  create: Prisma.XOR<Prisma.SupplierCreateWithoutTransactionsInput, Prisma.SupplierUncheckedCreateWithoutTransactionsInput>
+  where?: Prisma.SupplierWhereInput
+}
+
+export type SupplierUpdateToOneWithWhereWithoutTransactionsInput = {
+  where?: Prisma.SupplierWhereInput
+  data: Prisma.XOR<Prisma.SupplierUpdateWithoutTransactionsInput, Prisma.SupplierUncheckedUpdateWithoutTransactionsInput>
+}
+
+export type SupplierUpdateWithoutTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sequential_id?: Prisma.IntFieldUpdateOperationsInput | number
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSupplierNestedInput
+  addresses?: Prisma.SupplierAddressUpdateManyWithoutSupplierNestedInput
+}
+
+export type SupplierUncheckedUpdateWithoutTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sequential_id?: Prisma.IntFieldUpdateOperationsInput | number
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutSupplierNestedInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSupplierNestedInput
+  addresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutSupplierNestedInput
+}
+
+export type SupplierCreateWithoutRecurring_configsInput = {
+  id?: string
+  sequential_id?: number
+  legal_name: string
+  trade_name?: string | null
+  cnpj?: string | null
+  state_registration?: string | null
+  municipal_registration?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  contacts?: Prisma.ContactCreateNestedManyWithoutSupplierInput
+  addresses?: Prisma.SupplierAddressCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSupplierInput
+}
+
+export type SupplierUncheckedCreateWithoutRecurring_configsInput = {
+  id?: string
+  sequential_id?: number
+  legal_name: string
+  trade_name?: string | null
+  cnpj?: string | null
+  state_registration?: string | null
+  municipal_registration?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  cpf?: string | null
+  internal_code?: string | null
+  marital_status?: string | null
+  occupation?: string | null
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSupplierInput
+  addresses?: Prisma.SupplierAddressUncheckedCreateNestedManyWithoutSupplierInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSupplierInput
+}
+
+export type SupplierCreateOrConnectWithoutRecurring_configsInput = {
+  where: Prisma.SupplierWhereUniqueInput
+  create: Prisma.XOR<Prisma.SupplierCreateWithoutRecurring_configsInput, Prisma.SupplierUncheckedCreateWithoutRecurring_configsInput>
+}
+
+export type SupplierUpsertWithoutRecurring_configsInput = {
+  update: Prisma.XOR<Prisma.SupplierUpdateWithoutRecurring_configsInput, Prisma.SupplierUncheckedUpdateWithoutRecurring_configsInput>
+  create: Prisma.XOR<Prisma.SupplierCreateWithoutRecurring_configsInput, Prisma.SupplierUncheckedCreateWithoutRecurring_configsInput>
+  where?: Prisma.SupplierWhereInput
+}
+
+export type SupplierUpdateToOneWithWhereWithoutRecurring_configsInput = {
+  where?: Prisma.SupplierWhereInput
+  data: Prisma.XOR<Prisma.SupplierUpdateWithoutRecurring_configsInput, Prisma.SupplierUncheckedUpdateWithoutRecurring_configsInput>
+}
+
+export type SupplierUpdateWithoutRecurring_configsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sequential_id?: Prisma.IntFieldUpdateOperationsInput | number
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUpdateManyWithoutSupplierNestedInput
+  addresses?: Prisma.SupplierAddressUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSupplierNestedInput
+}
+
+export type SupplierUncheckedUpdateWithoutRecurring_configsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sequential_id?: Prisma.IntFieldUpdateOperationsInput | number
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internal_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutSupplierNestedInput
+  addresses?: Prisma.SupplierAddressUncheckedUpdateManyWithoutSupplierNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSupplierNestedInput
 }
 
 
@@ -784,12 +1038,16 @@ export type SupplierUncheckedUpdateWithoutAddressesInput = {
 
 export type SupplierCountOutputType = {
   contacts: number
+  recurring_configs: number
   addresses: number
+  transactions: number
 }
 
 export type SupplierCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | SupplierCountOutputTypeCountContactsArgs
+  recurring_configs?: boolean | SupplierCountOutputTypeCountRecurring_configsArgs
   addresses?: boolean | SupplierCountOutputTypeCountAddressesArgs
+  transactions?: boolean | SupplierCountOutputTypeCountTransactionsArgs
 }
 
 /**
@@ -812,8 +1070,22 @@ export type SupplierCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Typ
 /**
  * SupplierCountOutputType without action
  */
+export type SupplierCountOutputTypeCountRecurring_configsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecurringConfigWhereInput
+}
+
+/**
+ * SupplierCountOutputType without action
+ */
 export type SupplierCountOutputTypeCountAddressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SupplierAddressWhereInput
+}
+
+/**
+ * SupplierCountOutputType without action
+ */
+export type SupplierCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionWhereInput
 }
 
 
@@ -823,17 +1095,19 @@ export type SupplierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
-  cpf?: boolean
-  internal_code?: boolean
-  occupation?: boolean
-  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  marital_status?: boolean
+  occupation?: boolean
   contacts?: boolean | Prisma.Supplier$contactsArgs<ExtArgs>
+  recurring_configs?: boolean | Prisma.Supplier$recurring_configsArgs<ExtArgs>
   addresses?: boolean | Prisma.Supplier$addressesArgs<ExtArgs>
+  transactions?: boolean | Prisma.Supplier$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.SupplierCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["supplier"]>
 
@@ -843,15 +1117,15 @@ export type SupplierSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
-  cpf?: boolean
-  internal_code?: boolean
-  occupation?: boolean
-  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  marital_status?: boolean
+  occupation?: boolean
 }, ExtArgs["result"]["supplier"]>
 
 export type SupplierSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -860,15 +1134,15 @@ export type SupplierSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
-  cpf?: boolean
-  internal_code?: boolean
-  occupation?: boolean
-  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  marital_status?: boolean
+  occupation?: boolean
 }, ExtArgs["result"]["supplier"]>
 
 export type SupplierSelectScalar = {
@@ -877,21 +1151,23 @@ export type SupplierSelectScalar = {
   legal_name?: boolean
   trade_name?: boolean
   cnpj?: boolean
-  cpf?: boolean
-  internal_code?: boolean
-  occupation?: boolean
-  marital_status?: boolean
   state_registration?: boolean
   municipal_registration?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  cpf?: boolean
+  internal_code?: boolean
+  marital_status?: boolean
+  occupation?: boolean
 }
 
-export type SupplierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sequential_id" | "legal_name" | "trade_name" | "cnpj" | "cpf" | "internal_code" | "occupation" | "marital_status" | "state_registration" | "municipal_registration" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["supplier"]>
+export type SupplierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sequential_id" | "legal_name" | "trade_name" | "cnpj" | "state_registration" | "municipal_registration" | "created_at" | "updated_at" | "deleted_at" | "cpf" | "internal_code" | "marital_status" | "occupation", ExtArgs["result"]["supplier"]>
 export type SupplierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | Prisma.Supplier$contactsArgs<ExtArgs>
+  recurring_configs?: boolean | Prisma.Supplier$recurring_configsArgs<ExtArgs>
   addresses?: boolean | Prisma.Supplier$addressesArgs<ExtArgs>
+  transactions?: boolean | Prisma.Supplier$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.SupplierCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SupplierIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -901,7 +1177,9 @@ export type $SupplierPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Supplier"
   objects: {
     contacts: Prisma.$ContactPayload<ExtArgs>[]
+    recurring_configs: Prisma.$RecurringConfigPayload<ExtArgs>[]
     addresses: Prisma.$SupplierAddressPayload<ExtArgs>[]
+    transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -909,15 +1187,15 @@ export type $SupplierPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     legal_name: string
     trade_name: string | null
     cnpj: string | null
-    cpf: string | null
-    internal_code: string | null
-    occupation: string | null
-    marital_status: string | null
     state_registration: string | null
     municipal_registration: string | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
+    cpf: string | null
+    internal_code: string | null
+    marital_status: string | null
+    occupation: string | null
   }, ExtArgs["result"]["supplier"]>
   composites: {}
 }
@@ -1313,7 +1591,9 @@ readonly fields: SupplierFieldRefs;
 export interface Prisma__SupplierClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contacts<T extends Prisma.Supplier$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Supplier$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recurring_configs<T extends Prisma.Supplier$recurring_configsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Supplier$recurring_configsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   addresses<T extends Prisma.Supplier$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Supplier$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupplierAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transactions<T extends Prisma.Supplier$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Supplier$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1348,15 +1628,15 @@ export interface SupplierFieldRefs {
   readonly legal_name: Prisma.FieldRef<"Supplier", 'String'>
   readonly trade_name: Prisma.FieldRef<"Supplier", 'String'>
   readonly cnpj: Prisma.FieldRef<"Supplier", 'String'>
-  readonly cpf: Prisma.FieldRef<"Supplier", 'String'>
-  readonly internal_code: Prisma.FieldRef<"Supplier", 'String'>
-  readonly occupation: Prisma.FieldRef<"Supplier", 'String'>
-  readonly marital_status: Prisma.FieldRef<"Supplier", 'String'>
   readonly state_registration: Prisma.FieldRef<"Supplier", 'String'>
   readonly municipal_registration: Prisma.FieldRef<"Supplier", 'String'>
   readonly created_at: Prisma.FieldRef<"Supplier", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Supplier", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Supplier", 'DateTime'>
+  readonly cpf: Prisma.FieldRef<"Supplier", 'String'>
+  readonly internal_code: Prisma.FieldRef<"Supplier", 'String'>
+  readonly marital_status: Prisma.FieldRef<"Supplier", 'String'>
+  readonly occupation: Prisma.FieldRef<"Supplier", 'String'>
 }
     
 
@@ -1769,6 +2049,30 @@ export type Supplier$contactsArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Supplier.recurring_configs
+ */
+export type Supplier$recurring_configsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecurringConfig
+   */
+  select?: Prisma.RecurringConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecurringConfig
+   */
+  omit?: Prisma.RecurringConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecurringConfigInclude<ExtArgs> | null
+  where?: Prisma.RecurringConfigWhereInput
+  orderBy?: Prisma.RecurringConfigOrderByWithRelationInput | Prisma.RecurringConfigOrderByWithRelationInput[]
+  cursor?: Prisma.RecurringConfigWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecurringConfigScalarFieldEnum | Prisma.RecurringConfigScalarFieldEnum[]
+}
+
+/**
  * Supplier.addresses
  */
 export type Supplier$addressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1790,6 +2094,30 @@ export type Supplier$addressesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.SupplierAddressScalarFieldEnum | Prisma.SupplierAddressScalarFieldEnum[]
+}
+
+/**
+ * Supplier.transactions
+ */
+export type Supplier$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transaction
+   */
+  select?: Prisma.TransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transaction
+   */
+  omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  where?: Prisma.TransactionWhereInput
+  orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
 }
 
 /**

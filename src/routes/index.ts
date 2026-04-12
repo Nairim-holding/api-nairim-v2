@@ -16,6 +16,7 @@ import FinancialCard from "./card";
 import FinancialCenter from "./center";
 import FinancialSupplier from "./supplier";
 import FinancialTransaction from "./transaction";
+import InvoiceRoutes from "./invoice";
 
 const router = Router();
 
@@ -36,5 +37,6 @@ router.use("/financial-card", FinancialCard);
 router.use("/financial-center", FinancialCenter);
 router.use("/financial-supplier", FinancialSupplier);
 router.use("/financial-transaction", FinancialTransaction);
+router.use("/financial-invoice", InvoiceRoutes);
 
 export default router;

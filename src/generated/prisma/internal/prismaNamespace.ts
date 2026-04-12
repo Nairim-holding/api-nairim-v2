@@ -408,7 +408,9 @@ export const ModelName = {
   Center: 'Center',
   Supplier: 'Supplier',
   SupplierAddress: 'SupplierAddress',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  Invoice: 'Invoice',
+  RecurringConfig: 'RecurringConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "propertyIptu" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction"
+    modelProps: "agency" | "property" | "propertyIptu" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2278,6 +2280,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Invoice: {
+      payload: Prisma.$InvoicePayload<ExtArgs>
+      fields: Prisma.InvoiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InvoiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InvoiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        findFirst: {
+          args: Prisma.InvoiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InvoiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        findMany: {
+          args: Prisma.InvoiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        create: {
+          args: Prisma.InvoiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        createMany: {
+          args: Prisma.InvoiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InvoiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        delete: {
+          args: Prisma.InvoiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        update: {
+          args: Prisma.InvoiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        deleteMany: {
+          args: Prisma.InvoiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InvoiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InvoiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>[]
+        }
+        upsert: {
+          args: Prisma.InvoiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvoicePayload>
+        }
+        aggregate: {
+          args: Prisma.InvoiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvoice>
+        }
+        groupBy: {
+          args: Prisma.InvoiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InvoiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvoiceCountAggregateOutputType> | number
+        }
+      }
+    }
+    RecurringConfig: {
+      payload: Prisma.$RecurringConfigPayload<ExtArgs>
+      fields: Prisma.RecurringConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RecurringConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RecurringConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.RecurringConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RecurringConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        findMany: {
+          args: Prisma.RecurringConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>[]
+        }
+        create: {
+          args: Prisma.RecurringConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        createMany: {
+          args: Prisma.RecurringConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RecurringConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>[]
+        }
+        delete: {
+          args: Prisma.RecurringConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        update: {
+          args: Prisma.RecurringConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.RecurringConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RecurringConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RecurringConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>[]
+        }
+        upsert: {
+          args: Prisma.RecurringConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.RecurringConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRecurringConfig>
+        }
+        groupBy: {
+          args: Prisma.RecurringConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecurringConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RecurringConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecurringConfigCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2400,10 +2550,10 @@ export const DocumentScalarFieldEnum = {
   file_type: 'file_type',
   description: 'description',
   type: 'type',
-  is_featured: 'is_featured',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  is_featured: 'is_featured'
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -2457,25 +2607,25 @@ export const LeaseScalarFieldEnum = {
   rent_amount: 'rent_amount',
   condo_fee: 'condo_fee',
   property_tax: 'property_tax',
-  property_tax_cash: 'property_tax_cash',
-  property_tax_first_installment: 'property_tax_first_installment',
-  property_tax_second_installment: 'property_tax_second_installment',
-  iptu_installments_count: 'iptu_installments_count',
-  iptu_installments: 'iptu_installments',
   extra_charges: 'extra_charges',
   commission_amount: 'commission_amount',
   rent_due_day: 'rent_due_day',
   tax_due_day: 'tax_due_day',
   condo_due_day: 'condo_due_day',
-  status: 'status',
-  payment_condition: 'payment_condition',
-  cancellation_penalty: 'cancellation_penalty',
-  other_cancellation_amounts: 'other_cancellation_amounts',
-  cancellation_justification: 'cancellation_justification',
-  canceled_at: 'canceled_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  canceled_at: 'canceled_at',
+  cancellation_justification: 'cancellation_justification',
+  cancellation_penalty: 'cancellation_penalty',
+  other_cancellation_amounts: 'other_cancellation_amounts',
+  status: 'status',
+  payment_condition: 'payment_condition',
+  property_tax_cash: 'property_tax_cash',
+  property_tax_second_installment: 'property_tax_second_installment',
+  iptu_installments: 'iptu_installments',
+  iptu_installments_count: 'iptu_installments_count',
+  property_tax_first_installment: 'property_tax_first_installment'
 } as const
 
 export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof LeaseScalarFieldEnum]
@@ -2484,8 +2634,6 @@ export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof Le
 export const PropertyValueScalarFieldEnum = {
   id: 'id',
   property_id: 'property_id',
-  sale_date: 'sale_date',
-  purchase_date: 'purchase_date',
   purchase_value: 'purchase_value',
   rental_value: 'rental_value',
   condo_fee: 'condo_fee',
@@ -2496,7 +2644,9 @@ export const PropertyValueScalarFieldEnum = {
   updated_at: 'updated_at',
   deleted_at: 'deleted_at',
   extra_charges: 'extra_charges',
-  sale_value: 'sale_value'
+  sale_value: 'sale_value',
+  sale_date: 'sale_date',
+  purchase_date: 'purchase_date'
 } as const
 
 export type PropertyValueScalarFieldEnum = (typeof PropertyValueScalarFieldEnum)[keyof typeof PropertyValueScalarFieldEnum]
@@ -2518,18 +2668,18 @@ export const AddressScalarFieldEnum = {
   zip_code: 'zip_code',
   street: 'street',
   number: 'number',
-  complement: 'complement',
-  block: 'block',
-  lot: 'lot',
   district: 'district',
   city: 'city',
   state: 'state',
   country: 'country',
-  latitude: 'latitude',
-  longitude: 'longitude',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  block: 'block',
+  complement: 'complement',
+  lot: 'lot',
+  latitude: 'latitude',
+  longitude: 'longitude'
 } as const
 
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
@@ -2616,13 +2766,13 @@ export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)
 export const FinancialInstitutionScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  bank_number: 'bank_number',
-  agency_number: 'agency_number',
-  account_number: 'account_number',
   created_at: 'created_at',
-  is_active: 'is_active',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  is_active: 'is_active',
+  account_number: 'account_number',
+  agency_number: 'agency_number',
+  bank_number: 'bank_number'
 } as const
 
 export type FinancialInstitutionScalarFieldEnum = (typeof FinancialInstitutionScalarFieldEnum)[keyof typeof FinancialInstitutionScalarFieldEnum]
@@ -2659,12 +2809,14 @@ export const CardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   limit: 'limit',
-  closing_day: 'closing_day',
-  due_day: 'due_day',
   is_active: 'is_active',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  closing_day: 'closing_day',
+  due_day: 'due_day',
+  brand: 'brand',
+  current_balance: 'current_balance'
 } as const
 
 export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
@@ -2689,15 +2841,15 @@ export const SupplierScalarFieldEnum = {
   legal_name: 'legal_name',
   trade_name: 'trade_name',
   cnpj: 'cnpj',
-  cpf: 'cpf',
-  internal_code: 'internal_code',
-  occupation: 'occupation',
-  marital_status: 'marital_status',
   state_registration: 'state_registration',
   municipal_registration: 'municipal_registration',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  cpf: 'cpf',
+  internal_code: 'internal_code',
+  marital_status: 'marital_status',
+  occupation: 'occupation'
 } as const
 
 export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
@@ -2729,10 +2881,65 @@ export const TransactionScalarFieldEnum = {
   center_id: 'center_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  supplier_id: 'supplier_id',
+  installment_number: 'installment_number',
+  is_recurring: 'is_recurring',
+  occurrence_number: 'occurrence_number',
+  parent_transaction_id: 'parent_transaction_id',
+  payment_mode: 'payment_mode',
+  recurring_frequency: 'recurring_frequency',
+  recurring_group_id: 'recurring_group_id',
+  total_installments: 'total_installments',
+  invoice_id: 'invoice_id'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  card_id: 'card_id',
+  month: 'month',
+  year: 'year',
+  total_amount: 'total_amount',
+  status: 'status',
+  closing_date: 'closing_date',
+  due_date: 'due_date',
+  paid_date: 'paid_date',
+  paid_amount: 'paid_amount',
+  institution_id: 'institution_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const RecurringConfigScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  amount: 'amount',
+  frequency: 'frequency',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
+  financial_institution_id: 'financial_institution_id',
+  card_id: 'card_id',
+  center_id: 'center_id',
+  supplier_id: 'supplier_id',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  next_generation_date: 'next_generation_date',
+  is_active: 'is_active',
+  total_occurrences: 'total_occurrences',
+  generated_occurrences: 'generated_occurrences',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldEnum)[keyof typeof RecurringConfigScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2984,6 +3191,34 @@ export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'PaymentMode'
+ */
+export type EnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentMode[]'
+ */
+export type ListEnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RecurringFrequency'
+ */
+export type EnumRecurringFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurringFrequency'>
+    
+
+
+/**
+ * Reference to a field of type 'RecurringFrequency[]'
+ */
+export type ListEnumRecurringFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurringFrequency[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3104,6 +3339,8 @@ export type GlobalOmitConfig = {
   supplier?: Prisma.SupplierOmit
   supplierAddress?: Prisma.SupplierAddressOmit
   transaction?: Prisma.TransactionOmit
+  invoice?: Prisma.InvoiceOmit
+  recurringConfig?: Prisma.RecurringConfigOmit
 }
 
 /* Types for Logging */

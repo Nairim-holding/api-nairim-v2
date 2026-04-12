@@ -123,4 +123,93 @@ export class TransactionController {
       res.status(500).json(ApiResponse.error('Erro ao restaurar lançamento'));
     }
   }
+
+  // ==========================================
+  // ENDPOINTS PARA LANÇAMENTOS PARCELADOS
+  // ==========================================
+
+  static async createInstallments(req: Request, res: Response) {
+    try {
+      const validation = TransactionValidator.validateInstallments(req.body);
+      if (!validation.isValid) {
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      }
+
+      const result = await TransactionService.createInstallments(req.body);
+      // v2: installments está dentro de result.data
+      res.status(201).json(ApiResponse.success(result, result.message));
+    } catch (error: any) {
+      console.error('Error creating installments:', error);
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  // ==========================================
+  // ENDPOINTS PARA LANÇAMENTOS RECORRENTES
+  // ==========================================
+
+  static async createRecurring(req: Request, res: Response) {
+    try {
+      const validation = TransactionValidator.validateRecurring(req.body);
+      if (!validation.isValid) {
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      }
+
+      const result = await TransactionService.createRecurring(req.body);
+      res.status(201).json(ApiResponse.success(result.data, result.message));
+    } catch (error: any) {
+      console.error('Error creating recurring:', error);
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  static async generateNextRecurring(req: Request, res: Response) {
+    try {
+      const validation = TransactionValidator.validateGenerateNext(req.body);
+      if (!validation.isValid) {
+        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      }
+
+      const data = await TransactionService.generateNextRecurring(req.body);
+      res.status(200).json(ApiResponse.success(data, `${data.generated} ocorrências geradas com sucesso`));
+    } catch (error: any) {
+      console.error('Error generating next recurring:', error);
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  // ==========================================
+  // ENDPOINTS PARA GERENCIAMENTO DE GRUPOS
+  // ==========================================
+
+  static async getRelatedTransactions(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+
+      const data = await TransactionService.getRelatedTransactions(id);
+      res.status(200).json(ApiResponse.success(data, 'Transações relacionadas recuperadas com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Transaction not found') return res.status(404).json(ApiResponse.error('Lançamento não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro ao buscar transações relacionadas'));
+    }
+  }
+
+  static async deleteTransactionGroup(req: Request, res: Response) {
+    try {
+      const groupId = String(req.params?.group_id || '');
+      if (!groupId) return res.status(400).json(ApiResponse.error('O ID do grupo é obrigatório'));
+
+      const mode = (req.query?.mode as 'ALL' | 'FUTURE' | 'ONLY_PENDING') || 'ONLY_PENDING';
+      if (!['ALL', 'FUTURE', 'ONLY_PENDING'].includes(mode)) {
+        return res.status(400).json(ApiResponse.error('Modo inválido. Deve ser ALL, FUTURE ou ONLY_PENDING'));
+      }
+
+      const data = await TransactionService.deleteTransactionGroup(groupId, mode);
+      res.status(200).json(ApiResponse.success(data, `${data.deleted_count} lançamentos removidos`));
+    } catch (error: any) {
+      if (error.message === 'Group not found or invalid') return res.status(404).json(ApiResponse.error('Grupo não encontrado'));
+      res.status(500).json(ApiResponse.error('Erro ao remover grupo de lançamentos'));
+    }
+  }
 }

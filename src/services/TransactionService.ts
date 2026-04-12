@@ -58,6 +58,7 @@ export class TransactionService {
         t.financial_institution?.name,
         t.card?.name,
         t.center?.name,
+        t.supplier?.legal_name,
         formattedEventDate,
         formattedEffectiveDate
       ].filter(Boolean).join(' '); 
@@ -75,7 +76,7 @@ export class TransactionService {
         Object.entries(filters).forEach(([key, value]) => {
            if (!value) return;
            if (key === 'status') andFilters.push({ status: value });
-           if (['category_id', 'financial_institution_id', 'card_id', 'center_id'].includes(key)) {
+           if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'].includes(key)) {
              andFilters.push({ [key]: String(value) });
            }
            // Adaptação: caso tente filtrar por subcategoria, ele busca nas subcategorias filhas da categoria amarrada
@@ -107,7 +108,7 @@ export class TransactionService {
         institutions,
         cards,
         centers,
-        dateRange
+        suppliers
       ] = await Promise.all([
         prisma.transaction.findMany({
           where,
@@ -115,30 +116,28 @@ export class TransactionService {
           distinct: ['description', 'status', 'amount']
         }),
         prisma.category.findMany({ 
-          where: { deleted_at: null, transactions: { some: { deleted_at: null } } }, 
+          where: { deleted_at: null }, 
           select: { id: true, name: true, type: true }, orderBy: { name: 'asc' } 
         }),
-        // Busca subcategorias que os pais (categorias) tem transação
         prisma.subcategory.findMany({ 
-          where: { deleted_at: null, category: { transactions: { some: { deleted_at: null } } } }, 
+          where: { deleted_at: null }, 
           select: { id: true, name: true, category_id: true }, orderBy: { name: 'asc' } 
         }),
         prisma.financialInstitution.findMany({ 
-          where: { deleted_at: null, transactions: { some: { deleted_at: null } } }, 
+          where: { deleted_at: null }, 
           select: { id: true, name: true }, orderBy: { name: 'asc' } 
         }),
         prisma.card.findMany({ 
-          where: { deleted_at: null, transactions: { some: { deleted_at: null } } }, 
+          where: { deleted_at: null }, 
           select: { id: true, name: true }, orderBy: { name: 'asc' } 
         }),
         prisma.center.findMany({ 
-          where: { deleted_at: null, transactions: { some: { deleted_at: null } } }, 
+          where: { deleted_at: null }, 
           select: { id: true, name: true, type: true }, orderBy: { name: 'asc' } 
         }),
-        prisma.transaction.aggregate({
-          where,
-          _min: { event_date: true, effective_date: true },
-          _max: { event_date: true, effective_date: true }
+        prisma.supplier.findMany({ 
+          where: { deleted_at: null }, 
+          select: { id: true, legal_name: true }, orderBy: { legal_name: 'asc' } 
         })
       ]);
 
@@ -159,22 +158,6 @@ export class TransactionService {
       return {
         filters: [
           { 
-            field: 'event_date', 
-            type: 'date', 
-            label: 'Data do Evento', 
-            min: dateRange._min.event_date?.toISOString().split('T')[0], 
-            max: dateRange._max.event_date?.toISOString().split('T')[0],
-            dateRange: true 
-          },
-          { 
-            field: 'effective_date', 
-            type: 'date', 
-            label: 'Data de Efetivação', 
-            min: dateRange._min.effective_date?.toISOString().split('T')[0], 
-            max: dateRange._max.effective_date?.toISOString().split('T')[0],
-            dateRange: true 
-          },
-          { 
             field: 'category_id', 
             type: 'select', 
             label: 'Categoria', 
@@ -183,7 +166,7 @@ export class TransactionService {
           { 
             field: 'subcategory_id', 
             type: 'select', 
-            label: 'Subcategoria (Informativo)', 
+            label: 'Subcategoria', 
             values: subcategories.map(s => ({ value: s.id, label: s.name, category_id: s.category_id })) 
           },
           { 
@@ -203,6 +186,12 @@ export class TransactionService {
             type: 'select', 
             label: 'Centro', 
             values: centers.map(c => ({ value: c.id, label: `${c.name} (${c.type === 'INCOME' ? 'Receita' : 'Despesa'})` })) 
+          },
+          { 
+            field: 'supplier_id', 
+            type: 'select', 
+            label: 'Fornecedor', 
+            values: suppliers.map(s => ({ value: s.id, label: s.legal_name })) 
           },
           { 
             field: 'description', 
@@ -253,7 +242,7 @@ export class TransactionService {
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== '') {
           if (key === 'status') where.status = value;
-          if (['category_id', 'financial_institution_id', 'card_id', 'center_id'].includes(key)) {
+          if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'].includes(key)) {
             where[key] = String(value);
           }
           if (key === 'subcategory_id') {
@@ -283,7 +272,8 @@ export class TransactionService {
         category: { include: { subcategories: { where: { deleted_at: null } } } }, 
         financial_institution: true, 
         card: true, 
-        center: true 
+        center: true,
+        supplier: true
       };
 
       if (search.trim()) {
@@ -340,6 +330,8 @@ export class TransactionService {
             orderBy.push({ card: { name: dir } });
           } else if (field === 'center_id') {
             orderBy.push({ center: { name: dir } });
+          } else if (field === 'supplier_id') {
+            orderBy.push({ supplier: { legal_name: dir } });
           }
         });
         
@@ -389,7 +381,7 @@ export class TransactionService {
     try {
       const transaction = await prisma.transaction.findUnique({
         where: { id, deleted_at: null },
-        include: { category: { include: { subcategories: { where: { deleted_at: null } } } }, financial_institution: true, card: true, center: true }
+        include: { category: { include: { subcategories: { where: { deleted_at: null } } } }, financial_institution: true, card: true, center: true, supplier: true }
       });
       if (!transaction) throw new Error('Transaction not found');
       return transaction;
@@ -400,7 +392,30 @@ export class TransactionService {
     try {
       const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
 
-      return await prisma.transaction.create({
+      // Se tem cartão, vincular à fatura do mês
+      let invoiceId: string | null = null;
+      const cardId = parseFK(data.card_id);
+      
+      if (cardId && data.effective_date) {
+        const { InvoiceService } = await import('./InvoiceService');
+        const effectiveDate = new Date(data.effective_date);
+        const invoiceMonth = effectiveDate.getMonth() + 1;
+        const invoiceYear = effectiveDate.getFullYear();
+        
+        try {
+          const invoice = await InvoiceService.findOrCreateInvoice(
+            cardId,
+            invoiceMonth,
+            invoiceYear
+          );
+          invoiceId = invoice.id;
+        } catch (error: any) {
+          // Se fatura estiver fechada/paga, apenas avisa no console
+          console.warn(`Não foi possível vincular à fatura: ${error.message}`);
+        }
+      }
+
+      const transaction = await prisma.transaction.create({
         data: {
           event_date: new Date(data.event_date),
           effective_date: new Date(data.effective_date),
@@ -410,11 +425,25 @@ export class TransactionService {
           category_id: data.category_id,
           subcategory_id: null, // Campo obsoleto no banco, não passamos.
           financial_institution_id: data.financial_institution_id,
-          card_id: parseFK(data.card_id),
-          center_id: parseFK(data.center_id)
+          card_id: cardId,
+          center_id: parseFK(data.center_id),
+          supplier_id: parseFK(data.supplier_id),
+          invoice_id: invoiceId
         },
-        include: { category: true, financial_institution: true }
+        include: { category: true, financial_institution: true, supplier: true }
       });
+
+      // Atualizar total da fatura se vinculada
+      if (invoiceId) {
+        await prisma.invoice.update({
+          where: { id: invoiceId },
+          data: {
+            total_amount: { increment: Number(data.amount) }
+          }
+        });
+      }
+
+      return transaction;
     } catch (error: any) { throw error; }
   }
 
@@ -440,9 +469,10 @@ export class TransactionService {
           subcategory_id: null,
           financial_institution_id: data.financial_institution_id,
           card_id: parseFKUpdate(data.card_id),
-          center_id: parseFKUpdate(data.center_id)
+          center_id: parseFKUpdate(data.center_id),
+          supplier_id: parseFKUpdate(data.supplier_id)
         },
-        include: { category: true, financial_institution: true }
+        include: { category: true, financial_institution: true, supplier: true }
       });
     } catch (error: any) { throw error; }
   }
@@ -471,6 +501,568 @@ export class TransactionService {
         where: { id },
         data: { deleted_at: null }
       });
+    } catch (error: any) { throw error; }
+  }
+
+  static async createInstallments(data: any) {
+    try {
+      const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
+      const parseAmount = (val: any): number => {
+        if (typeof val === 'number') return val;
+        if (typeof val === 'string') {
+          const clean = val.replace(/[R$\s]/g, '').replace(',', '.');
+          const parsed = parseFloat(clean);
+          return isNaN(parsed) ? 0 : parsed;
+        }
+        return 0;
+      };
+
+      const installmentAmount = parseAmount(data.installment_amount);
+      const numInstallments = Number(data.num_installments);
+      const totalAmount = parseAmount(data.total_amount);
+
+      const firstPaymentDate = new Date(data.first_payment_date);
+      const startDate = new Date(data.start_date);
+
+      // === VALIDAÇÕES (além das do validator) ===
+      if (numInstallments < 2 || numInstallments > 120) {
+        throw new Error('Número de parcelas deve estar entre 2 e 120');
+      }
+
+      if (installmentAmount <= 0) {
+        throw new Error('Valor da parcela deve ser maior que zero');
+      }
+
+      const expectedTotal = installmentAmount * numInstallments;
+      if (Math.abs(totalAmount - expectedTotal) > 0.01) {
+        throw new Error(`Total inválido: esperado ${expectedTotal.toFixed(2)}, recebido ${totalAmount.toFixed(2)}`);
+      }
+
+      if (firstPaymentDate < startDate) {
+        throw new Error('Data do primeiro pagamento deve ser igual ou posterior à data inicial');
+      }
+
+      // === CÁLCULO DAS DATAS ===
+      const installmentDates: Date[] = [];
+      for (let i = 0; i < numInstallments; i++) {
+        const date = new Date(firstPaymentDate);
+        date.setMonth(date.getMonth() + i);
+        if (date.getDate() !== firstPaymentDate.getDate()) {
+          date.setDate(0);
+        }
+        installmentDates.push(date);
+      }
+
+      // === CRIAÇÃO DAS PARCELAS (v4: APENAS parcelas, SEM transação pai) ===
+      const transactionType = data.transaction_type || 'EXPENSE';
+      const label = transactionType === 'INCOME' ? 'Receita' : 'Parcela';
+      
+      // Import dinâmico para evitar dependência circular
+      const { InvoiceService } = await import('./InvoiceService');
+
+      const installments = await prisma.$transaction(
+        async (tx) => {
+          const createdInstallments = [];
+          
+          for (let index = 0; index < numInstallments; index++) {
+            const installmentNumber = index + 1;
+            const effectiveDate = installmentDates[index];
+
+            const eventDate = new Date(startDate);
+            eventDate.setMonth(startDate.getMonth() + index);
+            if (eventDate.getDate() !== startDate.getDate()) {
+              eventDate.setDate(0);
+            }
+            // Calcular mês/ano da fatura baseado na effective_date
+            const invoiceMonth = effectiveDate.getMonth() + 1;
+            const invoiceYear = effectiveDate.getFullYear();
+            
+            // Buscar ou criar fatura automaticamente se houver card_id
+            let invoiceId: string | null = null;
+            const cardId = parseFK(data.card_id);
+            
+            if (cardId) {
+              try {
+                const invoice = await InvoiceService.findOrCreateInvoice(
+                  cardId, 
+                  invoiceMonth, 
+                  invoiceYear
+                );
+                invoiceId = invoice.id;
+                console.log(`[DEBUG createInstallments] Parcela ${installmentNumber}/${numInstallments} vinculada à fatura ${invoiceId} (${invoiceMonth}/${invoiceYear})`);
+              } catch (error: any) {
+                // Se fatura estiver fechada/paga, lançar erro
+                if (error.message.includes('Fatura de')) {
+                  throw error;
+                }
+                // Outros erros, continuar sem vincular
+                console.warn(`[DEBUG] Não foi possível vincular parcela à fatura: ${error.message}`);
+              }
+            }
+
+            const transaction = await tx.transaction.create({
+              data: {
+                installment_number: installmentNumber,
+                total_installments: numInstallments,
+                amount: installmentAmount,
+                description: data.description
+                  ? `${data.description} - ${label} ${installmentNumber}/${numInstallments}`
+                  : `${label} ${installmentNumber}/${numInstallments}`,
+                event_date: eventDate,
+                effective_date: effectiveDate,
+                category_id: data.category_id,
+                subcategory_id: parseFK(data.subcategory_id),
+                financial_institution_id: data.institution_id,
+                card_id: cardId,
+                center_id: parseFK(data.center_id),
+                supplier_id: transactionType === 'EXPENSE' ? parseFK(data.supplier_id) : null,
+                invoice_id: invoiceId,
+                status: 'PENDING',
+                payment_mode: 'PARCELADO',
+              },
+              include: { category: true, financial_institution: true, supplier: true }
+            });
+
+            createdInstallments.push(transaction);
+
+            // Atualizar total da fatura se vinculada
+            if (invoiceId) {
+              await tx.invoice.update({
+                where: { id: invoiceId },
+                data: {
+                  total_amount: { increment: installmentAmount }
+                }
+              });
+            }
+          }
+
+          return createdInstallments;
+        }
+      );
+
+      return {
+        success: true,
+        message: `${numInstallments} ${label.toLowerCase()}s de R$ ${installmentAmount.toFixed(2)} criadas com sucesso`,
+        data: {
+          num_installments: numInstallments,
+          installment_amount: installmentAmount,
+          total_amount: expectedTotal,
+          installments: installments.map((inst: any) => ({
+            id: inst.id,
+            installment_number: inst.installment_number,
+            amount: inst.amount,
+            effective_date: inst.effective_date,
+            description: inst.description,
+            status: inst.status,
+            invoice_id: inst.invoice_id
+          }))
+        },
+        validation: {
+          sum_of_installments: expectedTotal,
+          expected_total: totalAmount,
+          matches: true
+        }
+      };
+    } catch (error: any) { throw error; }
+  }
+
+  static async createRecurring(data: any) {
+    try {
+      const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
+      const parseAmount = (val: any): number => {
+        if (typeof val === 'number') return val;
+        if (typeof val === 'string') {
+          const clean = val.replace(/[R$\s]/g, '').replace(',', '.');
+          const parsed = parseFloat(clean);
+          return isNaN(parsed) ? 0 : parsed;
+        }
+        return 0;
+      };
+
+      const amount = parseAmount(data.amount);
+      const numOccurrences = Number(data.num_installments);
+      const startDate = new Date(data.start_date);
+      const firstPaymentDate = new Date(data.first_payment_date);
+
+      // === VALIDAÇÕES ===
+      if (numOccurrences < 2 || numOccurrences > 120) {
+        throw new Error('Número de lançamentos deve estar entre 2 e 120');
+      }
+
+      if (amount <= 0) {
+        throw new Error('Valor deve ser maior que zero');
+      }
+
+      if (firstPaymentDate < startDate) {
+        throw new Error('Data de primeiro pagamento deve ser igual ou posterior à data inicial');
+      }
+
+      // === CÁLCULO DAS DATAS (MENSAL - fixo) ===
+      const occurrenceDates: Date[] = [];
+      for (let i = 0; i < numOccurrences; i++) {
+        const date = new Date(firstPaymentDate);
+        date.setMonth(date.getMonth() + i);
+        if (date.getDate() !== firstPaymentDate.getDate()) {
+          date.setDate(0);
+        }
+        occurrenceDates.push(date);
+      }
+
+      // === CRIAÇÃO DOS LANÇAMENTOS (v4: APENAS os lançamentos, SEM config pai) ===
+      const occurrences = await prisma.$transaction(
+        Array.from({ length: numOccurrences }, (_, index) => {
+          const occurrenceNumber = index + 1;
+
+          return prisma.transaction.create({
+            data: {
+              installment_number: occurrenceNumber,
+              total_installments: numOccurrences,
+              amount: amount,
+              description: data.description
+                ? `${data.description} - ${occurrenceNumber}/${numOccurrences}`
+                : `Gasto Recorrente ${occurrenceNumber}/${numOccurrences}`,
+              event_date: new Date(startDate),
+              effective_date: occurrenceDates[index],
+              category_id: data.category_id,
+              subcategory_id: parseFK(data.subcategory_id),
+              financial_institution_id: data.institution_id,
+              card_id: parseFK(data.card_id),
+              center_id: parseFK(data.center_id),
+              supplier_id: parseFK(data.supplier_id),
+              is_recurring: true,
+              recurring_frequency: 'MONTHLY',
+              status: 'PENDING',
+              payment_mode: 'RECORRENTE',
+            },
+            include: { category: true, financial_institution: true, supplier: true }
+          });
+        })
+      );
+
+      return {
+        success: true,
+        message: `${numOccurrences} gastos recorrentes criados com sucesso`,
+        data: {
+          num_occurrences: numOccurrences,
+          amount: amount,
+          occurrences: occurrences.map((occ: any) => ({
+            id: occ.id,
+            occurrence_number: occ.installment_number,
+            amount: occ.amount,
+            effective_date: occ.effective_date,
+            description: occ.description,
+            status: occ.status,
+          })),
+        },
+      };
+    } catch (error: any) { throw error; }
+  }
+
+  static async generateNextRecurring(params: any) {
+    try {
+      const monthsAhead = params.months_ahead || 3;
+      const targetDate = params.target_date ? new Date(params.target_date) : new Date();
+      const cutoffDate = new Date(targetDate);
+      cutoffDate.setMonth(cutoffDate.getMonth() + monthsAhead);
+
+      // Buscar configurações ativas
+      const activeConfigs = await prisma.recurringConfig.findMany({
+        where: {
+          is_active: true,
+          OR: [
+            { end_date: null },
+            { end_date: { gte: targetDate } }
+          ]
+        }
+      });
+
+      const details: any[] = [];
+      let totalGenerated = 0;
+
+      for (const config of activeConfigs) {
+        // Buscar última ocorrência gerada
+        const lastOccurrence = await prisma.transaction.findFirst({
+          where: { recurring_group_id: config.id },
+          orderBy: { occurrence_number: 'desc' }
+        });
+
+        let nextOccurrenceNumber = lastOccurrence
+          ? (lastOccurrence.occurrence_number || 0) + 1
+          : 1;
+
+        let currentDate = lastOccurrence
+          ? this.getNextDate(new Date(lastOccurrence.effective_date), config.frequency)
+          : new Date(config.start_date);
+
+        let eventDate = lastOccurrence
+          ? this.getNextDate(new Date(lastOccurrence.event_date), config.frequency)
+          : new Date(config.start_date);
+
+        const newOccurrences = [];
+
+        // Verificar se atingiu limite
+        const shouldStop = () => {
+          if (config.total_occurrences && nextOccurrenceNumber > config.total_occurrences) return true;
+          if (config.end_date && currentDate > config.end_date) return true;
+          if (currentDate > cutoffDate) return true;
+          return false;
+        };
+
+        while (!shouldStop()) {
+          const occurrence = await prisma.transaction.create({
+            data: {
+              event_date: new Date(eventDate),
+              effective_date: new Date(currentDate),
+              description: config.description,
+              amount: config.amount,
+              status: 'PENDING',
+              category_id: config.category_id,
+              financial_institution_id: config.financial_institution_id,
+              card_id: config.card_id,
+              center_id: config.center_id,
+              supplier_id: config.supplier_id,
+              is_recurring: true,
+              recurring_group_id: config.id,
+              recurring_frequency: config.frequency,
+              occurrence_number: nextOccurrenceNumber,
+              payment_mode: 'RECORRENTE'
+            }
+          });
+
+          newOccurrences.push(occurrence);
+
+          nextOccurrenceNumber++;
+          currentDate = this.getNextDate(currentDate, config.frequency);
+          eventDate = this.getNextDate(eventDate, config.frequency);
+        }
+
+        if (newOccurrences.length > 0) {
+          // Atualizar contador
+          await prisma.recurringConfig.update({
+            where: { id: config.id },
+            data: {
+              generated_occurrences: { increment: newOccurrences.length },
+              next_generation_date: cutoffDate
+            }
+          });
+
+          details.push({
+            recurring_group_id: config.id,
+            new_occurrences: newOccurrences.length
+          });
+
+          totalGenerated += newOccurrences.length;
+        }
+      }
+
+      return {
+        generated: totalGenerated,
+        details
+      };
+    } catch (error: any) { throw error; }
+  }
+
+  private static getNextDate(date: Date, frequency: string): Date {
+    const newDate = new Date(date);
+    switch (frequency) {
+      case 'WEEKLY':
+        newDate.setDate(newDate.getDate() + 7);
+        break;
+      case 'MONTHLY':
+        newDate.setMonth(newDate.getMonth() + 1);
+        break;
+      case 'QUARTERLY':
+        newDate.setMonth(newDate.getMonth() + 3);
+        break;
+      case 'YEARLY':
+        newDate.setFullYear(newDate.getFullYear() + 1);
+        break;
+    }
+    return newDate;
+  }
+
+  // ==========================================
+  // MÉTODOS PARA GERENCIAMENTO DE GRUPOS
+  // ==========================================
+
+  static async getRelatedTransactions(id: string) {
+    try {
+      const transaction = await prisma.transaction.findUnique({
+        where: { id, deleted_at: null },
+        include: {
+          category: true,
+          financial_institution: true,
+          supplier: true,
+          child_transactions: {
+            where: { deleted_at: null },
+            orderBy: { installment_number: 'asc' }
+          }
+        }
+      });
+
+      if (!transaction) throw new Error('Transaction not found');
+
+      // Se tem parent_transaction_id, buscar o pai e todas as irmãs
+      if (transaction.parent_transaction_id) {
+        const parent = await prisma.transaction.findUnique({
+          where: { id: transaction.parent_transaction_id },
+          include: {
+            child_transactions: {
+              where: { deleted_at: null },
+              orderBy: { installment_number: 'asc' }
+            }
+          }
+        });
+
+        return {
+          parent: {
+            id: parent?.id,
+            type: parent?.payment_mode,
+            total_amount: parent?.amount,
+            total_installments: parent?.total_installments
+          },
+          related_transactions: parent?.child_transactions || []
+        };
+      }
+
+      // Se tem recurring_group_id, buscar todas as ocorrências
+      if (transaction.recurring_group_id) {
+        const occurrences = await prisma.transaction.findMany({
+          where: {
+            recurring_group_id: transaction.recurring_group_id,
+            deleted_at: null
+          },
+          orderBy: { occurrence_number: 'asc' }
+        });
+
+        const config = await prisma.recurringConfig.findUnique({
+          where: { id: transaction.recurring_group_id }
+        });
+
+        return {
+          parent: {
+            id: transaction.recurring_group_id,
+            type: 'RECORRENTE',
+            total_amount: transaction.amount,
+            total_installments: config?.total_occurrences
+          },
+          related_transactions: occurrences
+        };
+      }
+
+      // Se tem filhos, é um pai
+      if (transaction.child_transactions && transaction.child_transactions.length > 0) {
+        return {
+          parent: {
+            id: transaction.id,
+            type: transaction.payment_mode,
+            total_amount: transaction.amount,
+            total_installments: transaction.total_installments
+          },
+          related_transactions: transaction.child_transactions
+        };
+      }
+
+      // Transação simples sem relacionamentos
+      return {
+        parent: null,
+        related_transactions: []
+      };
+    } catch (error: any) { throw error; }
+  }
+
+  static async deleteTransactionGroup(groupId: string, mode: 'ALL' | 'FUTURE' | 'ONLY_PENDING') {
+    try {
+      const now = new Date();
+      let whereClause: any = {};
+
+      // Determinar se é uma transação pai ou grupo de recorrência
+      const parentTransaction = await prisma.transaction.findUnique({
+        where: { id: groupId }
+      });
+
+      const recurringConfig = await prisma.recurringConfig.findUnique({
+        where: { id: groupId }
+      });
+
+      if (parentTransaction?.payment_mode === 'PARCELADO') {
+        // Deletar grupo de parcelas
+        switch (mode) {
+          case 'ALL':
+            whereClause = { parent_transaction_id: groupId };
+            break;
+          case 'FUTURE':
+            whereClause = {
+              parent_transaction_id: groupId,
+              effective_date: { gt: now }
+            };
+            break;
+          case 'ONLY_PENDING':
+            whereClause = {
+              parent_transaction_id: groupId,
+              status: 'PENDING'
+            };
+            break;
+        }
+
+        const [updatedCount] = await prisma.$transaction([
+          prisma.transaction.updateMany({
+            where: { ...whereClause, deleted_at: null },
+            data: { deleted_at: now }
+          })
+        ]);
+
+        // Se deletou todas, marcar o pai também
+        if (mode === 'ALL') {
+          await prisma.transaction.update({
+            where: { id: groupId },
+            data: { deleted_at: now }
+          });
+        }
+
+        return { deleted_count: updatedCount.count };
+      }
+
+      if (recurringConfig || parentTransaction?.is_recurring) {
+        const configId = recurringConfig?.id || parentTransaction?.recurring_group_id;
+
+        switch (mode) {
+          case 'ALL':
+            whereClause = { recurring_group_id: configId };
+            break;
+          case 'FUTURE':
+            whereClause = {
+              recurring_group_id: configId,
+              effective_date: { gt: now }
+            };
+            break;
+          case 'ONLY_PENDING':
+            whereClause = {
+              recurring_group_id: configId,
+              status: 'PENDING'
+            };
+            break;
+        }
+
+        const [updatedCount] = await prisma.$transaction([
+          prisma.transaction.updateMany({
+            where: { ...whereClause, deleted_at: null },
+            data: { deleted_at: now }
+          })
+        ]);
+
+        // Se deletou todas, desativar a configuração
+        if (mode === 'ALL' && configId) {
+          await prisma.recurringConfig.update({
+            where: { id: configId },
+            data: { is_active: false, deleted_at: now }
+          });
+        }
+
+        return { deleted_count: updatedCount.count };
+      }
+
+      throw new Error('Group not found or invalid');
     } catch (error: any) { throw error; }
   }
 }

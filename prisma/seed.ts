@@ -253,7 +253,7 @@ async function main() {
     let tenantId = null;
     let start: Date | null = null;
     let end: Date | null = null;
-    let status = LeaseStatus.ACTIVE;
+    let status: LeaseStatus = LeaseStatus.ACTIVE;
     let canceledAt: Date | null = null;
     let penalty: number | null = null;
     let otherAmounts: number | null = null;
@@ -325,7 +325,7 @@ async function main() {
           payment_condition: getRandomElement([
             PaymentCondition.IN_FULL_15_DISCOUNT,
             PaymentCondition.SECOND_INSTALLMENT_10_DISCOUNT,
-            PaymentCondition.INSTALLMENTS_12X
+            PaymentCondition.INSTALLMENTS
           ]),
           cancellation_penalty: penalty,
           other_cancellation_amounts: otherAmounts,
@@ -336,6 +336,37 @@ async function main() {
     }
   }
 
+  console.log('Creating financial institutions...');
+  const institutions = await Promise.all([
+    prisma.financialInstitution.create({ data: { name: 'Banco do Brasil', bank_number: '001', is_active: true } }),
+    prisma.financialInstitution.create({ data: { name: 'Itaú', bank_number: '341', is_active: true } }),
+    prisma.financialInstitution.create({ data: { name: 'Bradesco', bank_number: '237', is_active: true } }),
+    prisma.financialInstitution.create({ data: { name: 'NuBank', bank_number: '260', is_active: true } }),
+    prisma.financialInstitution.create({ data: { name: 'Inter', bank_number: '077', is_active: true } })
+  ]);
+
+  console.log('Creating categories...');
+  const categories = await Promise.all([
+    prisma.category.create({ data: { name: 'Aluguel Recebido', type: 'INCOME', is_active: true } }),
+    prisma.category.create({ data: { name: 'Condomínio', type: 'EXPENSE', is_active: true } }),
+    prisma.category.create({ data: { name: 'IPTU', type: 'EXPENSE', is_active: true } }),
+    prisma.category.create({ data: { name: 'Manutenção', type: 'EXPENSE', is_active: true } }),
+    prisma.category.create({ data: { name: 'Pagamento de Cartão', type: 'EXPENSE', is_active: true, is_system: true } })
+  ]);
+
+  console.log('Creating centers...');
+  const centers = await Promise.all([
+    prisma.center.create({ data: { name: 'Imobiliário', type: 'INCOME', is_active: true } }),
+    prisma.center.create({ data: { name: 'Operacional', type: 'EXPENSE', is_active: true } })
+  ]);
+
+  console.log('Creating credit cards...');
+  const cards = await Promise.all([
+    prisma.card.create({ data: { name: 'Nubank Platinum', brand: 'Mastercard', limit: 10000, closing_day: 5, due_day: 15, is_active: true } }),
+    prisma.card.create({ data: { name: 'Itaú Visa Infinite', brand: 'Visa', limit: 25000, closing_day: 10, due_day: 20, is_active: true } }),
+    prisma.card.create({ data: { name: 'Amex Gold', brand: 'American Express', limit: 15000, closing_day: 3, due_day: 12, is_active: true } })
+  ]);
+
   console.log('Database seeded successfully!');
   console.log(`Summary:`);
   console.log(` - Users: 3`);
@@ -343,6 +374,10 @@ async function main() {
   console.log(` - Owners: ${createdOwners.length}`);
   console.log(` - Tenants: ${createdTenants.length}`);
   console.log(` - Properties: ${createdProperties.length}`);
+  console.log(` - Financial Institutions: ${institutions.length}`);
+  console.log(` - Categories: ${categories.length}`);
+  console.log(` - Centers: ${centers.length}`);
+  console.log(` - Credit Cards: ${cards.length}`);
 }
 
 main()

@@ -206,6 +206,7 @@ export type CategoryWhereInput = {
   created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigListRelationFilter
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
 }
@@ -219,6 +220,7 @@ export type CategoryOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  recurring_configs?: Prisma.RecurringConfigOrderByRelationAggregateInput
   subcategories?: Prisma.SubcategoryOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
 }
@@ -235,6 +237,7 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigListRelationFilter
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
 }, "id">
@@ -276,6 +279,7 @@ export type CategoryCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
 }
@@ -289,6 +293,7 @@ export type CategoryUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
 }
@@ -302,6 +307,7 @@ export type CategoryUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
 }
@@ -315,6 +321,7 @@ export type CategoryUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
 }
@@ -422,6 +429,20 @@ export type CategoryUpdateOneRequiredWithoutTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutTransactionsInput, Prisma.CategoryUpdateWithoutTransactionsInput>, Prisma.CategoryUncheckedUpdateWithoutTransactionsInput>
 }
 
+export type CategoryCreateNestedOneWithoutRecurring_configsInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutRecurring_configsInput, Prisma.CategoryUncheckedCreateWithoutRecurring_configsInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutRecurring_configsInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryUpdateOneRequiredWithoutRecurring_configsNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutRecurring_configsInput, Prisma.CategoryUncheckedCreateWithoutRecurring_configsInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutRecurring_configsInput
+  upsert?: Prisma.CategoryUpsertWithoutRecurring_configsInput
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutRecurring_configsInput, Prisma.CategoryUpdateWithoutRecurring_configsInput>, Prisma.CategoryUncheckedUpdateWithoutRecurring_configsInput>
+}
+
 export type CategoryCreateWithoutSubcategoriesInput = {
   id?: string
   name: string
@@ -431,6 +452,7 @@ export type CategoryCreateWithoutSubcategoriesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
 }
 
@@ -443,6 +465,7 @@ export type CategoryUncheckedCreateWithoutSubcategoriesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
 }
 
@@ -471,6 +494,7 @@ export type CategoryUpdateWithoutSubcategoriesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
 }
 
@@ -483,6 +507,7 @@ export type CategoryUncheckedUpdateWithoutSubcategoriesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
@@ -495,6 +520,7 @@ export type CategoryCreateWithoutTransactionsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
 }
 
@@ -507,6 +533,7 @@ export type CategoryUncheckedCreateWithoutTransactionsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
 }
 
@@ -535,6 +562,7 @@ export type CategoryUpdateWithoutTransactionsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
 }
 
@@ -547,7 +575,76 @@ export type CategoryUncheckedUpdateWithoutTransactionsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryCreateWithoutRecurring_configsInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutRecurring_configsInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutRecurring_configsInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutRecurring_configsInput, Prisma.CategoryUncheckedCreateWithoutRecurring_configsInput>
+}
+
+export type CategoryUpsertWithoutRecurring_configsInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutRecurring_configsInput, Prisma.CategoryUncheckedUpdateWithoutRecurring_configsInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutRecurring_configsInput, Prisma.CategoryUncheckedCreateWithoutRecurring_configsInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutRecurring_configsInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutRecurring_configsInput, Prisma.CategoryUncheckedUpdateWithoutRecurring_configsInput>
+}
+
+export type CategoryUpdateWithoutRecurring_configsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutRecurring_configsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 
@@ -556,11 +653,13 @@ export type CategoryUncheckedUpdateWithoutTransactionsInput = {
  */
 
 export type CategoryCountOutputType = {
+  recurring_configs: number
   subcategories: number
   transactions: number
 }
 
 export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  recurring_configs?: boolean | CategoryCountOutputTypeCountRecurring_configsArgs
   subcategories?: boolean | CategoryCountOutputTypeCountSubcategoriesArgs
   transactions?: boolean | CategoryCountOutputTypeCountTransactionsArgs
 }
@@ -573,6 +672,13 @@ export type CategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the CategoryCountOutputType
    */
   select?: Prisma.CategoryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountRecurring_configsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecurringConfigWhereInput
 }
 
 /**
@@ -599,6 +705,7 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  recurring_configs?: boolean | Prisma.Category$recurring_configsArgs<ExtArgs>
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -639,6 +746,7 @@ export type CategorySelectScalar = {
 
 export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "is_active" | "is_system" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["category"]>
 export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  recurring_configs?: boolean | Prisma.Category$recurring_configsArgs<ExtArgs>
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -649,6 +757,7 @@ export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Category"
   objects: {
+    recurring_configs: Prisma.$RecurringConfigPayload<ExtArgs>[]
     subcategories: Prisma.$SubcategoryPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
@@ -1055,6 +1164,7 @@ readonly fields: CategoryFieldRefs;
  */
 export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  recurring_configs<T extends Prisma.Category$recurring_configsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$recurring_configsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subcategories<T extends Prisma.Category$subcategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$subcategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Category$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1479,6 +1589,30 @@ export type CategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Categories to delete.
    */
   limit?: number
+}
+
+/**
+ * Category.recurring_configs
+ */
+export type Category$recurring_configsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecurringConfig
+   */
+  select?: Prisma.RecurringConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecurringConfig
+   */
+  omit?: Prisma.RecurringConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecurringConfigInclude<ExtArgs> | null
+  where?: Prisma.RecurringConfigWhereInput
+  orderBy?: Prisma.RecurringConfigOrderByWithRelationInput | Prisma.RecurringConfigOrderByWithRelationInput[]
+  cursor?: Prisma.RecurringConfigWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecurringConfigScalarFieldEnum | Prisma.RecurringConfigScalarFieldEnum[]
 }
 
 /**

@@ -75,7 +75,9 @@ export const ModelName = {
   Center: 'Center',
   Supplier: 'Supplier',
   SupplierAddress: 'SupplierAddress',
-  Transaction: 'Transaction'
+  Transaction: 'Transaction',
+  Invoice: 'Invoice',
+  RecurringConfig: 'RecurringConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -177,10 +179,10 @@ export const DocumentScalarFieldEnum = {
   file_type: 'file_type',
   description: 'description',
   type: 'type',
-  is_featured: 'is_featured',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  is_featured: 'is_featured'
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -234,25 +236,25 @@ export const LeaseScalarFieldEnum = {
   rent_amount: 'rent_amount',
   condo_fee: 'condo_fee',
   property_tax: 'property_tax',
-  property_tax_cash: 'property_tax_cash',
-  property_tax_first_installment: 'property_tax_first_installment',
-  property_tax_second_installment: 'property_tax_second_installment',
-  iptu_installments_count: 'iptu_installments_count',
-  iptu_installments: 'iptu_installments',
   extra_charges: 'extra_charges',
   commission_amount: 'commission_amount',
   rent_due_day: 'rent_due_day',
   tax_due_day: 'tax_due_day',
   condo_due_day: 'condo_due_day',
-  status: 'status',
-  payment_condition: 'payment_condition',
-  cancellation_penalty: 'cancellation_penalty',
-  other_cancellation_amounts: 'other_cancellation_amounts',
-  cancellation_justification: 'cancellation_justification',
-  canceled_at: 'canceled_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  canceled_at: 'canceled_at',
+  cancellation_justification: 'cancellation_justification',
+  cancellation_penalty: 'cancellation_penalty',
+  other_cancellation_amounts: 'other_cancellation_amounts',
+  status: 'status',
+  payment_condition: 'payment_condition',
+  property_tax_cash: 'property_tax_cash',
+  property_tax_second_installment: 'property_tax_second_installment',
+  iptu_installments: 'iptu_installments',
+  iptu_installments_count: 'iptu_installments_count',
+  property_tax_first_installment: 'property_tax_first_installment'
 } as const
 
 export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof LeaseScalarFieldEnum]
@@ -261,8 +263,6 @@ export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof Le
 export const PropertyValueScalarFieldEnum = {
   id: 'id',
   property_id: 'property_id',
-  sale_date: 'sale_date',
-  purchase_date: 'purchase_date',
   purchase_value: 'purchase_value',
   rental_value: 'rental_value',
   condo_fee: 'condo_fee',
@@ -273,7 +273,9 @@ export const PropertyValueScalarFieldEnum = {
   updated_at: 'updated_at',
   deleted_at: 'deleted_at',
   extra_charges: 'extra_charges',
-  sale_value: 'sale_value'
+  sale_value: 'sale_value',
+  sale_date: 'sale_date',
+  purchase_date: 'purchase_date'
 } as const
 
 export type PropertyValueScalarFieldEnum = (typeof PropertyValueScalarFieldEnum)[keyof typeof PropertyValueScalarFieldEnum]
@@ -295,18 +297,18 @@ export const AddressScalarFieldEnum = {
   zip_code: 'zip_code',
   street: 'street',
   number: 'number',
-  complement: 'complement',
-  block: 'block',
-  lot: 'lot',
   district: 'district',
   city: 'city',
   state: 'state',
   country: 'country',
-  latitude: 'latitude',
-  longitude: 'longitude',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  block: 'block',
+  complement: 'complement',
+  lot: 'lot',
+  latitude: 'latitude',
+  longitude: 'longitude'
 } as const
 
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
@@ -393,13 +395,13 @@ export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)
 export const FinancialInstitutionScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  bank_number: 'bank_number',
-  agency_number: 'agency_number',
-  account_number: 'account_number',
   created_at: 'created_at',
-  is_active: 'is_active',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  is_active: 'is_active',
+  account_number: 'account_number',
+  agency_number: 'agency_number',
+  bank_number: 'bank_number'
 } as const
 
 export type FinancialInstitutionScalarFieldEnum = (typeof FinancialInstitutionScalarFieldEnum)[keyof typeof FinancialInstitutionScalarFieldEnum]
@@ -436,12 +438,14 @@ export const CardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   limit: 'limit',
-  closing_day: 'closing_day',
-  due_day: 'due_day',
   is_active: 'is_active',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  closing_day: 'closing_day',
+  due_day: 'due_day',
+  brand: 'brand',
+  current_balance: 'current_balance'
 } as const
 
 export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
@@ -466,15 +470,15 @@ export const SupplierScalarFieldEnum = {
   legal_name: 'legal_name',
   trade_name: 'trade_name',
   cnpj: 'cnpj',
-  cpf: 'cpf',
-  internal_code: 'internal_code',
-  occupation: 'occupation',
-  marital_status: 'marital_status',
   state_registration: 'state_registration',
   municipal_registration: 'municipal_registration',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  cpf: 'cpf',
+  internal_code: 'internal_code',
+  marital_status: 'marital_status',
+  occupation: 'occupation'
 } as const
 
 export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
@@ -506,10 +510,65 @@ export const TransactionScalarFieldEnum = {
   center_id: 'center_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  supplier_id: 'supplier_id',
+  installment_number: 'installment_number',
+  is_recurring: 'is_recurring',
+  occurrence_number: 'occurrence_number',
+  parent_transaction_id: 'parent_transaction_id',
+  payment_mode: 'payment_mode',
+  recurring_frequency: 'recurring_frequency',
+  recurring_group_id: 'recurring_group_id',
+  total_installments: 'total_installments',
+  invoice_id: 'invoice_id'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  card_id: 'card_id',
+  month: 'month',
+  year: 'year',
+  total_amount: 'total_amount',
+  status: 'status',
+  closing_date: 'closing_date',
+  due_date: 'due_date',
+  paid_date: 'paid_date',
+  paid_amount: 'paid_amount',
+  institution_id: 'institution_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const RecurringConfigScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  amount: 'amount',
+  frequency: 'frequency',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
+  financial_institution_id: 'financial_institution_id',
+  card_id: 'card_id',
+  center_id: 'center_id',
+  supplier_id: 'supplier_id',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  next_generation_date: 'next_generation_date',
+  is_active: 'is_active',
+  total_occurrences: 'total_occurrences',
+  generated_occurrences: 'generated_occurrences',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldEnum)[keyof typeof RecurringConfigScalarFieldEnum]
 
 
 export const SortOrder = {

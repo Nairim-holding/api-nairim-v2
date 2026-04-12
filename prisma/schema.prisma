@@ -7,10 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// ==========================================
-// MÓDULO IMOBILIÁRIO E BASE
-// ==========================================
-
 model Agency {
   id                     String          @id @default(uuid())
   trade_name             String
@@ -22,7 +18,6 @@ model Agency {
   created_at             DateTime        @default(now())
   updated_at             DateTime        @updatedAt
   deleted_at             DateTime?
-  
   addresses              AgencyAddress[]
   contacts               Contact[]
   properties             Property[]
@@ -50,7 +45,6 @@ model Property {
   created_at       DateTime          @default(now())
   updated_at       DateTime          @updatedAt
   deleted_at       DateTime?
-  
   documents        Document[]
   favorites        Favorite[]
   leases           Lease[]
@@ -58,8 +52,8 @@ model Property {
   owner            Owner             @relation(fields: [owner_id], references: [id])
   type             PropertyType      @relation(fields: [type_id], references: [id])
   addresses        PropertyAddress[]
+  iptus            PropertyIptu[]
   values           PropertyValue[]
-  iptus            PropertyIptu[]   
 
   @@index([owner_id])
   @@index([agency_id])
@@ -68,23 +62,19 @@ model Property {
 model PropertyIptu {
   id                              String            @id @default(uuid())
   property_id                     String
-  year                            Int              
-  
+  year                            Int
   property_tax_cash               Decimal?          @db.Decimal(20, 2)
   property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
   property_tax_second_installment Decimal?          @db.Decimal(20, 2)
   iptu_installments_count         Int?
   iptu_installments               Json?
-  
   payment_condition               PaymentCondition?
-  
   created_at                      DateTime          @default(now())
   updated_at                      DateTime          @updatedAt
   deleted_at                      DateTime?
-
   property                        Property          @relation(fields: [property_id], references: [id])
 
-  @@unique([property_id, year]) // Garante que não tenha dois registros pro mesmo ano no mesmo imóvel
+  @@unique([property_id, year])
   @@index([property_id])
 }
 
@@ -99,7 +89,6 @@ model User {
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
   deleted_at DateTime?
-  
   documents  Document[]
   favorites  Favorite[]
 
@@ -114,11 +103,10 @@ model Document {
   file_type   String
   description String?
   type        DocumentType
-  is_featured Boolean      @default(false)
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
   deleted_at  DateTime?
-  
+  is_featured Boolean      @default(false)
   user        User         @relation(fields: [created_by], references: [id])
   property    Property     @relation(fields: [property_id], references: [id])
 
@@ -138,7 +126,6 @@ model Owner {
   deleted_at             DateTime?
   municipal_registration String?
   state_registration     String?
-  
   contacts               Contact[]
   leases                 Lease[]
   addresses              OwnerAddress[]
@@ -161,7 +148,6 @@ model Tenant {
   deleted_at             DateTime?
   municipal_registration String?
   state_registration     String?
-  
   contacts               Contact[]
   leases                 Lease[]
   addresses              TenantAddress[]
@@ -182,28 +168,25 @@ model Lease {
   rent_amount                     Decimal           @db.Decimal(20, 2)
   condo_fee                       Decimal?          @db.Decimal(20, 2)
   property_tax                    Decimal?          @db.Decimal(20, 2)
-  
-  property_tax_cash               Decimal?     @db.Decimal(20, 2)
-  property_tax_first_installment  Decimal?     @db.Decimal(20, 2)
-  property_tax_second_installment Decimal?     @db.Decimal(20, 2)
-  iptu_installments_count         Int?
-  iptu_installments               Json?
-
   extra_charges                   Decimal?          @db.Decimal(20, 2)
   commission_amount               Decimal?          @db.Decimal(20, 2)
   rent_due_day                    Int
   tax_due_day                     Int?
   condo_due_day                   Int?
-  status                          LeaseStatus       @default(ACTIVE)
-  payment_condition               PaymentCondition?
-  cancellation_penalty            Decimal?          @db.Decimal(20, 2)
-  other_cancellation_amounts      Decimal?          @db.Decimal(20, 2)
-  cancellation_justification      String?
-  canceled_at                     DateTime?
   created_at                      DateTime          @default(now())
   updated_at                      DateTime          @updatedAt
   deleted_at                      DateTime?
-  
+  canceled_at                     DateTime?
+  cancellation_justification      String?
+  cancellation_penalty            Decimal?          @db.Decimal(20, 2)
+  other_cancellation_amounts      Decimal?          @db.Decimal(20, 2)
+  status                          LeaseStatus       @default(ACTIVE)
+  payment_condition               PaymentCondition?
+  property_tax_cash               Decimal?          @db.Decimal(20, 2)
+  property_tax_second_installment Decimal?          @db.Decimal(20, 2)
+  iptu_installments               Json?
+  iptu_installments_count         Int?
+  property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
   owner                           Owner             @relation(fields: [owner_id], references: [id])
   property                        Property          @relation(fields: [property_id], references: [id])
   tenant                          Tenant            @relation(fields: [tenant_id], references: [id])
@@ -216,8 +199,6 @@ model Lease {
 model PropertyValue {
   id             String         @id @default(uuid())
   property_id    String
-  sale_date      DateTime?      @db.Date
-  purchase_date  DateTime?      @db.Date
   purchase_value Decimal?       @db.Decimal(20, 2)
   rental_value   Decimal        @db.Decimal(20, 2)
   condo_fee      Decimal        @db.Decimal(20, 2)
@@ -229,7 +210,8 @@ model PropertyValue {
   deleted_at     DateTime?
   extra_charges  Decimal?       @db.Decimal(20, 2)
   sale_value     Decimal?       @db.Decimal(20, 2)
-  
+  sale_date      DateTime?      @db.Date
+  purchase_date  DateTime?      @db.Date
   property       Property       @relation(fields: [property_id], references: [id])
 
   @@index([property_id])
@@ -241,7 +223,6 @@ model PropertyType {
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   deleted_at  DateTime?
-  
   leases      Lease[]
   properties  Property[]
 }
@@ -251,24 +232,23 @@ model Address {
   zip_code          String            @db.VarChar(10)
   street            String
   number            String
-  complement        String?
-  block             String?
-  lot               String?
   district          String
   city              String
   state             String
   country           String
-  latitude          Float?
-  longitude         Float?
   created_at        DateTime          @default(now())
   updated_at        DateTime          @updatedAt
   deleted_at        DateTime?
-  
+  block             String?
+  complement        String?
+  lot               String?
+  latitude          Float?
+  longitude         Float?
   agencyAddresses   AgencyAddress[]
   ownerAddresses    OwnerAddress[]
   propertyAddresses PropertyAddress[]
+  supplierAddresses SupplierAddress[]
   tenantAddresses   TenantAddress[]
-  supplierAddresses SupplierAddress[] 
 }
 
 model Contact {
@@ -280,16 +260,14 @@ model Contact {
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
   cellphone   String?
-  
   agency_id   String?
   owner_id    String?
   tenant_id   String?
-  supplier_id String?   
-  
+  supplier_id String?
   agency      Agency?   @relation(fields: [agency_id], references: [id])
   owner       Owner?    @relation(fields: [owner_id], references: [id])
+  supplier    Supplier? @relation(fields: [supplier_id], references: [id])
   tenant      Tenant?   @relation(fields: [tenant_id], references: [id])
-  supplier    Supplier? @relation(fields: [supplier_id], references: [id]) 
 
   @@index([agency_id])
   @@index([owner_id])
@@ -304,7 +282,6 @@ model Favorite {
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
-  
   property    Property  @relation(fields: [property_id], references: [id])
   user        User      @relation(fields: [user_id], references: [id])
 
@@ -318,7 +295,6 @@ model AgencyAddress {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  
   address    Address   @relation(fields: [address_id], references: [id])
   agency     Agency    @relation(fields: [agency_id], references: [id])
 }
@@ -330,7 +306,6 @@ model PropertyAddress {
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
-  
   address     Address   @relation(fields: [address_id], references: [id])
   property    Property  @relation(fields: [property_id], references: [id])
 }
@@ -342,7 +317,6 @@ model OwnerAddress {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  
   address    Address   @relation(fields: [address_id], references: [id])
   owner      Owner     @relation(fields: [owner_id], references: [id])
 }
@@ -354,83 +328,80 @@ model TenantAddress {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  
   address    Address   @relation(fields: [address_id], references: [id])
   tenant     Tenant    @relation(fields: [tenant_id], references: [id])
 }
 
-
-// ==========================================
-// MÓDULO FINANCEIRO
-// ==========================================
-
 model FinancialInstitution {
-  id             String        @id @default(uuid())
-  name           String
-  bank_number    String?       @db.VarChar(20)
-  agency_number  String?       @db.VarChar(20) 
-  account_number String?       @db.VarChar(50)
-  created_at     DateTime      @default(now())
-  is_active    Boolean       @default(true)
-  updated_at     DateTime      @updatedAt
-  deleted_at     DateTime?
-
-  transactions Transaction[]
+  id                String            @id @default(uuid())
+  name              String
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  is_active         Boolean           @default(true)
+  account_number    String?           @db.VarChar(50)
+  agency_number     String?           @db.VarChar(20)
+  bank_number       String?           @db.VarChar(20)
+  recurring_configs RecurringConfig[]
+  transactions      Transaction[]
 }
 
 model Category {
-  id         String          @id @default(uuid())
-  name       String
-  type       TransactionType
-  is_active  Boolean         @default(true)
-  is_system  Boolean         @default(false)
-  created_at DateTime        @default(now())
-  updated_at DateTime        @updatedAt
-  deleted_at DateTime?
-
-  subcategories Subcategory[]
-  transactions  Transaction[]
+  id                String            @id @default(uuid())
+  name              String
+  type              TransactionType
+  is_active         Boolean           @default(true)
+  is_system         Boolean           @default(false)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  recurring_configs RecurringConfig[]
+  subcategories     Subcategory[]
+  transactions      Transaction[]
 }
 
 model Subcategory {
-  id          String   @id @default(uuid())
-  category_id String
-  name        String
-  is_active   Boolean  @default(true)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  deleted_at  DateTime?
-
-  category     Category      @relation(fields: [category_id], references: [id])
-  transactions Transaction[]
+  id                String            @id @default(uuid())
+  category_id       String
+  name              String
+  is_active         Boolean           @default(true)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  recurring_configs RecurringConfig[]
+  category          Category          @relation(fields: [category_id], references: [id])
+  transactions      Transaction[]
 
   @@index([category_id])
 }
 
 model Card {
-  id          String        @id @default(uuid())
-  name        String
-  limit       Decimal?      @db.Decimal(20, 2)
-  closing_day Int?          
-  due_day     Int?          
-  is_active   Boolean       @default(true)
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  deleted_at  DateTime?
-
-  transactions Transaction[]
+  id                String            @id @default(uuid())
+  name              String
+  limit             Decimal           @default(0) @db.Decimal(20, 2)
+  is_active         Boolean           @default(true)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  closing_day       Int?
+  due_day           Int?
+  brand             String            @default("Outro")
+  current_balance   Decimal           @default(0) @db.Decimal(20, 2)
+  recurring_configs RecurringConfig[]
+  transactions      Transaction[]
+  invoices          Invoice[]
 }
 
 model Center {
-  id         String          @id @default(uuid())
-  name       String
-  type       TransactionType
-  is_active  Boolean         @default(true)
-  created_at DateTime        @default(now())
-  updated_at DateTime        @updatedAt
-  deleted_at DateTime?
-
-  transactions Transaction[]
+  id                String            @id @default(uuid())
+  name              String
+  type              TransactionType
+  is_active         Boolean           @default(true)
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deleted_at        DateTime?
+  recurring_configs RecurringConfig[]
+  transactions      Transaction[]
 }
 
 model Supplier {
@@ -439,73 +410,146 @@ model Supplier {
   legal_name             String
   trade_name             String?
   cnpj                   String?           @db.VarChar(20)
-  cpf                    String?           @db.VarChar(14)
-  internal_code          String?           @unique 
-  occupation             String?                   
-  marital_status         String?                   
   state_registration     String?
   municipal_registration String?
   created_at             DateTime          @default(now())
   updated_at             DateTime          @updatedAt
   deleted_at             DateTime?
-
+  cpf                    String?           @db.VarChar(14)
+  internal_code          String?           @unique
+  marital_status         String?
+  occupation             String?
   contacts               Contact[]
+  recurring_configs      RecurringConfig[]
   addresses              SupplierAddress[]
+  transactions           Transaction[]
 
   @@index([cnpj])
   @@index([cpf])
 }
 
 model SupplierAddress {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   supplier_id String
   address_id  String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
-
-  address     Address  @relation(fields: [address_id], references: [id])
-  supplier    Supplier @relation(fields: [supplier_id], references: [id])
+  address     Address   @relation(fields: [address_id], references: [id])
+  supplier    Supplier  @relation(fields: [supplier_id], references: [id])
 
   @@index([supplier_id])
   @@index([address_id])
 }
 
 model Transaction {
-  id                       String            @id @default(uuid())
-  event_date               DateTime          @db.Date
-  effective_date           DateTime          @db.Date
-  description              String            @db.Text
-  amount                   Decimal           @db.Decimal(20, 2)
-  status                   TransactionStatus @default(PENDING)
-  
+  id                       String               @id @default(uuid())
+  event_date               DateTime             @db.Date
+  effective_date           DateTime             @db.Date
+  description              String
+  amount                   Decimal              @db.Decimal(20, 2)
+  status                   TransactionStatus    @default(PENDING)
   category_id              String
   subcategory_id           String?
   financial_institution_id String
   card_id                  String?
   center_id                String?
-  
-  created_at               DateTime          @default(now())
-  updated_at               DateTime          @updatedAt
+  created_at               DateTime             @default(now())
+  updated_at               DateTime             @updatedAt
   deleted_at               DateTime?
-
-  category                 Category              @relation(fields: [category_id], references: [id])
-  subcategory              Subcategory?          @relation(fields: [subcategory_id], references: [id])
-  financial_institution    FinancialInstitution  @relation(fields: [financial_institution_id], references: [id])
-  card                     Card?                 @relation(fields: [card_id], references: [id])
-  center                   Center?               @relation(fields: [center_id], references: [id])
+  supplier_id              String?
+  installment_number       Int?
+  is_recurring             Boolean              @default(false)
+  occurrence_number        Int?
+  parent_transaction_id    String?
+  payment_mode             PaymentMode?
+  recurring_frequency      RecurringFrequency?
+  recurring_group_id       String?
+  total_installments       Int?
+  invoice_id               String?
+  card                     Card?                @relation(fields: [card_id], references: [id])
+  category                 Category             @relation(fields: [category_id], references: [id])
+  center                   Center?              @relation(fields: [center_id], references: [id])
+  financial_institution    FinancialInstitution @relation(fields: [financial_institution_id], references: [id])
+  invoice                  Invoice?             @relation(fields: [invoice_id], references: [id])
+  parent_transaction       Transaction?         @relation("TransactionToChildren", fields: [parent_transaction_id], references: [id])
+  child_transactions       Transaction[]        @relation("TransactionToChildren")
+  recurring_config         RecurringConfig?     @relation(fields: [recurring_group_id], references: [id])
+  subcategory              Subcategory?         @relation(fields: [subcategory_id], references: [id])
+  supplier                 Supplier?            @relation(fields: [supplier_id], references: [id])
 
   @@index([category_id])
   @@index([subcategory_id])
   @@index([financial_institution_id])
   @@index([card_id])
   @@index([center_id])
+  @@index([supplier_id])
+  @@index([parent_transaction_id])
+  @@index([recurring_group_id])
+  @@index([payment_mode])
+  @@index([invoice_id])
 }
 
+model Invoice {
+  id           String        @id @default(uuid())
+  card_id      String
+  month        Int
+  year         Int
+  total_amount Decimal       @default(0) @db.Decimal(20, 2)
+  status       TransactionStatus @default(PENDING)
+  closing_date DateTime?     @db.Date
+  due_date     DateTime?     @db.Date
+  paid_date    DateTime?     @db.Date
+  paid_amount  Decimal       @default(0) @db.Decimal(20, 2)
+  institution_id String?
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  deleted_at   DateTime?
+  transactions Transaction[]
+  card           Card          @relation(fields: [card_id], references: [id])
 
-// ==========================================
-// ENUMS
-// ==========================================
+  @@unique([card_id, month, year])
+  @@index([card_id])
+  @@index([status])
+  @@map("invoices")
+}
+
+model RecurringConfig {
+  id                       String               @id @default(uuid())
+  description              String
+  amount                   Decimal              @db.Decimal(20, 2)
+  frequency                RecurringFrequency
+  category_id              String
+  subcategory_id           String?
+  financial_institution_id String
+  card_id                  String?
+  center_id                String?
+  supplier_id              String?
+  start_date               DateTime             @db.Date
+  end_date                 DateTime?            @db.Date
+  next_generation_date     DateTime?            @db.Date
+  is_active                Boolean              @default(true)
+  total_occurrences        Int?
+  generated_occurrences    Int                  @default(0)
+  created_at               DateTime             @default(now())
+  updated_at               DateTime             @updatedAt
+  deleted_at               DateTime?
+  card                     Card?                @relation(fields: [card_id], references: [id])
+  category                 Category             @relation(fields: [category_id], references: [id])
+  center                   Center?              @relation(fields: [center_id], references: [id])
+  financial_institution    FinancialInstitution @relation(fields: [financial_institution_id], references: [id])
+  subcategory              Subcategory?         @relation(fields: [subcategory_id], references: [id])
+  supplier                 Supplier?            @relation(fields: [supplier_id], references: [id])
+  transactions             Transaction[]
+
+  @@index([category_id])
+  @@index([subcategory_id])
+  @@index([financial_institution_id])
+  @@index([card_id])
+  @@index([center_id])
+  @@index([supplier_id])
+  @@index([is_active])
+}
 
 enum Gender {
   MALE
@@ -552,4 +596,16 @@ enum TransactionType {
 enum TransactionStatus {
   PENDING
   COMPLETED
+}
+
+enum PaymentMode {
+  PARCELADO
+  RECORRENTE
+}
+
+enum RecurringFrequency {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
 }

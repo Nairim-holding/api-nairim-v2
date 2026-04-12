@@ -78,3 +78,21 @@ export const TransactionStatus = {
 } as const
 
 export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
+export const PaymentMode = {
+  PARCELADO: 'PARCELADO',
+  RECORRENTE: 'RECORRENTE'
+} as const
+
+export type PaymentMode = (typeof PaymentMode)[keyof typeof PaymentMode]
+
+
+export const RecurringFrequency = {
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  YEARLY: 'YEARLY'
+} as const
+
+export type RecurringFrequency = (typeof RecurringFrequency)[keyof typeof RecurringFrequency]

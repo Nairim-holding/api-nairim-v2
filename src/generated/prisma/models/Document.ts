@@ -32,10 +32,10 @@ export type DocumentMinAggregateOutputType = {
   file_type: string | null
   description: string | null
   type: $Enums.DocumentType | null
-  is_featured: boolean | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  is_featured: boolean | null
 }
 
 export type DocumentMaxAggregateOutputType = {
@@ -46,10 +46,10 @@ export type DocumentMaxAggregateOutputType = {
   file_type: string | null
   description: string | null
   type: $Enums.DocumentType | null
-  is_featured: boolean | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  is_featured: boolean | null
 }
 
 export type DocumentCountAggregateOutputType = {
@@ -60,10 +60,10 @@ export type DocumentCountAggregateOutputType = {
   file_type: number
   description: number
   type: number
-  is_featured: number
   created_at: number
   updated_at: number
   deleted_at: number
+  is_featured: number
   _all: number
 }
 
@@ -76,10 +76,10 @@ export type DocumentMinAggregateInputType = {
   file_type?: true
   description?: true
   type?: true
-  is_featured?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  is_featured?: true
 }
 
 export type DocumentMaxAggregateInputType = {
@@ -90,10 +90,10 @@ export type DocumentMaxAggregateInputType = {
   file_type?: true
   description?: true
   type?: true
-  is_featured?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  is_featured?: true
 }
 
 export type DocumentCountAggregateInputType = {
@@ -104,10 +104,10 @@ export type DocumentCountAggregateInputType = {
   file_type?: true
   description?: true
   type?: true
-  is_featured?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  is_featured?: true
   _all?: true
 }
 
@@ -191,10 +191,10 @@ export type DocumentGroupByOutputType = {
   file_type: string
   description: string | null
   type: $Enums.DocumentType
-  is_featured: boolean
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+  is_featured: boolean
   _count: DocumentCountAggregateOutputType | null
   _min: DocumentMinAggregateOutputType | null
   _max: DocumentMaxAggregateOutputType | null
@@ -226,10 +226,10 @@ export type DocumentWhereInput = {
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
   type?: Prisma.EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-  is_featured?: Prisma.BoolFilter<"Document"> | boolean
   created_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
+  is_featured?: Prisma.BoolFilter<"Document"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }
@@ -242,10 +242,10 @@ export type DocumentOrderByWithRelationInput = {
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
-  is_featured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_featured?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   property?: Prisma.PropertyOrderByWithRelationInput
 }
@@ -261,10 +261,10 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
   type?: Prisma.EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-  is_featured?: Prisma.BoolFilter<"Document"> | boolean
   created_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
+  is_featured?: Prisma.BoolFilter<"Document"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }, "id">
@@ -277,10 +277,10 @@ export type DocumentOrderByWithAggregationInput = {
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
-  is_featured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_featured?: Prisma.SortOrder
   _count?: Prisma.DocumentCountOrderByAggregateInput
   _max?: Prisma.DocumentMaxOrderByAggregateInput
   _min?: Prisma.DocumentMinOrderByAggregateInput
@@ -297,10 +297,10 @@ export type DocumentScalarWhereWithAggregatesInput = {
   file_type?: Prisma.StringWithAggregatesFilter<"Document"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   type?: Prisma.EnumDocumentTypeWithAggregatesFilter<"Document"> | $Enums.DocumentType
-  is_featured?: Prisma.BoolWithAggregatesFilter<"Document"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
+  is_featured?: Prisma.BoolWithAggregatesFilter<"Document"> | boolean
 }
 
 export type DocumentCreateInput = {
@@ -309,10 +309,10 @@ export type DocumentCreateInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
   user: Prisma.UserCreateNestedOneWithoutDocumentsInput
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
 }
@@ -325,10 +325,10 @@ export type DocumentUncheckedCreateInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentUpdateInput = {
@@ -337,10 +337,10 @@ export type DocumentUpdateInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
 }
@@ -353,10 +353,10 @@ export type DocumentUncheckedUpdateInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentCreateManyInput = {
@@ -367,10 +367,10 @@ export type DocumentCreateManyInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentUpdateManyMutationInput = {
@@ -379,10 +379,10 @@ export type DocumentUpdateManyMutationInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentUncheckedUpdateManyInput = {
@@ -393,10 +393,10 @@ export type DocumentUncheckedUpdateManyInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentListRelationFilter = {
@@ -417,10 +417,10 @@ export type DocumentCountOrderByAggregateInput = {
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  is_featured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  is_featured?: Prisma.SortOrder
 }
 
 export type DocumentMaxOrderByAggregateInput = {
@@ -431,10 +431,10 @@ export type DocumentMaxOrderByAggregateInput = {
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  is_featured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  is_featured?: Prisma.SortOrder
 }
 
 export type DocumentMinOrderByAggregateInput = {
@@ -445,10 +445,10 @@ export type DocumentMinOrderByAggregateInput = {
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  is_featured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  is_featured?: Prisma.SortOrder
 }
 
 export type DocumentCreateNestedManyWithoutPropertyInput = {
@@ -545,10 +545,10 @@ export type DocumentCreateWithoutPropertyInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
   user: Prisma.UserCreateNestedOneWithoutDocumentsInput
 }
 
@@ -559,10 +559,10 @@ export type DocumentUncheckedCreateWithoutPropertyInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentCreateOrConnectWithoutPropertyInput = {
@@ -602,10 +602,10 @@ export type DocumentScalarWhereInput = {
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
   type?: Prisma.EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-  is_featured?: Prisma.BoolFilter<"Document"> | boolean
   created_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
+  is_featured?: Prisma.BoolFilter<"Document"> | boolean
 }
 
 export type DocumentCreateWithoutUserInput = {
@@ -614,10 +614,10 @@ export type DocumentCreateWithoutUserInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
 }
 
@@ -628,10 +628,10 @@ export type DocumentUncheckedCreateWithoutUserInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentCreateOrConnectWithoutUserInput = {
@@ -667,10 +667,10 @@ export type DocumentCreateManyPropertyInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentUpdateWithoutPropertyInput = {
@@ -679,10 +679,10 @@ export type DocumentUpdateWithoutPropertyInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
@@ -693,10 +693,10 @@ export type DocumentUncheckedUpdateWithoutPropertyInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentUncheckedUpdateManyWithoutPropertyInput = {
@@ -706,10 +706,10 @@ export type DocumentUncheckedUpdateManyWithoutPropertyInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentCreateManyUserInput = {
@@ -719,10 +719,10 @@ export type DocumentCreateManyUserInput = {
   file_type: string
   description?: string | null
   type: $Enums.DocumentType
-  is_featured?: boolean
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_featured?: boolean
 }
 
 export type DocumentUpdateWithoutUserInput = {
@@ -731,10 +731,10 @@ export type DocumentUpdateWithoutUserInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
@@ -745,10 +745,10 @@ export type DocumentUncheckedUpdateWithoutUserInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DocumentUncheckedUpdateManyWithoutUserInput = {
@@ -758,10 +758,10 @@ export type DocumentUncheckedUpdateManyWithoutUserInput = {
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -774,10 +774,10 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   file_type?: boolean
   description?: boolean
   type?: boolean
-  is_featured?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  is_featured?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
@@ -790,10 +790,10 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   file_type?: boolean
   description?: boolean
   type?: boolean
-  is_featured?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  is_featured?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
@@ -806,10 +806,10 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   file_type?: boolean
   description?: boolean
   type?: boolean
-  is_featured?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  is_featured?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
@@ -822,13 +822,13 @@ export type DocumentSelectScalar = {
   file_type?: boolean
   description?: boolean
   type?: boolean
-  is_featured?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  is_featured?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "created_by" | "file_path" | "file_type" | "description" | "type" | "is_featured" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "created_by" | "file_path" | "file_type" | "description" | "type" | "created_at" | "updated_at" | "deleted_at" | "is_featured", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
@@ -856,10 +856,10 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     file_type: string
     description: string | null
     type: $Enums.DocumentType
-    is_featured: boolean
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
+    is_featured: boolean
   }, ExtArgs["result"]["document"]>
   composites: {}
 }
@@ -1292,10 +1292,10 @@ export interface DocumentFieldRefs {
   readonly file_type: Prisma.FieldRef<"Document", 'String'>
   readonly description: Prisma.FieldRef<"Document", 'String'>
   readonly type: Prisma.FieldRef<"Document", 'DocumentType'>
-  readonly is_featured: Prisma.FieldRef<"Document", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"Document", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Document", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Document", 'DateTime'>
+  readonly is_featured: Prisma.FieldRef<"Document", 'Boolean'>
 }
     
 
