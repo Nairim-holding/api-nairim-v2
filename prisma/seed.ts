@@ -6,7 +6,6 @@ import {
   Gender,
   Role,
   PropertyStatus,
-  DocumentType,
   Owner,
   Agency,
   Tenant,
@@ -60,21 +59,36 @@ function generateRandomAddressData() {
   };
 }
 
+async function createInBatches<T>(
+  createFn: (items: any[]) => Promise<T[]>,
+  items: any[],
+  batchSize: number = 100
+): Promise<T[]> {
+  const results: T[] = [];
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await createFn(batch);
+    results.push(...batchResults);
+    console.log(`  Created ${Math.min(i + batchSize, items.length)}/${items.length} items...`);
+  }
+  return results;
+}
+
 async function main() {
   console.log('Cleaning database...');
 
   await prisma.contact.deleteMany();
-  
+
   await prisma.agencyAddress.deleteMany();
   await prisma.propertyAddress.deleteMany();
   await prisma.ownerAddress.deleteMany();
   await prisma.tenantAddress.deleteMany();
-  
+
   await prisma.favorite.deleteMany();
   await prisma.document.deleteMany();
   await prisma.propertyValue.deleteMany();
   await prisma.lease.deleteMany();
-  
+
   await prisma.property.deleteMany();
   await prisma.tenant.deleteMany();
   await prisma.owner.deleteMany();
@@ -83,49 +97,59 @@ async function main() {
   await prisma.address.deleteMany();
   await prisma.user.deleteMany();
 
-  console.log('Seeding database with FULL COMPLETE data...');
+  console.log('Seeding database with 10K+ records...');
 
   const passwordHash = await bcrypt.hash('admin123', 10);
   const endDate = new Date();
   const startDate = new Date();
   startDate.setFullYear(startDate.getFullYear() - 2);
 
-  console.log('Creating users...');
-  const adminUser = await prisma.user.create({
+  console.log('Creating 10,000+ users...');
+  await prisma.user.create({
     data: { name: 'Admin Nairim', email: 'admin@nairim.com', password: passwordHash, birth_date: new Date('1990-01-01'), gender: Gender.OTHER, role: Role.ADMIN }
   });
-  
-  await prisma.user.create({ data: { name: 'Corretor João', email: 'joao@nairim.com', password: passwordHash, birth_date: new Date('1985-05-15'), gender: Gender.MALE, role: Role.DEFAULT } });
-  await prisma.user.create({ data: { name: 'Corretora Maria', email: 'maria@nairim.com', password: passwordHash, birth_date: new Date('1992-10-20'), gender: Gender.FEMALE, role: Role.DEFAULT } });
+
+  const usersToCreate = [];
+  for (let i = 0; i < 10000; i++) {
+    usersToCreate.push({
+      name: `User ${i + 1}`,
+      email: `user${i + 1}@nairim.com`,
+      password: passwordHash,
+      birth_date: getRandomDate(new Date('1960-01-01'), new Date('2005-12-31')),
+      gender: getRandomElement([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
+      role: Math.random() > 0.9 ? Role.ADMIN : Role.DEFAULT
+    });
+  }
+
+  const createdUsers = await createInBatches(
+    (items) => Promise.all(items.map(item => prisma.user.create({ data: item }))),
+    usersToCreate,
+    500
+  );
 
   console.log('Creating property types...');
   const types = ['Apartamento', 'Casa', 'Cobertura', 'Sala Comercial', 'Galpão', 'Terreno'];
-  
+
   const createdTypes: PropertyType[] = await Promise.all(
     types.map(desc => prisma.propertyType.create({ data: { description: desc } }))
   );
 
-  console.log('Creating agencies...');
-  const agenciesList = [
-    { name: 'Nairim Imóveis', legal: 'Nairim Negócios LTDA' },
-    { name: 'Prime Estate', legal: 'Prime Real Estate SA' },
-    { name: 'Urban Living', legal: 'Urban Living Corretora' }
-  ];
-
+  console.log('Creating 10,000+ agencies...');
   const createdAgencies: Agency[] = [];
-  for (const agencyData of agenciesList) {
+
+  for (let i = 0; i < 10000; i++) {
+    const agencyName = `Agency ${i + 1}`;
     const agency = await prisma.agency.create({
       data: {
-        trade_name: agencyData.name,
-        legal_name: agencyData.legal,
+        trade_name: agencyName,
+        legal_name: `${agencyName} LTDA`,
         cnpj: generateCNPJ(),
         state_registration: String(getRandomInt(100000000, 999999999)),
         license_number: `CRECI-${getRandomInt(10000, 99999)}`,
         created_at: getRandomDate(startDate, endDate),
         contacts: {
           create: [
-            { contact: "Recepção", phone: generatePhone('landline'), email: `contato@${agencyData.name.split(' ')[0].toLowerCase()}.com` },
-            { contact: "Financeiro", cellphone: generatePhone('cell'), email: `fin@${agencyData.name.split(' ')[0].toLowerCase()}.com` }
+            { contact: "Recepção", phone: generatePhone('landline'), email: `contato${i}@agency.com` }
           ]
         },
         addresses: {
@@ -136,18 +160,18 @@ async function main() {
       }
     });
     createdAgencies.push(agency);
+    if ((i + 1) % 1000 === 0) console.log(`  Created ${i + 1}/10000 agencies...`);
   }
 
-  console.log('Creating owners...');
-  const ownerNames = ['Carlos Mendes', 'Ana Paula', 'Roberto Silva', 'Fernanda Lima', 'Ricardo Oliveira', 'Patrícia Santos', 'Marcos Pereira', 'Juliana Almeida', 'Lucas Ferreira', 'Camila Rodrigues', 'Bruno Costa', 'Amanda Souza', 'Pedro Santos', 'Mariana Lima', 'Rafael Alves'];
-  
+  console.log('Creating 10,000+ owners...');
   const createdOwners: Owner[] = [];
-  for (let i = 0; i < ownerNames.length; i++) {
+
+  for (let i = 0; i < 10000; i++) {
     const isPJ = i % 5 === 0;
     const owner = await prisma.owner.create({
       data: {
-        name: ownerNames[i],
-        internal_code: `OWN-${getRandomInt(1000, 9999)}`,
+        name: `Owner ${i + 1}`,
+        internal_code: `OWN-${i + 1}`,
         occupation: isPJ ? null : getRandomElement(['Médico', 'Advogado', 'Engenheiro', 'Investidor']),
         marital_status: isPJ ? null : getRandomElement(['Casado', 'Solteiro', 'Divorciado']),
         cpf: isPJ ? null : generateCPF(),
@@ -155,8 +179,7 @@ async function main() {
         created_at: getRandomDate(startDate, endDate),
         contacts: {
           create: [
-            { contact: ownerNames[i].split(' ')[0], cellphone: generatePhone('cell'), email: `${ownerNames[i].toLowerCase().replace(' ', '.')}@email.com` },
-            { contact: "Secundário", phone: generatePhone('landline') }
+            { contact: "Pessoal", cellphone: generatePhone('cell'), email: `owner${i + 1}@email.com` }
           ]
         },
         addresses: {
@@ -167,24 +190,24 @@ async function main() {
       }
     });
     createdOwners.push(owner);
+    if ((i + 1) % 1000 === 0) console.log(`  Created ${i + 1}/10000 owners...`);
   }
 
-  console.log('Creating tenants...');
-  const tenantNames = ['Lucas Silva', 'Fernanda Costa', 'Bruno Alves', 'Juliana Pereira', 'Roberto Santos', 'Camila Lima', 'Marcos Oliveira', 'Amanda Ferreira', 'Pedro Rodrigues', 'Mariana Almeida'];
-  
+  console.log('Creating 10,000+ tenants...');
   const createdTenants: Tenant[] = [];
-  for (let i = 0; i < tenantNames.length; i++) {
+
+  for (let i = 0; i < 10000; i++) {
     const tenant = await prisma.tenant.create({
       data: {
-        name: tenantNames[i],
-        internal_code: `TEN-${getRandomInt(1000, 9999)}`,
+        name: `Tenant ${i + 1}`,
+        internal_code: `TEN-${i + 1}`,
         occupation: getRandomElement(['Estudante', 'Designer', 'Programador', 'Professor']),
         marital_status: getRandomElement(['Solteiro', 'Casado']),
         cpf: generateCPF(),
         created_at: getRandomDate(startDate, endDate),
         contacts: {
           create: [
-            { contact: "Pessoal", cellphone: generatePhone('cell'), email: `${tenantNames[i].toLowerCase().replace(' ', '_')}@tenant.com` }
+            { contact: "Pessoal", cellphone: generatePhone('cell'), email: `tenant${i + 1}@email.com` }
           ]
         },
         addresses: {
@@ -195,21 +218,22 @@ async function main() {
       }
     });
     createdTenants.push(tenant);
+    if ((i + 1) % 1000 === 0) console.log(`  Created ${i + 1}/10000 tenants...`);
   }
 
-  console.log('Creating properties...');
-  const createdProperties = [];
-  
-  for (let i = 0; i < 40; i++) {
+  console.log('Creating 10,000+ properties...');
+  const createdProperties: any[] = [];
+
+  for (let i = 0; i < 10000; i++) {
     const type = getRandomElement(createdTypes);
-    const owner = getRandomElement(createdOwners);
-    const agency = getRandomElement(createdAgencies);
+    const owner = createdOwners[i % createdOwners.length];
+    const agency = createdAgencies[i % createdAgencies.length];
     const area = getRandomInt(40, 500);
     const createdAt = getRandomDate(startDate, endDate);
-    
+
     const property = await prisma.property.create({
       data: {
-        title: `${type.description} em ${getRandomElement(['Jardins', 'Centro', 'Pinheiros'])} - Ref ${i+1}`,
+        title: `${type.description} ${i + 1}`,
         owner_id: owner.id,
         agency_id: agency.id,
         type_id: type.id,
@@ -222,34 +246,30 @@ async function main() {
         frontage: getRandomInt(5, 20),
         furnished: Math.random() > 0.6,
         floor_number: type.description === 'Casa' ? 0 : getRandomInt(1, 20),
-        tax_registration: `IPTU-${getRandomInt(100000, 999999)}`,
-        notes: "Imóvel em excelente estado de conservação.",
+        tax_registration: `IPTU-${i + 1}`,
+        notes: "Imóvel para teste.",
         created_at: createdAt,
         addresses: {
           create: {
             address: { create: generateRandomAddressData() }
           }
-        },
-        documents: {
-          create: [
-            { created_by: adminUser.id, file_path: `/docs/p${i}/doc1.pdf`, file_type: 'pdf', type: DocumentType.TITLE_DEED, description: 'Escritura' },
-            { created_by: adminUser.id, file_path: `/docs/p${i}/img1.jpg`, file_type: 'jpg', type: DocumentType.IMAGE, description: 'Fachada' }
-          ]
         }
       }
     });
     createdProperties.push(property);
+    if ((i + 1) % 1000 === 0) console.log(`  Created ${i + 1}/10000 properties...`);
   }
 
-  console.log('Creating financial history and leases...');
-  
-  for (const property of createdProperties) {
+  console.log('Creating 10,000+ property values and leases...');
+
+  for (let idx = 0; idx < createdProperties.length; idx++) {
+    const property = createdProperties[idx];
     const purchaseVal = getRandomInt(300000, 2000000);
     const rentalVal = getRandomInt(1500, 10000);
     const condo = getRandomInt(300, 2000);
-    
+
     const isLeased = Math.random() > 0.4;
-    
+
     let tenantId = null;
     let start: Date | null = null;
     let end: Date | null = null;
@@ -260,7 +280,7 @@ async function main() {
     let justification: string | null = null;
 
     if (isLeased) {
-      const tenant = getRandomElement(createdTenants);
+      const tenant = createdTenants[idx % createdTenants.length];
       tenantId = tenant.id;
       start = getRandomDate(property.created_at, new Date());
       end = new Date(start);
@@ -289,8 +309,8 @@ async function main() {
       }
     }
 
-    const currentStatus = (isLeased && status !== LeaseStatus.CANCELED && status !== LeaseStatus.EXPIRED) 
-      ? PropertyStatus.OCCUPIED 
+    const currentStatus = (isLeased && status !== LeaseStatus.CANCELED && status !== LeaseStatus.EXPIRED)
+      ? PropertyStatus.OCCUPIED
       : PropertyStatus.AVAILABLE;
 
     await prisma.propertyValue.create({
@@ -312,7 +332,7 @@ async function main() {
           type_id: property.type_id,
           owner_id: property.owner_id,
           tenant_id: tenantId,
-          contract_number: `CTR-${getRandomInt(10000, 99999)}`,
+          contract_number: `CTR-${idx + 1}`,
           start_date: start,
           end_date: end,
           rent_amount: rentalVal,
@@ -334,6 +354,8 @@ async function main() {
         }
       });
     }
+
+    if ((idx + 1) % 1000 === 0) console.log(`  Created ${idx + 1}/10000 property values and leases...`);
   }
 
   console.log('Creating financial institutions...');
@@ -367,17 +389,19 @@ async function main() {
     prisma.card.create({ data: { name: 'Amex Gold', brand: 'American Express', limit: 15000, closing_day: 3, due_day: 12, is_active: true } })
   ]);
 
-  console.log('Database seeded successfully!');
-  console.log(`Summary:`);
-  console.log(` - Users: 3`);
+  console.log('✅ Database seeded successfully with 10K+ records!');
+  console.log(`\nSummary:`);
+  console.log(` - Users: ${createdUsers.length + 1}`);
   console.log(` - Agencies: ${createdAgencies.length}`);
   console.log(` - Owners: ${createdOwners.length}`);
   console.log(` - Tenants: ${createdTenants.length}`);
   console.log(` - Properties: ${createdProperties.length}`);
+  console.log(` - Property Values: ${createdProperties.length}`);
+  console.log(` - Leases: ~${Math.round(createdProperties.length * 0.6)}`);
   console.log(` - Financial Institutions: ${institutions.length}`);
   console.log(` - Categories: ${categories.length}`);
   console.log(` - Centers: ${centers.length}`);
-  console.log(` - Credit Cards: ${cards.length}`);
+  console.log(` - Credit Cards: ${cards.length}\n`);
 }
 
 main()
