@@ -88,29 +88,47 @@ async function createInBatches<T>(
 async function main() {
   console.log('Cleaning database...');
 
+  // Tabelas com transações e dados financeiros
+  await prisma.transaction.deleteMany();
+  await prisma.recurringConfig.deleteMany();
+  await prisma.invoice.deleteMany();
+
+  // Contatos (referencia Agency, Owner, Supplier, Tenant)
   await prisma.contact.deleteMany();
 
+  // Endereços de referência
   await prisma.agencyAddress.deleteMany();
   await prisma.propertyAddress.deleteMany();
   await prisma.ownerAddress.deleteMany();
   await prisma.tenantAddress.deleteMany();
   await prisma.supplierAddress.deleteMany();
 
+  // Imóvel e suas relações
   await prisma.favorite.deleteMany();
   await prisma.document.deleteMany();
   await prisma.propertyValue.deleteMany();
-  await prisma.lease.deleteMany();
   await prisma.propertyIptu.deleteMany();
-  await prisma.invoice.deleteMany();
-
+  await prisma.lease.deleteMany();
   await prisma.property.deleteMany();
+
+  // Usuários e preferências
+  await prisma.userColumnPreference.deleteMany();
+  await prisma.user.deleteMany();
+
+  // Pessoas físicas e jurídicas
   await prisma.tenant.deleteMany();
   await prisma.owner.deleteMany();
-  await prisma.agency.deleteMany();
   await prisma.supplier.deleteMany();
-  await prisma.propertyType.deleteMany();
+  await prisma.agency.deleteMany();
+
+  // Dados de referência
   await prisma.address.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.propertyType.deleteMany();
+  await prisma.card.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.subcategory.deleteMany();
+  await prisma.center.deleteMany();
+  await prisma.financialInstitution.deleteMany();
 
   console.log('Seeding database with 10K+ records...');
 
