@@ -94,6 +94,7 @@ async function main() {
   await prisma.propertyAddress.deleteMany();
   await prisma.ownerAddress.deleteMany();
   await prisma.tenantAddress.deleteMany();
+  await prisma.supplierAddress.deleteMany();
 
   await prisma.favorite.deleteMany();
   await prisma.document.deleteMany();
@@ -106,6 +107,7 @@ async function main() {
   await prisma.tenant.deleteMany();
   await prisma.owner.deleteMany();
   await prisma.agency.deleteMany();
+  await prisma.supplier.deleteMany();
   await prisma.propertyType.deleteMany();
   await prisma.address.deleteMany();
   await prisma.user.deleteMany();
