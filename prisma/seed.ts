@@ -88,22 +88,24 @@ async function createInBatches<T>(
 async function main() {
   console.log('Cleaning database...');
 
-  // Tabelas com transações e dados financeiros
+  // Ordem de deleção respeitando todas as foreign keys
+  // 1. Transações (dependem de tudo)
   await prisma.transaction.deleteMany();
   await prisma.recurringConfig.deleteMany();
   await prisma.invoice.deleteMany();
 
-  // Contatos (referencia Agency, Owner, Supplier, Tenant)
+  // 2. Contatos (referencia Agency, Owner, Supplier, Tenant)
   await prisma.contact.deleteMany();
 
-  // Endereços de referência
+  // 3. Endereços de junção (referencia Entity + Address)
   await prisma.agencyAddress.deleteMany();
   await prisma.propertyAddress.deleteMany();
   await prisma.ownerAddress.deleteMany();
   await prisma.tenantAddress.deleteMany();
   await prisma.supplierAddress.deleteMany();
 
-  // Imóvel e suas relações
+  // 4. Imóvel (referencia Agency, Owner, PropertyType)
+  // Mas tem dependências: Favorite, Document, PropertyValue, PropertyIptu, Lease referenceiam Property
   await prisma.favorite.deleteMany();
   await prisma.document.deleteMany();
   await prisma.propertyValue.deleteMany();
@@ -111,22 +113,26 @@ async function main() {
   await prisma.lease.deleteMany();
   await prisma.property.deleteMany();
 
-  // Usuários e preferências
+  // 5. Usuários
   await prisma.userColumnPreference.deleteMany();
   await prisma.user.deleteMany();
 
-  // Pessoas físicas e jurídicas
+  // 6. Pessoas (Agency, Owner, Supplier, Tenant)
   await prisma.tenant.deleteMany();
   await prisma.owner.deleteMany();
   await prisma.supplier.deleteMany();
   await prisma.agency.deleteMany();
 
-  // Dados de referência
+  // 7. Endereços base (referenciado por *Address)
   await prisma.address.deleteMany();
+
+  // 8. Tipos e categorias
   await prisma.propertyType.deleteMany();
-  await prisma.card.deleteMany();
   await prisma.subcategory.deleteMany();
   await prisma.category.deleteMany();
+
+  // 9. Lookup tables (sem dependências internas de dados)
+  await prisma.card.deleteMany();
   await prisma.center.deleteMany();
   await prisma.financialInstitution.deleteMany();
 
