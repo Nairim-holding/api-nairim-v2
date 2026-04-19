@@ -88,6 +88,8 @@ async function main() {
   await prisma.document.deleteMany();
   await prisma.propertyValue.deleteMany();
   await prisma.lease.deleteMany();
+  await prisma.propertyIptu.deleteMany();
+  await prisma.invoice.deleteMany();
 
   await prisma.property.deleteMany();
   await prisma.tenant.deleteMany();
