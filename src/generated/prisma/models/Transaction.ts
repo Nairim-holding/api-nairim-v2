@@ -44,6 +44,7 @@ export type TransactionMinAggregateOutputType = {
   id: string | null
   event_date: Date | null
   effective_date: Date | null
+  purchase_date: Date | null
   description: string | null
   amount: runtime.Decimal | null
   status: $Enums.TransactionStatus | null
@@ -71,6 +72,7 @@ export type TransactionMaxAggregateOutputType = {
   id: string | null
   event_date: Date | null
   effective_date: Date | null
+  purchase_date: Date | null
   description: string | null
   amount: runtime.Decimal | null
   status: $Enums.TransactionStatus | null
@@ -98,6 +100,7 @@ export type TransactionCountAggregateOutputType = {
   id: number
   event_date: number
   effective_date: number
+  purchase_date: number
   description: number
   amount: number
   status: number
@@ -141,6 +144,7 @@ export type TransactionMinAggregateInputType = {
   id?: true
   event_date?: true
   effective_date?: true
+  purchase_date?: true
   description?: true
   amount?: true
   status?: true
@@ -168,6 +172,7 @@ export type TransactionMaxAggregateInputType = {
   id?: true
   event_date?: true
   effective_date?: true
+  purchase_date?: true
   description?: true
   amount?: true
   status?: true
@@ -195,6 +200,7 @@ export type TransactionCountAggregateInputType = {
   id?: true
   event_date?: true
   effective_date?: true
+  purchase_date?: true
   description?: true
   amount?: true
   status?: true
@@ -309,6 +315,7 @@ export type TransactionGroupByOutputType = {
   id: string
   event_date: Date
   effective_date: Date
+  purchase_date: Date | null
   description: string
   amount: runtime.Decimal
   status: $Enums.TransactionStatus
@@ -359,6 +366,7 @@ export type TransactionWhereInput = {
   id?: Prisma.StringFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
   description?: Prisma.StringFilter<"Transaction"> | string
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
@@ -396,6 +404,7 @@ export type TransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
+  purchase_date?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -436,6 +445,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
   description?: Prisma.StringFilter<"Transaction"> | string
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
@@ -473,6 +483,7 @@ export type TransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
+  purchase_date?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -508,6 +519,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+  purchase_date?: Prisma.DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
   description?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
@@ -535,6 +547,7 @@ export type TransactionCreateInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -563,6 +576,7 @@ export type TransactionUncheckedCreateInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -591,6 +605,7 @@ export type TransactionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -619,6 +634,7 @@ export type TransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -647,6 +663,7 @@ export type TransactionCreateManyInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -674,6 +691,7 @@ export type TransactionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -692,6 +710,7 @@ export type TransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -734,6 +753,7 @@ export type TransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
+  purchase_date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -768,6 +788,7 @@ export type TransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
+  purchase_date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -795,6 +816,7 @@ export type TransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
+  purchase_date?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -1235,6 +1257,7 @@ export type TransactionCreateWithoutFinancial_institutionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1262,6 +1285,7 @@ export type TransactionUncheckedCreateWithoutFinancial_institutionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1318,6 +1342,7 @@ export type TransactionScalarWhereInput = {
   id?: Prisma.StringFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
   description?: Prisma.StringFilter<"Transaction"> | string
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
@@ -1345,6 +1370,7 @@ export type TransactionCreateWithoutCategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1372,6 +1398,7 @@ export type TransactionUncheckedCreateWithoutCategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1425,6 +1452,7 @@ export type TransactionCreateWithoutSubcategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1452,6 +1480,7 @@ export type TransactionUncheckedCreateWithoutSubcategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1505,6 +1534,7 @@ export type TransactionCreateWithoutCardInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1532,6 +1562,7 @@ export type TransactionUncheckedCreateWithoutCardInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1585,6 +1616,7 @@ export type TransactionCreateWithoutCenterInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1612,6 +1644,7 @@ export type TransactionUncheckedCreateWithoutCenterInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1665,6 +1698,7 @@ export type TransactionCreateWithoutSupplierInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1692,6 +1726,7 @@ export type TransactionUncheckedCreateWithoutSupplierInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1745,6 +1780,7 @@ export type TransactionCreateWithoutChild_transactionsInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1772,6 +1808,7 @@ export type TransactionUncheckedCreateWithoutChild_transactionsInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1804,6 +1841,7 @@ export type TransactionCreateWithoutParent_transactionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1831,6 +1869,7 @@ export type TransactionUncheckedCreateWithoutParent_transactionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1879,6 +1918,7 @@ export type TransactionUpdateWithoutChild_transactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -1906,6 +1946,7 @@ export type TransactionUncheckedUpdateWithoutChild_transactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -1949,6 +1990,7 @@ export type TransactionCreateWithoutInvoiceInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -1976,6 +2018,7 @@ export type TransactionUncheckedCreateWithoutInvoiceInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2029,6 +2072,7 @@ export type TransactionCreateWithoutRecurring_configInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2056,6 +2100,7 @@ export type TransactionUncheckedCreateWithoutRecurring_configInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2109,6 +2154,7 @@ export type TransactionCreateManyFinancial_institutionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2135,6 +2181,7 @@ export type TransactionUpdateWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2162,6 +2209,7 @@ export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2189,6 +2237,7 @@ export type TransactionUncheckedUpdateManyWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2215,6 +2264,7 @@ export type TransactionCreateManyCategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2241,6 +2291,7 @@ export type TransactionUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2268,6 +2319,7 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2295,6 +2347,7 @@ export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2321,6 +2374,7 @@ export type TransactionCreateManySubcategoryInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2347,6 +2401,7 @@ export type TransactionUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2374,6 +2429,7 @@ export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2401,6 +2457,7 @@ export type TransactionUncheckedUpdateManyWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2427,6 +2484,7 @@ export type TransactionCreateManyCardInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2453,6 +2511,7 @@ export type TransactionUpdateWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2480,6 +2539,7 @@ export type TransactionUncheckedUpdateWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2507,6 +2567,7 @@ export type TransactionUncheckedUpdateManyWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2533,6 +2594,7 @@ export type TransactionCreateManyCenterInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2559,6 +2621,7 @@ export type TransactionUpdateWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2586,6 +2649,7 @@ export type TransactionUncheckedUpdateWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2613,6 +2677,7 @@ export type TransactionUncheckedUpdateManyWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2639,6 +2704,7 @@ export type TransactionCreateManySupplierInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2665,6 +2731,7 @@ export type TransactionUpdateWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2692,6 +2759,7 @@ export type TransactionUncheckedUpdateWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2719,6 +2787,7 @@ export type TransactionUncheckedUpdateManyWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2745,6 +2814,7 @@ export type TransactionCreateManyParent_transactionInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2771,6 +2841,7 @@ export type TransactionUpdateWithoutParent_transactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2798,6 +2869,7 @@ export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2825,6 +2897,7 @@ export type TransactionUncheckedUpdateManyWithoutParent_transactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2851,6 +2924,7 @@ export type TransactionCreateManyInvoiceInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2877,6 +2951,7 @@ export type TransactionUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2904,6 +2979,7 @@ export type TransactionUncheckedUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2931,6 +3007,7 @@ export type TransactionUncheckedUpdateManyWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -2957,6 +3034,7 @@ export type TransactionCreateManyRecurring_configInput = {
   id?: string
   event_date: Date | string
   effective_date: Date | string
+  purchase_date?: Date | string | null
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TransactionStatus
@@ -2983,6 +3061,7 @@ export type TransactionUpdateWithoutRecurring_configInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -3010,6 +3089,7 @@ export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -3037,6 +3117,7 @@ export type TransactionUncheckedUpdateManyWithoutRecurring_configInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
@@ -3094,6 +3175,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   event_date?: boolean
   effective_date?: boolean
+  purchase_date?: boolean
   description?: boolean
   amount?: boolean
   status?: boolean
@@ -3132,6 +3214,7 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   event_date?: boolean
   effective_date?: boolean
+  purchase_date?: boolean
   description?: boolean
   amount?: boolean
   status?: boolean
@@ -3168,6 +3251,7 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   event_date?: boolean
   effective_date?: boolean
+  purchase_date?: boolean
   description?: boolean
   amount?: boolean
   status?: boolean
@@ -3204,6 +3288,7 @@ export type TransactionSelectScalar = {
   id?: boolean
   event_date?: boolean
   effective_date?: boolean
+  purchase_date?: boolean
   description?: boolean
   amount?: boolean
   status?: boolean
@@ -3227,7 +3312,7 @@ export type TransactionSelectScalar = {
   invoice_id?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "event_date" | "effective_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "event_date" | "effective_date" | "purchase_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -3282,6 +3367,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     event_date: Date
     effective_date: Date
+    purchase_date: Date | null
     description: string
     amount: runtime.Decimal
     status: $Enums.TransactionStatus
@@ -3739,6 +3825,7 @@ export interface TransactionFieldRefs {
   readonly id: Prisma.FieldRef<"Transaction", 'String'>
   readonly event_date: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly effective_date: Prisma.FieldRef<"Transaction", 'DateTime'>
+  readonly purchase_date: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly description: Prisma.FieldRef<"Transaction", 'String'>
   readonly amount: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly status: Prisma.FieldRef<"Transaction", 'TransactionStatus'>

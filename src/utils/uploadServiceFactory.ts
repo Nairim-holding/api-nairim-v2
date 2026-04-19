@@ -1,24 +1,49 @@
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { ImageConverter } from './imageConverter';
 
 export class LocalUploadService {
   async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
     try {
-      const fileName = `${uuidv4()}${path.extname(file.originalname)}`;
+      let fileBuffer = file.buffer;
+      let fileName = `${uuidv4()}${path.extname(file.originalname)}`;
+
+      // Converter imagens para AVIF automaticamente
+      if (ImageConverter.isSupportedImageFormat(file.mimetype)) {
+        try {
+          console.log(`🎨 Processando imagem: ${file.originalname} (${file.mimetype})`);
+
+          // Obter informações da imagem original
+          const imageInfo = await ImageConverter.getImageInfo(file.buffer);
+          console.log(`📊 Dimensões originais: ${imageInfo.width}x${imageInfo.height}px`);
+
+          // Converter para AVIF
+          fileBuffer = await ImageConverter.convertToAVIF(file.buffer, 80);
+
+          // Atualizar nome para AVIF
+          fileName = `${uuidv4()}.avif`;
+
+          console.log(`✅ Imagem convertida com sucesso para AVIF`);
+        } catch (error: any) {
+          console.warn(`⚠️ Falha ao converter para AVIF, salvando no formato original: ${error.message}`);
+          // Continua com o arquivo original se houver erro na conversão
+        }
+      }
+
       const relativePath = path.posix.join(folder, fileName);
       const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
 
       // Cria a pasta se não existir
       fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-      
-      // Salva o arquivo
-      fs.writeFileSync(absolutePath, file.buffer);
+
+      // Salva o arquivo (convertido ou original)
+      fs.writeFileSync(absolutePath, fileBuffer);
 
       const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
       return `${baseUrl}/uploads/${relativePath}`;
     } catch (error) {
-      console.error('Error uploading locally:', error);
+      console.error('❌ Error uploading locally:', error);
       throw error;
     }
   }

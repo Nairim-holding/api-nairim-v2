@@ -7,6 +7,7 @@ import { OwnerValidator } from '@/lib/validators/owner';
 import { TenantValidator } from '@/lib/validators/tenant';
 import { PropertyTypeValidator } from '@/lib/validators/property-type';
 import { PropertyValidator } from '@/lib/validators/property';
+import { UserPreferencesValidator } from '@/lib/validators/user-preferences';
 
 // Validações de Agency
 export const validateCreateAgency = (req: Request, res: Response, next: NextFunction) => {
@@ -190,6 +191,31 @@ export const validateGetProperties = (req: Request, res: Response, next: NextFun
   const validation = PropertyValidator.validateQueryParams(req.query);
   if (!validation.isValid) {
     return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+  }
+  next();
+};
+
+// Validações de User Preferences
+export const validateSaveColumnPreferences = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserPreferencesValidator.validateSaveColumnPreferences(req.body);
+  if (!validation.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validação falhou',
+      errors: validation.errors
+    });
+  }
+  next();
+};
+
+export const validateGetColumnPreferences = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserPreferencesValidator.validateGetColumnPreferences(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validação falhou',
+      errors: validation.errors
+    });
   }
   next();
 };

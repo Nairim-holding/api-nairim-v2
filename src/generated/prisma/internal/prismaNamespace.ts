@@ -388,6 +388,7 @@ export const ModelName = {
   Property: 'Property',
   PropertyIptu: 'PropertyIptu',
   User: 'User',
+  UserColumnPreference: 'UserColumnPreference',
   Document: 'Document',
   Owner: 'Owner',
   Tenant: 'Tenant',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "propertyIptu" | "user" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig"
+    modelProps: "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -723,6 +724,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserColumnPreference: {
+      payload: Prisma.$UserColumnPreferencePayload<ExtArgs>
+      fields: Prisma.UserColumnPreferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserColumnPreferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserColumnPreferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        findFirst: {
+          args: Prisma.UserColumnPreferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserColumnPreferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        findMany: {
+          args: Prisma.UserColumnPreferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>[]
+        }
+        create: {
+          args: Prisma.UserColumnPreferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        createMany: {
+          args: Prisma.UserColumnPreferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserColumnPreferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>[]
+        }
+        delete: {
+          args: Prisma.UserColumnPreferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        update: {
+          args: Prisma.UserColumnPreferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.UserColumnPreferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserColumnPreferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserColumnPreferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>[]
+        }
+        upsert: {
+          args: Prisma.UserColumnPreferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserColumnPreferencePayload>
+        }
+        aggregate: {
+          args: Prisma.UserColumnPreferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserColumnPreference>
+        }
+        groupBy: {
+          args: Prisma.UserColumnPreferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserColumnPreferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserColumnPreferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserColumnPreferenceCountAggregateOutputType> | number
         }
       }
     }
@@ -2543,6 +2618,19 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const UserColumnPreferenceScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  resource: 'resource',
+  column_order: 'column_order',
+  column_widths: 'column_widths',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceScalarFieldEnum)[keyof typeof UserColumnPreferenceScalarFieldEnum]
+
+
 export const DocumentScalarFieldEnum = {
   id: 'id',
   property_id: 'property_id',
@@ -2875,6 +2963,7 @@ export const TransactionScalarFieldEnum = {
   id: 'id',
   event_date: 'event_date',
   effective_date: 'effective_date',
+  purchase_date: 'purchase_date',
   description: 'description',
   amount: 'amount',
   status: 'status',
@@ -2960,6 +3049,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -3322,6 +3418,7 @@ export type GlobalOmitConfig = {
   property?: Prisma.PropertyOmit
   propertyIptu?: Prisma.PropertyIptuOmit
   user?: Prisma.UserOmit
+  userColumnPreference?: Prisma.UserColumnPreferenceOmit
   document?: Prisma.DocumentOmit
   owner?: Prisma.OwnerOmit
   tenant?: Prisma.TenantOmit

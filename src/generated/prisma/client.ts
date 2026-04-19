@@ -60,6 +60,11 @@ export type PropertyIptu = Prisma.PropertyIptuModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserColumnPreference
+ * 
+ */
+export type UserColumnPreference = Prisma.UserColumnPreferenceModel
+/**
  * Model Document
  * 
  */

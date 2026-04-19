@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { ImageConverter } from '../utils/imageConverter';
 
 export interface UploadResult {
   url: string;
@@ -15,10 +16,28 @@ export class BlobService {
     folder: string = 'properties'
   ): Promise<UploadResult> {
     try {
-      // Usar nome de arquivo seguro
-      const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+      let fileBuffer = file.buffer;
+      let safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+
+      // Converter imagens para AVIF automaticamente
+      if (ImageConverter.isSupportedImageFormat(file.mimetype)) {
+        try {
+          console.log(`🎨 Processando imagem: ${filename} (${file.mimetype})`);
+
+          const imageInfo = await ImageConverter.getImageInfo(file.buffer);
+          console.log(`📊 Dimensões originais: ${imageInfo.width}x${imageInfo.height}px`);
+
+          fileBuffer = await ImageConverter.convertToAVIF(file.buffer, 80);
+          safeFilename = safeFilename.replace(/\.[^/.]+$/, '') + '.avif';
+
+          console.log(`✅ Imagem convertida com sucesso para AVIF`);
+        } catch (error: any) {
+          console.warn(`⚠️ Falha ao converter para AVIF, salvando no formato original: ${error.message}`);
+        }
+      }
+
       const uniqueFilename = `${Date.now()}-${safeFilename}`;
-      
+
       // Define os caminhos
       const relativePath = path.posix.join(folder, uniqueFilename);
       const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
@@ -26,12 +45,12 @@ export class BlobService {
       // Garante que a pasta exista (cria se não existir)
       await fs.mkdir(path.dirname(absolutePath), { recursive: true });
 
-      // Salva o arquivo no disco do servidor
-      await fs.writeFile(absolutePath, file.buffer);
+      // Salva o arquivo (convertido ou original)
+      await fs.writeFile(absolutePath, fileBuffer);
 
       // Pega a BASE_URL do .env (ex: http://187.77.236.241:5000)
       const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-      
+
       return {
         url: `${baseUrl}/uploads/${relativePath}`,
         pathname: relativePath,

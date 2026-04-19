@@ -305,7 +305,6 @@ export type PropertyIptuOrderByWithRelationInput = {
 
 export type PropertyIptuWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  property_id_year?: Prisma.PropertyIptuProperty_idYearCompoundUniqueInput
   AND?: Prisma.PropertyIptuWhereInput | Prisma.PropertyIptuWhereInput[]
   OR?: Prisma.PropertyIptuWhereInput[]
   NOT?: Prisma.PropertyIptuWhereInput | Prisma.PropertyIptuWhereInput[]
@@ -321,7 +320,7 @@ export type PropertyIptuWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"PropertyIptu"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"PropertyIptu"> | Date | string | null
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
-}, "id" | "property_id_year">
+}, "id">
 
 export type PropertyIptuOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -473,11 +472,6 @@ export type PropertyIptuListRelationFilter = {
 
 export type PropertyIptuOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type PropertyIptuProperty_idYearCompoundUniqueInput = {
-  property_id: string
-  year: number
 }
 
 export type PropertyIptuCountOrderByAggregateInput = {

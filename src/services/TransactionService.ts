@@ -543,6 +543,7 @@ export class TransactionService {
       }
 
       // === CÁLCULO DAS DATAS ===
+      // Datas de vencimento (effective_date) para cada parcela
       const installmentDates: Date[] = [];
       for (let i = 0; i < numInstallments; i++) {
         const date = new Date(firstPaymentDate);
@@ -556,26 +557,31 @@ export class TransactionService {
       // === CRIAÇÃO DAS PARCELAS (v4: APENAS parcelas, SEM transação pai) ===
       const transactionType = data.transaction_type || 'EXPENSE';
       const label = transactionType === 'INCOME' ? 'Receita' : 'Parcela';
-      
+
       // Import dinâmico para evitar dependência circular
       const { InvoiceService } = await import('./InvoiceService');
 
       const installments = await prisma.$transaction(
         async (tx) => {
           const createdInstallments = [];
-          
+
+          // Data do evento e data da compra - IGUAIS para todas as parcelas
+          const constantEventDate = new Date(startDate);
+          const constantPurchaseDate = new Date(startDate);
+
           for (let index = 0; index < numInstallments; index++) {
             const installmentNumber = index + 1;
+            // effective_date varia (vencimento de cada parcela)
             const effectiveDate = installmentDates[index];
 
-            const eventDate = new Date(startDate);
-            eventDate.setMonth(startDate.getMonth() + index);
-            if (eventDate.getDate() !== startDate.getDate()) {
-              eventDate.setDate(0);
-            }
-            // Calcular mês/ano da fatura baseado na effective_date
+            // event_date e purchase_date CONSTANTES em todas as parcelas
+            const eventDate = new Date(constantEventDate);
+
+            // Calcular mês/ano da fatura baseado na effective_date (vencimento)
             const invoiceMonth = effectiveDate.getMonth() + 1;
             const invoiceYear = effectiveDate.getFullYear();
+
+            console.log(`📅 Parcela ${installmentNumber}/${numInstallments}: event_date=${eventDate.toLocaleDateString('pt-BR')}, purchase_date=${constantPurchaseDate.toLocaleDateString('pt-BR')}, effective_date=${effectiveDate.toLocaleDateString('pt-BR')}`);
             
             // Buscar ou criar fatura automaticamente se houver card_id
             let invoiceId: string | null = null;
@@ -610,6 +616,7 @@ export class TransactionService {
                   : `${label} ${installmentNumber}/${numInstallments}`,
                 event_date: eventDate,
                 effective_date: effectiveDate,
+                purchase_date: constantPurchaseDate,
                 category_id: data.category_id,
                 subcategory_id: parseFK(data.subcategory_id),
                 financial_institution_id: data.institution_id,

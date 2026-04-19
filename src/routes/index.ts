@@ -9,6 +9,7 @@ import propertyRoutes from './property';
 import dashboardRoutes from "./dashboard";
 import favoriteRoutes from "./favorite";
 import authRoutes from "./auth";
+import userPreferencesRoutes from "./user-preferences";
 import FinancialInstitution from "./financial-intitucion";
 import FinancialCategory from "./category";
 import FinancialSubCategory from "./subcategory";
@@ -22,6 +23,7 @@ const router = Router();
 
 router.use('/agencies', agencyRoutes);
 router.use('/users', userRoutes);
+router.use('/user-preferences', userPreferencesRoutes);
 router.use('/leases', leaseRoutes);
 router.use('/owners', ownerRoutes);
 router.use('/tenants', tenantRoutes);

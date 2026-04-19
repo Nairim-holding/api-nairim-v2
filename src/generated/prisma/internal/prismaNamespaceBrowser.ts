@@ -55,6 +55,7 @@ export const ModelName = {
   Property: 'Property',
   PropertyIptu: 'PropertyIptu',
   User: 'User',
+  UserColumnPreference: 'UserColumnPreference',
   Document: 'Document',
   Owner: 'Owner',
   Tenant: 'Tenant',
@@ -170,6 +171,19 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserColumnPreferenceScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  resource: 'resource',
+  column_order: 'column_order',
+  column_widths: 'column_widths',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceScalarFieldEnum)[keyof typeof UserColumnPreferenceScalarFieldEnum]
 
 
 export const DocumentScalarFieldEnum = {
@@ -504,6 +518,7 @@ export const TransactionScalarFieldEnum = {
   id: 'id',
   event_date: 'event_date',
   effective_date: 'effective_date',
+  purchase_date: 'purchase_date',
   description: 'description',
   amount: 'amount',
   status: 'status',
@@ -589,6 +604,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

@@ -80,20 +80,36 @@ model PropertyIptu {
 }
 
 model User {
-  id         String     @id @default(uuid())
-  name       String
-  email      String     @unique
-  password   String
-  birth_date DateTime   @db.Date
-  gender     Gender
-  role       Role       @default(DEFAULT)
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  deleted_at DateTime?
-  documents  Document[]
-  favorites  Favorite[]
+  id                      String                    @id @default(uuid())
+  name                    String
+  email                   String                    @unique
+  password                String
+  birth_date              DateTime                  @db.Date
+  gender                  Gender
+  role                    Role                      @default(DEFAULT)
+  created_at              DateTime                  @default(now())
+  updated_at              DateTime                  @updatedAt
+  deleted_at              DateTime?
+  documents               Document[]
+  favorites               Favorite[]
+  columnPreferences       UserColumnPreference[]
 
   @@index([email])
+}
+
+model UserColumnPreference {
+  id             String    @id @default(uuid())
+  user_id        String
+  resource       String    @db.VarChar(100)
+  column_order   Json      @default("[]")
+  column_widths  Json      @default("{}")
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  user           User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, resource])
+  @@index([user_id])
+  @@index([resource])
 }
 
 model Document {
@@ -450,6 +466,7 @@ model Transaction {
   id                       String               @id @default(uuid())
   event_date               DateTime             @db.Date
   effective_date           DateTime             @db.Date
+  purchase_date            DateTime?            @db.Date
   description              String
   amount                   Decimal              @db.Decimal(20, 2)
   status                   TransactionStatus    @default(PENDING)
