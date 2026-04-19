@@ -125,8 +125,8 @@ async function main() {
   await prisma.address.deleteMany();
   await prisma.propertyType.deleteMany();
   await prisma.card.deleteMany();
-  await prisma.category.deleteMany();
   await prisma.subcategory.deleteMany();
+  await prisma.category.deleteMany();
   await prisma.center.deleteMany();
   await prisma.financialInstitution.deleteMany();
 
