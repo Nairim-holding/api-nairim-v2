@@ -695,8 +695,6 @@ export class PropertyService {
     files: Record<string, Express.Multer.File[]>, 
     userId: string
   ): Promise<any[]> {
-    const uploadedDocuments = [];
-    
     const fileTypes: Record<string, any> = {
       arquivosImagens: 'IMAGE',
       arquivosMatricula: 'REGISTRATION',
@@ -706,7 +704,6 @@ export class PropertyService {
     };
 
     let userExists = false;
-    
     if (userId && typeof userId === 'string' && userId.trim() !== '') {
       try {
         const userCount = await prisma.user.count({ where: { id: userId } });
@@ -714,67 +711,76 @@ export class PropertyService {
       } catch (e) {}
     }
 
+    // Coletar todos os arquivos para processamento paralelo
+    const allFiles: { file: Express.Multer.File; docType: string }[] = [];
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
       if (files[fieldName] && files[fieldName].length > 0) {
         for (const file of files[fieldName]) {
-          
-          // ==============================================================
-          // CORREÇÃO DE ENCODING: Converte de latin1 para utf8
-          // Garante que caracteres como 'ç', 'ã', 'é' fiquem corretos.
-          // ==============================================================
+          // Correção de encoding: latin1 -> utf8
           file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-
-          let blobResult;
-
-          try {
-            blobResult = await BlobService.uploadFile(
-              file,
-              file.originalname,
-              `properties/${propertyId}`
-            );
-          } catch (uploadError: any) {
-            throw new Error(`Erro na CDN ao processar arquivo ${file.originalname}: ${uploadError.message}`);
-          }
-
-          try {
-            const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, "");
-            
-            const documentData: any = {
-              property_id: propertyId,
-              file_path: blobResult.url,
-              file_type: file.mimetype?.substring(0, 100) || 'application/octet-stream',
-              type: docType, 
-              description: fileNameWithoutExt.substring(0, 250) 
-            };
-
-            if (userExists) {
-              documentData.created_by = userId;
-            }
-
-            const document = await prisma.document.create({
-              data: documentData
-            });
-
-            uploadedDocuments.push({
-              id: document.id,
-              type: docType,
-              url: blobResult.url,
-              filename: file.originalname, 
-              name: fileNameWithoutExt, 
-              displayName: fileNameWithoutExt, 
-              mimetype: file.mimetype,
-              size: file.size,
-              description: fileNameWithoutExt 
-            });
-
-            await new Promise(resolve => setTimeout(resolve, 50));
-            
-          } catch (dbError: any) {
-            throw new Error(`Falha no banco de dados ao salvar documento ${file.originalname}: ${dbError.message}`);
-          }
+          allFiles.push({ file, docType });
         }
       }
     }
+
+    const uploadedDocuments: any[] = [];
+    const maxConcurrent = 5;
+    const queue = [...allFiles];
+
+    const worker = async () => {
+      while (queue.length > 0) {
+        const item = queue.shift();
+        if (!item) continue;
+
+        const { file, docType } = item;
+        try {
+          const blobResult = await BlobService.uploadFile(
+            file,
+            file.originalname,
+            `properties/${propertyId}`
+          );
+
+          const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, "");
+          const documentData: any = {
+            property_id: propertyId,
+            file_path: blobResult.url,
+            file_type: file.mimetype?.substring(0, 100) || 'application/octet-stream',
+            type: docType,
+            description: fileNameWithoutExt.substring(0, 250),
+          };
+
+          if (userExists) {
+            documentData.created_by = userId;
+          }
+
+          const document = await prisma.document.create({
+            data: documentData,
+          });
+
+          uploadedDocuments.push({
+            id: document.id,
+            type: docType,
+            url: blobResult.url,
+            filename: file.originalname,
+            name: fileNameWithoutExt,
+            displayName: fileNameWithoutExt,
+            mimetype: file.mimetype,
+            size: file.size,
+            description: fileNameWithoutExt,
+          });
+        } catch (error: any) {
+          console.error(`❌ Erro ao processar arquivo ${file.originalname}:`, error);
+          throw new Error(`Falha ao processar arquivo ${file.originalname}: ${error.message}`);
+        }
+      }
+    };
+
+    // Executa o processamento em paralelo com limite de concorrência
+    const workers = Array(Math.min(maxConcurrent, allFiles.length))
+      .fill(null)
+      .map(() => worker());
+
+    await Promise.all(workers);
 
     return uploadedDocuments;
   }

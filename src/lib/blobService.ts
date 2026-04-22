@@ -22,15 +22,9 @@ export class BlobService {
       // Converter imagens para AVIF automaticamente
       if (ImageConverter.isSupportedImageFormat(file.mimetype)) {
         try {
-          console.log(`🎨 Processando imagem: ${filename} (${file.mimetype})`);
-
-          const imageInfo = await ImageConverter.getImageInfo(file.buffer);
-          console.log(`📊 Dimensões originais: ${imageInfo.width}x${imageInfo.height}px`);
-
+          console.log(`🎨 Convertendo imagem para AVIF: ${filename}`);
           fileBuffer = await ImageConverter.convertToAVIF(file.buffer, 80);
           safeFilename = safeFilename.replace(/\.[^/.]+$/, '') + '.avif';
-
-          console.log(`✅ Imagem convertida com sucesso para AVIF`);
         } catch (error: any) {
           console.warn(`⚠️ Falha ao converter para AVIF, salvando no formato original: ${error.message}`);
         }

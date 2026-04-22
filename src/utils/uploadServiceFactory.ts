@@ -12,19 +12,13 @@ export class LocalUploadService {
       // Converter imagens para AVIF automaticamente
       if (ImageConverter.isSupportedImageFormat(file.mimetype)) {
         try {
-          console.log(`🎨 Processando imagem: ${file.originalname} (${file.mimetype})`);
-
-          // Obter informações da imagem original
-          const imageInfo = await ImageConverter.getImageInfo(file.buffer);
-          console.log(`📊 Dimensões originais: ${imageInfo.width}x${imageInfo.height}px`);
+          console.log(`🎨 Convertendo imagem para AVIF: ${file.originalname}`);
 
           // Converter para AVIF
           fileBuffer = await ImageConverter.convertToAVIF(file.buffer, 80);
 
           // Atualizar nome para AVIF
           fileName = `${uuidv4()}.avif`;
-
-          console.log(`✅ Imagem convertida com sucesso para AVIF`);
         } catch (error: any) {
           console.warn(`⚠️ Falha ao converter para AVIF, salvando no formato original: ${error.message}`);
           // Continua com o arquivo original se houver erro na conversão

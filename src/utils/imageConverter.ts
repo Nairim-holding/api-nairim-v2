@@ -17,7 +17,7 @@ export class ImageConverter {
         .avif({
           quality: Math.min(Math.max(quality, 1), 100),
           lossless: false,
-          effort: 6 // Nível de esforço (0-9, padrão 4)
+          effort: 2 // Nível de esforço (0-9, padrão 4). 2 é muito mais rápido e ainda eficiente.
         })
         .toBuffer();
 
