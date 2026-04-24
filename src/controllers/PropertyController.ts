@@ -1,10 +1,23 @@
 import { Request, Response } from 'express';
+import fs from 'fs/promises';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { PropertyValidator } from '../lib/validators/property';
 import { PropertyService } from '@/services/PropertyService';
 import { DocumentService } from '@/services/DocumentService';
 import { GetPropertiesParams } from '../types/property';
+
+/** Apaga arquivos que ainda estão no diretório temp (quando a requisição falha antes do move) */
+async function cleanupRequestTempFiles(files: Record<string, Express.Multer.File[]> | undefined) {
+  if (!files) return;
+  for (const fileArray of Object.values(files)) {
+    for (const file of fileArray) {
+      if (file.path) {
+        await fs.unlink(file.path).catch(() => {});
+      }
+    }
+  }
+}
 
 export class PropertyController {
   static async getProperties(req: Request, res: Response) {
@@ -250,6 +263,7 @@ export class PropertyController {
       return res.status(201).json(ApiResponse.success(result, `Imóvel criado com sucesso`));
 
     } catch (error: any) {
+      await cleanupRequestTempFiles(req.files as Record<string, Express.Multer.File[]>);
       console.error('❌ Erro na criação unificada:', error);
       if (error.message.includes('não encontrado')) return res.status(404).json(ApiResponse.error(error.message));
       if (error.message.includes('já existe')) return res.status(409).json(ApiResponse.error(error.message));
@@ -297,6 +311,7 @@ export class PropertyController {
       return res.status(200).json(ApiResponse.success(result, `Imóvel atualizado com sucesso`));
 
     } catch (error: any) {
+      await cleanupRequestTempFiles(req.files as Record<string, Express.Multer.File[]>);
       console.error('❌ Erro na atualização unificada:', error);
       if (error.message.includes('não encontrado')) return res.status(404).json(ApiResponse.error(error.message));
       res.status(500).json(ApiResponse.error(`Erro ao atualizar imóvel: ${error.message}`));

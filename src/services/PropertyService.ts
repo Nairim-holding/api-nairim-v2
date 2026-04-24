@@ -691,16 +691,16 @@ export class PropertyService {
   }
 
   static async uploadFilesToProperty(
-    propertyId: string, 
-    files: Record<string, Express.Multer.File[]>, 
-    userId: string
+    propertyId: string,
+    files: Record<string, Express.Multer.File[]>,
+    userId: string,
   ): Promise<any[]> {
     const fileTypes: Record<string, any> = {
       arquivosImagens: 'IMAGE',
       arquivosMatricula: 'REGISTRATION',
       arquivosRegistro: 'PROPERTY_RECORD',
       arquivosEscritura: 'TITLE_DEED',
-      arquivosOutros: 'OTHER'
+      arquivosOutros: 'OTHER',
     };
 
     let userExists = false;
@@ -711,10 +711,9 @@ export class PropertyService {
       } catch (e) {}
     }
 
-    // Coletar todos os arquivos para processamento paralelo
     const allFiles: { file: Express.Multer.File; docType: string }[] = [];
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
-      if (files[fieldName] && files[fieldName].length > 0) {
+      if (files[fieldName]?.length > 0) {
         for (const file of files[fieldName]) {
           // Correção de encoding: latin1 -> utf8
           file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
@@ -734,13 +733,14 @@ export class PropertyService {
 
         const { file, docType } = item;
         try {
-          const blobResult = await BlobService.uploadFile(
+          // Move arquivo do temp para destino final (rename atômico — microssegundos)
+          const { result: blobResult, absolutePath, isImage } = await BlobService.moveFile(
             file,
             file.originalname,
-            `properties/${propertyId}`
+            `properties/${propertyId}`,
           );
 
-          const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, "");
+          const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, '');
           const documentData: any = {
             property_id: propertyId,
             file_path: blobResult.url,
@@ -753,9 +753,22 @@ export class PropertyService {
             documentData.created_by = userId;
           }
 
-          const document = await prisma.document.create({
-            data: documentData,
-          });
+          const document = await prisma.document.create({ data: documentData });
+
+          // Conversão AVIF agendada em background (após resposta HTTP enviada)
+          // Não bloqueia — setImmediate roda depois do event loop liberar a resposta
+          if (isImage) {
+            BlobService.scheduleAvifConversion(
+              absolutePath,
+              blobResult.url,
+              async (avifUrl) => {
+                await prisma.document.update({
+                  where: { id: document.id },
+                  data: { file_path: avifUrl },
+                });
+              },
+            );
+          }
 
           uploadedDocuments.push({
             id: document.id,
@@ -775,8 +788,7 @@ export class PropertyService {
       }
     };
 
-    // Executa o processamento em paralelo com limite de concorrência
-    const workers = Array(Math.min(maxConcurrent, allFiles.length))
+    const workers = Array(Math.min(maxConcurrent, allFiles.length || 1))
       .fill(null)
       .map(() => worker());
 

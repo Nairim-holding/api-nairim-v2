@@ -7,8 +7,12 @@ import pinoHttp from 'pino-http';
 import routes from './routes';
 import { errorHandler } from './middlewares/error';
 import { env } from './env';
+import { BlobService } from './lib/blobService';
 
 const isDev = process.env.NODE_ENV !== 'production';
+
+// Limpa arquivos temp órfãos de uploads incompletos anteriores
+BlobService.cleanupTempFiles();
 
 export const app = express();
 
