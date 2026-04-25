@@ -230,6 +230,8 @@ export const TenantScalarFieldEnum = {
   marital_status: 'marital_status',
   cpf: 'cpf',
   rg: 'rg',
+  rg_issuing_body: 'rg_issuing_body',
+  rg_issuing_state: 'rg_issuing_state',
   cnpj: 'cnpj',
   created_at: 'created_at',
   updated_at: 'updated_at',
@@ -269,9 +271,15 @@ export const LeaseScalarFieldEnum = {
   payment_condition: 'payment_condition',
   property_tax_cash: 'property_tax_cash',
   property_tax_second_installment: 'property_tax_second_installment',
+  iptu_year: 'iptu_year',
   iptu_installments: 'iptu_installments',
+  iptu_installments_due_dates: 'iptu_installments_due_dates',
   iptu_installments_count: 'iptu_installments_count',
-  property_tax_first_installment: 'property_tax_first_installment'
+  property_tax_first_installment: 'property_tax_first_installment',
+  insurance_company: 'insurance_company',
+  insurance_type: 'insurance_type',
+  insurance_policy: 'insurance_policy',
+  guarantors: 'guarantors'
 } as const
 
 export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof LeaseScalarFieldEnum]

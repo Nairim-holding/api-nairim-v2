@@ -44,8 +44,7 @@ export class TransactionService {
       const formattedEventDate = t.event_date ? new Date(t.event_date).toLocaleDateString('pt-BR') : '';
       const formattedEffectiveDate = t.effective_date ? new Date(t.effective_date).toLocaleDateString('pt-BR') : '';
 
-      // Trazendo as Subcategorias Atreladas daquela categoria específica como texto (Pois você removeu o subcategory_id)
-      const subcategoriesString = t.category?.subcategories ? t.category.subcategories.map((s: any) => s.name).join(' ') : '';
+      const subcategoryName = t.subcategory?.name || '';
 
       const fieldsToSearch = [
         t.description,
@@ -54,7 +53,7 @@ export class TransactionService {
         statusPt,
         typePt,
         t.category?.name,
-        subcategoriesString,
+        subcategoryName,
         t.financial_institution?.name,
         t.card?.name,
         t.center?.name,
@@ -79,9 +78,9 @@ export class TransactionService {
            if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'].includes(key)) {
              andFilters.push({ [key]: String(value) });
            }
-           // Adaptação: caso tente filtrar por subcategoria, ele busca nas subcategorias filhas da categoria amarrada
+           // Filtra diretamente pelo subcategory_id da transação
            if (key === 'subcategory_id') {
-              andFilters.push({ category: { subcategories: { some: { id: String(value) } } } });
+              andFilters.push({ subcategory_id: String(value) });
            }
            if (key === 'type') {
              andFilters.push({ category: { type: value } });
@@ -185,7 +184,7 @@ export class TransactionService {
             field: 'center_id', 
             type: 'select', 
             label: 'Centro', 
-            values: centers.map(c => ({ value: c.id, label: `${c.name} (${c.type === 'INCOME' ? 'Receita' : 'Despesa'})` })) 
+            values: centers.map(c => ({ value: c.id, label: `${c.name}` })) 
           },
           { 
             field: 'supplier_id', 
@@ -246,7 +245,7 @@ export class TransactionService {
             where[key] = String(value);
           }
           if (key === 'subcategory_id') {
-            where.category = { subcategories: { some: { id: String(value) } } };
+            where.subcategory_id = String(value);
           }
           if (key === 'type') {
             where.category = { type: value }; 
@@ -267,9 +266,10 @@ export class TransactionService {
       let transactions: any[] = [];
       let total = 0;
 
-      // Injeta as subcategorias da categoria pai para funcionar a busca
+      // Inclui a subcategoria diretamente da transação
       const includeConfig = { 
-        category: { include: { subcategories: { where: { deleted_at: null } } } }, 
+        category: true,
+        subcategory: true,
         financial_institution: true, 
         card: true, 
         center: true,
@@ -323,7 +323,7 @@ export class TransactionService {
           else if (field === 'category_id') {
             orderBy.push({ category: { name: dir } });
           } else if (field === 'subcategory_id') {
-            orderBy.push({ category: { name: dir } }); // Orderna pelo pai já que o filho é embutido
+            orderBy.push({ subcategory: { name: dir } });
           } else if (field === 'financial_institution_id') {
             orderBy.push({ financial_institution: { name: dir } });
           } else if (field === 'card_id') {
@@ -349,13 +349,10 @@ export class TransactionService {
         total = count;
       }
 
-      // Converte as subcategorias do formato novo (dentro do objeto category) para a raiz do objeto, 
-      // assim o frontend continua a achar "subcategory.name" quando for listar e renderizar!
+      // Usa a subcategoria diretamente da transação
       const mappedTransactions = transactions.map(t => ({
         ...t,
-        subcategory: t.category?.subcategories && t.category.subcategories.length > 0 
-          ? { name: t.category.subcategories.map((s: any) => s.name).join(', ') }
-          : { name: 'Nenhuma' }
+        subcategory: t.subcategory ? { name: t.subcategory.name } : { name: 'Nenhuma' }
       }));
 
       const aggregations = await prisma.transaction.groupBy({
@@ -381,7 +378,7 @@ export class TransactionService {
     try {
       const transaction = await prisma.transaction.findUnique({
         where: { id, deleted_at: null },
-        include: { category: { include: { subcategories: { where: { deleted_at: null } } } }, financial_institution: true, card: true, center: true, supplier: true }
+        include: { category: true, subcategory: true, financial_institution: true, card: true, center: true, supplier: true }
       });
       if (!transaction) throw new Error('Transaction not found');
       return transaction;
@@ -423,7 +420,7 @@ export class TransactionService {
           amount: Number(data.amount),
           status: data.status || 'PENDING',
           category_id: data.category_id,
-          subcategory_id: null, // Campo obsoleto no banco, não passamos.
+          subcategory_id: parseFK(data.subcategory_id),
           financial_institution_id: data.financial_institution_id,
           card_id: cardId,
           center_id: parseFK(data.center_id),
@@ -466,7 +463,7 @@ export class TransactionService {
           amount: data.amount !== undefined ? Number(data.amount) : undefined,
           status: data.status,
           category_id: data.category_id,
-          subcategory_id: null,
+          subcategory_id: parseFKUpdate(data.subcategory_id),
           financial_institution_id: data.financial_institution_id,
           card_id: parseFKUpdate(data.card_id),
           center_id: parseFKUpdate(data.center_id),

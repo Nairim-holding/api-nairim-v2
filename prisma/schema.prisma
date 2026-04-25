@@ -161,6 +161,8 @@ model Tenant {
   marital_status         String?
   cpf                    String?         @db.VarChar(14)
   rg                     String?         @db.VarChar(20)
+  rg_issuing_body        String?         @db.VarChar(50)
+  rg_issuing_state       String?         @db.VarChar(2)
   cnpj                   String?         @db.VarChar(20)
   created_at             DateTime        @default(now())
   updated_at             DateTime        @updatedAt
@@ -203,9 +205,15 @@ model Lease {
   payment_condition               PaymentCondition?
   property_tax_cash               Decimal?          @db.Decimal(20, 2)
   property_tax_second_installment Decimal?          @db.Decimal(20, 2)
+  iptu_year                       Int?
   iptu_installments               Json?
+  iptu_installments_due_dates     Json?
   iptu_installments_count         Int?
   property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
+  insurance_company               String?
+  insurance_type                  String?
+  insurance_policy                String?
+  guarantors                      Json?
   owner                           Owner             @relation(fields: [owner_id], references: [id])
   property                        Property          @relation(fields: [property_id], references: [id])
   tenant                          Tenant            @relation(fields: [tenant_id], references: [id])

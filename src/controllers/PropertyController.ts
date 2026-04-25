@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import fs from 'fs/promises';
+import { createWriteStream } from 'fs';
+import path from 'path';
+import busboy from 'busboy';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { PropertyValidator } from '../lib/validators/property';
@@ -7,17 +10,20 @@ import { PropertyService } from '@/services/PropertyService';
 import { DocumentService } from '@/services/DocumentService';
 import { GetPropertiesParams } from '../types/property';
 
-/** Apaga arquivos que ainda estão no diretório temp (quando a requisição falha antes do move) */
-async function cleanupRequestTempFiles(files: Record<string, Express.Multer.File[]> | undefined) {
-  if (!files) return;
-  for (const fileArray of Object.values(files)) {
-    for (const file of fileArray) {
-      if (file.path) {
-        await fs.unlink(file.path).catch(() => {});
-      }
-    }
-  }
+const tempDir = path.join(process.cwd(), 'uploads', 'temp');
+
+type TempFileInfo = {
+  fieldname: string;
+  tempPath: string;
+  originalname: string;
+  mimetype: string;
+};
+
+/** Apaga arquivos temp que ainda não foram movidos para o destino final */
+async function cleanupTempFiles(files: TempFileInfo[]) {
+  await Promise.all(files.map((f) => fs.unlink(f.tempPath).catch(() => {})));
 }
+
 
 export class PropertyController {
   static async getProperties(req: Request, res: Response) {
@@ -226,17 +232,44 @@ export class PropertyController {
     }
   }
 
-  static async createUnifiedProperty(req: Request, res: Response) {
-    try {
-      if (!req.is('multipart/form-data')) {
-        return res.status(400).json(ApiResponse.error('Formato inválido. Use multipart/form-data'));
-      }
+  /**
+   * Criação de imóvel com upload de mídias via busboy streaming.
+   *
+   * Fluxo:
+   * 1. Campos de texto chegam primeiro (JSON pequeno — milissegundos).
+   * 2. Quando o primeiro arquivo começa a ser recebido, todos os campos já estão
+   *    disponíveis → criamos o imóvel no banco e respondemos imediatamente (< 1s).
+   * 3. Os arquivos continuam sendo gravados em disco em background (sem bloquear a resposta).
+   * 4. Após todos os arquivos concluídos → documentos criados no banco + AVIF agendado.
+   *
+   * Isso resolve o erro 502 do Nginx: a resposta chega ao proxy ANTES do timeout,
+   * independentemente do tamanho do vídeo ou da velocidade de upload.
+   */
+  static createUnifiedProperty(req: Request, res: Response): void {
+    if (!req.is('multipart/form-data')) {
+      res.status(400).json(ApiResponse.error('Formato inválido. Use multipart/form-data'));
+      return;
+    }
 
-      const { propertyData, addressData, valuesData, iptusData, userId, featuredImageIdentifier } = req.body;
-      const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+    const bb = busboy({ headers: req.headers });
+    const fields: Record<string, string> = {};
+    const tempFiles: TempFileInfo[] = [];
+    const fileWritePromises: Promise<void>[] = [];
+    let propertyId: string | null = null;
+    let responded = false;
+    let failed = false;
+
+    const sendError = (status: number, message: string) => {
+      failed = true;
+      if (!res.headersSent) res.status(status).json(ApiResponse.error(message));
+    };
+
+    const respondWithProperty = async () => {
+      if (responded || failed) return;
+      const { propertyData, addressData, valuesData, iptusData, userId } = fields;
 
       if (!propertyData || !addressData || !valuesData || !userId) {
-        return res.status(400).json(ApiResponse.error('Campos obrigatórios ausentes'));
+        return sendError(400, 'Campos obrigatórios ausentes');
       }
 
       let parsedPropertyData, parsedAddressData, parsedValuesData, parsedIptusData;
@@ -245,45 +278,108 @@ export class PropertyController {
         parsedAddressData = JSON.parse(addressData);
         parsedValuesData = JSON.parse(valuesData);
         parsedIptusData = iptusData ? JSON.parse(iptusData) : [];
-      } catch (parseError: any) {
-        return res.status(400).json(ApiResponse.error(`Formato JSON inválido: ${parseError.message}`));
+      } catch (e: any) {
+        return sendError(400, `Formato JSON inválido: ${e.message}`);
       }
 
-      const combinedData = {
-        ...parsedPropertyData,
-        address: parsedAddressData,
-        values: parsedValuesData,
-        iptus: parsedIptusData
-      };
-
+      const combinedData = { ...parsedPropertyData, address: parsedAddressData, values: parsedValuesData, iptus: parsedIptusData };
       const validation = PropertyValidator.validateCreate(combinedData);
-      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      if (!validation.isValid) return sendError(400, 'Erro de validação');
 
-      const result = await PropertyService.createPropertyWithFiles(combinedData, files || {}, userId, featuredImageIdentifier);
-      return res.status(201).json(ApiResponse.success(result, `Imóvel criado com sucesso`));
+      try {
+        const { property } = await PropertyService.createPropertyTransaction(combinedData);
+        propertyId = property!.id;
+        responded = true;
+        // Responde ANTES dos arquivos terminarem — resolve o timeout do Nginx
+        res.status(201).json(ApiResponse.success({ property, uploadedDocuments: [] }, 'Imóvel criado com sucesso'));
+      } catch (err: any) {
+        console.error('❌ Erro ao criar imóvel:', err);
+        const status = err.message.includes('não encontrado') ? 404 : err.message.includes('já existe') ? 409 : 500;
+        sendError(status, err.message);
+      }
+    };
 
-    } catch (error: any) {
-      await cleanupRequestTempFiles(req.files as Record<string, Express.Multer.File[]>);
-      console.error('❌ Erro na criação unificada:', error);
-      if (error.message.includes('não encontrado')) return res.status(404).json(ApiResponse.error(error.message));
-      if (error.message.includes('já existe')) return res.status(409).json(ApiResponse.error(error.message));
-      res.status(500).json(ApiResponse.error(`Erro ao criar imóvel: ${error.message}`));
-    }
+    bb.on('field', (name, val) => { fields[name] = val; });
+
+    bb.on('file', (fieldname, stream, info) => {
+      // Grava em disco em streaming (sem buffer em memória)
+      const ext = path.extname(info.filename).toLowerCase();
+      const tempPath = path.join(tempDir, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+      tempFiles.push({ fieldname, tempPath, originalname: info.filename, mimetype: info.mimeType });
+
+      const ws = createWriteStream(tempPath);
+      stream.pipe(ws);
+      fileWritePromises.push(
+        new Promise<void>((resolve, reject) => {
+          ws.on('finish', resolve);
+          ws.on('error', reject);
+          stream.on('error', reject);
+        }),
+      );
+
+      // Ao primeiro arquivo: todos os campos já chegaram → responde agora
+      if (!responded && !failed) respondWithProperty();
+    });
+
+    bb.on('finish', async () => {
+      // Caso sem arquivos: responde aqui
+      if (!responded && !failed) await respondWithProperty();
+
+      // Background: aguarda escrita de todos os arquivos e processa documentos
+      if (!failed && propertyId && fileWritePromises.length > 0) {
+        const pid = propertyId;
+        const uid = fields.userId;
+        const featuredId = fields.featuredImageIdentifier;
+        const filesToProcess = [...tempFiles];
+        Promise.all(fileWritePromises)
+          .then(() => PropertyService.processUploadedTempFiles(pid, filesToProcess, uid, featuredId))
+          .catch(async (err) => {
+            console.error('❌ Background upload error:', err);
+            await cleanupTempFiles(filesToProcess);
+          });
+      }
+    });
+
+    bb.on('error', (err) => {
+      console.error('❌ Busboy error:', err);
+      sendError(500, 'Erro ao processar envio do formulário');
+    });
+
+    req.pipe(bb);
   }
 
-  static async updateUnifiedProperty(req: Request, res: Response) {
-    try {
-      if (!req.is('multipart/form-data')) {
-        return res.status(400).json(ApiResponse.error('Formato inválido. Use multipart/form-data'));
-      }
+  /**
+   * Atualização de imóvel com upload de mídias via busboy streaming.
+   * Mesma estratégia de resposta antecipada que createUnifiedProperty.
+   */
+  static updateUnifiedProperty(req: Request, res: Response): void {
+    const id = String(req.params?.id || '');
+    if (!id) { res.status(400).json(ApiResponse.error('ID da propriedade é obrigatório')); return; }
 
-      const { propertyData, addressData, valuesData, iptusData, userId, removedDocuments, featuredImageIdentifier } = req.body;
-      const files = req.files as Record<string, Express.Multer.File[]> | undefined;
-      const id = String(req.params?.id || '');
+    if (!req.is('multipart/form-data')) {
+      res.status(400).json(ApiResponse.error('Formato inválido. Use multipart/form-data'));
+      return;
+    }
 
-      if (!id) return res.status(400).json(ApiResponse.error('ID da propriedade é obrigatório'));
+    const bb = busboy({ headers: req.headers });
+    const fields: Record<string, string> = {};
+    const tempFiles: TempFileInfo[] = [];
+    const fileWritePromises: Promise<void>[] = [];
+    let propertyId: string | null = null;
+    let responded = false;
+    let failed = false;
+
+    const sendError = (status: number, message: string) => {
+      failed = true;
+      if (!res.headersSent) res.status(status).json(ApiResponse.error(message));
+    };
+
+    const respondWithProperty = async () => {
+      if (responded || failed) return;
+      const { propertyData, addressData, valuesData, iptusData, userId, removedDocuments } = fields;
+
       if (!propertyData || !addressData || !valuesData || !userId) {
-        return res.status(400).json(ApiResponse.error('Campos obrigatórios ausentes'));
+        return sendError(400, 'Campos obrigatórios ausentes');
       }
 
       let parsedPropertyData, parsedAddressData, parsedValuesData, parsedIptusData, parsedRemovedDocuments;
@@ -293,28 +389,68 @@ export class PropertyController {
         parsedValuesData = JSON.parse(valuesData);
         parsedIptusData = iptusData ? JSON.parse(iptusData) : [];
         parsedRemovedDocuments = removedDocuments ? JSON.parse(removedDocuments) : [];
-      } catch (parseError: any) {
-        return res.status(400).json(ApiResponse.error(`Formato JSON inválido: ${parseError.message}`));
+      } catch (e: any) {
+        return sendError(400, `Formato JSON inválido: ${e.message}`);
       }
 
-      const combinedData = {
-        ...parsedPropertyData,
-        address: parsedAddressData,
-        values: parsedValuesData,
-        iptus: parsedIptusData
-      };
-
+      const combinedData = { ...parsedPropertyData, address: parsedAddressData, values: parsedValuesData, iptus: parsedIptusData };
       const validation = PropertyValidator.validateUpdate(combinedData);
-      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      if (!validation.isValid) return sendError(400, 'Erro de validação');
 
-      const result = await PropertyService.updatePropertyWithFiles(id, combinedData, files || {}, userId, parsedRemovedDocuments, featuredImageIdentifier);
-      return res.status(200).json(ApiResponse.success(result, `Imóvel atualizado com sucesso`));
+      try {
+        const { property } = await PropertyService.updatePropertyTransaction(id, combinedData, parsedRemovedDocuments);
+        propertyId = property!.id;
+        responded = true;
+        res.status(200).json(ApiResponse.success({ property, uploadedDocuments: [] }, 'Imóvel atualizado com sucesso'));
+      } catch (err: any) {
+        console.error('❌ Erro ao atualizar imóvel:', err);
+        const status = err.message.includes('não encontrado') ? 404 : 500;
+        sendError(status, err.message);
+      }
+    };
 
-    } catch (error: any) {
-      await cleanupRequestTempFiles(req.files as Record<string, Express.Multer.File[]>);
-      console.error('❌ Erro na atualização unificada:', error);
-      if (error.message.includes('não encontrado')) return res.status(404).json(ApiResponse.error(error.message));
-      res.status(500).json(ApiResponse.error(`Erro ao atualizar imóvel: ${error.message}`));
-    }
+    bb.on('field', (name, val) => { fields[name] = val; });
+
+    bb.on('file', (fieldname, stream, info) => {
+      const ext = path.extname(info.filename).toLowerCase();
+      const tempPath = path.join(tempDir, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+      tempFiles.push({ fieldname, tempPath, originalname: info.filename, mimetype: info.mimeType });
+
+      const ws = createWriteStream(tempPath);
+      stream.pipe(ws);
+      fileWritePromises.push(
+        new Promise<void>((resolve, reject) => {
+          ws.on('finish', resolve);
+          ws.on('error', reject);
+          stream.on('error', reject);
+        }),
+      );
+
+      if (!responded && !failed) respondWithProperty();
+    });
+
+    bb.on('finish', async () => {
+      if (!responded && !failed) await respondWithProperty();
+
+      if (!failed && propertyId && fileWritePromises.length > 0) {
+        const pid = propertyId;
+        const uid = fields.userId;
+        const featuredId = fields.featuredImageIdentifier;
+        const filesToProcess = [...tempFiles];
+        Promise.all(fileWritePromises)
+          .then(() => PropertyService.processUploadedTempFiles(pid, filesToProcess, uid, featuredId))
+          .catch(async (err) => {
+            console.error('❌ Background upload error:', err);
+            await cleanupTempFiles(filesToProcess);
+          });
+      }
+    });
+
+    bb.on('error', (err) => {
+      console.error('❌ Busboy error:', err);
+      sendError(500, 'Erro ao processar envio do formulário');
+    });
+
+    req.pipe(bb);
   }
 }

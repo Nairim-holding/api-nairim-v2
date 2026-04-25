@@ -797,6 +797,339 @@ export class PropertyService {
     return uploadedDocuments;
   }
 
+  /**
+   * Processa arquivos temporários salvos em disco pelo busboy.
+   * Chamado em background — a resposta HTTP já foi enviada ao cliente.
+   */
+  static async processUploadedTempFiles(
+    propertyId: string,
+    tempFiles: Array<{ fieldname: string; tempPath: string; originalname: string; mimetype: string }>,
+    userId: string,
+    featuredImageIdentifier?: string,
+  ): Promise<void> {
+    const fileTypes: Record<string, string> = {
+      arquivosImagens: 'IMAGE',
+      arquivosMatricula: 'REGISTRATION',
+      arquivosRegistro: 'PROPERTY_RECORD',
+      arquivosEscritura: 'TITLE_DEED',
+      arquivosOutros: 'OTHER',
+    };
+
+    let userExists = false;
+    if (userId?.trim()) {
+      try {
+        userExists = (await prisma.user.count({ where: { id: userId } })) > 0;
+      } catch {}
+    }
+
+    const uploadedDocuments: Array<{ id: string; filename: string; name: string }> = [];
+
+    for (const fileInfo of tempFiles) {
+      try {
+        const docType = fileTypes[fileInfo.fieldname] ?? 'OTHER';
+        const originalname = Buffer.from(fileInfo.originalname, 'latin1').toString('utf8');
+
+        const mockFile = {
+          path: fileInfo.tempPath,
+          originalname,
+          mimetype: fileInfo.mimetype,
+          size: 0,
+        } as Express.Multer.File;
+
+        const { result: blobResult, absolutePath, isImage } = await BlobService.moveFile(
+          mockFile,
+          originalname,
+          `properties/${propertyId}`,
+        );
+
+        const fileNameWithoutExt = originalname.replace(/\.[^/.]+$/, '');
+        const documentData: any = {
+          property_id: propertyId,
+          file_path: blobResult.url,
+          file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
+          type: docType,
+          description: fileNameWithoutExt.substring(0, 250),
+        };
+        if (userExists) documentData.created_by = userId;
+
+        const document = await prisma.document.create({ data: documentData });
+
+        if (isImage) {
+          BlobService.scheduleAvifConversion(absolutePath, blobResult.url, async (avifUrl) => {
+            await prisma.document.update({ where: { id: document.id }, data: { file_path: avifUrl } });
+          });
+        }
+
+        uploadedDocuments.push({ id: document.id, filename: originalname, name: fileNameWithoutExt });
+      } catch (err: any) {
+        console.error(`❌ Background: erro ao processar ${fileInfo.originalname}:`, err.message);
+      }
+    }
+
+    if (featuredImageIdentifier && uploadedDocuments.length > 0) {
+      const matched = uploadedDocuments.find(
+        (d) => d.filename === featuredImageIdentifier || d.name === featuredImageIdentifier,
+      );
+      if (matched) {
+        await prisma.document.updateMany({
+          where: { property_id: propertyId, type: 'IMAGE' },
+          data: { is_featured: false },
+        });
+        await prisma.document.update({ where: { id: matched.id }, data: { is_featured: true } });
+      }
+    }
+  }
+
+  /** Cria imóvel (transação) sem processar arquivos. Retorna o imóvel completo. */
+  static async createPropertyTransaction(data: any) {
+    const { property, address, propertyValue } = await prisma.$transaction(async (tx: any) => {
+      const owner = await tx.owner.findUnique({ where: { id: data.owner_id, deleted_at: null } });
+      if (!owner) throw new Error('Proprietário não encontrado');
+
+      const propertyType = await tx.propertyType.findUnique({ where: { id: data.type_id, deleted_at: null } });
+      if (!propertyType) throw new Error('Tipo de propriedade não encontrado');
+
+      if (data.agency_id) {
+        const agency = await tx.agency.findUnique({ where: { id: data.agency_id, deleted_at: null } });
+        if (!agency) throw new Error('Agência não encontrada');
+      }
+
+      const property = await tx.property.create({
+        data: {
+          title: data.title,
+          bedrooms: parseInt(data.bedrooms),
+          bathrooms: parseInt(data.bathrooms),
+          half_bathrooms: parseInt(data.half_bathrooms ?? 0),
+          garage_spaces: parseInt(data.garage_spaces ?? 0),
+          area_total: parseFloat(data.area_total),
+          area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+          frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
+          furnished: Boolean(data.furnished),
+          floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
+          tax_registration: data.tax_registration,
+          registration_number: data.registration_number || null,
+          notes: data.notes,
+          owner_id: data.owner_id,
+          type_id: data.type_id,
+          agency_id: data.agency_id || null,
+        },
+      });
+
+      let address = null;
+      if (data.address) {
+        const newAddress = await tx.address.create({
+          data: {
+            zip_code: data.address.zip_code,
+            street: data.address.street,
+            number: data.address.number,
+            complement: data.address.complement || null,
+            block: data.address.block || null,
+            lot: data.address.lot || null,
+            district: data.address.district,
+            city: data.address.city,
+            state: data.address.state,
+            country: data.address.country || 'Brasil',
+            latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+            longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
+          },
+        });
+        await tx.propertyAddress.create({ data: { property_id: property.id, address_id: newAddress.id } });
+        address = newAddress;
+      }
+
+      let propertyValue = null;
+      if (data.values) {
+        propertyValue = await tx.propertyValue.create({
+          data: {
+            property_id: property.id,
+            purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+            purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
+            market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+            rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
+            condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
+            property_tax: parseFloat(data.values.property_tax || 0),
+            status: (data.values.status as PropertyStatus) || 'AVAILABLE',
+            notes: data.values.notes,
+            sale_value: parseFloat(data.values.sale_value || 0),
+            extra_charges: parseFloat(data.values.extra_charges || 0),
+            sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
+          },
+        });
+      }
+
+      if (data.iptus && Array.isArray(data.iptus)) {
+        for (const iptu of data.iptus) {
+          await tx.propertyIptu.create({
+            data: {
+              property_id: property.id,
+              year: parseInt(iptu.year),
+              property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
+              property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
+              property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
+              iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
+              iptu_installments: iptu.iptu_installments || null,
+              payment_condition: (iptu.payment_condition as PaymentCondition) || null,
+            },
+          });
+        }
+      }
+
+      return { property, address, propertyValue };
+    }, { timeout: 10000 });
+
+    const fullProperty = await prisma.property.findUnique({
+      where: { id: property.id },
+      include: {
+        addresses: { include: { address: true } },
+        owner: true,
+        type: true,
+        documents: { where: { deleted_at: null } },
+        values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' } },
+        iptus: { orderBy: { year: 'desc' } },
+        agency: true,
+      },
+    });
+
+    return { property: fullProperty };
+  }
+
+  /** Atualiza imóvel (transação) sem processar arquivos. */
+  static async updatePropertyTransaction(id: string, data: any, removedDocuments: string[] = []) {
+    if (removedDocuments.length > 0) {
+      await prisma.document.updateMany({
+        where: { id: { in: removedDocuments }, property_id: id },
+        data: { deleted_at: new Date() },
+      });
+    }
+
+    const { property } = await prisma.$transaction(async (tx: any) => {
+      const existingProperty = await tx.property.findUnique({ where: { id, deleted_at: null } });
+      if (!existingProperty) throw new Error('Propriedade não encontrada');
+
+      const owner = await tx.owner.findUnique({ where: { id: data.owner_id, deleted_at: null } });
+      if (!owner) throw new Error('Proprietário não encontrado');
+
+      const propertyType = await tx.propertyType.findUnique({ where: { id: data.type_id, deleted_at: null } });
+      if (!propertyType) throw new Error('Tipo de propriedade não encontrado');
+
+      if (data.agency_id) {
+        const agency = await tx.agency.findUnique({ where: { id: data.agency_id, deleted_at: null } });
+        if (!agency) throw new Error('Agência não encontrada');
+      }
+
+      const property = await tx.property.update({
+        where: { id },
+        data: {
+          title: data.title,
+          bedrooms: parseInt(data.bedrooms),
+          bathrooms: parseInt(data.bathrooms),
+          half_bathrooms: parseInt(data.half_bathrooms ?? 0),
+          garage_spaces: parseInt(data.garage_spaces ?? 0),
+          area_total: parseFloat(data.area_total),
+          area_built: data.area_built != null && data.area_built !== '' ? parseFloat(data.area_built) : 0,
+          frontage: data.frontage != null && data.frontage !== '' ? parseFloat(data.frontage) : 0,
+          furnished: Boolean(data.furnished),
+          floor_number: data.floor_number != null && data.floor_number !== '' ? parseInt(data.floor_number) : null,
+          tax_registration: data.tax_registration,
+          registration_number: data.registration_number || null,
+          notes: data.notes,
+          owner_id: data.owner_id,
+          type_id: data.type_id,
+          agency_id: data.agency_id || null,
+        },
+      });
+
+      if (data.address) {
+        const propertyAddress = await tx.propertyAddress.findFirst({
+          where: { property_id: id, deleted_at: null },
+          include: { address: true },
+        });
+        if (propertyAddress) {
+          await tx.address.update({
+            where: { id: propertyAddress.address.id },
+            data: {
+              zip_code: data.address.zip_code, street: data.address.street, number: data.address.number,
+              complement: data.address.complement || null, block: data.address.block || null,
+              lot: data.address.lot || null, district: data.address.district,
+              city: data.address.city, state: data.address.state, country: data.address.country || 'Brasil',
+              latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+              longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
+            },
+          });
+        } else {
+          const newAddress = await tx.address.create({
+            data: {
+              zip_code: data.address.zip_code, street: data.address.street, number: data.address.number,
+              complement: data.address.complement || null, block: data.address.block || null,
+              lot: data.address.lot || null, district: data.address.district,
+              city: data.address.city, state: data.address.state, country: data.address.country || 'Brasil',
+              latitude: data.address.latitude != null && data.address.latitude !== '' ? parseFloat(data.address.latitude) : null,
+              longitude: data.address.longitude != null && data.address.longitude !== '' ? parseFloat(data.address.longitude) : null,
+            },
+          });
+          await tx.propertyAddress.create({ data: { property_id: property.id, address_id: newAddress.id } });
+        }
+      }
+
+      if (data.values) {
+        const currentValue = await tx.propertyValue.findFirst({ where: { property_id: id, deleted_at: null } });
+        const valueData = {
+          purchase_value: data.values.purchase_value != null && data.values.purchase_value !== '' ? parseFloat(data.values.purchase_value) : null,
+          purchase_date: data.values.purchase_date ? new Date(data.values.purchase_date) : null,
+          market_value: data.values.market_value != null && data.values.market_value !== '' ? parseFloat(data.values.market_value) : null,
+          rental_value: data.values.rental_value != null && data.values.rental_value !== '' ? parseFloat(data.values.rental_value) : null,
+          condo_fee: data.values.condo_fee != null && data.values.condo_fee !== '' ? parseFloat(data.values.condo_fee) : null,
+          property_tax: parseFloat(data.values.property_tax || 0),
+          status: (data.values.status as PropertyStatus) || 'AVAILABLE',
+          notes: data.values.notes,
+          sale_value: parseFloat(data.values.sale_value || 0),
+          extra_charges: parseFloat(data.values.extra_charges || 0),
+          sale_date: data.values.sale_date ? new Date(data.values.sale_date) : null,
+        };
+        if (currentValue) {
+          await tx.propertyValue.update({ where: { id: currentValue.id }, data: valueData });
+        } else {
+          await tx.propertyValue.create({ data: { property_id: property.id, ...valueData } });
+        }
+      }
+
+      if (data.iptus && Array.isArray(data.iptus)) {
+        await tx.propertyIptu.deleteMany({ where: { property_id: property.id } });
+        for (const iptu of data.iptus) {
+          await tx.propertyIptu.create({
+            data: {
+              property_id: property.id,
+              year: parseInt(iptu.year),
+              property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
+              property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
+              property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
+              iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
+              iptu_installments: iptu.iptu_installments || null,
+              payment_condition: (iptu.payment_condition as PaymentCondition) || null,
+            },
+          });
+        }
+      }
+
+      return { property };
+    }, { timeout: 10000 });
+
+    const fullProperty = await prisma.property.findUnique({
+      where: { id: property.id },
+      include: {
+        addresses: { include: { address: true } },
+        owner: true,
+        type: true,
+        documents: { where: { deleted_at: null } },
+        values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' } },
+        iptus: { orderBy: { year: 'desc' } },
+        agency: true,
+      },
+    });
+
+    return { property: fullProperty };
+  }
+
   static async updateProperty(id: string, data: any) {
     try {
       const property = await prisma.$transaction(async (tx: any) => {

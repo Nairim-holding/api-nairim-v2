@@ -115,8 +115,9 @@ export class LeaseController {
 
       const lease = await LeaseService.createLease(req.body);
 
+      const response = ApiResponse.success(lease, `Locação ${lease.contract_number} criada com sucesso`);
       res.status(201).json(
-        ApiResponse.success(lease, `Locação ${lease.contract_number} criada com sucesso`)
+        validation.warnings.length > 0 ? { ...response, warnings: validation.warnings } : response
       );
     } catch (error: any) {
       console.error('Erro ao criar locação:', error);
@@ -145,8 +146,9 @@ export class LeaseController {
 
       const lease = await LeaseService.updateLease(id, req.body);
 
+      const response = ApiResponse.success(lease, `Locação ${lease.contract_number} atualizada com sucesso`);
       res.status(200).json(
-        ApiResponse.success(lease, `Locação ${lease.contract_number} atualizada com sucesso`)
+        validation.warnings.length > 0 ? { ...response, warnings: validation.warnings } : response
       );
     } catch (error: any) {
       console.error('Erro ao atualizar locação:', error);

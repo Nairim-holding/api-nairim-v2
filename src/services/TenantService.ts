@@ -332,14 +332,16 @@ export class TenantService {
           data: {
             name: data.name,
             internal_code: data.internal_code,
-            nationality: data.nationality || null,
-            occupation: data.occupation || null,
-            marital_status: data.marital_status || null,
-            cpf: data.cpf || null,
-            rg: data.rg || null,
-            cnpj: data.cnpj || null,
-            state_registration: data.state_registration || null,
-            municipal_registration: data.municipal_registration || null
+            nationality: data.nationality ? String(data.nationality).trim() : null,
+            occupation: data.occupation ? String(data.occupation).trim() : null,
+            marital_status: data.marital_status ? String(data.marital_status).trim() : null,
+            cpf: data.cpf ? String(data.cpf).trim() : null,
+            rg: data.rg ? String(data.rg).trim() : null,
+            rg_issuing_body: data.rg_issuing_body ? String(data.rg_issuing_body).trim().substring(0, 50) : null,
+            rg_issuing_state: data.rg_issuing_state ? String(data.rg_issuing_state).trim().substring(0, 2) : null,
+            cnpj: data.cnpj ? String(data.cnpj).trim() : null,
+            state_registration: data.state_registration ? String(data.state_registration).trim() : null,
+            municipal_registration: data.municipal_registration ? String(data.municipal_registration).trim() : null
           }
         });
 
@@ -411,14 +413,16 @@ export class TenantService {
           data: {
             name: data.name !== undefined ? data.name : existing.name,
             internal_code: data.internal_code !== undefined ? data.internal_code : existing.internal_code,
-            nationality: data.nationality !== undefined ? data.nationality : existing.nationality,
-            occupation: data.occupation !== undefined ? data.occupation : existing.occupation,
-            marital_status: data.marital_status !== undefined ? data.marital_status : existing.marital_status,
-            cpf: data.cpf !== undefined ? data.cpf : existing.cpf,
-            rg: data.rg !== undefined ? data.rg : existing.rg,
-            cnpj: data.cnpj !== undefined ? data.cnpj : existing.cnpj,
-            state_registration: data.state_registration !== undefined ? data.state_registration : existing.state_registration,
-            municipal_registration: data.municipal_registration !== undefined ? data.municipal_registration : existing.municipal_registration
+            nationality: data.nationality !== undefined ? (data.nationality ? String(data.nationality).trim() : null) : existing.nationality,
+            occupation: data.occupation !== undefined ? (data.occupation ? String(data.occupation).trim() : null) : existing.occupation,
+            marital_status: data.marital_status !== undefined ? (data.marital_status ? String(data.marital_status).trim() : null) : existing.marital_status,
+            cpf: data.cpf !== undefined ? (data.cpf ? String(data.cpf).trim() : null) : existing.cpf,
+            rg: data.rg !== undefined ? (data.rg ? String(data.rg).trim() : null) : existing.rg,
+            rg_issuing_body: data.rg_issuing_body !== undefined ? (data.rg_issuing_body ? String(data.rg_issuing_body).trim().substring(0, 50) : null) : existing.rg_issuing_body,
+            rg_issuing_state: data.rg_issuing_state !== undefined ? (data.rg_issuing_state ? String(data.rg_issuing_state).trim().substring(0, 2) : null) : existing.rg_issuing_state,
+            cnpj: data.cnpj !== undefined ? (data.cnpj ? String(data.cnpj).trim() : null) : existing.cnpj,
+            state_registration: data.state_registration !== undefined ? (data.state_registration ? String(data.state_registration).trim() : null) : existing.state_registration,
+            municipal_registration: data.municipal_registration !== undefined ? (data.municipal_registration ? String(data.municipal_registration).trim() : null) : existing.municipal_registration
           }
         });
 
