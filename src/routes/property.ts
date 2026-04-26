@@ -4,26 +4,12 @@ import {
   validateUpdateProperty, 
   validateGetProperties 
 } from '../middlewares/validation';
-import { processMultipart, upload } from '../utils/upload';
+import { upload } from '../utils/upload';
 import { Router } from 'express';
 
 const router = Router();
 
-router.post(
-  '/create-unified',
-  processMultipart([
-    { name: 'propertyData' },
-    { name: 'addressData' },
-    { name: 'valuesData' },
-    { name: 'userId' },
-    { name: 'arquivosImagens', maxCount: 30 },
-    { name: 'arquivosMatricula', maxCount: 3 },
-    { name: 'arquivosRegistro', maxCount: 3 },
-    { name: 'arquivosEscritura', maxCount: 3 },
-    { name: 'arquivosOutros', maxCount: 10 }
-  ]),
-  PropertyController.createUnifiedProperty
-);
+router.post('/create-unified', PropertyController.createUnifiedProperty);
 
 router.get('/', validateGetProperties, PropertyController.getProperties);
 router.get('/filters', PropertyController.getPropertyFilters);
@@ -57,21 +43,6 @@ router.put(
   PropertyController.updateDocuments
 );
 
-router.put(
-  '/update-unified/:id',
-  processMultipart([
-    { name: 'propertyData' },
-    { name: 'addressData' },
-    { name: 'valuesData' },
-    { name: 'userId' },
-    { name: 'removedDocuments' },
-    { name: 'arquivosImagens', maxCount: 30 },
-    { name: 'arquivosMatricula', maxCount: 3 },
-    { name: 'arquivosRegistro', maxCount: 3 },
-    { name: 'arquivosEscritura', maxCount: 3 },
-    { name: 'arquivosOutros', maxCount: 10 }
-  ]),
-  PropertyController.updateUnifiedProperty
-);
+router.put('/update-unified/:id', PropertyController.updateUnifiedProperty);
 
 export default router;

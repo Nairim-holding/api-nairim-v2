@@ -258,6 +258,8 @@ export class PropertyController {
     let propertyId: string | null = null;
     let responded = false;
     let failed = false;
+    // Guard: garante que respondWithProperty seja chamada exatamente uma vez
+    let respondPromise: Promise<void> | null = null;
 
     const sendError = (status: number, message: string) => {
       failed = true;
@@ -265,7 +267,6 @@ export class PropertyController {
     };
 
     const respondWithProperty = async () => {
-      if (responded || failed) return;
       const { propertyData, addressData, valuesData, iptusData, userId } = fields;
 
       if (!propertyData || !addressData || !valuesData || !userId) {
@@ -290,7 +291,6 @@ export class PropertyController {
         const { property } = await PropertyService.createPropertyTransaction(combinedData);
         propertyId = property!.id;
         responded = true;
-        // Responde ANTES dos arquivos terminarem — resolve o timeout do Nginx
         res.status(201).json(ApiResponse.success({ property, uploadedDocuments: [] }, 'Imóvel criado com sucesso'));
       } catch (err: any) {
         console.error('❌ Erro ao criar imóvel:', err);
@@ -299,10 +299,13 @@ export class PropertyController {
       }
     };
 
+    const triggerRespond = () => {
+      if (!respondPromise && !failed) respondPromise = respondWithProperty();
+    };
+
     bb.on('field', (name, val) => { fields[name] = val; });
 
     bb.on('file', (fieldname, stream, info) => {
-      // Grava em disco em streaming (sem buffer em memória)
       const ext = path.extname(info.filename).toLowerCase();
       const tempPath = path.join(tempDir, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
       tempFiles.push({ fieldname, tempPath, originalname: info.filename, mimetype: info.mimeType });
@@ -317,15 +320,15 @@ export class PropertyController {
         }),
       );
 
-      // Ao primeiro arquivo: todos os campos já chegaram → responde agora
-      if (!responded && !failed) respondWithProperty();
+      // Ao primeiro arquivo: responde antecipadamente (evita timeout do Nginx em uploads grandes)
+      triggerRespond();
     });
 
     bb.on('finish', async () => {
-      // Caso sem arquivos: responde aqui
-      if (!responded && !failed) await respondWithProperty();
+      // Sem arquivos: dispara agora; com arquivos: aguarda a transação iniciada pelo file event
+      triggerRespond();
+      await respondPromise;
 
-      // Background: aguarda escrita de todos os arquivos e processa documentos
       if (!failed && propertyId && fileWritePromises.length > 0) {
         const pid = propertyId;
         const uid = fields.userId;
@@ -368,6 +371,8 @@ export class PropertyController {
     let propertyId: string | null = null;
     let responded = false;
     let failed = false;
+    // Guard: garante que respondWithProperty seja chamada exatamente uma vez
+    let respondPromise: Promise<void> | null = null;
 
     const sendError = (status: number, message: string) => {
       failed = true;
@@ -375,7 +380,6 @@ export class PropertyController {
     };
 
     const respondWithProperty = async () => {
-      if (responded || failed) return;
       const { propertyData, addressData, valuesData, iptusData, userId, removedDocuments } = fields;
 
       if (!propertyData || !addressData || !valuesData || !userId) {
@@ -409,6 +413,10 @@ export class PropertyController {
       }
     };
 
+    const triggerRespond = () => {
+      if (!respondPromise && !failed) respondPromise = respondWithProperty();
+    };
+
     bb.on('field', (name, val) => { fields[name] = val; });
 
     bb.on('file', (fieldname, stream, info) => {
@@ -426,11 +434,14 @@ export class PropertyController {
         }),
       );
 
-      if (!responded && !failed) respondWithProperty();
+      // Ao primeiro arquivo: responde antecipadamente (evita timeout do Nginx em uploads grandes)
+      triggerRespond();
     });
 
     bb.on('finish', async () => {
-      if (!responded && !failed) await respondWithProperty();
+      // Sem arquivos: dispara agora; com arquivos: aguarda a transação iniciada pelo file event
+      triggerRespond();
+      await respondPromise;
 
       if (!failed && propertyId && fileWritePromises.length > 0) {
         const pid = propertyId;

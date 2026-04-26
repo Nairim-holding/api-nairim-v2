@@ -61,19 +61,22 @@ model Property {
 }
 
 model PropertyIptu {
-  id                              String            @id @default(uuid())
-  property_id                     String
-  year                            Int
-  property_tax_cash               Decimal?          @db.Decimal(20, 2)
-  property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
-  property_tax_second_installment Decimal?          @db.Decimal(20, 2)
-  iptu_installments_count         Int?
-  iptu_installments               Json?
-  payment_condition               PaymentCondition?
-  created_at                      DateTime          @default(now())
-  updated_at                      DateTime          @updatedAt
-  deleted_at                      DateTime?
-  property                        Property          @relation(fields: [property_id], references: [id])
+  id                                        String            @id @default(uuid())
+  property_id                               String
+  year                                      Int
+  property_tax_cash                         Decimal?          @db.Decimal(20, 2)
+  property_tax_cash_due_date                DateTime?         @db.Date
+  property_tax_first_installment            Decimal?          @db.Decimal(20, 2)
+  property_tax_first_installment_due_date   DateTime?         @db.Date
+  property_tax_second_installment           Decimal?          @db.Decimal(20, 2)
+  property_tax_second_installment_due_date  DateTime?         @db.Date
+  iptu_installments_count                   Int?
+  iptu_installments                         Json?
+  payment_condition                         PaymentCondition?
+  created_at                                DateTime          @default(now())
+  updated_at                                DateTime          @updatedAt
+  deleted_at                                DateTime?
+  property                                  Property          @relation(fields: [property_id], references: [id])
 
   @@index([property_id])
   @@index([year])

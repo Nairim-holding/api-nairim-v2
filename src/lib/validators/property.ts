@@ -35,11 +35,25 @@ export class PropertyValidator {
       }
     }
 
-    // VALIDAÇÃO DE IPTUS (NOVO)
     if (data.iptus && Array.isArray(data.iptus)) {
       data.iptus.forEach((iptu: any, index: number) => {
+        const pos = `IPTU (Posição ${index + 1})`;
         if (!iptu.year || isNaN(parseInt(iptu.year))) {
-          errors.push(`IPTU (Posição ${index + 1}): O ano é obrigatório`);
+          errors.push(`${pos}: O ano é obrigatório`);
+        }
+        if (iptu.payment_condition === 'IN_FULL_15_DISCOUNT') {
+          if (!iptu.property_tax_cash) errors.push(`${pos}: Valor da cota única é obrigatório`);
+          if (!iptu.property_tax_cash_due_date) errors.push(`${pos}: Data de vencimento da cota única é obrigatória`);
+        } else if (iptu.payment_condition === 'SECOND_INSTALLMENT_10_DISCOUNT') {
+          if (!iptu.property_tax_first_installment) errors.push(`${pos}: Valor da 1ª parcela é obrigatório`);
+          if (!iptu.property_tax_first_installment_due_date) errors.push(`${pos}: Data de vencimento da 1ª parcela é obrigatória`);
+          if (!iptu.property_tax_second_installment) errors.push(`${pos}: Valor da 2ª cota é obrigatório`);
+          if (!iptu.property_tax_second_installment_due_date) errors.push(`${pos}: Data de vencimento da 2ª cota é obrigatória`);
+        } else if (iptu.payment_condition === 'INSTALLMENTS') {
+          if (!iptu.iptu_installments_count) errors.push(`${pos}: Quantidade de parcelas é obrigatória`);
+          if (!Array.isArray(iptu.iptu_installments) || iptu.iptu_installments.length === 0) {
+            errors.push(`${pos}: Parcelas são obrigatórias`);
+          }
         }
       });
     }
