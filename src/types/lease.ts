@@ -2,6 +2,23 @@ export type LeaseStatus = 'EXPIRED' | 'EXPIRING' | 'ACTIVE' | 'CANCELED';
 
 export type PaymentCondition = 'IN_FULL_15_DISCOUNT' | 'SECOND_INSTALLMENT_10_DISCOUNT' | 'INSTALLMENTS_12X';
 
+export interface Insurance {
+  company?: string;
+  type?: string;
+  policy?: string;
+}
+
+export interface Guarantor {
+  name?: string;
+  rg?: string;
+  rg_expedidor?: string;
+  rg_uf_expedidor?: string;
+  cpf?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+}
+
 export interface Lease {
   id: string;
   contract_number: string;
@@ -25,6 +42,10 @@ export interface Lease {
   type_id: string;
   owner_id: string;
   tenant_id: string;
+  insurance_company?: string | null;
+  insurance_type?: string | null;
+  insurance_policy?: string | null;
+  guarantors?: Guarantor[] | null;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -71,6 +92,10 @@ export interface CreateLeaseInput {
   other_cancellation_amounts?: number;
   cancellation_justification?: string;
   canceled_at?: Date | string;
+  insurance_company?: string;
+  insurance_type?: string;
+  insurance_policy?: string;
+  guarantors?: Guarantor[];
 }
 
 export interface UpdateLeaseInput extends Partial<CreateLeaseInput> {}

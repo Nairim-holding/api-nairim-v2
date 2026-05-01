@@ -1,5 +1,7 @@
+import { ApiResponse } from '../utils/api-response';
+import prisma from '@/lib/prisma';
 import { Prisma } from '@/generated/prisma/client';
-import prisma from '../lib/prisma';
+import { parseLocalDate, displayDate } from '../utils/date-utils';
 
 export class TransactionService {
   private static normalizeText(text: string): string {
@@ -17,12 +19,12 @@ export class TransactionService {
 
   private static buildDateCondition(value: any): any {
     if (typeof value === 'object' && value && 'from' in value && 'to' in value) {
-      const fromDate = new Date(value.from);
-      const toDate = new Date(value.to);
+      const fromDate = parseLocalDate(value.from);
+      const toDate = parseLocalDate(value.to);
       toDate.setHours(23, 59, 59, 999);
       if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) return { gte: fromDate, lte: toDate };
     } else if (typeof value === 'string') {
-      const date = new Date(value);
+      const date = parseLocalDate(value);
       if (!isNaN(date.getTime())) {
         const startOfDay = new Date(date); startOfDay.setHours(0, 0, 0, 0);
         const endOfDay = new Date(date); endOfDay.setHours(23, 59, 59, 999);
@@ -41,8 +43,8 @@ export class TransactionService {
       const typePt = t.category?.type === 'INCOME' ? 'receita' : (t.category?.type === 'EXPENSE' ? 'despesa' : '');
       
       const formattedAmount = t.amount ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(t.amount)) : '';
-      const formattedEventDate = t.event_date ? new Date(t.event_date).toLocaleDateString('pt-BR') : '';
-      const formattedEffectiveDate = t.effective_date ? new Date(t.effective_date).toLocaleDateString('pt-BR') : '';
+      const formattedEventDate = t.event_date ? displayDate(t.event_date) : '';
+      const formattedEffectiveDate = t.effective_date ? displayDate(t.effective_date) : '';
 
       const subcategoryName = t.subcategory?.name || '';
 
@@ -307,7 +309,7 @@ export class TransactionService {
              return direction === 'asc' ? strA.localeCompare(strB) : strB.localeCompare(strA);
           });
         } else {
-          filtered = filtered.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
+          filtered = filtered.sort((a, b) => parseLocalDate(b.event_date).getTime() - parseLocalDate(a.event_date).getTime());
         }
         
         transactions = filtered.slice(skip, skip + take);
@@ -395,7 +397,7 @@ export class TransactionService {
       
       if (cardId && data.effective_date) {
         const { InvoiceService } = await import('./InvoiceService');
-        const effectiveDate = new Date(data.effective_date);
+        const effectiveDate = parseLocalDate(data.effective_date);
         const invoiceMonth = effectiveDate.getMonth() + 1;
         const invoiceYear = effectiveDate.getFullYear();
         
@@ -414,8 +416,8 @@ export class TransactionService {
 
       const transaction = await prisma.transaction.create({
         data: {
-          event_date: new Date(data.event_date),
-          effective_date: new Date(data.effective_date),
+          event_date: parseLocalDate(data.event_date),
+          effective_date: parseLocalDate(data.effective_date),
           description: data.description,
           amount: Number(data.amount),
           status: data.status || 'PENDING',
@@ -457,8 +459,8 @@ export class TransactionService {
       return await prisma.transaction.update({
         where: { id },
         data: {
-          event_date: data.event_date ? new Date(data.event_date) : undefined,
-          effective_date: data.effective_date ? new Date(data.effective_date) : undefined,
+          event_date: data.event_date ? parseLocalDate(data.event_date) : undefined,
+          effective_date: data.effective_date ? parseLocalDate(data.effective_date) : undefined,
           description: data.description,
           amount: data.amount !== undefined ? Number(data.amount) : undefined,
           status: data.status,
@@ -572,7 +574,7 @@ export class TransactionService {
             const effectiveDate = installmentDates[index];
 
             // event_date e purchase_date CONSTANTES em todas as parcelas
-            const eventDate = new Date(constantEventDate);
+            const eventDate = parseLocalDate(constantEventDate);
 
             // Calcular mês/ano da fatura baseado na effective_date (vencimento)
             const invoiceMonth = effectiveDate.getMonth() + 1;
@@ -725,8 +727,8 @@ export class TransactionService {
               description: data.description
                 ? `${data.description} - ${occurrenceNumber}/${numOccurrences}`
                 : `Gasto Recorrente ${occurrenceNumber}/${numOccurrences}`,
-              event_date: new Date(startDate),
-              effective_date: occurrenceDates[index],
+              event_date: parseLocalDate(startDate),
+              effective_date: parseLocalDate(occurrenceDates[index]),
               category_id: data.category_id,
               subcategory_id: parseFK(data.subcategory_id),
               financial_institution_id: data.institution_id,
@@ -795,12 +797,12 @@ export class TransactionService {
           : 1;
 
         let currentDate = lastOccurrence
-          ? this.getNextDate(new Date(lastOccurrence.effective_date), config.frequency)
-          : new Date(config.start_date);
+          ? this.getNextDate(parseLocalDate(lastOccurrence.effective_date), config.frequency)
+          : parseLocalDate(config.start_date);
 
         let eventDate = lastOccurrence
-          ? this.getNextDate(new Date(lastOccurrence.event_date), config.frequency)
-          : new Date(config.start_date);
+          ? this.getNextDate(parseLocalDate(lastOccurrence.event_date), config.frequency)
+          : parseLocalDate(config.start_date);
 
         const newOccurrences = [];
 
@@ -815,8 +817,8 @@ export class TransactionService {
         while (!shouldStop()) {
           const occurrence = await prisma.transaction.create({
             data: {
-              event_date: new Date(eventDate),
-              effective_date: new Date(currentDate),
+              event_date: parseLocalDate(eventDate),
+              effective_date: parseLocalDate(currentDate),
               description: config.description,
               amount: config.amount,
               status: 'PENDING',

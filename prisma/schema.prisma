@@ -448,6 +448,8 @@ model Supplier {
   deleted_at             DateTime?
   cpf                    String?           @db.VarChar(14)
   internal_code          String?           @unique
+  created_via            String?           @default("full_form")
+  is_active              Boolean           @default(true)
   marital_status         String?
   occupation             String?
   contacts               Contact[]
@@ -641,3 +643,4 @@ enum RecurringFrequency {
   QUARTERLY
   YEARLY
 }
+

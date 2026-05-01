@@ -7,7 +7,8 @@ import { OwnerValidator } from '@/lib/validators/owner';
 import { TenantValidator } from '@/lib/validators/tenant';
 import { PropertyTypeValidator } from '@/lib/validators/property-type';
 import { PropertyValidator } from '@/lib/validators/property';
-import { UserPreferencesValidator } from '@/lib/validators/user-preferences';
+import { UserPreferencesValidator } from '../lib/validators/user-preferences';
+import { IptuPropertyValidator } from '@/lib/validators/iptu-property';
 
 // Validações de Agency
 export const validateCreateAgency = (req: Request, res: Response, next: NextFunction) => {
@@ -216,6 +217,15 @@ export const validateGetColumnPreferences = (req: Request, res: Response, next: 
       message: 'Validação falhou',
       errors: validation.errors
     });
+  }
+  next();
+};
+
+// Validações de IPTU Property
+export const validateGetIptuProperties = (req: Request, res: Response, next: NextFunction) => {
+  const validation = IptuPropertyValidator.validateQueryParams(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
   }
   next();
 };

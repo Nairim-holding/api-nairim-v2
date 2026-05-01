@@ -506,6 +506,8 @@ export const SupplierScalarFieldEnum = {
   deleted_at: 'deleted_at',
   cpf: 'cpf',
   internal_code: 'internal_code',
+  created_via: 'created_via',
+  is_active: 'is_active',
   marital_status: 'marital_status',
   occupation: 'occupation'
 } as const

@@ -120,4 +120,22 @@ export class SupplierController {
       res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
     }
   }
+
+  static async quickCreate(req: Request, res: Response) {
+    try {
+      const { legal_name } = req.body ?? {};
+      
+      if (!legal_name || typeof legal_name !== 'string') {
+        return res.status(400).json(ApiResponse.error('legal_name é obrigatório e deve ser uma string'));
+      }
+      
+      const data = await SupplierService.quickCreate({ legal_name });
+      res.status(201).json(ApiResponse.success(data, 'Fornecedor criado com sucesso'));
+    } catch (error: any) {
+      if (error.message.includes('legal_name é obrigatório')) {
+        return res.status(400).json(ApiResponse.error(error.message));
+      }
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
+    }
+  }
 }

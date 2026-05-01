@@ -388,6 +388,59 @@ export class SupplierService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { legal_name: string }) {
+    try {
+      const legalName = String(data.legal_name ?? '').trim();
+      
+      // Validação
+      if (legalName.length < 2 || legalName.length > 150) {
+        throw new Error('legal_name é obrigatório e deve ter entre 2 e 150 caracteres.');
+      }
+      
+      // Verificar duplicidade (idempotência)
+      const existing = await prisma.supplier.findFirst({
+        where: {
+          legal_name: { equals: legalName, mode: 'insensitive' },
+          deleted_at: null
+        }
+      });
+      
+      if (existing) {
+        return existing; // Idempotente - retorna registro existente
+      }
+      
+      // Gerar próximo internal_code
+      const lastSupplier = await prisma.supplier.findFirst({
+        where: { deleted_at: null },
+        orderBy: { internal_code: 'desc' },
+        select: { internal_code: true }
+      });
+      
+      let nextInternalCode = '1';
+      if (lastSupplier?.internal_code) {
+        const lastCode = parseInt(lastSupplier.internal_code.replace(/\D/g, ''));
+        if (!isNaN(lastCode)) {
+          nextInternalCode = String(lastCode + 1);
+        }
+      }
+      
+      // Criar novo fornecedor
+      const newSupplier = await prisma.supplier.create({
+        data: {
+          legal_name: legalName,
+          internal_code: nextInternalCode,
+          created_via: 'quick_create',
+          is_active: true
+        }
+      });
+      
+      return newSupplier;
+      
+    } catch (error: any) {
+      throw new Error(`Falha ao criar fornecedor rápido: ${error.message}`);
+    }
+  }
+
   static async getSupplierFilters(filters?: Record<string, any>) {
     try {
       const where: any = { deleted_at: null };
