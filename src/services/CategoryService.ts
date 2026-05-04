@@ -206,6 +206,29 @@ export class CategoryService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { name: string, type: 'INCOME' | 'EXPENSE' }) {
+    try {
+      const name = String(data.name ?? '').trim();
+      if (!name) throw new Error('Nome é obrigatório');
+
+      const existing = await prisma.category.findFirst({
+        where: { name: { equals: name, mode: 'insensitive' }, type: data.type, deleted_at: null }
+      });
+      if (existing) return existing;
+
+      return await prisma.category.create({
+        data: {
+          name,
+          type: data.type,
+          is_active: true,
+          is_system: false
+        }
+      });
+    } catch (error: any) {
+      throw new Error(`Falha ao criar categoria rápida: ${error.message}`);
+    }
+  }
+
   static async getCategoryFilters() {
     try {
       const where: any = { deleted_at: null };

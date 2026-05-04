@@ -134,7 +134,21 @@ export class PropertyController {
     }
   }
 
-  static async uploadDocuments(req: Request, res: Response) {}
+  static async uploadDocuments(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      const userId = String(req.body?.userId || '');
+      if (!id) return res.status(400).json(ApiResponse.error('Property ID is required'));
+      
+      const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+      const documents = await DocumentService.uploadDocuments(id, userId, files || {});
+      
+      res.status(200).json(ApiResponse.success(documents, 'Documents uploaded successfully'));
+    } catch (error: any) {
+      if (error.message === 'Property not found') return res.status(404).json(ApiResponse.error('Property not found'));
+      res.status(500).json(ApiResponse.error('Error uploading documents'));
+    }
+  }
 
   // UPDATE NORMAL (Se ainda usar)
   static async updateProperty(req: Request, res: Response) {

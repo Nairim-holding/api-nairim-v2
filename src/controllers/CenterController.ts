@@ -120,4 +120,17 @@ export class CenterController {
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
+
+  static async quickCreate(req: Request, res: Response) {
+    try {
+      const { name, type } = req.body ?? {};
+      if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
+      if (!type || !['INCOME', 'EXPENSE'].includes(type)) return res.status(400).json(ApiResponse.error('Tipo inválido'));
+      
+      const data = await CenterService.quickCreate({ name, type });
+      res.status(201).json(ApiResponse.success(data, 'Centro criado com sucesso'));
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
 }

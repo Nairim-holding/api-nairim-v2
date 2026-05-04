@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/', CardController.getCards);
 router.get('/filters', CardController.getFilters);
+router.post('/quick-create', CardController.quickCreate);
 router.get('/:id', CardController.getCardById);
 router.post('/', CardController.createCard);
 router.put('/:id', CardController.updateCard);

@@ -4,53 +4,57 @@
  */
 
 /**
- * Converte string de data para objeto Date mantendo a data local (sem conversão UTC)
- * Uso: Para campos @db.Date do Prisma que devem manter a data exata informada
+ * Converte string de data para objeto Date mantendo a data na meia-noite UTC.
+ * Como o Prisma utiliza o componente UTC para salvar datas no formato @db.Date, 
+ * isso assegura que o dia gravado seja exato, não importando o fuso horário do servidor.
  */
 export function parseLocalDate(dateString: string | Date): Date {
   if (dateString instanceof Date) {
-    // Se já é Date, criar nova instância sem modificar
-    return new Date(dateString.getFullYear(), dateString.getMonth(), dateString.getDate());
+    // Se Prisma devolveu ou já é Date, usamos o componente UTC atual para recriar em meia-noite UTC
+    return new Date(Date.UTC(dateString.getUTCFullYear(), dateString.getUTCMonth(), dateString.getUTCDate()));
   }
   
   if (!dateString) return new Date();
   
-  // Parse da string mantendo timezone local
-  const date = new Date(dateString);
-  
-  // Ajuste para timezone do Brasil (UTC-3) quando necessário
-  // Se a data foi convertida para UTC, ajustamos de volta
-  const timezoneOffset = date.getTimezoneOffset();
-  if (timezoneOffset !== 0) {
-    // Adiciona o offset em minutos para corrigir a data
-    date.setMinutes(date.getMinutes() + timezoneOffset);
+  // Se a string for formato ISO (YYYY-MM-DD)
+  if (typeof dateString === 'string' && /^\d{4}-\d{2}-\d{2}/.test(dateString)) {
+    const parts = dateString.split('T')[0].split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // 0-indexed
+    const day = parseInt(parts[2], 10);
+    return new Date(Date.UTC(year, month, day));
   }
+
+  // Fallback para outros formatos
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return new Date();
   
-  // Retorna apenas a parte da data (sem hora)
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  // Extrai componentes do Date interpretado (no fuso local) e joga para UTC
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 }
 
 /**
  * Formata data para string no formato YYYY-MM-DD (ISO sem timezone)
- * Uso: Para enviar ao frontend ou armazenar sem problemas de timezone
+ * Lê em UTC para que o componente seja sempre o esperado.
  */
 export function formatLocalDate(date: Date | string): string {
-  const d = date instanceof Date ? date : new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+  const d = date instanceof Date ? date : parseLocalDate(date);
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 
 /**
  * Formata data para exibição no formato brasileiro DD/MM/YYYY
- * Uso: Para display na grid sem problemas de timezone
  */
 export function displayDate(date: Date | string | null): string {
   if (!date) return '';
-  
   const d = date instanceof Date ? date : parseLocalDate(date);
-  return d.toLocaleDateString('pt-BR');
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  return `${day}/${month}/${year}`;
 }
 
 /**
@@ -60,14 +64,14 @@ export function isSameDay(date1: Date | string, date2: Date | string): boolean {
   const d1 = date1 instanceof Date ? date1 : parseLocalDate(date1);
   const d2 = date2 instanceof Date ? date2 : parseLocalDate(date2);
   
-  return d1.getFullYear() === d2.getFullYear() &&
-         d1.getMonth() === d2.getMonth() &&
-         d1.getDate() === d2.getDate();
+  return d1.getUTCFullYear() === d2.getUTCFullYear() &&
+         d1.getUTCMonth() === d2.getUTCMonth() &&
+         d1.getUTCDate() === d2.getUTCDate();
 }
 
 /**
- * Cria objeto Date com data específica sem problemas de timezone
+ * Cria objeto Date com data específica sem problemas de timezone (salvo em UTC)
  */
 export function createDateLocal(year: number, month: number, day: number): Date {
-  return new Date(year, month - 1, day); // month é 0-indexed
+  return new Date(Date.UTC(year, month - 1, day)); // month é 0-indexed
 }

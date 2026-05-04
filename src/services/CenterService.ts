@@ -177,6 +177,29 @@ export class CenterService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { name: string, type: 'INCOME' | 'EXPENSE' }) {
+    try {
+      const name = String(data.name ?? '').trim();
+      if (!name) throw new Error('Nome é obrigatório');
+      if (!data.type) throw new Error('Tipo é obrigatório');
+
+      const existing = await prisma.center.findFirst({
+        where: { name: { equals: name, mode: 'insensitive' }, type: data.type, deleted_at: null }
+      });
+      if (existing) return existing;
+
+      return await prisma.center.create({
+        data: {
+          name,
+          type: data.type,
+          is_active: true
+        }
+      });
+    } catch (error: any) {
+      throw new Error(`Falha ao criar centro rápido: ${error.message}`);
+    }
+  }
+
   static async getCenterFilters() {
     try {
       const where: any = { deleted_at: null };

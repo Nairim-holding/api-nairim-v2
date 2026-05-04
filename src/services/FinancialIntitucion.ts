@@ -181,6 +181,27 @@ export class FinancialInstitutionService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { name: string }) {
+    try {
+      const name = String(data.name ?? '').trim();
+      if (!name) throw new Error('Nome é obrigatório');
+
+      const existing = await prisma.financialInstitution.findFirst({
+        where: { name: { equals: name, mode: 'insensitive' }, deleted_at: null }
+      });
+      if (existing) return existing;
+
+      return await prisma.financialInstitution.create({
+        data: {
+          name,
+          is_active: true
+        }
+      });
+    } catch (error: any) {
+      throw new Error(`Falha ao criar instituição rápida: ${error.message}`);
+    }
+  }
+
   static async getInstitutionFilters() {
     try {
       const where: any = { deleted_at: null };

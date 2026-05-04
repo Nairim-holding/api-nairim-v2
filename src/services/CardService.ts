@@ -222,6 +222,27 @@ export class CardService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { name: string }) {
+    try {
+      const name = String(data.name ?? '').trim();
+      if (!name) throw new Error('Nome é obrigatório');
+
+      const existing = await prisma.card.findFirst({
+        where: { name: { equals: name, mode: 'insensitive' }, deleted_at: null }
+      });
+      if (existing) return existing;
+
+      return await prisma.card.create({
+        data: {
+          name,
+          is_active: true
+        }
+      });
+    } catch (error: any) {
+      throw new Error(`Falha ao criar cartão rápido: ${error.message}`);
+    }
+  }
+
   static async getCardFilters() {
     try {
       const existingCards = await prisma.card.findMany({

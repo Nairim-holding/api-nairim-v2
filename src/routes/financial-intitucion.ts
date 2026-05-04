@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', FinancialInstitutionController.getInstitutions);
 router.get('/filters', FinancialInstitutionController.getFilters);
+router.post('/quick-create', FinancialInstitutionController.quickCreate);
 router.get('/:id', FinancialInstitutionController.getInstitutionById);
 router.post('/', FinancialInstitutionController.createInstitution);
 router.put('/:id', FinancialInstitutionController.updateInstitution);

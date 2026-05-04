@@ -219,6 +219,30 @@ export class SubcategoryService {
     } catch (error: any) { throw error; }
   }
 
+  static async quickCreate(data: { name: string, category_id: string }) {
+    try {
+      const name = String(data.name ?? '').trim();
+      const categoryId = String(data.category_id ?? '').trim();
+      if (!name) throw new Error('Nome é obrigatório');
+      if (!categoryId) throw new Error('Categoria pai é obrigatória');
+
+      const existing = await prisma.subcategory.findFirst({
+        where: { name: { equals: name, mode: 'insensitive' }, category_id: categoryId, deleted_at: null }
+      });
+      if (existing) return existing;
+
+      return await prisma.subcategory.create({
+        data: {
+          name,
+          category_id: categoryId,
+          is_active: true
+        }
+      });
+    } catch (error: any) {
+      throw new Error(`Falha ao criar subcategoria rápida: ${error.message}`);
+    }
+  }
+
   static async getSubcategoryFilters() {
     try {
       const where: any = { deleted_at: null };

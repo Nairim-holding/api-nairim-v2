@@ -849,8 +849,8 @@ export class PropertyService {
           file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
           type: docType,
           description: fileNameWithoutExt.substring(0, 250),
+          created_by: userExists ? userId : null,
         };
-        if (userExists) documentData.created_by = userId;
 
         const document = await prisma.document.create({ data: documentData });
 

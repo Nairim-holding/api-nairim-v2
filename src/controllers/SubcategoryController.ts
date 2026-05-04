@@ -123,4 +123,17 @@ export class SubcategoryController {
       res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
     }
   }
+
+  static async quickCreate(req: Request, res: Response) {
+    try {
+      const { name, category_id } = req.body ?? {};
+      if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
+      if (!category_id) return res.status(400).json(ApiResponse.error('Categoria pai é obrigatória'));
+      
+      const data = await SubcategoryService.quickCreate({ name, category_id });
+      res.status(201).json(ApiResponse.success(data, 'Subcategoria criada com sucesso'));
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
 }

@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/', CategoryController.getCategories);
 router.get('/filters', CategoryController.getFilters);
+router.post('/quick-create', CategoryController.quickCreate);
 router.get('/:id', CategoryController.getCategoryById);
 router.post('/', CategoryController.createCategory);
 router.put('/:id', CategoryController.updateCategory);

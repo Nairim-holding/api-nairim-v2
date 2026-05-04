@@ -113,24 +113,8 @@ export class DocumentService {
         }
       }
 
-      if (newFileUrls.length > 0) {
-        const existingDocuments = await prisma.document.findMany({
-          where: {
-            property_id: propertyId,
-            deleted_at: null
-          }
-        });
-
-        const documentsToDelete = existingDocuments.filter(doc => !newFileUrls.includes(doc.file_path));
-
-        for (const doc of documentsToDelete) {
-          await this.deleteDocumentFile(doc.file_path);
-          await prisma.document.update({
-            where: { id: doc.id },
-            data: { deleted_at: new Date() }
-          });
-        }
-      }
+      // Removida a lógica destrutiva que deletava arquivos existentes.
+      // O formulário unificado já cuida da remoção explícita se necessário.
 
       console.log(`✅ Documents updated: ${savedDocuments.length} new files`);
       return savedDocuments;

@@ -120,4 +120,16 @@ export class CardController {
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
+
+  static async quickCreate(req: Request, res: Response) {
+    try {
+      const { name } = req.body ?? {};
+      if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
+      
+      const data = await CardService.quickCreate({ name });
+      res.status(201).json(ApiResponse.success(data, 'Cartão criado com sucesso'));
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
 }

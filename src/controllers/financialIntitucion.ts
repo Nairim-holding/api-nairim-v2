@@ -114,4 +114,16 @@ export class FinancialInstitutionController {
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
+
+  static async quickCreate(req: Request, res: Response) {
+    try {
+      const { name } = req.body ?? {};
+      if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
+      
+      const data = await FinancialInstitutionService.quickCreate({ name });
+      res.status(201).json(ApiResponse.success(data, 'Instituição criada com sucesso'));
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
 }
