@@ -96,3 +96,11 @@ export const RecurringFrequency = {
 } as const
 
 export type RecurringFrequency = (typeof RecurringFrequency)[keyof typeof RecurringFrequency]
+
+
+export const PlanningType = {
+  FIXED: 'FIXED',
+  VARIABLE: 'VARIABLE'
+} as const
+
+export type PlanningType = (typeof PlanningType)[keyof typeof PlanningType]

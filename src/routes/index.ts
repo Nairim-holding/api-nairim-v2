@@ -19,6 +19,7 @@ import FinancialSupplier from "./supplier";
 import FinancialTransaction from "./transaction";
 import InvoiceRoutes from "./invoice";
 import iptuPropertyRoutes from "./iptu-property";
+import planningRoutes from "./planning";
 
 const router = Router();
 
@@ -42,5 +43,6 @@ router.use("/financial-supplier", FinancialSupplier);
 router.use("/financial-transaction", FinancialTransaction);
 router.use('/financial-invoice', InvoiceRoutes);
 router.use('/iptu-property', iptuPropertyRoutes);
+router.use('/plannings', planningRoutes);
 
 export default router;

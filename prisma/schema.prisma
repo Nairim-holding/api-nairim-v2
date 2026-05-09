@@ -389,6 +389,7 @@ model Category {
   recurring_configs RecurringConfig[]
   subcategories     Subcategory[]
   transactions      Transaction[]
+  plannings         Planning[]
 }
 
 model Subcategory {
@@ -402,6 +403,7 @@ model Subcategory {
   recurring_configs RecurringConfig[]
   category          Category          @relation(fields: [category_id], references: [id])
   transactions      Transaction[]
+  plannings         Planning[]
 
   @@index([category_id])
 }
@@ -642,5 +644,46 @@ enum RecurringFrequency {
   MONTHLY
   QUARTERLY
   YEARLY
+}
+
+enum PlanningType {
+  FIXED
+  VARIABLE
+}
+
+model Planning {
+  id              String          @id @default(uuid())
+  category_id     String
+  subcategory_id  String?
+  year            Int
+  type            PlanningType
+  default_amount  Decimal?        @db.Decimal(20, 2)
+  min_recommended Decimal?        @db.Decimal(20, 2)
+  max_recommended Decimal?        @db.Decimal(20, 2)
+  is_active       Boolean         @default(true)
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
+  deleted_at      DateTime?
+
+  category        Category        @relation(fields: [category_id], references: [id])
+  subcategory     Subcategory?    @relation(fields: [subcategory_id], references: [id])
+  monthly_values  PlanningMonth[]
+
+  @@unique([category_id, subcategory_id, year])
+  @@index([category_id])
+  @@index([subcategory_id])
+  @@index([year])
+}
+
+model PlanningMonth {
+  id          String   @id @default(uuid())
+  planning_id String
+  month       Int
+  amount      Decimal  @db.Decimal(20, 2)
+
+  planning    Planning @relation(fields: [planning_id], references: [id], onDelete: Cascade)
+
+  @@unique([planning_id, month])
+  @@index([planning_id])
 }
 

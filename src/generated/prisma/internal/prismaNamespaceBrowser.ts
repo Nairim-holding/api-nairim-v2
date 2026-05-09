@@ -78,7 +78,9 @@ export const ModelName = {
   SupplierAddress: 'SupplierAddress',
   Transaction: 'Transaction',
   Invoice: 'Invoice',
-  RecurringConfig: 'RecurringConfig'
+  RecurringConfig: 'RecurringConfig',
+  Planning: 'Planning',
+  PlanningMonth: 'PlanningMonth'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -601,6 +603,34 @@ export const RecurringConfigScalarFieldEnum = {
 } as const
 
 export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldEnum)[keyof typeof RecurringConfigScalarFieldEnum]
+
+
+export const PlanningScalarFieldEnum = {
+  id: 'id',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
+  year: 'year',
+  type: 'type',
+  default_amount: 'default_amount',
+  min_recommended: 'min_recommended',
+  max_recommended: 'max_recommended',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type PlanningScalarFieldEnum = (typeof PlanningScalarFieldEnum)[keyof typeof PlanningScalarFieldEnum]
+
+
+export const PlanningMonthScalarFieldEnum = {
+  id: 'id',
+  planning_id: 'planning_id',
+  month: 'month',
+  amount: 'amount'
+} as const
+
+export type PlanningMonthScalarFieldEnum = (typeof PlanningMonthScalarFieldEnum)[keyof typeof PlanningMonthScalarFieldEnum]
 
 
 export const SortOrder = {

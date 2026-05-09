@@ -201,6 +201,7 @@ export type SubcategoryWhereInput = {
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   transactions?: Prisma.TransactionListRelationFilter
+  plannings?: Prisma.PlanningListRelationFilter
 }
 
 export type SubcategoryOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type SubcategoryOrderByWithRelationInput = {
   recurring_configs?: Prisma.RecurringConfigOrderByRelationAggregateInput
   category?: Prisma.CategoryOrderByWithRelationInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
+  plannings?: Prisma.PlanningOrderByRelationAggregateInput
 }
 
 export type SubcategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type SubcategoryWhereUniqueInput = Prisma.AtLeast<{
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   transactions?: Prisma.TransactionListRelationFilter
+  plannings?: Prisma.PlanningListRelationFilter
 }, "id">
 
 export type SubcategoryOrderByWithAggregationInput = {
@@ -268,6 +271,7 @@ export type SubcategoryCreateInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSubcategoryInput
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryUncheckedCreateInput = {
@@ -280,6 +284,7 @@ export type SubcategoryUncheckedCreateInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryUpdateInput = {
@@ -292,6 +297,7 @@ export type SubcategoryUpdateInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSubcategoryNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryUncheckedUpdateInput = {
@@ -304,6 +310,7 @@ export type SubcategoryUncheckedUpdateInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryCreateManyInput = {
@@ -454,6 +461,22 @@ export type SubcategoryUpdateOneWithoutRecurring_configsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubcategoryUpdateToOneWithWhereWithoutRecurring_configsInput, Prisma.SubcategoryUpdateWithoutRecurring_configsInput>, Prisma.SubcategoryUncheckedUpdateWithoutRecurring_configsInput>
 }
 
+export type SubcategoryCreateNestedOneWithoutPlanningsInput = {
+  create?: Prisma.XOR<Prisma.SubcategoryCreateWithoutPlanningsInput, Prisma.SubcategoryUncheckedCreateWithoutPlanningsInput>
+  connectOrCreate?: Prisma.SubcategoryCreateOrConnectWithoutPlanningsInput
+  connect?: Prisma.SubcategoryWhereUniqueInput
+}
+
+export type SubcategoryUpdateOneWithoutPlanningsNestedInput = {
+  create?: Prisma.XOR<Prisma.SubcategoryCreateWithoutPlanningsInput, Prisma.SubcategoryUncheckedCreateWithoutPlanningsInput>
+  connectOrCreate?: Prisma.SubcategoryCreateOrConnectWithoutPlanningsInput
+  upsert?: Prisma.SubcategoryUpsertWithoutPlanningsInput
+  disconnect?: Prisma.SubcategoryWhereInput | boolean
+  delete?: Prisma.SubcategoryWhereInput | boolean
+  connect?: Prisma.SubcategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubcategoryUpdateToOneWithWhereWithoutPlanningsInput, Prisma.SubcategoryUpdateWithoutPlanningsInput>, Prisma.SubcategoryUncheckedUpdateWithoutPlanningsInput>
+}
+
 export type SubcategoryCreateWithoutCategoryInput = {
   id?: string
   name: string
@@ -463,6 +486,7 @@ export type SubcategoryCreateWithoutCategoryInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSubcategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryUncheckedCreateWithoutCategoryInput = {
@@ -474,6 +498,7 @@ export type SubcategoryUncheckedCreateWithoutCategoryInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryCreateOrConnectWithoutCategoryInput = {
@@ -524,6 +549,7 @@ export type SubcategoryCreateWithoutTransactionsInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSubcategoryInput
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryUncheckedCreateWithoutTransactionsInput = {
@@ -535,6 +561,7 @@ export type SubcategoryUncheckedCreateWithoutTransactionsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryCreateOrConnectWithoutTransactionsInput = {
@@ -562,6 +589,7 @@ export type SubcategoryUpdateWithoutTransactionsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSubcategoryNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryUncheckedUpdateWithoutTransactionsInput = {
@@ -573,6 +601,7 @@ export type SubcategoryUncheckedUpdateWithoutTransactionsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryCreateWithoutRecurring_configsInput = {
@@ -584,6 +613,7 @@ export type SubcategoryCreateWithoutRecurring_configsInput = {
   deleted_at?: Date | string | null
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryUncheckedCreateWithoutRecurring_configsInput = {
@@ -595,6 +625,7 @@ export type SubcategoryUncheckedCreateWithoutRecurring_configsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
 }
 
 export type SubcategoryCreateOrConnectWithoutRecurring_configsInput = {
@@ -622,6 +653,7 @@ export type SubcategoryUpdateWithoutRecurring_configsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryUncheckedUpdateWithoutRecurring_configsInput = {
@@ -632,6 +664,71 @@ export type SubcategoryUncheckedUpdateWithoutRecurring_configsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
+}
+
+export type SubcategoryCreateWithoutPlanningsInput = {
+  id?: string
+  name: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSubcategoryInput
+  category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
+}
+
+export type SubcategoryUncheckedCreateWithoutPlanningsInput = {
+  id?: string
+  category_id: string
+  name: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
+}
+
+export type SubcategoryCreateOrConnectWithoutPlanningsInput = {
+  where: Prisma.SubcategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubcategoryCreateWithoutPlanningsInput, Prisma.SubcategoryUncheckedCreateWithoutPlanningsInput>
+}
+
+export type SubcategoryUpsertWithoutPlanningsInput = {
+  update: Prisma.XOR<Prisma.SubcategoryUpdateWithoutPlanningsInput, Prisma.SubcategoryUncheckedUpdateWithoutPlanningsInput>
+  create: Prisma.XOR<Prisma.SubcategoryCreateWithoutPlanningsInput, Prisma.SubcategoryUncheckedCreateWithoutPlanningsInput>
+  where?: Prisma.SubcategoryWhereInput
+}
+
+export type SubcategoryUpdateToOneWithWhereWithoutPlanningsInput = {
+  where?: Prisma.SubcategoryWhereInput
+  data: Prisma.XOR<Prisma.SubcategoryUpdateWithoutPlanningsInput, Prisma.SubcategoryUncheckedUpdateWithoutPlanningsInput>
+}
+
+export type SubcategoryUpdateWithoutPlanningsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSubcategoryNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
+}
+
+export type SubcategoryUncheckedUpdateWithoutPlanningsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
 }
 
@@ -653,6 +750,7 @@ export type SubcategoryUpdateWithoutCategoryInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryUncheckedUpdateWithoutCategoryInput = {
@@ -664,6 +762,7 @@ export type SubcategoryUncheckedUpdateWithoutCategoryInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
 }
 
 export type SubcategoryUncheckedUpdateManyWithoutCategoryInput = {
@@ -683,11 +782,13 @@ export type SubcategoryUncheckedUpdateManyWithoutCategoryInput = {
 export type SubcategoryCountOutputType = {
   recurring_configs: number
   transactions: number
+  plannings: number
 }
 
 export type SubcategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | SubcategoryCountOutputTypeCountRecurring_configsArgs
   transactions?: boolean | SubcategoryCountOutputTypeCountTransactionsArgs
+  plannings?: boolean | SubcategoryCountOutputTypeCountPlanningsArgs
 }
 
 /**
@@ -714,6 +815,13 @@ export type SubcategoryCountOutputTypeCountTransactionsArgs<ExtArgs extends runt
   where?: Prisma.TransactionWhereInput
 }
 
+/**
+ * SubcategoryCountOutputType without action
+ */
+export type SubcategoryCountOutputTypeCountPlanningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlanningWhereInput
+}
+
 
 export type SubcategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -726,6 +834,7 @@ export type SubcategorySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   recurring_configs?: boolean | Prisma.Subcategory$recurring_configsArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   transactions?: boolean | Prisma.Subcategory$transactionsArgs<ExtArgs>
+  plannings?: boolean | Prisma.Subcategory$planningsArgs<ExtArgs>
   _count?: boolean | Prisma.SubcategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subcategory"]>
 
@@ -766,6 +875,7 @@ export type SubcategoryInclude<ExtArgs extends runtime.Types.Extensions.Internal
   recurring_configs?: boolean | Prisma.Subcategory$recurring_configsArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   transactions?: boolean | Prisma.Subcategory$transactionsArgs<ExtArgs>
+  plannings?: boolean | Prisma.Subcategory$planningsArgs<ExtArgs>
   _count?: boolean | Prisma.SubcategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubcategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -781,6 +891,7 @@ export type $SubcategoryPayload<ExtArgs extends runtime.Types.Extensions.Interna
     recurring_configs: Prisma.$RecurringConfigPayload<ExtArgs>[]
     category: Prisma.$CategoryPayload<ExtArgs>
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    plannings: Prisma.$PlanningPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1187,6 +1298,7 @@ export interface Prisma__SubcategoryClient<T, Null = never, ExtArgs extends runt
   recurring_configs<T extends Prisma.Subcategory$recurring_configsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$recurring_configsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   transactions<T extends Prisma.Subcategory$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  plannings<T extends Prisma.Subcategory$planningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$planningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1664,6 +1776,30 @@ export type Subcategory$transactionsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
+}
+
+/**
+ * Subcategory.plannings
+ */
+export type Subcategory$planningsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Planning
+   */
+  select?: Prisma.PlanningSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Planning
+   */
+  omit?: Prisma.PlanningOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanningInclude<ExtArgs> | null
+  where?: Prisma.PlanningWhereInput
+  orderBy?: Prisma.PlanningOrderByWithRelationInput | Prisma.PlanningOrderByWithRelationInput[]
+  cursor?: Prisma.PlanningWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlanningScalarFieldEnum | Prisma.PlanningScalarFieldEnum[]
 }
 
 /**

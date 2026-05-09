@@ -157,3 +157,13 @@ export type Invoice = Prisma.InvoiceModel
  * 
  */
 export type RecurringConfig = Prisma.RecurringConfigModel
+/**
+ * Model Planning
+ * 
+ */
+export type Planning = Prisma.PlanningModel
+/**
+ * Model PlanningMonth
+ * 
+ */
+export type PlanningMonth = Prisma.PlanningMonthModel

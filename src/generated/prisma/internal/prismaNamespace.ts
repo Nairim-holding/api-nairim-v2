@@ -411,7 +411,9 @@ export const ModelName = {
   SupplierAddress: 'SupplierAddress',
   Transaction: 'Transaction',
   Invoice: 'Invoice',
-  RecurringConfig: 'RecurringConfig'
+  RecurringConfig: 'RecurringConfig',
+  Planning: 'Planning',
+  PlanningMonth: 'PlanningMonth'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -427,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig"
+    modelProps: "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2503,6 +2505,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Planning: {
+      payload: Prisma.$PlanningPayload<ExtArgs>
+      fields: Prisma.PlanningFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanningFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanningFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        findFirst: {
+          args: Prisma.PlanningFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanningFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        findMany: {
+          args: Prisma.PlanningFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>[]
+        }
+        create: {
+          args: Prisma.PlanningCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        createMany: {
+          args: Prisma.PlanningCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanningCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>[]
+        }
+        delete: {
+          args: Prisma.PlanningDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        update: {
+          args: Prisma.PlanningUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanningDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanningUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanningUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanningUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningPayload>
+        }
+        aggregate: {
+          args: Prisma.PlanningAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanning>
+        }
+        groupBy: {
+          args: Prisma.PlanningGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanningCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningCountAggregateOutputType> | number
+        }
+      }
+    }
+    PlanningMonth: {
+      payload: Prisma.$PlanningMonthPayload<ExtArgs>
+      fields: Prisma.PlanningMonthFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanningMonthFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanningMonthFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        findFirst: {
+          args: Prisma.PlanningMonthFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanningMonthFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        findMany: {
+          args: Prisma.PlanningMonthFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>[]
+        }
+        create: {
+          args: Prisma.PlanningMonthCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        createMany: {
+          args: Prisma.PlanningMonthCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanningMonthCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>[]
+        }
+        delete: {
+          args: Prisma.PlanningMonthDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        update: {
+          args: Prisma.PlanningMonthUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanningMonthDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanningMonthUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanningMonthUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanningMonthUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningMonthPayload>
+        }
+        aggregate: {
+          args: Prisma.PlanningMonthAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanningMonth>
+        }
+        groupBy: {
+          args: Prisma.PlanningMonthGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningMonthGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanningMonthCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningMonthCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3048,6 +3198,34 @@ export const RecurringConfigScalarFieldEnum = {
 export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldEnum)[keyof typeof RecurringConfigScalarFieldEnum]
 
 
+export const PlanningScalarFieldEnum = {
+  id: 'id',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
+  year: 'year',
+  type: 'type',
+  default_amount: 'default_amount',
+  min_recommended: 'min_recommended',
+  max_recommended: 'max_recommended',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type PlanningScalarFieldEnum = (typeof PlanningScalarFieldEnum)[keyof typeof PlanningScalarFieldEnum]
+
+
+export const PlanningMonthScalarFieldEnum = {
+  id: 'id',
+  planning_id: 'planning_id',
+  month: 'month',
+  amount: 'amount'
+} as const
+
+export type PlanningMonthScalarFieldEnum = (typeof PlanningMonthScalarFieldEnum)[keyof typeof PlanningMonthScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3332,6 +3510,20 @@ export type EnumRecurringFrequencyFieldRefInput<$PrismaModel> = FieldRefInputTyp
 export type ListEnumRecurringFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurringFrequency[]'>
     
 
+
+/**
+ * Reference to a field of type 'PlanningType'
+ */
+export type EnumPlanningTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanningType[]'
+ */
+export type ListEnumPlanningTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3455,6 +3647,8 @@ export type GlobalOmitConfig = {
   transaction?: Prisma.TransactionOmit
   invoice?: Prisma.InvoiceOmit
   recurringConfig?: Prisma.RecurringConfigOmit
+  planning?: Prisma.PlanningOmit
+  planningMonth?: Prisma.PlanningMonthOmit
 }
 
 /* Types for Logging */

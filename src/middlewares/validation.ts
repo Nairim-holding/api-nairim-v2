@@ -9,6 +9,7 @@ import { PropertyTypeValidator } from '@/lib/validators/property-type';
 import { PropertyValidator } from '@/lib/validators/property';
 import { UserPreferencesValidator } from '../lib/validators/user-preferences';
 import { IptuPropertyValidator } from '@/lib/validators/iptu-property';
+import { PlanningValidator } from '@/lib/validators/planning';
 
 // Validações de Agency
 export const validateCreateAgency = (req: Request, res: Response, next: NextFunction) => {
@@ -226,6 +227,31 @@ export const validateGetIptuProperties = (req: Request, res: Response, next: Nex
   const validation = IptuPropertyValidator.validateQueryParams(req.query);
   if (!validation.isValid) {
     return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+  }
+  next();
+};
+
+// Validações de Planning
+export const validatePlanningUpsert = (req: Request, res: Response, next: NextFunction) => {
+  const validation = PlanningValidator.validateUpsert(req.body);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+  }
+  next();
+};
+
+export const validatePlanningQuery = (req: Request, res: Response, next: NextFunction) => {
+  const validation = PlanningValidator.validatePlanningsQuery(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+  }
+  next();
+};
+
+export const validateDashboardQuery = (req: Request, res: Response, next: NextFunction) => {
+  const validation = PlanningValidator.validateQueryParams(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
   }
   next();
 };
