@@ -22,11 +22,11 @@ router.patch('/:id/restore', PropertyController.restoreProperty);
 router.post(
   '/:id/documents',
   upload.fields([
-    { name: 'arquivosImagens', maxCount: 30 },
-    { name: 'arquivosMatricula', maxCount: 3 },
-    { name: 'arquivosRegistro', maxCount: 3 },
-    { name: 'arquivosEscritura', maxCount: 3 },
-    { name: 'arquivosOutros', maxCount: 10 }
+    { name: 'arquivosImagens' },
+    { name: 'arquivosMatricula' },
+    { name: 'arquivosRegistro' },
+    { name: 'arquivosEscritura' },
+    { name: 'arquivosOutros' }
   ]),
   PropertyController.uploadDocuments
 );
@@ -34,11 +34,11 @@ router.post(
 router.put(
   '/:id/documents',
   upload.fields([
-    { name: 'arquivosImagens', maxCount: 30 },
-    { name: 'arquivosMatricula', maxCount: 3 },
-    { name: 'arquivosRegistro', maxCount: 3 },
-    { name: 'arquivosEscritura', maxCount: 3 },
-    { name: 'arquivosOutros', maxCount: 10 }
+    { name: 'arquivosImagens' },
+    { name: 'arquivosMatricula' },
+    { name: 'arquivosRegistro' },
+    { name: 'arquivosEscritura' },
+    { name: 'arquivosOutros' }
   ]),
   PropertyController.updateDocuments
 );

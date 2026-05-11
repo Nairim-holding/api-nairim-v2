@@ -313,7 +313,8 @@ export class PropertyController {
       }
     };
 
-    const triggerRespond = () => {
+    const triggerRespond = (force = false) => {
+      if (!force && (!fields.propertyData || !fields.addressData || !fields.valuesData || !fields.userId)) return;
       if (!respondPromise && !failed) respondPromise = respondWithProperty();
     };
 
@@ -340,7 +341,7 @@ export class PropertyController {
 
     bb.on('finish', async () => {
       // Sem arquivos: dispara agora; com arquivos: aguarda a transação iniciada pelo file event
-      triggerRespond();
+      triggerRespond(true);
       await respondPromise;
 
       if (!failed && propertyId && fileWritePromises.length > 0) {
@@ -427,7 +428,8 @@ export class PropertyController {
       }
     };
 
-    const triggerRespond = () => {
+    const triggerRespond = (force = false) => {
+      if (!force && (!fields.propertyData || !fields.addressData || !fields.valuesData || !fields.userId)) return;
       if (!respondPromise && !failed) respondPromise = respondWithProperty();
     };
 
@@ -454,7 +456,7 @@ export class PropertyController {
 
     bb.on('finish', async () => {
       // Sem arquivos: dispara agora; com arquivos: aguarda a transação iniciada pelo file event
-      triggerRespond();
+      triggerRespond(true);
       await respondPromise;
 
       if (!failed && propertyId && fileWritePromises.length > 0) {

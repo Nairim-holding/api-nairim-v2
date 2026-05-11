@@ -30,7 +30,7 @@ export class BlobService {
     filename: string,
     folder: string = 'properties',
   ): Promise<MoveResult> {
-    const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+    const safeFilename = filename.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
     const uniqueFilename = `${Date.now()}-${safeFilename}`;
     const relativePath = path.posix.join(folder, uniqueFilename);
     const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
@@ -64,7 +64,7 @@ export class BlobService {
         url: `${getBaseUrl()}/uploads/${relativePath}`,
         pathname: relativePath,
         contentType: file.mimetype,
-        contentDisposition: `inline; filename="${safeFilename}"`,
+        contentDisposition: `inline; filename="${filename}"`,
       },
       absolutePath,
       isImage,

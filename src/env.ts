@@ -17,8 +17,6 @@ export const env = {
   JWT_SECRET: required("JWT_SECRET"),
   
   BASE_URL: process.env.BASE_URL ?? "http://localhost:5000",
-  USE_VERCEL_BLOB: process.env.USE_VERCEL_BLOB === "true",
-  BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
 
   // Rate limiting configuration
   RATE_LIMIT_WINDOW_MS: Number(process.env.RATE_LIMIT_WINDOW_MS ?? 5 * 60 * 1000), // 5 minutes
