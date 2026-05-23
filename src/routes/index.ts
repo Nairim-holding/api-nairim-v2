@@ -43,6 +43,6 @@ router.use("/financial-supplier", FinancialSupplier);
 router.use("/financial-transaction", FinancialTransaction);
 router.use('/financial-invoice', InvoiceRoutes);
 router.use('/iptu-property', iptuPropertyRoutes);
-router.use('/plannings', planningRoutes);
+router.use('/planning', planningRoutes);
 
 export default router;
