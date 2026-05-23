@@ -4,6 +4,11 @@ export interface MonthlyData {
   realized_amount: number;
 }
 
+export interface MonthlyPlanned {
+  month: number;
+  amount: number;
+}
+
 export interface DashboardItem {
   id: string;
   name: string;
@@ -14,6 +19,7 @@ export interface DashboardItem {
   med: number;
   max: number | null;
   monthly_data: MonthlyData[];
+  monthly_values: MonthlyPlanned[];
 }
 
 export interface CategoryDashboard extends DashboardItem {

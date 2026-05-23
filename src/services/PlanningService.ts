@@ -12,12 +12,49 @@ interface UpsertPlanningInput {
   year: number;
   type: 'FIXED' | 'VARIABLE';
   default_amount?: number | null;
-  min_recommended?: number | null;
-  max_recommended?: number | null;
   monthly_values?: MonthlyValueInput[];
 }
 
 export class PlanningService {
+  private static async calculateMinMaxFromTransactionHistory(
+    categoryId: string,
+    subcategoryId: string | null,
+  ): Promise<{ min: number | null; max: number | null }> {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        category_id: categoryId,
+        subcategory_id: subcategoryId ?? undefined,
+        deleted_at: null,
+      },
+      select: {
+        amount: true,
+        effective_date: true,
+      },
+    });
+
+    if (transactions.length === 0) {
+      return { min: null, max: null };
+    }
+
+    const monthlyTotals = new Map<string, number>();
+    for (const tx of transactions) {
+      const monthKey = `${tx.effective_date.getFullYear()}-${String(
+        tx.effective_date.getMonth() + 1,
+      ).padStart(2, '0')}`;
+      const amount = Number(tx.amount);
+      monthlyTotals.set(monthKey, (monthlyTotals.get(monthKey) ?? 0) + amount);
+    }
+
+    const totals = Array.from(monthlyTotals.values());
+    const min = Math.min(...totals);
+    const max = Math.max(...totals);
+
+    return {
+      min: Math.round(min * 100) / 100,
+      max: Math.round(max * 100) / 100,
+    };
+  }
+
   static async upsertPlanning(data: UpsertPlanningInput) {
     try {
       const existing = await prisma.planning.findFirst({
@@ -29,46 +66,66 @@ export class PlanningService {
         },
       });
 
+      const { min, max } = await this.calculateMinMaxFromTransactionHistory(
+        data.category_id,
+        data.subcategory_id ?? null,
+      );
+
       const planningData = {
         category_id: data.category_id,
         subcategory_id: data.subcategory_id ?? null,
         year: Number(data.year),
         type: data.type,
         default_amount: data.default_amount != null ? Number(data.default_amount) : null,
-        min_recommended: data.min_recommended != null ? Number(data.min_recommended) : null,
-        max_recommended: data.max_recommended != null ? Number(data.max_recommended) : null,
+        min_recommended: min,
+        max_recommended: max,
         is_active: true,
       };
+
+      const monthlyValuesData = data.type === 'FIXED'
+        ? Array.from({ length: 12 }, (_, i) => ({
+            month: i + 1,
+            amount: Number(data.default_amount ?? 0),
+          }))
+        : (data.monthly_values ?? []).map((mv) => ({
+            month: Number(mv.month),
+            amount: Number(mv.amount),
+          }));
 
       let planning;
 
       if (existing) {
-        planning = await prisma.planning.update({
-          where: { id: existing.id },
-          data: planningData,
-        });
-        await prisma.planningMonth.deleteMany({ where: { planning_id: existing.id } });
-      } else {
-        planning = await prisma.planning.create({ data: planningData });
-      }
+        planning = await prisma.$transaction(async (tx) => {
+          const updated = await tx.planning.update({
+            where: { id: existing.id },
+            data: planningData,
+          });
 
-      if (data.type === 'FIXED') {
-        const amount = Number(data.default_amount ?? 0);
-        await prisma.planningMonth.createMany({
-          data: Array.from({ length: 12 }, (_, i) => ({
-            planning_id: planning.id,
-            month: i + 1,
-            amount,
-          })),
+          await tx.planningMonth.deleteMany({
+            where: { planning_id: existing.id },
+          });
+
+          await tx.planningMonth.createMany({
+            data: monthlyValuesData.map((mv) => ({
+              planning_id: updated.id,
+              ...mv,
+            })),
+          });
+
+          return updated;
         });
       } else {
-        const monthlyValues = data.monthly_values ?? [];
-        await prisma.planningMonth.createMany({
-          data: monthlyValues.map((mv) => ({
-            planning_id: planning.id,
-            month: Number(mv.month),
-            amount: Number(mv.amount),
-          })),
+        planning = await prisma.$transaction(async (tx) => {
+          const created = await tx.planning.create({ data: planningData });
+
+          await tx.planningMonth.createMany({
+            data: monthlyValuesData.map((mv) => ({
+              planning_id: created.id,
+              ...mv,
+            })),
+          });
+
+          return created;
         });
       }
 
@@ -303,19 +360,20 @@ export class PlanningService {
 
         const realizedTotal = monthlyRealized.reduce((s, m) => s + m.realized_amount, 0);
 
-        // Calcula planejado do período
+        // Calcula planejado (valor anual total, não apenas período filtrado)
         let plannedTotal = 0;
         if (planningData) {
-          for (const monthData of monthlyRealized) {
-            const monthIndex = monthData.month;
-            const monthValue = planningData.monthly_values.find((mv) => mv.month === monthIndex);
-            if (monthValue) plannedTotal += Number(monthValue.amount);
+          if (planningData.type === 'FIXED') {
+            plannedTotal = Number(planningData.default_amount ?? 0);
+          } else if (planningData.type === 'VARIABLE') {
+            plannedTotal = planningData.monthly_values.reduce((sum, mv) => sum + Number(mv.amount), 0);
           }
         }
 
         const percentage =
           plannedTotal > 0 ? Math.round((realizedTotal / plannedTotal) * 10000) / 100 : 0;
 
+        // Calcula min/max/med baseado nos VALORES REALIZADOS do período
         const nonZeroMonths = monthlyRealized.filter((m) => m.realized_amount > 0);
         const average =
           nonZeroMonths.length > 0
@@ -326,16 +384,57 @@ export class PlanningService {
               ) / 100
             : 0;
 
+        // Min/Max dos valores REALIZADOS no período filtrado
+        let minValue: number | null = null;
+        let maxValue: number | null = null;
+
+        if (nonZeroMonths.length > 0) {
+          minValue = Math.min(...nonZeroMonths.map((m) => m.realized_amount));
+          maxValue = Math.max(...nonZeroMonths.map((m) => m.realized_amount));
+        }
+
+        // Constrói monthly_values (planejado) para o período filtrado
+        const monthlyValues: Array<{ month: number; amount: number }> = [];
+        if (planningData) {
+          if (planningData.type === 'FIXED') {
+            const fixedAmount = Number(planningData.default_amount ?? 0);
+            for (const monthData of monthlyRealized) {
+              monthlyValues.push({
+                month: monthData.month,
+                amount: Math.round(fixedAmount * 100) / 100,
+              });
+            }
+          } else if (planningData.type === 'VARIABLE') {
+            for (const monthData of monthlyRealized) {
+              const monthIndex = monthData.month;
+              const monthValue = planningData.monthly_values.find((mv) => mv.month === monthIndex);
+              if (monthValue) {
+                monthlyValues.push({
+                  month: monthIndex,
+                  amount: Math.round(Number(monthValue.amount) * 100) / 100,
+                });
+              } else {
+                // Se não houver valor para este mês, usa 0
+                monthlyValues.push({
+                  month: monthIndex,
+                  amount: 0,
+                });
+              }
+            }
+          }
+        }
+
         return {
           id,
           name,
           planned_amount: Math.round(plannedTotal * 100) / 100,
           realized_amount: Math.round(realizedTotal * 100) / 100,
           percentage,
-          min: planningData?.min_recommended ? Number(planningData.min_recommended) : null,
+          min: minValue,
           med: average,
-          max: planningData?.max_recommended ? Number(planningData.max_recommended) : null,
+          max: maxValue,
           monthly_data: monthlyRealized,
+          monthly_values: monthlyValues,
         };
       };
 
@@ -402,6 +501,19 @@ export class PlanningService {
           }
         }
 
+        // Inclui planejamento da categoria (subcategory_id: null)
+        if (catPlanning) {
+          if (catPlanning.type === 'FIXED') {
+            catPlannedTotal += Number(catPlanning.default_amount ?? 0);
+          } else if (catPlanning.type === 'VARIABLE') {
+            for (const monthValue of catPlanning.monthly_values) {
+              catPlannedTotal += Number(monthValue.amount);
+            }
+          }
+          catMinTotal += Number(catPlanning.min_recommended ?? 0);
+          catMaxTotal += Number(catPlanning.max_recommended ?? 0);
+        }
+
         catMonthlyData.forEach((m) => {
           m.realized_amount = Math.round(m.realized_amount * 100) / 100;
         });
@@ -419,6 +531,22 @@ export class PlanningService {
               ) / 100
             : 0;
 
+        // Constrói monthly_values para a categoria (soma das subcategorias)
+        const catMonthlyValues: Array<{ month: number; amount: number }> = monthKeys.map((mk) => {
+          const month = parseInt(mk.split('-')[1]);
+          let amount = 0;
+
+          // Soma monthly_values de todas as subcategorias
+          for (const subItem of subcategoryItems) {
+            const subMonthValue = subItem.monthly_values.find((mv) => mv.month === month);
+            if (subMonthValue) {
+              amount += subMonthValue.amount;
+            }
+          }
+
+          return { month, amount: Math.round(amount * 100) / 100 };
+        });
+
         const catDashboard: CategoryDashboard = {
           id: cat.id,
           name: cat.name,
@@ -430,6 +558,7 @@ export class PlanningService {
           med: Math.round(catAverage * 100) / 100,
           max: subcategoryItems.length > 0 ? Math.round(catMaxTotal * 100) / 100 : 0,
           monthly_data: catMonthlyData,
+          monthly_values: catMonthlyValues,
           subcategories: subcategoryItems,
         };
 
@@ -459,6 +588,16 @@ export class PlanningService {
         return { month, year, realized_amount: Math.round(amount * 100) / 100 };
       });
 
+      const incomesGlobalMonthlyValues: Array<{ month: number; amount: number }> = monthKeys.map((mk) => {
+        const month = parseInt(mk.split('-')[1]);
+        let amount = 0;
+        for (const cat of incomes) {
+          const monthValue = cat.monthly_values.find((mv) => mv.month === month);
+          if (monthValue) amount += monthValue.amount;
+        }
+        return { month, amount: Math.round(amount * 100) / 100 };
+      });
+
       const incomeGlobalItem: CategoryDashboard = {
         id: 'incomes-global',
         name: 'Total de Receitas',
@@ -470,6 +609,7 @@ export class PlanningService {
         med: Math.round(incomesTotalMed * 100) / 100,
         max: Math.round(incomesTotalMax * 100) / 100,
         monthly_data: incomesGlobalMonthly,
+        monthly_values: incomesGlobalMonthlyValues,
         subcategories: [],
       };
 
@@ -492,6 +632,16 @@ export class PlanningService {
         return { month, year, realized_amount: Math.round(amount * 100) / 100 };
       });
 
+      const expensesGlobalMonthlyValues: Array<{ month: number; amount: number }> = monthKeys.map((mk) => {
+        const month = parseInt(mk.split('-')[1]);
+        let amount = 0;
+        for (const cat of expenses) {
+          const monthValue = cat.monthly_values.find((mv) => mv.month === month);
+          if (monthValue) amount += monthValue.amount;
+        }
+        return { month, amount: Math.round(amount * 100) / 100 };
+      });
+
       const expenseGlobalItem: CategoryDashboard = {
         id: 'expenses-global',
         name: 'Total de Despesas',
@@ -503,6 +653,7 @@ export class PlanningService {
         med: Math.round(expensesTotalMed * 100) / 100,
         max: Math.round(expensesTotalMax * 100) / 100,
         monthly_data: expensesGlobalMonthly,
+        monthly_values: expensesGlobalMonthlyValues,
         subcategories: [],
       };
 

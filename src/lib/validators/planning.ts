@@ -49,26 +49,6 @@ export class PlanningValidator {
       }
     }
 
-    if (data.min_recommended !== undefined && data.min_recommended !== null && data.min_recommended !== '') {
-      if (isNaN(Number(data.min_recommended)) || Number(data.min_recommended) < 0) {
-        errors.push('min_recommended deve ser um número não negativo');
-      }
-    }
-
-    if (data.max_recommended !== undefined && data.max_recommended !== null && data.max_recommended !== '') {
-      if (isNaN(Number(data.max_recommended)) || Number(data.max_recommended) < 0) {
-        errors.push('max_recommended deve ser um número não negativo');
-      }
-    }
-
-    if (
-      data.min_recommended !== undefined && data.min_recommended !== null && data.min_recommended !== '' &&
-      data.max_recommended !== undefined && data.max_recommended !== null && data.max_recommended !== ''
-    ) {
-      if (Number(data.min_recommended) > Number(data.max_recommended)) {
-        errors.push('min_recommended não pode ser maior que max_recommended');
-      }
-    }
 
     return { isValid: errors.length === 0, errors };
   }
