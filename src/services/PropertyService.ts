@@ -809,7 +809,7 @@ export class PropertyService {
     for (const fileInfo of tempFiles) {
       try {
         const docType = fileTypes[fileInfo.fieldname] ?? 'OTHER';
-        const originalname = Buffer.from(fileInfo.originalname, 'latin1').toString('utf8');
+        const originalname = fileInfo.originalname;
 
         const mockFile = {
           path: fileInfo.tempPath,
@@ -844,7 +844,7 @@ export class PropertyService {
 
         uploadedDocuments.push({ id: document.id, filename: originalname, name: fileNameWithoutExt });
       } catch (err: any) {
-        console.error(`❌ Background: erro ao processar ${fileInfo.originalname}:`, err.message);
+        console.error(`❌ Background: erro ao processar ${fileInfo.originalname}:`, err);
       }
     }
 
