@@ -45,7 +45,7 @@ export class DocumentService {
               file_type: file.mimetype,
               description: this.getDescription(key),
               type: documentType,
-              created_by: userId,
+              created_by: userId?.trim() || null,
             }
           });
 
@@ -105,7 +105,7 @@ export class DocumentService {
               file_type: file.mimetype,
               description: this.getDescription(key),
               type: documentType,
-              created_by: userId,
+              created_by: userId?.trim() || null,
             }
           });
 

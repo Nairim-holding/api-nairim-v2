@@ -186,7 +186,7 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type DocumentGroupByOutputType = {
   id: string
   property_id: string
-  created_by: string
+  created_by: string | null
   file_path: string
   file_type: string
   description: string | null
@@ -221,7 +221,7 @@ export type DocumentWhereInput = {
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   id?: Prisma.StringFilter<"Document"> | string
   property_id?: Prisma.StringFilter<"Document"> | string
-  created_by?: Prisma.StringFilter<"Document"> | string
+  created_by?: Prisma.StringNullableFilter<"Document"> | string | null
   file_path?: Prisma.StringFilter<"Document"> | string
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -230,14 +230,14 @@ export type DocumentWhereInput = {
   updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   is_featured?: Prisma.BoolFilter<"Document"> | boolean
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }
 
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
-  created_by?: Prisma.SortOrder
+  created_by?: Prisma.SortOrderInput | Prisma.SortOrder
   file_path?: Prisma.SortOrder
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -256,7 +256,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   property_id?: Prisma.StringFilter<"Document"> | string
-  created_by?: Prisma.StringFilter<"Document"> | string
+  created_by?: Prisma.StringNullableFilter<"Document"> | string | null
   file_path?: Prisma.StringFilter<"Document"> | string
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -265,14 +265,14 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   is_featured?: Prisma.BoolFilter<"Document"> | boolean
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }, "id">
 
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
-  created_by?: Prisma.SortOrder
+  created_by?: Prisma.SortOrderInput | Prisma.SortOrder
   file_path?: Prisma.SortOrder
   file_type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,7 +292,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   property_id?: Prisma.StringWithAggregatesFilter<"Document"> | string
-  created_by?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  created_by?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   file_path?: Prisma.StringWithAggregatesFilter<"Document"> | string
   file_type?: Prisma.StringWithAggregatesFilter<"Document"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
@@ -313,14 +313,14 @@ export type DocumentCreateInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   is_featured?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  user?: Prisma.UserCreateNestedOneWithoutDocumentsInput
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateInput = {
   id?: string
   property_id: string
-  created_by: string
+  created_by?: string | null
   file_path: string
   file_type: string
   description?: string | null
@@ -341,14 +341,14 @@ export type DocumentUpdateInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  user?: Prisma.UserUpdateOneWithoutDocumentsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -362,7 +362,7 @@ export type DocumentUncheckedUpdateInput = {
 export type DocumentCreateManyInput = {
   id?: string
   property_id: string
-  created_by: string
+  created_by?: string | null
   file_path: string
   file_type: string
   description?: string | null
@@ -388,7 +388,7 @@ export type DocumentUpdateManyMutationInput = {
 export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -549,12 +549,12 @@ export type DocumentCreateWithoutPropertyInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   is_featured?: boolean
-  user: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  user?: Prisma.UserCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateWithoutPropertyInput = {
   id?: string
-  created_by: string
+  created_by?: string | null
   file_path: string
   file_type: string
   description?: string | null
@@ -597,7 +597,7 @@ export type DocumentScalarWhereInput = {
   NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
   id?: Prisma.StringFilter<"Document"> | string
   property_id?: Prisma.StringFilter<"Document"> | string
-  created_by?: Prisma.StringFilter<"Document"> | string
+  created_by?: Prisma.StringNullableFilter<"Document"> | string | null
   file_path?: Prisma.StringFilter<"Document"> | string
   file_type?: Prisma.StringFilter<"Document"> | string
   description?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -662,7 +662,7 @@ export type DocumentUpdateManyWithWhereWithoutUserInput = {
 
 export type DocumentCreateManyPropertyInput = {
   id?: string
-  created_by: string
+  created_by?: string | null
   file_path: string
   file_type: string
   description?: string | null
@@ -683,12 +683,12 @@ export type DocumentUpdateWithoutPropertyInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  user?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  user?: Prisma.UserUpdateOneWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -701,7 +701,7 @@ export type DocumentUncheckedUpdateWithoutPropertyInput = {
 
 export type DocumentUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -778,7 +778,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updated_at?: boolean
   deleted_at?: boolean
   is_featured?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -794,7 +794,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updated_at?: boolean
   deleted_at?: boolean
   is_featured?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -810,7 +810,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updated_at?: boolean
   deleted_at?: boolean
   is_featured?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -830,28 +830,28 @@ export type DocumentSelectScalar = {
 
 export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "created_by" | "file_path" | "file_type" | "description" | "type" | "created_at" | "updated_at" | "deleted_at" | "is_featured", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Document"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
     property: Prisma.$PropertyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     property_id: string
-    created_by: string
+    created_by: string | null
     file_path: string
     file_type: string
     description: string | null
@@ -1254,7 +1254,7 @@ readonly fields: DocumentFieldRefs;
  */
 export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Document$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1689,6 +1689,25 @@ export type DocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Documents to delete.
    */
   limit?: number
+}
+
+/**
+ * Document.user
+ */
+export type Document$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

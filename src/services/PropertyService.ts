@@ -703,14 +703,6 @@ export class PropertyService {
       arquivosOutros: 'OTHER',
     };
 
-    let userExists = false;
-    if (userId && typeof userId === 'string' && userId.trim() !== '') {
-      try {
-        const userCount = await prisma.user.count({ where: { id: userId } });
-        userExists = userCount > 0;
-      } catch (e) {}
-    }
-
     const allFiles: { file: Express.Multer.File; docType: string }[] = [];
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
       if (files[fieldName]?.length > 0) {
@@ -747,11 +739,8 @@ export class PropertyService {
             file_type: file.mimetype?.substring(0, 100) || 'application/octet-stream',
             type: docType,
             description: fileNameWithoutExt.substring(0, 250),
+            created_by: userId?.trim() || null,
           };
-
-          if (userExists) {
-            documentData.created_by = userId;
-          }
 
           const document = await prisma.document.create({ data: documentData });
 
@@ -815,13 +804,6 @@ export class PropertyService {
       arquivosOutros: 'OTHER',
     };
 
-    let userExists = false;
-    if (userId?.trim()) {
-      try {
-        userExists = (await prisma.user.count({ where: { id: userId } })) > 0;
-      } catch {}
-    }
-
     const uploadedDocuments: Array<{ id: string; filename: string; name: string }> = [];
 
     for (const fileInfo of tempFiles) {
@@ -849,7 +831,7 @@ export class PropertyService {
           file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
           type: docType,
           description: fileNameWithoutExt.substring(0, 250),
-          created_by: userExists ? userId : null,
+          created_by: userId?.trim() || null,
         };
 
         const document = await prisma.document.create({ data: documentData });

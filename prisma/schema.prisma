@@ -118,7 +118,7 @@ model UserColumnPreference {
 model Document {
   id          String       @id @default(uuid())
   property_id String
-  created_by  String
+  created_by  String?
   file_path   String
   file_type   String
   description String?
@@ -127,7 +127,7 @@ model Document {
   updated_at  DateTime     @updatedAt
   deleted_at  DateTime?
   is_featured Boolean      @default(false)
-  user        User         @relation(fields: [created_by], references: [id])
+  user        User?        @relation(fields: [created_by], references: [id])
   property    Property     @relation(fields: [property_id], references: [id])
 
   @@index([property_id])
