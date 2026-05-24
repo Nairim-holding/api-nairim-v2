@@ -115,7 +115,23 @@ Promise.allSettled(fileWritePromises)
 
 ## Considerações de Deploy
 
-- **Nginx**: Verificar `client_max_body_size` no nginx.conf (deve ser grande ou 0 para ilimitado)
-- **Cloudflare/CDN**: Verificar limite de upload do plano (Free = 100MB, Pro = 500MB)
-- **Disco**: Monitorar espaço em `uploads/temp/` e destino final
+### Traefik (Proxy Reverso - Produção)
+
+**OBRIGATÓRIO**: O Traefik tem limite padrão de `100MB` no body da requisição. Para uploads ilimitados, adicionar middleware `buffering` com `maxRequestBodyBytes=0`:
+
+```yaml
+# docker-compose.yml
+labels:
+  - "traefik.http.middlewares.api-buffer.buffering.maxRequestBodyBytes=0"
+  - "traefik.http.routers.api-nairim.middlewares=api-strip,api-buffer"
+```
+
+**Status**: Já configurado nas 3 rotas (prod, test, test-2) em `docker-compose.yml`.
+
+### Cloudflare/CDN
+- Verificar limite de upload do plano (Free = 100MB, Pro = 500MB)
+- Para ilimitado no Cloudflare: plano Enterprise ou usar chunked upload
+
+### Disco
+- Monitorar espaço em `uploads/temp/` e destino final
 - **BlobService.cleanupTempFiles()**: Executa na inicialização para limpar orphans
