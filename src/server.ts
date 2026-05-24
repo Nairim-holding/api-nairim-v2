@@ -1,8 +1,16 @@
 import { app } from './app';
 import prisma from './lib/prisma';
 import logger from './lib/logger';
+import fs from 'fs';
+import path from 'path';
 
 const PORT = process.env.PORT || 5000;
+
+// Garante diretórios de upload em runtime (necessário no Docker onde o volume é montado após o build)
+['uploads/temp', 'uploads/properties'].forEach((dir) => {
+  const fullPath = path.join(process.cwd(), dir);
+  if (!fs.existsSync(fullPath)) fs.mkdirSync(fullPath, { recursive: true });
+});
 
 async function startServer() {
   try {

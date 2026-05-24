@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import fs from 'fs/promises';
-import { createWriteStream } from 'fs';
+import { createWriteStream, mkdirSync, existsSync } from 'fs';
 import path from 'path';
 import busboy from 'busboy';
 import { ApiResponse } from '../utils/api-response';
@@ -11,6 +11,7 @@ import { DocumentService } from '@/services/DocumentService';
 import { GetPropertiesParams } from '../types/property';
 
 const tempDir = path.join(process.cwd(), 'uploads', 'temp');
+if (!existsSync(tempDir)) mkdirSync(tempDir, { recursive: true });
 
 type TempFileInfo = {
   fieldname: string;
