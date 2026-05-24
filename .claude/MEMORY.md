@@ -24,6 +24,23 @@
 
 ---
 
+## Upload de Arquivos (2026-05-24)
+
+**Sem limite de tamanho para PDFs e outros arquivos.**
+
+### Documentação
+- **[upload/UPLOAD-CONFIG.md](upload/UPLOAD-CONFIG.md)** — Configuração completa, fluxos, limites, arquivos relevantes
+
+### O que foi feito
+1. Removido `fileSize: 500 * 1024 * 1024` do busboy em `createUnifiedProperty` e `updateUnifiedProperty`
+2. Multer já não tinha limite (padrão = Infinity)
+3. Express JSON/urlencoded: 4000mb (não afeta multipart)
+
+### Arquivos Modificados
+- `src/controllers/PropertyController.ts` — Removido fileSize do busboy limits (linhas 269, 383)
+
+---
+
 ## How to Use This Memory
 1. Next time you work on Planning module → Start with `planning/INDEX.md`
 2. Need business rules? → Read `planning/CONTEXT.md`

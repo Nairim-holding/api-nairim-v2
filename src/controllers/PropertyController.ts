@@ -266,7 +266,7 @@ export class PropertyController {
       return;
     }
 
-    const bb = busboy({ headers: req.headers, limits: { files: 100, fileSize: 500 * 1024 * 1024 } });
+    const bb = busboy({ headers: req.headers, limits: { files: 100 } });
     const fields: Record<string, string> = {};
     const tempFiles: TempFileInfo[] = [];
     const fileWritePromises: Promise<void>[] = [];
@@ -380,7 +380,7 @@ export class PropertyController {
       return;
     }
 
-    const bb = busboy({ headers: req.headers, limits: { files: 100, fileSize: 500 * 1024 * 1024 } });
+    const bb = busboy({ headers: req.headers, limits: { files: 100 } });
     const fields: Record<string, string> = {};
     const tempFiles: TempFileInfo[] = [];
     const fileWritePromises: Promise<void>[] = [];

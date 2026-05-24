@@ -8,13 +8,15 @@ This directory contains project context, decisions, and module documentation for
 .claude/
 ├── README.md                 ← You are here
 ├── MEMORY.md                 ← Index of all context (read first in new sessions)
-└── planning/                 ← Planning & Financial Control module (2026-05-18)
-    ├── INDEX.md              ← Quick summary (read first for this module)
-    ├── CONTEXT.md            ← Business rules & schema
-    ├── API-CONTRACTS.md      ← JSON examples for all routes
-    ├── CODE-CHANGES.md       ← Code modifications made
-    ├── DECISIONS.md          ← Why we chose persistence over dynamic calculation
-    └── NEXT-STEPS.md         ← Testing checklist & future optimizations
+├── planning/                 ← Planning & Financial Control module (2026-05-18)
+│   ├── INDEX.md              ← Quick summary (read first for this module)
+│   ├── CONTEXT.md            ← Business rules & schema
+│   ├── API-CONTRACTS.md      ← JSON examples for all routes
+│   ├── CODE-CHANGES.md       ← Code modifications made
+│   ├── DECISIONS.md          ← Why we chose persistence over dynamic calculation
+│   └── NEXT-STEPS.md         ← Testing checklist & future optimizations
+└── upload/                   ← Upload de Arquivos (2026-05-24)
+    └── UPLOAD-CONFIG.md      ← Limites, fluxos, arquivos relevantes
 ```
 
 ## Quick Start (New Session)
