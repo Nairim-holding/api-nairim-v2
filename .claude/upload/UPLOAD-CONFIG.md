@@ -92,6 +92,27 @@ const bb = busboy({ headers: req.headers, limits: { files: 100, fileSize: X * 10
 const multerUpload = multer({ storage, limits: { fileSize: X * 1024 * 1024 } });
 ```
 
+## Bug Fix: Upload Múltiplo (2026-05-24)
+
+**Problema**: Upload de vários arquivos simultâneos falhava silenciosamente — resposta era 201 mas nenhum documento era salvo.
+
+**Causa Raiz**: `Promise.all(fileWritePromises)` rejeita se QUALQUER stream falhar. O `.catch` limpava TODOS os temp files, zerando o upload inteiro.
+
+**Correção**: Substituído `Promise.all` por `Promise.allSettled`:
+- Processa apenas os arquivos gravados com sucesso
+- Limpa apenas os que falharam
+- Logs detalhados de quais falharam e quais foram processados
+
+**Código** (`src/controllers/PropertyController.ts` linhas ~355 e ~495):
+```typescript
+Promise.allSettled(fileWritePromises)
+  .then(async (results) => {
+    // Separa successFiles vs failedFiles
+    // Processa apenas successFiles
+    // Cleanup apenas failedFiles
+  })
+```
+
 ## Considerações de Deploy
 
 - **Nginx**: Verificar `client_max_body_size` no nginx.conf (deve ser grande ou 0 para ilimitado)

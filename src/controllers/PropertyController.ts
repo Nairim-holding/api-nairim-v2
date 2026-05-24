@@ -349,12 +349,37 @@ export class PropertyController {
         const pid = propertyId;
         const uid = fields.userId;
         const featuredId = fields.featuredImageIdentifier;
-        const filesToProcess = [...tempFiles];
-        Promise.all(fileWritePromises)
-          .then(() => PropertyService.processUploadedTempFiles(pid, filesToProcess, uid, featuredId))
+        const allTempFiles = [...tempFiles];
+
+        // Promise.allSettled: não falha tudo se um stream der erro
+        Promise.allSettled(fileWritePromises)
+          .then(async (results) => {
+            const successFiles: TempFileInfo[] = [];
+            const failedFiles: TempFileInfo[] = [];
+
+            results.forEach((r, i) => {
+              if (r.status === 'fulfilled') {
+                successFiles.push(allTempFiles[i]);
+              } else {
+                console.error(`❌ Erro ao gravar arquivo ${allTempFiles[i]?.originalname}:`, r.reason);
+                failedFiles.push(allTempFiles[i]);
+              }
+            });
+
+            if (failedFiles.length > 0) {
+              console.warn(`⚠️  ${failedFiles.length}/${allTempFiles.length} arquivos falharam na gravação`);
+              await cleanupTempFiles(failedFiles);
+            }
+
+            if (successFiles.length > 0) {
+              console.log(`📁 Processando ${successFiles.length} arquivos em background para property ${pid}`);
+              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, featuredId);
+              console.log(`✅ ${successFiles.length} arquivos processados com sucesso para property ${pid}`);
+            }
+          })
           .catch(async (err) => {
-            console.error('❌ Background upload error:', err);
-            await cleanupTempFiles(filesToProcess);
+            console.error('❌ Background upload error (unexpected):', err);
+            await cleanupTempFiles(allTempFiles);
           });
       }
     });
@@ -464,12 +489,37 @@ export class PropertyController {
         const pid = propertyId;
         const uid = fields.userId;
         const featuredId = fields.featuredImageIdentifier;
-        const filesToProcess = [...tempFiles];
-        Promise.all(fileWritePromises)
-          .then(() => PropertyService.processUploadedTempFiles(pid, filesToProcess, uid, featuredId))
+        const allTempFiles = [...tempFiles];
+
+        // Promise.allSettled: não falha tudo se um stream der erro
+        Promise.allSettled(fileWritePromises)
+          .then(async (results) => {
+            const successFiles: TempFileInfo[] = [];
+            const failedFiles: TempFileInfo[] = [];
+
+            results.forEach((r, i) => {
+              if (r.status === 'fulfilled') {
+                successFiles.push(allTempFiles[i]);
+              } else {
+                console.error(`❌ Erro ao gravar arquivo ${allTempFiles[i]?.originalname}:`, r.reason);
+                failedFiles.push(allTempFiles[i]);
+              }
+            });
+
+            if (failedFiles.length > 0) {
+              console.warn(`⚠️  ${failedFiles.length}/${allTempFiles.length} arquivos falharam na gravação`);
+              await cleanupTempFiles(failedFiles);
+            }
+
+            if (successFiles.length > 0) {
+              console.log(`📁 Processando ${successFiles.length} arquivos em background para property ${pid}`);
+              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, featuredId);
+              console.log(`✅ ${successFiles.length} arquivos processados com sucesso para property ${pid}`);
+            }
+          })
           .catch(async (err) => {
-            console.error('❌ Background upload error:', err);
-            await cleanupTempFiles(filesToProcess);
+            console.error('❌ Background upload error (unexpected):', err);
+            await cleanupTempFiles(allTempFiles);
           });
       }
     });
