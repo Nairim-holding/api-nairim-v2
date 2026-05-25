@@ -789,6 +789,9 @@ export class PropertyService {
   /**
    * Processa arquivos temporários salvos em disco pelo busboy.
    * Chamado em background — a resposta HTTP já foi enviada ao cliente.
+   *
+   * Usa worker queue com concorrência limitada (5 workers) para processar
+   * múltiplos arquivos em paralelo, reduzindo tempo total de processamento.
    */
   static async processUploadedTempFiles(
     propertyId: string,
@@ -805,48 +808,63 @@ export class PropertyService {
     };
 
     const uploadedDocuments: Array<{ id: string; filename: string; name: string }> = [];
+    const maxConcurrent = 5;
+    const queue = [...tempFiles];
 
-    for (const fileInfo of tempFiles) {
-      try {
-        const docType = fileTypes[fileInfo.fieldname] ?? 'OTHER';
-        const originalname = fileInfo.originalname;
+    const worker = async () => {
+      while (queue.length > 0) {
+        const fileInfo = queue.shift();
+        if (!fileInfo) continue;
 
-        const mockFile = {
-          path: fileInfo.tempPath,
-          originalname,
-          mimetype: fileInfo.mimetype,
-          size: 0,
-        } as Express.Multer.File;
+        try {
+          const docType = fileTypes[fileInfo.fieldname] ?? 'OTHER';
+          const originalname = fileInfo.originalname;
 
-        const { result: blobResult, absolutePath, isImage } = await BlobService.moveFile(
-          mockFile,
-          originalname,
-          `properties/${propertyId}`,
-        );
+          const mockFile = {
+            path: fileInfo.tempPath,
+            originalname,
+            mimetype: fileInfo.mimetype,
+            size: 0,
+          } as Express.Multer.File;
 
-        const fileNameWithoutExt = originalname.replace(/\.[^/.]+$/, '');
-        const documentData: any = {
-          property_id: propertyId,
-          file_path: blobResult.url,
-          file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
-          type: docType,
-          description: fileNameWithoutExt.substring(0, 250),
-          created_by: userId?.trim() || null,
-        };
+          const { result: blobResult, absolutePath, isImage } = await BlobService.moveFile(
+            mockFile,
+            originalname,
+            `properties/${propertyId}`,
+          );
 
-        const document = await prisma.document.create({ data: documentData });
+          const fileNameWithoutExt = originalname.replace(/\.[^/.]+$/, '');
+          const documentData: any = {
+            property_id: propertyId,
+            file_path: blobResult.url,
+            file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
+            type: docType,
+            description: fileNameWithoutExt.substring(0, 250),
+            created_by: userId?.trim() || null,
+          };
 
-        if (isImage) {
-          BlobService.scheduleAvifConversion(absolutePath, blobResult.url, async (avifUrl) => {
-            await prisma.document.update({ where: { id: document.id }, data: { file_path: avifUrl } });
-          });
+          const document = await prisma.document.create({ data: documentData });
+
+          if (isImage) {
+            BlobService.scheduleAvifConversion(absolutePath, blobResult.url, async (avifUrl) => {
+              await prisma.document.update({ where: { id: document.id }, data: { file_path: avifUrl } });
+            });
+          }
+
+          uploadedDocuments.push({ id: document.id, filename: originalname, name: fileNameWithoutExt });
+          console.log(`✅ Processado: ${originalname}`);
+        } catch (err: any) {
+          console.error(`❌ Background: erro ao processar ${fileInfo.originalname}:`, err);
         }
-
-        uploadedDocuments.push({ id: document.id, filename: originalname, name: fileNameWithoutExt });
-      } catch (err: any) {
-        console.error(`❌ Background: erro ao processar ${fileInfo.originalname}:`, err);
       }
-    }
+    };
+
+    const workers = Array(Math.min(maxConcurrent, tempFiles.length || 1))
+      .fill(null)
+      .map(() => worker());
+
+    await Promise.all(workers);
+    console.log(`📊 ${uploadedDocuments.length}/${tempFiles.length} arquivos processados para property ${propertyId}`);
 
     if (featuredImageIdentifier && uploadedDocuments.length > 0) {
       const matched = uploadedDocuments.find(

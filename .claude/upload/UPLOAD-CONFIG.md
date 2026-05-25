@@ -113,6 +113,34 @@ Promise.allSettled(fileWritePromises)
   })
 ```
 
+## Otimizações de Performance (2026-05-24)
+
+### 1. Server Timeouts Desabilitados (`src/server.ts`)
+Timeouts padrão do Node.js (2 min) interrompiam uploads de vídeos grandes:
+```typescript
+server.timeout = 0;
+server.keepAliveTimeout = 0;
+server.headersTimeout = 0;
+```
+
+### 2. Processamento Paralelo (`PropertyService.processUploadedTempFiles`)
+Antes: `for...of` sequencial (1 arquivo por vez).
+Depois: worker pool com **5 workers em paralelo** processando a fila de arquivos.
+
+**Impacto**: upload de 10 imagens + 1 vídeo agora processa as imagens enquanto o vídeo é movido, reduzindo tempo total drasticamente.
+
+### 3. Resposta Antecipada (já existente)
+A resposta HTTP 201 é enviada ao primeiro arquivo recebido, antes do upload completar. O processamento de arquivos roda em background — frontend não fica esperando.
+
+## Gargalos Restantes (vídeo lento)
+
+Se o upload de vídeo ainda for lento, verificar nesta ordem:
+
+1. **Upload bruto cliente→servidor**: latência da rede do usuário (não tem como otimizar no backend)
+2. **Cloudflare/CDN**: limite de body size do plano
+3. **Disco do servidor**: I/O ao gravar arquivo grande em `uploads/temp/`
+4. **`BlobService.moveFile`**: se faz cópia em vez de rename (cross-device), é lento. Conferir se `tempDir` e `properties/` estão no mesmo volume Docker.
+
 ## Considerações de Deploy
 
 ### Traefik (Proxy Reverso - Produção)

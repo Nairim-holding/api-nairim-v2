@@ -3,6 +3,7 @@ import prisma from './lib/prisma';
 import logger from './lib/logger';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
 
 const PORT = process.env.PORT || 5000;
 
@@ -18,11 +19,19 @@ async function startServer() {
     await prisma.$connect();
     logger.info('✅ Database connected successfully');
 
-    app.listen(PORT, () => {
+    const server: http.Server = app.listen(PORT, () => {
       logger.info(`teste`);
       logger.info(`🚀 Server running at http://localhost:${PORT}`);
       logger.info(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
+
+    // Timeout = 0: conexões nunca são fechadas por inatividade.
+    // Necessário para uploads de vídeos grandes que podem demorar minutos.
+    server.timeout = 0;
+    server.keepAliveTimeout = 0;
+    server.headersTimeout = 0;
+
+    logger.info('⏱️  Server timeouts disabled (unlimited) for large file uploads');
 
   } catch (error) {
     logger.error('❌ Failed to start server:', error);
