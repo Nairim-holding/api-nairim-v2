@@ -326,7 +326,8 @@ export class PropertyController {
       const tempPath = path.join(tempDir, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
       tempFiles.push({ fieldname, tempPath, originalname: info.filename, mimetype: info.mimeType });
 
-      const ws = createWriteStream(tempPath);
+      // High waterMark e buffer size aumentados para escrita mais rápida em disco
+      const ws = createWriteStream(tempPath, { highWaterMark: 1024 * 1024 }); // 1MB buffer
       stream.pipe(ws);
       fileWritePromises.push(
         new Promise<void>((resolve, reject) => {
@@ -466,7 +467,8 @@ export class PropertyController {
       const tempPath = path.join(tempDir, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
       tempFiles.push({ fieldname, tempPath, originalname: info.filename, mimetype: info.mimeType });
 
-      const ws = createWriteStream(tempPath);
+      // High waterMark e buffer size aumentados para escrita mais rápida em disco
+      const ws = createWriteStream(tempPath, { highWaterMark: 1024 * 1024 }); // 1MB buffer
       stream.pipe(ws);
       fileWritePromises.push(
         new Promise<void>((resolve, reject) => {

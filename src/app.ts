@@ -41,13 +41,19 @@ app.use(express.urlencoded({ limit: '4000mb', extended: true }));
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-// Rate limiting
+// Rate limiting (skip para uploads de arquivos para evitar bloqueio em arquivos grandes)
 const limiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
   limit: env.RATE_LIMIT_MAX_REQUESTS,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   skipSuccessfulRequests: true,
+  skip: (req) => {
+    // Pula rate limit para endpoints de upload de arquivos
+    return req.path.includes('/properties/create-unified') ||
+           req.path.includes('/properties/update-unified') ||
+           req.path.includes('/upload');
+  },
   message: { message: 'Too many requests, please try again later.' },
 });
 app.use(limiter);
