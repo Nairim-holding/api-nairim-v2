@@ -74,7 +74,14 @@ export class CompanyController {
       const search = ValidationUtil.parseStringParam(req.query.search) ?? '';
       const includeInactive = req.query.includeInactive === 'true';
       const result = await CompanyService.listCompanies({ page, limit, search, includeInactive });
-      return res.json(ApiResponse.success(result));
+      // Formato flat esperado pelo DataTable (igual a UserController.getUsers)
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return res.status(200).json({
+        data: result.data,
+        count: result.count,
+        totalPages: result.totalPages,
+        currentPage: result.currentPage,
+      });
     } catch (error: any) {
       return res.status(500).json(ApiResponse.error(error.message));
     }

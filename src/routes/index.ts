@@ -20,8 +20,19 @@ import FinancialTransaction from "./transaction";
 import InvoiceRoutes from "./invoice";
 import iptuPropertyRoutes from "./iptu-property";
 import planningRoutes from "./planning";
+import companyRoutes from "./company";
+import companiesRoutes from "./companies";
+import { authenticateJWT } from '../middlewares/auth';
+import { requireTenant } from '../middlewares/tenant';
 
 const router = Router();
+
+// Public routes (no auth required)
+router.use("/auth", authRoutes);
+router.use("/company", companyRoutes);
+
+// All routes below require a valid JWT with company_id
+router.use(authenticateJWT, requireTenant);
 
 router.use('/agencies', agencyRoutes);
 router.use('/users', userRoutes);
@@ -33,7 +44,6 @@ router.use('/property-types', propertyTypeRoutes);
 router.use('/properties', propertyRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/favorites", favoriteRoutes);
-router.use("/auth", authRoutes);
 router.use("/financial-institution", FinancialInstitution);
 router.use("/financial-category", FinancialCategory);
 router.use("/financial-subcategory", FinancialSubCategory);
@@ -44,5 +54,6 @@ router.use("/financial-transaction", FinancialTransaction);
 router.use('/financial-invoice', InvoiceRoutes);
 router.use('/iptu-property', iptuPropertyRoutes);
 router.use('/planning', planningRoutes);
+router.use('/companies', companiesRoutes);
 
 export default router;
