@@ -26,6 +26,7 @@ export type AggregateFinancialInstitution = {
 
 export type FinancialInstitutionMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -38,6 +39,7 @@ export type FinancialInstitutionMinAggregateOutputType = {
 
 export type FinancialInstitutionMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -50,6 +52,7 @@ export type FinancialInstitutionMaxAggregateOutputType = {
 
 export type FinancialInstitutionCountAggregateOutputType = {
   id: number
+  company_id: number
   name: number
   created_at: number
   updated_at: number
@@ -64,6 +67,7 @@ export type FinancialInstitutionCountAggregateOutputType = {
 
 export type FinancialInstitutionMinAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   created_at?: true
   updated_at?: true
@@ -76,6 +80,7 @@ export type FinancialInstitutionMinAggregateInputType = {
 
 export type FinancialInstitutionMaxAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   created_at?: true
   updated_at?: true
@@ -88,6 +93,7 @@ export type FinancialInstitutionMaxAggregateInputType = {
 
 export type FinancialInstitutionCountAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   created_at?: true
   updated_at?: true
@@ -173,6 +179,7 @@ export type FinancialInstitutionGroupByArgs<ExtArgs extends runtime.Types.Extens
 
 export type FinancialInstitutionGroupByOutputType = {
   id: string
+  company_id: string
   name: string
   created_at: Date
   updated_at: Date
@@ -206,6 +213,7 @@ export type FinancialInstitutionWhereInput = {
   OR?: Prisma.FinancialInstitutionWhereInput[]
   NOT?: Prisma.FinancialInstitutionWhereInput | Prisma.FinancialInstitutionWhereInput[]
   id?: Prisma.StringFilter<"FinancialInstitution"> | string
+  company_id?: Prisma.StringFilter<"FinancialInstitution"> | string
   name?: Prisma.StringFilter<"FinancialInstitution"> | string
   created_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
@@ -216,10 +224,12 @@ export type FinancialInstitutionWhereInput = {
   bank_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type FinancialInstitutionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -230,6 +240,7 @@ export type FinancialInstitutionOrderByWithRelationInput = {
   bank_number?: Prisma.SortOrderInput | Prisma.SortOrder
   recurring_configs?: Prisma.RecurringConfigOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type FinancialInstitutionWhereUniqueInput = Prisma.AtLeast<{
@@ -237,6 +248,7 @@ export type FinancialInstitutionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FinancialInstitutionWhereInput | Prisma.FinancialInstitutionWhereInput[]
   OR?: Prisma.FinancialInstitutionWhereInput[]
   NOT?: Prisma.FinancialInstitutionWhereInput | Prisma.FinancialInstitutionWhereInput[]
+  company_id?: Prisma.StringFilter<"FinancialInstitution"> | string
   name?: Prisma.StringFilter<"FinancialInstitution"> | string
   created_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
@@ -247,10 +259,12 @@ export type FinancialInstitutionWhereUniqueInput = Prisma.AtLeast<{
   bank_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type FinancialInstitutionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -269,6 +283,7 @@ export type FinancialInstitutionScalarWhereWithAggregatesInput = {
   OR?: Prisma.FinancialInstitutionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FinancialInstitutionScalarWhereWithAggregatesInput | Prisma.FinancialInstitutionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"FinancialInstitution"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"FinancialInstitution"> | string
   name?: Prisma.StringWithAggregatesFilter<"FinancialInstitution"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"FinancialInstitution"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"FinancialInstitution"> | Date | string
@@ -291,10 +306,12 @@ export type FinancialInstitutionCreateInput = {
   bank_number?: string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutFinancial_institutionInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutFinancial_institutionInput
+  company: Prisma.CompanyCreateNestedOneWithoutFinancial_institutionsInput
 }
 
 export type FinancialInstitutionUncheckedCreateInput = {
   id?: string
+  company_id: string
   name: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -319,10 +336,12 @@ export type FinancialInstitutionUpdateInput = {
   bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutFinancial_institutionNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutFinancial_institutionNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutFinancial_institutionsNestedInput
 }
 
 export type FinancialInstitutionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -337,6 +356,7 @@ export type FinancialInstitutionUncheckedUpdateInput = {
 
 export type FinancialInstitutionCreateManyInput = {
   id?: string
+  company_id: string
   name: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -361,6 +381,7 @@ export type FinancialInstitutionUpdateManyMutationInput = {
 
 export type FinancialInstitutionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,8 +392,19 @@ export type FinancialInstitutionUncheckedUpdateManyInput = {
   bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type FinancialInstitutionListRelationFilter = {
+  every?: Prisma.FinancialInstitutionWhereInput
+  some?: Prisma.FinancialInstitutionWhereInput
+  none?: Prisma.FinancialInstitutionWhereInput
+}
+
+export type FinancialInstitutionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type FinancialInstitutionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -385,6 +417,7 @@ export type FinancialInstitutionCountOrderByAggregateInput = {
 
 export type FinancialInstitutionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -397,6 +430,7 @@ export type FinancialInstitutionMaxOrderByAggregateInput = {
 
 export type FinancialInstitutionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -410,6 +444,48 @@ export type FinancialInstitutionMinOrderByAggregateInput = {
 export type FinancialInstitutionScalarRelationFilter = {
   is?: Prisma.FinancialInstitutionWhereInput
   isNot?: Prisma.FinancialInstitutionWhereInput
+}
+
+export type FinancialInstitutionCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput> | Prisma.FinancialInstitutionCreateWithoutCompanyInput[] | Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput | Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.FinancialInstitutionCreateManyCompanyInputEnvelope
+  connect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+}
+
+export type FinancialInstitutionUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput> | Prisma.FinancialInstitutionCreateWithoutCompanyInput[] | Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput | Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.FinancialInstitutionCreateManyCompanyInputEnvelope
+  connect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+}
+
+export type FinancialInstitutionUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput> | Prisma.FinancialInstitutionCreateWithoutCompanyInput[] | Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput | Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.FinancialInstitutionUpsertWithWhereUniqueWithoutCompanyInput | Prisma.FinancialInstitutionUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.FinancialInstitutionCreateManyCompanyInputEnvelope
+  set?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  disconnect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  delete?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  connect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  update?: Prisma.FinancialInstitutionUpdateWithWhereUniqueWithoutCompanyInput | Prisma.FinancialInstitutionUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.FinancialInstitutionUpdateManyWithWhereWithoutCompanyInput | Prisma.FinancialInstitutionUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.FinancialInstitutionScalarWhereInput | Prisma.FinancialInstitutionScalarWhereInput[]
+}
+
+export type FinancialInstitutionUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput> | Prisma.FinancialInstitutionCreateWithoutCompanyInput[] | Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput | Prisma.FinancialInstitutionCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.FinancialInstitutionUpsertWithWhereUniqueWithoutCompanyInput | Prisma.FinancialInstitutionUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.FinancialInstitutionCreateManyCompanyInputEnvelope
+  set?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  disconnect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  delete?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  connect?: Prisma.FinancialInstitutionWhereUniqueInput | Prisma.FinancialInstitutionWhereUniqueInput[]
+  update?: Prisma.FinancialInstitutionUpdateWithWhereUniqueWithoutCompanyInput | Prisma.FinancialInstitutionUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.FinancialInstitutionUpdateManyWithWhereWithoutCompanyInput | Prisma.FinancialInstitutionUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.FinancialInstitutionScalarWhereInput | Prisma.FinancialInstitutionScalarWhereInput[]
 }
 
 export type FinancialInstitutionCreateNestedOneWithoutTransactionsInput = {
@@ -440,6 +516,76 @@ export type FinancialInstitutionUpdateOneRequiredWithoutRecurring_configsNestedI
   update?: Prisma.XOR<Prisma.XOR<Prisma.FinancialInstitutionUpdateToOneWithWhereWithoutRecurring_configsInput, Prisma.FinancialInstitutionUpdateWithoutRecurring_configsInput>, Prisma.FinancialInstitutionUncheckedUpdateWithoutRecurring_configsInput>
 }
 
+export type FinancialInstitutionCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  account_number?: string | null
+  agency_number?: string | null
+  bank_number?: string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutFinancial_institutionInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutFinancial_institutionInput
+}
+
+export type FinancialInstitutionUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  account_number?: string | null
+  agency_number?: string | null
+  bank_number?: string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutFinancial_institutionInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFinancial_institutionInput
+}
+
+export type FinancialInstitutionCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.FinancialInstitutionWhereUniqueInput
+  create: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput>
+}
+
+export type FinancialInstitutionCreateManyCompanyInputEnvelope = {
+  data: Prisma.FinancialInstitutionCreateManyCompanyInput | Prisma.FinancialInstitutionCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type FinancialInstitutionUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.FinancialInstitutionWhereUniqueInput
+  update: Prisma.XOR<Prisma.FinancialInstitutionUpdateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.FinancialInstitutionCreateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedCreateWithoutCompanyInput>
+}
+
+export type FinancialInstitutionUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.FinancialInstitutionWhereUniqueInput
+  data: Prisma.XOR<Prisma.FinancialInstitutionUpdateWithoutCompanyInput, Prisma.FinancialInstitutionUncheckedUpdateWithoutCompanyInput>
+}
+
+export type FinancialInstitutionUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.FinancialInstitutionScalarWhereInput
+  data: Prisma.XOR<Prisma.FinancialInstitutionUpdateManyMutationInput, Prisma.FinancialInstitutionUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type FinancialInstitutionScalarWhereInput = {
+  AND?: Prisma.FinancialInstitutionScalarWhereInput | Prisma.FinancialInstitutionScalarWhereInput[]
+  OR?: Prisma.FinancialInstitutionScalarWhereInput[]
+  NOT?: Prisma.FinancialInstitutionScalarWhereInput | Prisma.FinancialInstitutionScalarWhereInput[]
+  id?: Prisma.StringFilter<"FinancialInstitution"> | string
+  company_id?: Prisma.StringFilter<"FinancialInstitution"> | string
+  name?: Prisma.StringFilter<"FinancialInstitution"> | string
+  created_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"FinancialInstitution"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"FinancialInstitution"> | Date | string | null
+  is_active?: Prisma.BoolFilter<"FinancialInstitution"> | boolean
+  account_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  agency_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+  bank_number?: Prisma.StringNullableFilter<"FinancialInstitution"> | string | null
+}
+
 export type FinancialInstitutionCreateWithoutTransactionsInput = {
   id?: string
   name: string
@@ -451,10 +597,12 @@ export type FinancialInstitutionCreateWithoutTransactionsInput = {
   agency_number?: string | null
   bank_number?: string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutFinancial_institutionInput
+  company: Prisma.CompanyCreateNestedOneWithoutFinancial_institutionsInput
 }
 
 export type FinancialInstitutionUncheckedCreateWithoutTransactionsInput = {
   id?: string
+  company_id: string
   name: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -493,10 +641,12 @@ export type FinancialInstitutionUpdateWithoutTransactionsInput = {
   agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutFinancial_institutionNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutFinancial_institutionsNestedInput
 }
 
 export type FinancialInstitutionUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -519,10 +669,12 @@ export type FinancialInstitutionCreateWithoutRecurring_configsInput = {
   agency_number?: string | null
   bank_number?: string | null
   transactions?: Prisma.TransactionCreateNestedManyWithoutFinancial_institutionInput
+  company: Prisma.CompanyCreateNestedOneWithoutFinancial_institutionsInput
 }
 
 export type FinancialInstitutionUncheckedCreateWithoutRecurring_configsInput = {
   id?: string
+  company_id: string
   name: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -561,10 +713,12 @@ export type FinancialInstitutionUpdateWithoutRecurring_configsInput = {
   agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactions?: Prisma.TransactionUpdateManyWithoutFinancial_institutionNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutFinancial_institutionsNestedInput
 }
 
 export type FinancialInstitutionUncheckedUpdateWithoutRecurring_configsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -574,6 +728,58 @@ export type FinancialInstitutionUncheckedUpdateWithoutRecurring_configsInput = {
   agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFinancial_institutionNestedInput
+}
+
+export type FinancialInstitutionCreateManyCompanyInput = {
+  id?: string
+  name: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  account_number?: string | null
+  agency_number?: string | null
+  bank_number?: string | null
+}
+
+export type FinancialInstitutionUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutFinancial_institutionNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutFinancial_institutionNestedInput
+}
+
+export type FinancialInstitutionUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutFinancial_institutionNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFinancial_institutionNestedInput
+}
+
+export type FinancialInstitutionUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  account_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agency_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bank_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -618,6 +824,7 @@ export type FinancialInstitutionCountOutputTypeCountTransactionsArgs<ExtArgs ext
 
 export type FinancialInstitutionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -628,11 +835,13 @@ export type FinancialInstitutionSelect<ExtArgs extends runtime.Types.Extensions.
   bank_number?: boolean
   recurring_configs?: boolean | Prisma.FinancialInstitution$recurring_configsArgs<ExtArgs>
   transactions?: boolean | Prisma.FinancialInstitution$transactionsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.FinancialInstitutionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["financialInstitution"]>
 
 export type FinancialInstitutionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -641,10 +850,12 @@ export type FinancialInstitutionSelectCreateManyAndReturn<ExtArgs extends runtim
   account_number?: boolean
   agency_number?: boolean
   bank_number?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["financialInstitution"]>
 
 export type FinancialInstitutionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -653,10 +864,12 @@ export type FinancialInstitutionSelectUpdateManyAndReturn<ExtArgs extends runtim
   account_number?: boolean
   agency_number?: boolean
   bank_number?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["financialInstitution"]>
 
 export type FinancialInstitutionSelectScalar = {
   id?: boolean
+  company_id?: boolean
   name?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -667,23 +880,30 @@ export type FinancialInstitutionSelectScalar = {
   bank_number?: boolean
 }
 
-export type FinancialInstitutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "created_at" | "updated_at" | "deleted_at" | "is_active" | "account_number" | "agency_number" | "bank_number", ExtArgs["result"]["financialInstitution"]>
+export type FinancialInstitutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "created_at" | "updated_at" | "deleted_at" | "is_active" | "account_number" | "agency_number" | "bank_number", ExtArgs["result"]["financialInstitution"]>
 export type FinancialInstitutionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | Prisma.FinancialInstitution$recurring_configsArgs<ExtArgs>
   transactions?: boolean | Prisma.FinancialInstitution$transactionsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.FinancialInstitutionCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type FinancialInstitutionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type FinancialInstitutionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type FinancialInstitutionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
+export type FinancialInstitutionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
 
 export type $FinancialInstitutionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "FinancialInstitution"
   objects: {
     recurring_configs: Prisma.$RecurringConfigPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     name: string
     created_at: Date
     updated_at: Date
@@ -1088,6 +1308,7 @@ export interface Prisma__FinancialInstitutionClient<T, Null = never, ExtArgs ext
   readonly [Symbol.toStringTag]: "PrismaPromise"
   recurring_configs<T extends Prisma.FinancialInstitution$recurring_configsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FinancialInstitution$recurring_configsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.FinancialInstitution$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FinancialInstitution$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1118,6 +1339,7 @@ export interface Prisma__FinancialInstitutionClient<T, Null = never, ExtArgs ext
  */
 export interface FinancialInstitutionFieldRefs {
   readonly id: Prisma.FieldRef<"FinancialInstitution", 'String'>
+  readonly company_id: Prisma.FieldRef<"FinancialInstitution", 'String'>
   readonly name: Prisma.FieldRef<"FinancialInstitution", 'String'>
   readonly created_at: Prisma.FieldRef<"FinancialInstitution", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"FinancialInstitution", 'DateTime'>
@@ -1375,6 +1597,10 @@ export type FinancialInstitutionCreateManyAndReturnArgs<ExtArgs extends runtime.
    */
   data: Prisma.FinancialInstitutionCreateManyInput | Prisma.FinancialInstitutionCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FinancialInstitutionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1445,6 +1671,10 @@ export type FinancialInstitutionUpdateManyAndReturnArgs<ExtArgs extends runtime.
    * Limit how many FinancialInstitutions to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FinancialInstitutionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -374,11 +374,8 @@ export class UserService {
     try {
       console.log(`🔍 Getting user by email: ${email}`);
       
-      const user = await prisma.user.findUnique({
-        where: { 
-          email,
-          deleted_at: null
-        }
+      const user = await prisma.user.findFirst({
+        where: { email, deleted_at: null }
       });
 
       return user;
@@ -389,7 +386,7 @@ export class UserService {
     }
   }
 
-  static async createUser(data: any) {
+  static async createUser(data: any, company_id: string) {
     try {
       console.log('➕ Creating new user:', data.email);
       
@@ -417,6 +414,7 @@ export class UserService {
           birth_date: new Date(data.birth_date),
           gender: data.gender,
           role: data.role || Role.DEFAULT,
+          company: { connect: { id: company_id } },
         },
         select: {
           id: true,

@@ -7,8 +7,60 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── MULTI-TENANT ────────────────────────────────────────────────────────────
+
+model Company {
+  id         String    @id @default(uuid())
+  name       String
+  slug       String    @unique
+  is_active  Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  branding                CompanyBranding?
+  users                   User[]
+  properties              Property[]
+  property_types          PropertyType[]
+  owners                  Owner[]
+  agencies                Agency[]
+  tenants                 Tenant[]
+  suppliers               Supplier[]
+  leases                  Lease[]
+  financial_institutions  FinancialInstitution[]
+  cards                   Card[]
+  transactions            Transaction[]
+  invoices                Invoice[]
+  categories              Category[]
+  subcategories           Subcategory[]
+  centers                 Center[]
+  recurring_configs       RecurringConfig[]
+  plannings               Planning[]
+  documents               Document[]
+  favorites               Favorite[]
+  user_column_preferences UserColumnPreference[]
+}
+
+model CompanyBranding {
+  id              String   @id @default(uuid())
+  company_id      String   @unique
+  logo_url        String?
+  favicon_url     String?
+  primary_color   String?
+  secondary_color String?
+  company_name    String?
+  company_info    Json?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  company Company @relation(fields: [company_id], references: [id])
+}
+
+// ─── IMOBILIÁRIA ─────────────────────────────────────────────────────────────
+
 model Agency {
   id                     String          @id @default(uuid())
+  company_id             String
   trade_name             String
   legal_name             String
   cnpj                   String          @db.VarChar(18)
@@ -21,102 +73,114 @@ model Agency {
   addresses              AgencyAddress[]
   contacts               Contact[]
   properties             Property[]
+  company                Company        @relation(fields: [company_id], references: [id])
 
   @@index([cnpj])
+  @@index([company_id])
 }
 
 model Property {
-  id                 String            @id @default(uuid())
-  owner_id           String
-  agency_id          String?
-  type_id            String
-  title              String
-  registration_number String?         @db.VarChar(50)
-  bedrooms           Int
-  bathrooms          Int
-  half_bathrooms     Int
-  garage_spaces      Int
-  area_total         Float
-  area_built         Float
-  frontage           Float
-  furnished          Boolean
-  floor_number       Int?
-  tax_registration   String            @db.VarChar(20)
-  notes              String?
-  created_at       DateTime          @default(now())
-  updated_at       DateTime          @updatedAt
-  deleted_at       DateTime?
-  documents        Document[]
-  favorites        Favorite[]
-  leases           Lease[]
-  agency           Agency?           @relation(fields: [agency_id], references: [id])
-  owner            Owner             @relation(fields: [owner_id], references: [id])
-  type             PropertyType      @relation(fields: [type_id], references: [id])
-  addresses        PropertyAddress[]
-  iptus            PropertyIptu[]
-  values           PropertyValue[]
+  id                  String            @id @default(uuid())
+  company_id          String
+  owner_id            String
+  agency_id           String?
+  type_id             String
+  title               String
+  registration_number String?           @db.VarChar(50)
+  bedrooms            Int
+  bathrooms           Int
+  half_bathrooms      Int
+  garage_spaces       Int
+  area_total          Float
+  area_built          Float
+  frontage            Float
+  furnished           Boolean
+  floor_number        Int?
+  tax_registration    String            @db.VarChar(20)
+  notes               String?
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+  deleted_at          DateTime?
+  documents           Document[]
+  favorites           Favorite[]
+  leases              Lease[]
+  agency              Agency?           @relation(fields: [agency_id], references: [id])
+  owner               Owner             @relation(fields: [owner_id], references: [id])
+  type                PropertyType      @relation(fields: [type_id], references: [id])
+  addresses           PropertyAddress[]
+  iptus               PropertyIptu[]
+  values              PropertyValue[]
+  company             Company          @relation(fields: [company_id], references: [id])
 
   @@index([owner_id])
   @@index([agency_id])
+  @@index([company_id])
 }
 
 model PropertyIptu {
-  id                                        String            @id @default(uuid())
-  property_id                               String
-  year                                      Int
-  property_tax_cash                         Decimal?          @db.Decimal(20, 2)
-  property_tax_cash_due_date                DateTime?         @db.Date
-  property_tax_first_installment            Decimal?          @db.Decimal(20, 2)
-  property_tax_first_installment_due_date   DateTime?         @db.Date
-  property_tax_second_installment           Decimal?          @db.Decimal(20, 2)
-  property_tax_second_installment_due_date  DateTime?         @db.Date
-  iptu_installments_count                   Int?
-  iptu_installments                         Json?
-  payment_condition                         PaymentCondition?
-  created_at                                DateTime          @default(now())
-  updated_at                                DateTime          @updatedAt
-  deleted_at                                DateTime?
-  property                                  Property          @relation(fields: [property_id], references: [id])
+  id                                       String            @id @default(uuid())
+  property_id                              String
+  year                                     Int
+  property_tax_cash                        Decimal?          @db.Decimal(20, 2)
+  property_tax_cash_due_date               DateTime?         @db.Date
+  property_tax_first_installment           Decimal?          @db.Decimal(20, 2)
+  property_tax_first_installment_due_date  DateTime?         @db.Date
+  property_tax_second_installment          Decimal?          @db.Decimal(20, 2)
+  property_tax_second_installment_due_date DateTime?         @db.Date
+  iptu_installments_count                  Int?
+  iptu_installments                        Json?
+  payment_condition                        PaymentCondition?
+  created_at                               DateTime          @default(now())
+  updated_at                               DateTime          @updatedAt
+  deleted_at                               DateTime?
+  property                                 Property          @relation(fields: [property_id], references: [id])
 
   @@index([property_id])
   @@index([year])
 }
 
 model User {
-  id                      String                    @id @default(uuid())
-  name                    String
-  email                   String                    @unique
-  password                String
-  birth_date              DateTime                  @db.Date
-  gender                  Gender
-  role                    Role                      @default(DEFAULT)
-  created_at              DateTime                  @default(now())
-  updated_at              DateTime                  @updatedAt
-  deleted_at              DateTime?
-  documents               Document[]
-  favorites               Favorite[]
-  columnPreferences       UserColumnPreference[]
+  id                String                 @id @default(uuid())
+  company_id        String
+  name              String
+  email             String
+  password          String
+  birth_date        DateTime               @db.Date
+  gender            Gender
+  role              Role                   @default(DEFAULT)
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @updatedAt
+  deleted_at        DateTime?
+  documents         Document[]
+  favorites         Favorite[]
+  columnPreferences UserColumnPreference[]
+  company           Company               @relation(fields: [company_id], references: [id])
 
-  @@index([email])
+  @@unique([company_id, email])
+  @@index([company_id])
 }
 
 model UserColumnPreference {
-  id             String    @id @default(uuid())
-  user_id        String
-  resource       String    @db.VarChar(100)
-  column_order   Json      @default("[]")
-  column_widths  Json      @default("{}")
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  user           User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id            String   @id @default(uuid())
+  company_id    String
+  user_id       String
+  resource      String   @db.VarChar(100)
+  column_order  Json     @default("[]")
+  column_widths Json     @default("{}")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  company       Company @relation(fields: [company_id], references: [id])
 
   @@unique([user_id, resource])
   @@index([user_id])
   @@index([resource])
+  @@index([company_id])
 }
 
 model Document {
   id          String       @id @default(uuid())
+  company_id  String
   property_id String
   created_by  String?
   file_path   String
@@ -129,14 +193,17 @@ model Document {
   is_featured Boolean      @default(false)
   user        User?        @relation(fields: [created_by], references: [id])
   property    Property     @relation(fields: [property_id], references: [id])
+  company     Company     @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
+  @@index([company_id])
 }
 
 model Owner {
   id                     String         @id @default(uuid())
+  company_id             String
   name                   String
-  internal_code          String         @unique
+  internal_code          String
   occupation             String?
   marital_status         String?
   cpf                    String?        @db.VarChar(14)
@@ -150,15 +217,19 @@ model Owner {
   leases                 Lease[]
   addresses              OwnerAddress[]
   properties             Property[]
+  company                Company       @relation(fields: [company_id], references: [id])
 
+  @@unique([company_id, internal_code])
   @@index([cpf])
   @@index([cnpj])
+  @@index([company_id])
 }
 
 model Tenant {
   id                     String          @id @default(uuid())
+  company_id             String
   name                   String
-  internal_code          String          @unique
+  internal_code          String
   nationality            String?         @db.VarChar(100)
   occupation             String?
   marital_status         String?
@@ -175,13 +246,17 @@ model Tenant {
   contacts               Contact[]
   leases                 Lease[]
   addresses              TenantAddress[]
+  company                Company        @relation(fields: [company_id], references: [id])
 
+  @@unique([company_id, internal_code])
   @@index([cpf])
   @@index([cnpj])
+  @@index([company_id])
 }
 
 model Lease {
   id                              String            @id @default(uuid())
+  company_id                      String
   property_id                     String
   type_id                         String
   owner_id                        String
@@ -221,9 +296,11 @@ model Lease {
   property                        Property          @relation(fields: [property_id], references: [id])
   tenant                          Tenant            @relation(fields: [tenant_id], references: [id])
   type                            PropertyType      @relation(fields: [type_id], references: [id])
+  company                         Company          @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
   @@index([tenant_id])
+  @@index([company_id])
 }
 
 model PropertyValue {
@@ -250,12 +327,16 @@ model PropertyValue {
 
 model PropertyType {
   id          String     @id @default(uuid())
+  company_id  String
   description String
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   deleted_at  DateTime?
   leases      Lease[]
   properties  Property[]
+  company     Company   @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
 }
 
 model Address {
@@ -308,6 +389,7 @@ model Contact {
 
 model Favorite {
   id          String    @id @default(uuid())
+  company_id  String
   user_id     String
   property_id String
   created_at  DateTime  @default(now())
@@ -315,8 +397,10 @@ model Favorite {
   deleted_at  DateTime?
   property    Property  @relation(fields: [property_id], references: [id])
   user        User      @relation(fields: [user_id], references: [id])
+  company     Company  @relation(fields: [company_id], references: [id])
 
   @@unique([user_id, property_id])
+  @@index([company_id])
 }
 
 model AgencyAddress {
@@ -363,8 +447,11 @@ model TenantAddress {
   tenant     Tenant    @relation(fields: [tenant_id], references: [id])
 }
 
+// ─── FINANCEIRO ───────────────────────────────────────────────────────────────
+
 model FinancialInstitution {
   id                String            @id @default(uuid())
+  company_id        String
   name              String
   created_at        DateTime          @default(now())
   updated_at        DateTime          @updatedAt
@@ -375,10 +462,14 @@ model FinancialInstitution {
   bank_number       String?           @db.VarChar(20)
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
+  company           Company          @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
 }
 
 model Category {
   id                String            @id @default(uuid())
+  company_id        String
   name              String
   type              TransactionType
   is_active         Boolean           @default(true)
@@ -390,10 +481,14 @@ model Category {
   subcategories     Subcategory[]
   transactions      Transaction[]
   plannings         Planning[]
+  company           Company          @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
 }
 
 model Subcategory {
   id                String            @id @default(uuid())
+  company_id        String
   category_id       String
   name              String
   is_active         Boolean           @default(true)
@@ -404,12 +499,15 @@ model Subcategory {
   category          Category          @relation(fields: [category_id], references: [id])
   transactions      Transaction[]
   plannings         Planning[]
+  company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([category_id])
+  @@index([company_id])
 }
 
 model Card {
   id                String            @id @default(uuid())
+  company_id        String
   name              String
   limit             Decimal           @default(0) @db.Decimal(20, 2)
   is_active         Boolean           @default(true)
@@ -423,10 +521,14 @@ model Card {
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
   invoices          Invoice[]
+  company           Company          @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
 }
 
 model Center {
   id                String            @id @default(uuid())
+  company_id        String
   name              String
   type              TransactionType
   is_active         Boolean           @default(true)
@@ -435,10 +537,14 @@ model Center {
   deleted_at        DateTime?
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
+  company           Company          @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
 }
 
 model Supplier {
   id                     String            @id @default(uuid())
+  company_id             String
   sequential_id          Int               @default(autoincrement())
   legal_name             String
   trade_name             String?
@@ -449,7 +555,7 @@ model Supplier {
   updated_at             DateTime          @updatedAt
   deleted_at             DateTime?
   cpf                    String?           @db.VarChar(14)
-  internal_code          String?           @unique
+  internal_code          String?
   created_via            String?           @default("full_form")
   is_active              Boolean           @default(true)
   marital_status         String?
@@ -458,9 +564,12 @@ model Supplier {
   recurring_configs      RecurringConfig[]
   addresses              SupplierAddress[]
   transactions           Transaction[]
+  company                Company          @relation(fields: [company_id], references: [id])
 
+  @@unique([company_id, internal_code])
   @@index([cnpj])
   @@index([cpf])
+  @@index([company_id])
 }
 
 model SupplierAddress {
@@ -479,6 +588,7 @@ model SupplierAddress {
 
 model Transaction {
   id                       String               @id @default(uuid())
+  company_id               String
   event_date               DateTime             @db.Date
   effective_date           DateTime             @db.Date
   purchase_date            DateTime?            @db.Date
@@ -513,6 +623,7 @@ model Transaction {
   recurring_config         RecurringConfig?     @relation(fields: [recurring_group_id], references: [id])
   subcategory              Subcategory?         @relation(fields: [subcategory_id], references: [id])
   supplier                 Supplier?            @relation(fields: [supplier_id], references: [id])
+  company                  Company             @relation(fields: [company_id], references: [id])
 
   @@index([category_id])
   @@index([subcategory_id])
@@ -524,34 +635,39 @@ model Transaction {
   @@index([recurring_group_id])
   @@index([payment_mode])
   @@index([invoice_id])
+  @@index([company_id])
 }
 
 model Invoice {
-  id           String        @id @default(uuid())
-  card_id      String
-  month        Int
-  year         Int
-  total_amount Decimal       @default(0) @db.Decimal(20, 2)
-  status       TransactionStatus @default(PENDING)
-  closing_date DateTime?     @db.Date
-  due_date     DateTime?     @db.Date
-  paid_date    DateTime?     @db.Date
-  paid_amount  Decimal       @default(0) @db.Decimal(20, 2)
+  id             String            @id @default(uuid())
+  company_id     String
+  card_id        String
+  month          Int
+  year           Int
+  total_amount   Decimal           @default(0) @db.Decimal(20, 2)
+  status         TransactionStatus @default(PENDING)
+  closing_date   DateTime?         @db.Date
+  due_date       DateTime?         @db.Date
+  paid_date      DateTime?         @db.Date
+  paid_amount    Decimal           @default(0) @db.Decimal(20, 2)
   institution_id String?
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  deleted_at   DateTime?
-  transactions Transaction[]
-  card           Card          @relation(fields: [card_id], references: [id])
+  created_at     DateTime          @default(now())
+  updated_at     DateTime          @updatedAt
+  deleted_at     DateTime?
+  transactions   Transaction[]
+  card           Card              @relation(fields: [card_id], references: [id])
+  company        Company          @relation(fields: [company_id], references: [id])
 
   @@unique([card_id, month, year])
   @@index([card_id])
   @@index([status])
+  @@index([company_id])
   @@map("invoices")
 }
 
 model RecurringConfig {
   id                       String               @id @default(uuid())
+  company_id               String
   description              String
   amount                   Decimal              @db.Decimal(20, 2)
   frequency                RecurringFrequency
@@ -577,6 +693,7 @@ model RecurringConfig {
   subcategory              Subcategory?         @relation(fields: [subcategory_id], references: [id])
   supplier                 Supplier?            @relation(fields: [supplier_id], references: [id])
   transactions             Transaction[]
+  company                  Company             @relation(fields: [company_id], references: [id])
 
   @@index([category_id])
   @@index([subcategory_id])
@@ -585,7 +702,51 @@ model RecurringConfig {
   @@index([center_id])
   @@index([supplier_id])
   @@index([is_active])
+  @@index([company_id])
 }
+
+// ─── PLANEJAMENTO ─────────────────────────────────────────────────────────────
+
+model Planning {
+  id              String          @id @default(uuid())
+  company_id      String
+  category_id     String
+  subcategory_id  String?
+  year            Int
+  type            PlanningType
+  default_amount  Decimal?        @db.Decimal(20, 2)
+  min_recommended Decimal?        @db.Decimal(20, 2)
+  max_recommended Decimal?        @db.Decimal(20, 2)
+  is_active       Boolean         @default(true)
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
+  deleted_at      DateTime?
+
+  category       Category        @relation(fields: [category_id], references: [id])
+  subcategory    Subcategory?    @relation(fields: [subcategory_id], references: [id])
+  monthly_values PlanningMonth[]
+  company        Company        @relation(fields: [company_id], references: [id])
+
+  @@unique([company_id, category_id, subcategory_id, year])
+  @@index([category_id])
+  @@index([subcategory_id])
+  @@index([year])
+  @@index([company_id])
+}
+
+model PlanningMonth {
+  id          String   @id @default(uuid())
+  planning_id String
+  month       Int
+  amount      Decimal  @db.Decimal(20, 2)
+
+  planning Planning @relation(fields: [planning_id], references: [id], onDelete: Cascade)
+
+  @@unique([planning_id, month])
+  @@index([planning_id])
+}
+
+// ─── ENUMS ───────────────────────────────────────────────────────────────────
 
 enum Gender {
   MALE
@@ -596,6 +757,7 @@ enum Gender {
 enum Role {
   DEFAULT
   ADMIN
+  SUPER_ADMIN
 }
 
 enum PropertyStatus {
@@ -650,40 +812,3 @@ enum PlanningType {
   FIXED
   VARIABLE
 }
-
-model Planning {
-  id              String          @id @default(uuid())
-  category_id     String
-  subcategory_id  String?
-  year            Int
-  type            PlanningType
-  default_amount  Decimal?        @db.Decimal(20, 2)
-  min_recommended Decimal?        @db.Decimal(20, 2)
-  max_recommended Decimal?        @db.Decimal(20, 2)
-  is_active       Boolean         @default(true)
-  created_at      DateTime        @default(now())
-  updated_at      DateTime        @updatedAt
-  deleted_at      DateTime?
-
-  category        Category        @relation(fields: [category_id], references: [id])
-  subcategory     Subcategory?    @relation(fields: [subcategory_id], references: [id])
-  monthly_values  PlanningMonth[]
-
-  @@unique([category_id, subcategory_id, year])
-  @@index([category_id])
-  @@index([subcategory_id])
-  @@index([year])
-}
-
-model PlanningMonth {
-  id          String   @id @default(uuid())
-  planning_id String
-  month       Int
-  amount      Decimal  @db.Decimal(20, 2)
-
-  planning    Planning @relation(fields: [planning_id], references: [id], onDelete: Cascade)
-
-  @@unique([planning_id, month])
-  @@index([planning_id])
-}
-

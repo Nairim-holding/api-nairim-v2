@@ -90,13 +90,14 @@ export class InvoiceController {
         });
       }
 
+      const { company_id } = (req as any).user;
       const invoice = await InvoiceService.createInvoice({
         card_id,
         month: monthNum,
         year: yearNum,
         closing_date,
         due_date
-      });
+      }, company_id);
 
       return res.status(201).json({
         success: true,

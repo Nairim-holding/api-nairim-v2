@@ -5,15 +5,12 @@ import fs from 'fs';
 import path from 'path';
 
 export class DocumentService {
-  static async uploadDocuments(propertyId: string, userId: string, files: Record<string, Express.Multer.File[]>) {
+  static async uploadDocuments(propertyId: string, userId: string, files: Record<string, Express.Multer.File[]>, company_id: string) {
     try {
       console.log(`📁 Uploading documents for property: ${propertyId}`);
 
-      const property = await prisma.property.findUnique({
-        where: { 
-          id: propertyId,
-          deleted_at: null
-        }
+      const property = await prisma.property.findFirst({
+        where: { id: propertyId, company_id, deleted_at: null }
       });
 
       if (!property) {
@@ -41,6 +38,7 @@ export class DocumentService {
           const document = await prisma.document.create({
             data: {
               property_id: propertyId,
+              company_id,
               file_path: fileUrl,
               file_type: file.mimetype,
               description: this.getDescription(key),
@@ -62,15 +60,12 @@ export class DocumentService {
     }
   }
 
-  static async updateDocuments(propertyId: string, userId: string, files: Record<string, Express.Multer.File[]>) {
+  static async updateDocuments(propertyId: string, userId: string, files: Record<string, Express.Multer.File[]>, company_id: string) {
     try {
       console.log(`📁 Updating documents for property: ${propertyId}`);
 
-      const property = await prisma.property.findUnique({
-        where: { 
-          id: propertyId,
-          deleted_at: null
-        }
+      const property = await prisma.property.findFirst({
+        where: { id: propertyId, company_id, deleted_at: null }
       });
 
       if (!property) {
@@ -101,6 +96,7 @@ export class DocumentService {
           const document = await prisma.document.create({
             data: {
               property_id: propertyId,
+              company_id,
               file_path: fileUrl,
               file_type: file.mimetype,
               description: this.getDescription(key),

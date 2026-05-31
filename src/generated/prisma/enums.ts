@@ -20,7 +20,8 @@ export type Gender = (typeof Gender)[keyof typeof Gender]
 
 export const Role = {
   DEFAULT: 'DEFAULT',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  SUPER_ADMIN: 'SUPER_ADMIN'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]

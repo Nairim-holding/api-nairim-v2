@@ -60,7 +60,8 @@ export class SubcategoryController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const data = await SubcategoryService.createSubcategory(req.body);
+      const { company_id } = (req as any).user;
+      const data = await SubcategoryService.createSubcategory(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Subcategoria criada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Categoria pai não encontrada') return res.status(404).json(ApiResponse.error(error.message));
@@ -130,7 +131,8 @@ export class SubcategoryController {
       if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
       if (!category_id) return res.status(400).json(ApiResponse.error('Categoria pai é obrigatória'));
       
-      const data = await SubcategoryService.quickCreate({ name, category_id });
+      const { company_id } = (req as any).user;
+      const data = await SubcategoryService.quickCreate({ name, category_id }, company_id);
       res.status(201).json(ApiResponse.success(data, 'Subcategoria criada com sucesso'));
     } catch (error: any) {
       res.status(500).json(ApiResponse.error(error.message));

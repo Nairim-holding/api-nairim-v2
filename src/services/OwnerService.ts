@@ -612,7 +612,7 @@ export class OwnerService {
         });
       });
 
-      return owner as OwnerWithRelations;
+      return owner as unknown as OwnerWithRelations;
 
     } catch (error: any) {
       throw error;

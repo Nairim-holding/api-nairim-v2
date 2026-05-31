@@ -143,18 +143,19 @@ export class SubcategoryService {
     } catch (error: any) { throw error; }
   }
 
-  static async createSubcategory(data: any) {
+  static async createSubcategory(data: any, company_id: string) {
     try {
-      const categoryExists = await prisma.category.findUnique({ 
-        where: { id: data.category_id, deleted_at: null } 
+      const categoryExists = await prisma.category.findFirst({
+        where: { id: data.category_id, company_id, deleted_at: null }
       });
       if (!categoryExists) throw new Error('Categoria pai não encontrada');
 
       const newSubcategory = await prisma.subcategory.create({
-        data: { 
+        data: {
           name: data.name,
           category_id: data.category_id,
-          is_active: data.is_active ?? true
+          is_active: data.is_active ?? true,
+          company_id,
         }
       });
       return newSubcategory;
@@ -219,7 +220,7 @@ export class SubcategoryService {
     } catch (error: any) { throw error; }
   }
 
-  static async quickCreate(data: { name: string, category_id: string }) {
+  static async quickCreate(data: { name: string; category_id: string }, company_id: string) {
     try {
       const name = String(data.name ?? '').trim();
       const categoryId = String(data.category_id ?? '').trim();
@@ -227,7 +228,7 @@ export class SubcategoryService {
       if (!categoryId) throw new Error('Categoria pai é obrigatória');
 
       const existing = await prisma.subcategory.findFirst({
-        where: { name: { equals: name, mode: 'insensitive' }, category_id: categoryId, deleted_at: null }
+        where: { name: { equals: name, mode: 'insensitive' }, category_id: categoryId, company_id, deleted_at: null }
       });
       if (existing) return existing;
 
@@ -235,7 +236,8 @@ export class SubcategoryService {
         data: {
           name,
           category_id: categoryId,
-          is_active: true
+          is_active: true,
+          company_id,
         }
       });
     } catch (error: any) {

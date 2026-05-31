@@ -7,11 +7,11 @@ import { CategoryValidator } from '../lib/validators/category';
 export class CategoryController {
   static async getCategories(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const limit = ValidationUtil.parseNumberParam(req.query?.limit, 30);
       const page = ValidationUtil.parseNumberParam(req.query?.page, 1);
       const search = ValidationUtil.parseStringParam(req.query?.search);
       const includeInactive = ValidationUtil.parseBooleanParam(req.query?.includeInactive);
-
       const sortOptions: Record<string, 'asc' | 'desc'> = {};
       const filters: Record<string, any> = {};
 
@@ -29,23 +29,20 @@ export class CategoryController {
         }
       });
 
-      const params = { limit, page, search, filters, sortOptions, includeInactive };
-      const result = await CategoryService.getCategories(params);
-
+      const result = await CategoryService.getCategories({ limit, page, search, filters, sortOptions, includeInactive }, company_id);
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(result);
     } catch (error: any) {
-      console.error('Erro ao buscar categorias:', error);
       res.status(500).json(ApiResponse.error('Erro interno do servidor'));
     }
   }
 
   static async getCategoryById(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const id = String(req.params?.id || '');
       if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
-      
-      const data = await CategoryService.getCategoryById(id);
+      const data = await CategoryService.getCategoryById(id, company_id);
       res.status(200).json(ApiResponse.success(data, 'Categoria recuperada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
@@ -55,12 +52,10 @@ export class CategoryController {
 
   static async createCategory(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const validation = CategoryValidator.validateCreate(req.body);
-      if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
-      }
-
-      const data = await CategoryService.createCategory(req.body);
+      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      const data = await CategoryService.createCategory(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Categoria criada com sucesso'));
     } catch (error: any) {
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
@@ -69,15 +64,12 @@ export class CategoryController {
 
   static async updateCategory(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const id = String(req.params?.id || '');
       if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
-
       const validation = CategoryValidator.validateUpdate(req.body);
-      if (!validation.isValid) {
-        return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
-      }
-
-      const data = await CategoryService.updateCategory(id, req.body);
+      if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
+      const data = await CategoryService.updateCategory(id, req.body, company_id);
       res.status(200).json(ApiResponse.success(data, 'Categoria atualizada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Category not found') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
@@ -88,26 +80,25 @@ export class CategoryController {
 
   static async deleteCategory(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const id = String(req.params?.id || '');
       if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
-
-      await CategoryService.deleteCategory(id);
+      await CategoryService.deleteCategory(id, company_id);
       res.status(200).json(ApiResponse.success(null, 'Categoria deletada com sucesso.'));
     } catch (error: any) {
       if (error.message === 'Category not found or already deleted') return res.status(404).json(ApiResponse.error('Categoria não encontrada'));
       if (error.message.includes('lançamentos') || error.message.includes('subcategorias')) return res.status(409).json(ApiResponse.error(error.message));
       if (error.message.includes('sistema')) return res.status(403).json(ApiResponse.error(error.message));
-      
       res.status(500).json(ApiResponse.error('Erro ao deletar categoria'));
     }
   }
 
   static async restoreCategory(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const id = String(req.params?.id || '');
       if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
-
-      await CategoryService.restoreCategory(id);
+      await CategoryService.restoreCategory(id, company_id);
       res.status(200).json(ApiResponse.success(null, 'Categoria restaurada com sucesso'));
     } catch (error: any) {
       res.status(500).json(ApiResponse.error('Erro ao restaurar categoria'));
@@ -116,7 +107,8 @@ export class CategoryController {
 
   static async getFilters(req: Request, res: Response) {
     try {
-      const filtersData = await CategoryService.getCategoryFilters();
+      const { company_id } = (req as any).user;
+      const filtersData = await CategoryService.getCategoryFilters(company_id);
       res.status(200).json(ApiResponse.success(filtersData, 'Filtros recuperados com sucesso'));
     } catch (error) {
       res.status(500).json(ApiResponse.error('Erro interno do servidor ao buscar filtros'));
@@ -125,11 +117,11 @@ export class CategoryController {
 
   static async quickCreate(req: Request, res: Response) {
     try {
+      const { company_id } = (req as any).user;
       const { name, type } = req.body ?? {};
       if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
       if (!type || !['INCOME', 'EXPENSE'].includes(type)) return res.status(400).json(ApiResponse.error('Tipo inválido'));
-      
-      const data = await CategoryService.quickCreate({ name, type });
+      const data = await CategoryService.quickCreate({ name, type }, company_id);
       res.status(201).json(ApiResponse.success(data, 'Categoria criada com sucesso'));
     } catch (error: any) {
       res.status(500).json(ApiResponse.error(error.message));

@@ -227,16 +227,16 @@ export class SupplierService {
     } catch (error: any) { throw error; }
   }
 
-  static async createSupplier(data: any) {
+  static async createSupplier(data: any, company_id: string) {
     try {
       return await prisma.$transaction(async (tx) => {
         if (data.cnpj) {
-          const existing = await tx.supplier.findFirst({ where: { cnpj: data.cnpj, deleted_at: null } });
+          const existing = await tx.supplier.findFirst({ where: { cnpj: data.cnpj, company_id, deleted_at: null } });
           if (existing) throw new Error('CNPJ already registered');
         }
 
-        if (data.cpf) { // <-- VERIFICAÇÃO DE CPF ADICIONADA
-          const existing = await tx.supplier.findFirst({ where: { cpf: data.cpf, deleted_at: null } });
+        if (data.cpf) {
+          const existing = await tx.supplier.findFirst({ where: { cpf: data.cpf, company_id, deleted_at: null } });
           if (existing) throw new Error('CPF already registered');
         }
 
@@ -246,11 +246,12 @@ export class SupplierService {
             trade_name: data.trade_name,
             cnpj: data.cnpj,
             cpf: data.cpf,
-            internal_code: data.internal_code, // <-- NOVO
-            occupation: data.occupation,       // <-- NOVO
-            marital_status: data.marital_status, // <-- NOVO
+            internal_code: data.internal_code,
+            occupation: data.occupation,
+            marital_status: data.marital_status,
             state_registration: data.state_registration,
             municipal_registration: data.municipal_registration,
+            company: { connect: { id: company_id } },
           }
         });
 
@@ -388,49 +389,38 @@ export class SupplierService {
     } catch (error: any) { throw error; }
   }
 
-  static async quickCreate(data: { legal_name: string }) {
+  static async quickCreate(data: { legal_name: string }, company_id: string) {
     try {
       const legalName = String(data.legal_name ?? '').trim();
-      
-      // Validação
+
       if (legalName.length < 2 || legalName.length > 150) {
         throw new Error('legal_name é obrigatório e deve ter entre 2 e 150 caracteres.');
       }
-      
-      // Verificar duplicidade (idempotência)
+
       const existing = await prisma.supplier.findFirst({
-        where: {
-          legal_name: { equals: legalName, mode: 'insensitive' },
-          deleted_at: null
-        }
+        where: { legal_name: { equals: legalName, mode: 'insensitive' }, company_id, deleted_at: null }
       });
-      
-      if (existing) {
-        return existing; // Idempotente - retorna registro existente
-      }
-      
-      // Gerar próximo internal_code
+      if (existing) return existing;
+
       const lastSupplier = await prisma.supplier.findFirst({
-        where: { deleted_at: null },
+        where: { company_id, deleted_at: null },
         orderBy: { internal_code: 'desc' },
         select: { internal_code: true }
       });
-      
+
       let nextInternalCode = '1';
       if (lastSupplier?.internal_code) {
         const lastCode = parseInt(lastSupplier.internal_code.replace(/\D/g, ''));
-        if (!isNaN(lastCode)) {
-          nextInternalCode = String(lastCode + 1);
-        }
+        if (!isNaN(lastCode)) nextInternalCode = String(lastCode + 1);
       }
-      
-      // Criar novo fornecedor
+
       const newSupplier = await prisma.supplier.create({
         data: {
           legal_name: legalName,
           internal_code: nextInternalCode,
           created_via: 'quick_create',
-          is_active: true
+          is_active: true,
+          company: { connect: { id: company_id } },
         }
       });
       

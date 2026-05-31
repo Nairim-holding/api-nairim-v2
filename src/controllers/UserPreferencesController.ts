@@ -42,11 +42,12 @@ export class UserPreferencesController {
         return res.status(401).json(ApiResponse.error('Usuário não autenticado'));
       }
 
+      const company_id = (req as any).user?.company_id ?? '';
       const preferences = await UserPreferencesService.saveColumnPreferences(userId, {
         resource: req.body.resource,
         columnOrder: req.body.columnOrder,
         columnWidths: req.body.columnWidths
-      });
+      }, company_id);
 
       res.status(200).json(
         ApiResponse.success(preferences, 'Preferências salvas com sucesso')

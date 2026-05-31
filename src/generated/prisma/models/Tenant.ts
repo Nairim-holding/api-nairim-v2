@@ -26,6 +26,7 @@ export type AggregateTenant = {
 
 export type TenantMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   internal_code: string | null
   nationality: string | null
@@ -45,6 +46,7 @@ export type TenantMinAggregateOutputType = {
 
 export type TenantMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   internal_code: string | null
   nationality: string | null
@@ -64,6 +66,7 @@ export type TenantMaxAggregateOutputType = {
 
 export type TenantCountAggregateOutputType = {
   id: number
+  company_id: number
   name: number
   internal_code: number
   nationality: number
@@ -85,6 +88,7 @@ export type TenantCountAggregateOutputType = {
 
 export type TenantMinAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   internal_code?: true
   nationality?: true
@@ -104,6 +108,7 @@ export type TenantMinAggregateInputType = {
 
 export type TenantMaxAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   internal_code?: true
   nationality?: true
@@ -123,6 +128,7 @@ export type TenantMaxAggregateInputType = {
 
 export type TenantCountAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   internal_code?: true
   nationality?: true
@@ -215,6 +221,7 @@ export type TenantGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type TenantGroupByOutputType = {
   id: string
+  company_id: string
   name: string
   internal_code: string
   nationality: string | null
@@ -255,6 +262,7 @@ export type TenantWhereInput = {
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   id?: Prisma.StringFilter<"Tenant"> | string
+  company_id?: Prisma.StringFilter<"Tenant"> | string
   name?: Prisma.StringFilter<"Tenant"> | string
   internal_code?: Prisma.StringFilter<"Tenant"> | string
   nationality?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -273,10 +281,12 @@ export type TenantWhereInput = {
   contacts?: Prisma.ContactListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.TenantAddressListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type TenantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
   nationality?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -295,15 +305,18 @@ export type TenantOrderByWithRelationInput = {
   contacts?: Prisma.ContactOrderByRelationAggregateInput
   leases?: Prisma.LeaseOrderByRelationAggregateInput
   addresses?: Prisma.TenantAddressOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  internal_code?: string
+  company_id_internal_code?: Prisma.TenantCompany_idInternal_codeCompoundUniqueInput
   AND?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
+  company_id?: Prisma.StringFilter<"Tenant"> | string
   name?: Prisma.StringFilter<"Tenant"> | string
+  internal_code?: Prisma.StringFilter<"Tenant"> | string
   nationality?: Prisma.StringNullableFilter<"Tenant"> | string | null
   occupation?: Prisma.StringNullableFilter<"Tenant"> | string | null
   marital_status?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -320,10 +333,12 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   contacts?: Prisma.ContactListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   addresses?: Prisma.TenantAddressListRelationFilter
-}, "id" | "internal_code">
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+}, "id" | "company_id_internal_code">
 
 export type TenantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
   nationality?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -349,6 +364,7 @@ export type TenantScalarWhereWithAggregatesInput = {
   OR?: Prisma.TenantScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TenantScalarWhereWithAggregatesInput | Prisma.TenantScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   name?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   internal_code?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   nationality?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
@@ -386,10 +402,12 @@ export type TenantCreateInput = {
   contacts?: Prisma.ContactCreateNestedManyWithoutTenantInput
   leases?: Prisma.LeaseCreateNestedManyWithoutTenantInput
   addresses?: Prisma.TenantAddressCreateNestedManyWithoutTenantInput
+  company: Prisma.CompanyCreateNestedOneWithoutTenantsInput
 }
 
 export type TenantUncheckedCreateInput = {
   id?: string
+  company_id: string
   name: string
   internal_code: string
   nationality?: string | null
@@ -430,10 +448,12 @@ export type TenantUpdateInput = {
   contacts?: Prisma.ContactUpdateManyWithoutTenantNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutTenantNestedInput
   addresses?: Prisma.TenantAddressUpdateManyWithoutTenantNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTenantsNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
   nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -456,6 +476,7 @@ export type TenantUncheckedUpdateInput = {
 
 export type TenantCreateManyInput = {
   id?: string
+  company_id: string
   name: string
   internal_code: string
   nationality?: string | null
@@ -494,6 +515,7 @@ export type TenantUpdateManyMutationInput = {
 
 export type TenantUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
   nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -511,8 +533,24 @@ export type TenantUncheckedUpdateManyInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type TenantListRelationFilter = {
+  every?: Prisma.TenantWhereInput
+  some?: Prisma.TenantWhereInput
+  none?: Prisma.TenantWhereInput
+}
+
+export type TenantOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type TenantCompany_idInternal_codeCompoundUniqueInput = {
+  company_id: string
+  internal_code: string
+}
+
 export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
   nationality?: Prisma.SortOrder
@@ -532,6 +570,7 @@ export type TenantCountOrderByAggregateInput = {
 
 export type TenantMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
   nationality?: Prisma.SortOrder
@@ -551,6 +590,7 @@ export type TenantMaxOrderByAggregateInput = {
 
 export type TenantMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   internal_code?: Prisma.SortOrder
   nationality?: Prisma.SortOrder
@@ -576,6 +616,48 @@ export type TenantScalarRelationFilter = {
 export type TenantNullableScalarRelationFilter = {
   is?: Prisma.TenantWhereInput | null
   isNot?: Prisma.TenantWhereInput | null
+}
+
+export type TenantCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput> | Prisma.TenantCreateWithoutCompanyInput[] | Prisma.TenantUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCompanyInput | Prisma.TenantCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.TenantCreateManyCompanyInputEnvelope
+  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+}
+
+export type TenantUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput> | Prisma.TenantCreateWithoutCompanyInput[] | Prisma.TenantUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCompanyInput | Prisma.TenantCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.TenantCreateManyCompanyInputEnvelope
+  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+}
+
+export type TenantUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput> | Prisma.TenantCreateWithoutCompanyInput[] | Prisma.TenantUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCompanyInput | Prisma.TenantCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.TenantUpsertWithWhereUniqueWithoutCompanyInput | Prisma.TenantUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.TenantCreateManyCompanyInputEnvelope
+  set?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  disconnect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  delete?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  update?: Prisma.TenantUpdateWithWhereUniqueWithoutCompanyInput | Prisma.TenantUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.TenantUpdateManyWithWhereWithoutCompanyInput | Prisma.TenantUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
+}
+
+export type TenantUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput> | Prisma.TenantCreateWithoutCompanyInput[] | Prisma.TenantUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCompanyInput | Prisma.TenantCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.TenantUpsertWithWhereUniqueWithoutCompanyInput | Prisma.TenantUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.TenantCreateManyCompanyInputEnvelope
+  set?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  disconnect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  delete?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
+  update?: Prisma.TenantUpdateWithWhereUniqueWithoutCompanyInput | Prisma.TenantUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.TenantUpdateManyWithWhereWithoutCompanyInput | Prisma.TenantUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
 }
 
 export type TenantCreateNestedOneWithoutLeasesInput = {
@@ -622,6 +704,99 @@ export type TenantUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAddressesInput, Prisma.TenantUpdateWithoutAddressesInput>, Prisma.TenantUncheckedUpdateWithoutAddressesInput>
 }
 
+export type TenantCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  internal_code: string
+  nationality?: string | null
+  occupation?: string | null
+  marital_status?: string | null
+  cpf?: string | null
+  rg?: string | null
+  rg_issuing_body?: string | null
+  rg_issuing_state?: string | null
+  cnpj?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactCreateNestedManyWithoutTenantInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutTenantInput
+  addresses?: Prisma.TenantAddressCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  internal_code: string
+  nationality?: string | null
+  occupation?: string | null
+  marital_status?: string | null
+  cpf?: string | null
+  rg?: string | null
+  rg_issuing_body?: string | null
+  rg_issuing_state?: string | null
+  cnpj?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutTenantInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutTenantInput
+  addresses?: Prisma.TenantAddressUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput>
+}
+
+export type TenantCreateManyCompanyInputEnvelope = {
+  data: Prisma.TenantCreateManyCompanyInput | Prisma.TenantCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type TenantUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.TenantWhereUniqueInput
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutCompanyInput, Prisma.TenantUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutCompanyInput, Prisma.TenantUncheckedCreateWithoutCompanyInput>
+}
+
+export type TenantUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.TenantWhereUniqueInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutCompanyInput, Prisma.TenantUncheckedUpdateWithoutCompanyInput>
+}
+
+export type TenantUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.TenantScalarWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateManyMutationInput, Prisma.TenantUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type TenantScalarWhereInput = {
+  AND?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
+  OR?: Prisma.TenantScalarWhereInput[]
+  NOT?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
+  id?: Prisma.StringFilter<"Tenant"> | string
+  company_id?: Prisma.StringFilter<"Tenant"> | string
+  name?: Prisma.StringFilter<"Tenant"> | string
+  internal_code?: Prisma.StringFilter<"Tenant"> | string
+  nationality?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  occupation?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  marital_status?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  cpf?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  rg?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  rg_issuing_body?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  rg_issuing_state?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  cnpj?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  created_at?: Prisma.DateTimeFilter<"Tenant"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Tenant"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Tenant"> | Date | string | null
+  municipal_registration?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  state_registration?: Prisma.StringNullableFilter<"Tenant"> | string | null
+}
+
 export type TenantCreateWithoutLeasesInput = {
   id?: string
   name: string
@@ -641,10 +816,12 @@ export type TenantCreateWithoutLeasesInput = {
   state_registration?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutTenantInput
   addresses?: Prisma.TenantAddressCreateNestedManyWithoutTenantInput
+  company: Prisma.CompanyCreateNestedOneWithoutTenantsInput
 }
 
 export type TenantUncheckedCreateWithoutLeasesInput = {
   id?: string
+  company_id: string
   name: string
   internal_code: string
   nationality?: string | null
@@ -699,10 +876,12 @@ export type TenantUpdateWithoutLeasesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutTenantNestedInput
   addresses?: Prisma.TenantAddressUpdateManyWithoutTenantNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTenantsNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutLeasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
   nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -741,10 +920,12 @@ export type TenantCreateWithoutContactsInput = {
   state_registration?: string | null
   leases?: Prisma.LeaseCreateNestedManyWithoutTenantInput
   addresses?: Prisma.TenantAddressCreateNestedManyWithoutTenantInput
+  company: Prisma.CompanyCreateNestedOneWithoutTenantsInput
 }
 
 export type TenantUncheckedCreateWithoutContactsInput = {
   id?: string
+  company_id: string
   name: string
   internal_code: string
   nationality?: string | null
@@ -799,10 +980,12 @@ export type TenantUpdateWithoutContactsInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leases?: Prisma.LeaseUpdateManyWithoutTenantNestedInput
   addresses?: Prisma.TenantAddressUpdateManyWithoutTenantNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTenantsNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
   nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -841,10 +1024,12 @@ export type TenantCreateWithoutAddressesInput = {
   state_registration?: string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutTenantInput
   leases?: Prisma.LeaseCreateNestedManyWithoutTenantInput
+  company: Prisma.CompanyCreateNestedOneWithoutTenantsInput
 }
 
 export type TenantUncheckedCreateWithoutAddressesInput = {
   id?: string
+  company_id: string
   name: string
   internal_code: string
   nationality?: string | null
@@ -899,9 +1084,73 @@ export type TenantUpdateWithoutAddressesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUpdateManyWithoutTenantNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutTenantNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTenantsNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  internal_code?: Prisma.StringFieldUpdateOperationsInput | string
+  nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutTenantNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateManyCompanyInput = {
+  id?: string
+  name: string
+  internal_code: string
+  nationality?: string | null
+  occupation?: string | null
+  marital_status?: string | null
+  cpf?: string | null
+  rg?: string | null
+  rg_issuing_body?: string | null
+  rg_issuing_state?: string | null
+  cnpj?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  municipal_registration?: string | null
+  state_registration?: string | null
+}
+
+export type TenantUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  internal_code?: Prisma.StringFieldUpdateOperationsInput | string
+  nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.ContactUpdateManyWithoutTenantNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutTenantNestedInput
+  addresses?: Prisma.TenantAddressUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   internal_code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -920,6 +1169,26 @@ export type TenantUncheckedUpdateWithoutAddressesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutTenantNestedInput
   leases?: Prisma.LeaseUncheckedUpdateManyWithoutTenantNestedInput
+  addresses?: Prisma.TenantAddressUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  internal_code?: Prisma.StringFieldUpdateOperationsInput | string
+  nationality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marital_status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rg_issuing_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpj?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -973,6 +1242,7 @@ export type TenantCountOutputTypeCountAddressesArgs<ExtArgs extends runtime.Type
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   internal_code?: boolean
   nationality?: boolean
@@ -991,11 +1261,13 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   contacts?: boolean | Prisma.Tenant$contactsArgs<ExtArgs>
   leases?: boolean | Prisma.Tenant$leasesArgs<ExtArgs>
   addresses?: boolean | Prisma.Tenant$addressesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   internal_code?: boolean
   nationality?: boolean
@@ -1011,10 +1283,12 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deleted_at?: boolean
   municipal_registration?: boolean
   state_registration?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   internal_code?: boolean
   nationality?: boolean
@@ -1030,10 +1304,12 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deleted_at?: boolean
   municipal_registration?: boolean
   state_registration?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectScalar = {
   id?: boolean
+  company_id?: boolean
   name?: boolean
   internal_code?: boolean
   nationality?: boolean
@@ -1051,15 +1327,20 @@ export type TenantSelectScalar = {
   state_registration?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "internal_code" | "nationality" | "occupation" | "marital_status" | "cpf" | "rg" | "rg_issuing_body" | "rg_issuing_state" | "cnpj" | "created_at" | "updated_at" | "deleted_at" | "municipal_registration" | "state_registration", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "internal_code" | "nationality" | "occupation" | "marital_status" | "cpf" | "rg" | "rg_issuing_body" | "rg_issuing_state" | "cnpj" | "created_at" | "updated_at" | "deleted_at" | "municipal_registration" | "state_registration", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | Prisma.Tenant$contactsArgs<ExtArgs>
   leases?: boolean | Prisma.Tenant$leasesArgs<ExtArgs>
   addresses?: boolean | Prisma.Tenant$addressesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type TenantIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
+export type TenantIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
 
 export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Tenant"
@@ -1067,9 +1348,11 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     contacts: Prisma.$ContactPayload<ExtArgs>[]
     leases: Prisma.$LeasePayload<ExtArgs>[]
     addresses: Prisma.$TenantAddressPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     name: string
     internal_code: string
     nationality: string | null
@@ -1482,6 +1765,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   contacts<T extends Prisma.Tenant$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   leases<T extends Prisma.Tenant$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   addresses<T extends Prisma.Tenant$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1512,6 +1796,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface TenantFieldRefs {
   readonly id: Prisma.FieldRef<"Tenant", 'String'>
+  readonly company_id: Prisma.FieldRef<"Tenant", 'String'>
   readonly name: Prisma.FieldRef<"Tenant", 'String'>
   readonly internal_code: Prisma.FieldRef<"Tenant", 'String'>
   readonly nationality: Prisma.FieldRef<"Tenant", 'String'>
@@ -1776,6 +2061,10 @@ export type TenantCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.TenantCreateManyInput | Prisma.TenantCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1846,6 +2135,10 @@ export type TenantUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Tenants to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

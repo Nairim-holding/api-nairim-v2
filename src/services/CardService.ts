@@ -154,15 +154,16 @@ export class CardService {
     } catch (error: any) { throw error; }
   }
 
-  static async createCard(data: any) {
+  static async createCard(data: any, company_id: string) {
     try {
       const newCard = await prisma.card.create({
-        data: { 
+        data: {
           name: data.name,
           limit: data.limit !== null && data.limit !== undefined ? Number(data.limit) : undefined,
           closing_day: data.closing_day !== null && data.closing_day !== undefined ? Number(data.closing_day) : null,
           due_day: data.due_day !== null && data.due_day !== undefined ? Number(data.due_day) : null,
-          is_active: data.is_active ?? true
+          is_active: data.is_active ?? true,
+          company: { connect: { id: company_id } },
         }
       });
       return newCard;
@@ -222,20 +223,21 @@ export class CardService {
     } catch (error: any) { throw error; }
   }
 
-  static async quickCreate(data: { name: string }) {
+  static async quickCreate(data: { name: string }, company_id: string) {
     try {
       const name = String(data.name ?? '').trim();
       if (!name) throw new Error('Nome é obrigatório');
 
       const existing = await prisma.card.findFirst({
-        where: { name: { equals: name, mode: 'insensitive' }, deleted_at: null }
+        where: { name: { equals: name, mode: 'insensitive' }, company_id, deleted_at: null }
       });
       if (existing) return existing;
 
       return await prisma.card.create({
         data: {
           name,
-          is_active: true
+          is_active: true,
+          company: { connect: { id: company_id } },
         }
       });
     } catch (error: any) {

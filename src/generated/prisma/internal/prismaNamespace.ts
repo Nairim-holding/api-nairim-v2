@@ -384,6 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Company: 'Company',
+  CompanyBranding: 'CompanyBranding',
   Agency: 'Agency',
   Property: 'Property',
   PropertyIptu: 'PropertyIptu',
@@ -429,10 +431,158 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
+    modelProps: "company" | "companyBranding" | "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Company: {
+      payload: Prisma.$CompanyPayload<ExtArgs>
+      fields: Prisma.CompanyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompanyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompanyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        findFirst: {
+          args: Prisma.CompanyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompanyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        findMany: {
+          args: Prisma.CompanyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        create: {
+          args: Prisma.CompanyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        createMany: {
+          args: Prisma.CompanyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompanyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        delete: {
+          args: Prisma.CompanyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        update: {
+          args: Prisma.CompanyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompanyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompanyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompanyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompanyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        aggregate: {
+          args: Prisma.CompanyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompany>
+        }
+        groupBy: {
+          args: Prisma.CompanyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompanyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompanyBranding: {
+      payload: Prisma.$CompanyBrandingPayload<ExtArgs>
+      fields: Prisma.CompanyBrandingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompanyBrandingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompanyBrandingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        findFirst: {
+          args: Prisma.CompanyBrandingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompanyBrandingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        findMany: {
+          args: Prisma.CompanyBrandingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>[]
+        }
+        create: {
+          args: Prisma.CompanyBrandingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        createMany: {
+          args: Prisma.CompanyBrandingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompanyBrandingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>[]
+        }
+        delete: {
+          args: Prisma.CompanyBrandingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        update: {
+          args: Prisma.CompanyBrandingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompanyBrandingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompanyBrandingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompanyBrandingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompanyBrandingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyBrandingPayload>
+        }
+        aggregate: {
+          args: Prisma.CompanyBrandingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompanyBranding>
+        }
+        groupBy: {
+          args: Prisma.CompanyBrandingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyBrandingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompanyBrandingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyBrandingCountAggregateOutputType> | number
+        }
+      }
+    }
     Agency: {
       payload: Prisma.$AgencyPayload<ExtArgs>
       fields: Prisma.AgencyFieldRefs
@@ -2692,8 +2842,38 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const CompanyBrandingScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  logo_url: 'logo_url',
+  favicon_url: 'favicon_url',
+  primary_color: 'primary_color',
+  secondary_color: 'secondary_color',
+  company_name: 'company_name',
+  company_info: 'company_info',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type CompanyBrandingScalarFieldEnum = (typeof CompanyBrandingScalarFieldEnum)[keyof typeof CompanyBrandingScalarFieldEnum]
+
+
 export const AgencyScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   trade_name: 'trade_name',
   legal_name: 'legal_name',
   cnpj: 'cnpj',
@@ -2710,6 +2890,7 @@ export type AgencyScalarFieldEnum = (typeof AgencyScalarFieldEnum)[keyof typeof 
 
 export const PropertyScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   owner_id: 'owner_id',
   agency_id: 'agency_id',
   type_id: 'type_id',
@@ -2757,6 +2938,7 @@ export type PropertyIptuScalarFieldEnum = (typeof PropertyIptuScalarFieldEnum)[k
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   email: 'email',
   password: 'password',
@@ -2773,6 +2955,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const UserColumnPreferenceScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   user_id: 'user_id',
   resource: 'resource',
   column_order: 'column_order',
@@ -2786,6 +2969,7 @@ export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceSc
 
 export const DocumentScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   property_id: 'property_id',
   created_by: 'created_by',
   file_path: 'file_path',
@@ -2803,6 +2987,7 @@ export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typ
 
 export const OwnerScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   internal_code: 'internal_code',
   occupation: 'occupation',
@@ -2821,6 +3006,7 @@ export type OwnerScalarFieldEnum = (typeof OwnerScalarFieldEnum)[keyof typeof Ow
 
 export const TenantScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   internal_code: 'internal_code',
   nationality: 'nationality',
@@ -2843,6 +3029,7 @@ export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof 
 
 export const LeaseScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   property_id: 'property_id',
   type_id: 'type_id',
   owner_id: 'owner_id',
@@ -2907,6 +3094,7 @@ export type PropertyValueScalarFieldEnum = (typeof PropertyValueScalarFieldEnum)
 
 export const PropertyTypeScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   description: 'description',
   created_at: 'created_at',
   updated_at: 'updated_at',
@@ -2958,6 +3146,7 @@ export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeo
 
 export const FavoriteScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   user_id: 'user_id',
   property_id: 'property_id',
   created_at: 'created_at',
@@ -3018,6 +3207,7 @@ export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)
 
 export const FinancialInstitutionScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   created_at: 'created_at',
   updated_at: 'updated_at',
@@ -3033,6 +3223,7 @@ export type FinancialInstitutionScalarFieldEnum = (typeof FinancialInstitutionSc
 
 export const CategoryScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   type: 'type',
   is_active: 'is_active',
@@ -3047,6 +3238,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 
 export const SubcategoryScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   category_id: 'category_id',
   name: 'name',
   is_active: 'is_active',
@@ -3060,6 +3252,7 @@ export type SubcategoryScalarFieldEnum = (typeof SubcategoryScalarFieldEnum)[key
 
 export const CardScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   limit: 'limit',
   is_active: 'is_active',
@@ -3077,6 +3270,7 @@ export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof Card
 
 export const CenterScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   type: 'type',
   is_active: 'is_active',
@@ -3090,6 +3284,7 @@ export type CenterScalarFieldEnum = (typeof CenterScalarFieldEnum)[keyof typeof 
 
 export const SupplierScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   sequential_id: 'sequential_id',
   legal_name: 'legal_name',
   trade_name: 'trade_name',
@@ -3124,6 +3319,7 @@ export type SupplierAddressScalarFieldEnum = (typeof SupplierAddressScalarFieldE
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   event_date: 'event_date',
   effective_date: 'effective_date',
   purchase_date: 'purchase_date',
@@ -3155,6 +3351,7 @@ export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[key
 
 export const InvoiceScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   card_id: 'card_id',
   month: 'month',
   year: 'year',
@@ -3175,6 +3372,7 @@ export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeo
 
 export const RecurringConfigScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   description: 'description',
   amount: 'amount',
   frequency: 'frequency',
@@ -3200,6 +3398,7 @@ export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldE
 
 export const PlanningScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   category_id: 'category_id',
   subcategory_id: 'subcategory_id',
   year: 'year',
@@ -3295,6 +3494,13 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3305,6 +3511,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -3337,13 +3557,6 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -3354,20 +3567,6 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -3619,6 +3818,8 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
+  company?: Prisma.CompanyOmit
+  companyBranding?: Prisma.CompanyBrandingOmit
   agency?: Prisma.AgencyOmit
   property?: Prisma.PropertyOmit
   propertyIptu?: Prisma.PropertyIptuOmit

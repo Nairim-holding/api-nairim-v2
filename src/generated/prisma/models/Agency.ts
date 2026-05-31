@@ -26,6 +26,7 @@ export type AggregateAgency = {
 
 export type AgencyMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   trade_name: string | null
   legal_name: string | null
   cnpj: string | null
@@ -39,6 +40,7 @@ export type AgencyMinAggregateOutputType = {
 
 export type AgencyMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   trade_name: string | null
   legal_name: string | null
   cnpj: string | null
@@ -52,6 +54,7 @@ export type AgencyMaxAggregateOutputType = {
 
 export type AgencyCountAggregateOutputType = {
   id: number
+  company_id: number
   trade_name: number
   legal_name: number
   cnpj: number
@@ -67,6 +70,7 @@ export type AgencyCountAggregateOutputType = {
 
 export type AgencyMinAggregateInputType = {
   id?: true
+  company_id?: true
   trade_name?: true
   legal_name?: true
   cnpj?: true
@@ -80,6 +84,7 @@ export type AgencyMinAggregateInputType = {
 
 export type AgencyMaxAggregateInputType = {
   id?: true
+  company_id?: true
   trade_name?: true
   legal_name?: true
   cnpj?: true
@@ -93,6 +98,7 @@ export type AgencyMaxAggregateInputType = {
 
 export type AgencyCountAggregateInputType = {
   id?: true
+  company_id?: true
   trade_name?: true
   legal_name?: true
   cnpj?: true
@@ -179,6 +185,7 @@ export type AgencyGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type AgencyGroupByOutputType = {
   id: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -213,6 +220,7 @@ export type AgencyWhereInput = {
   OR?: Prisma.AgencyWhereInput[]
   NOT?: Prisma.AgencyWhereInput | Prisma.AgencyWhereInput[]
   id?: Prisma.StringFilter<"Agency"> | string
+  company_id?: Prisma.StringFilter<"Agency"> | string
   trade_name?: Prisma.StringFilter<"Agency"> | string
   legal_name?: Prisma.StringFilter<"Agency"> | string
   cnpj?: Prisma.StringFilter<"Agency"> | string
@@ -225,10 +233,12 @@ export type AgencyWhereInput = {
   addresses?: Prisma.AgencyAddressListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type AgencyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   legal_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
@@ -241,6 +251,7 @@ export type AgencyOrderByWithRelationInput = {
   addresses?: Prisma.AgencyAddressOrderByRelationAggregateInput
   contacts?: Prisma.ContactOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type AgencyWhereUniqueInput = Prisma.AtLeast<{
@@ -248,6 +259,7 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AgencyWhereInput | Prisma.AgencyWhereInput[]
   OR?: Prisma.AgencyWhereInput[]
   NOT?: Prisma.AgencyWhereInput | Prisma.AgencyWhereInput[]
+  company_id?: Prisma.StringFilter<"Agency"> | string
   trade_name?: Prisma.StringFilter<"Agency"> | string
   legal_name?: Prisma.StringFilter<"Agency"> | string
   cnpj?: Prisma.StringFilter<"Agency"> | string
@@ -260,10 +272,12 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   addresses?: Prisma.AgencyAddressListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type AgencyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   legal_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
@@ -283,6 +297,7 @@ export type AgencyScalarWhereWithAggregatesInput = {
   OR?: Prisma.AgencyScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AgencyScalarWhereWithAggregatesInput | Prisma.AgencyScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Agency"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Agency"> | string
   trade_name?: Prisma.StringWithAggregatesFilter<"Agency"> | string
   legal_name?: Prisma.StringWithAggregatesFilter<"Agency"> | string
   cnpj?: Prisma.StringWithAggregatesFilter<"Agency"> | string
@@ -308,10 +323,12 @@ export type AgencyCreateInput = {
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
 export type AgencyUncheckedCreateInput = {
   id?: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -340,10 +357,12 @@ export type AgencyUpdateInput = {
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
 export type AgencyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.StringFieldUpdateOperationsInput | string
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
@@ -360,6 +379,7 @@ export type AgencyUncheckedUpdateInput = {
 
 export type AgencyCreateManyInput = {
   id?: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -386,6 +406,7 @@ export type AgencyUpdateManyMutationInput = {
 
 export type AgencyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.StringFieldUpdateOperationsInput | string
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
@@ -397,8 +418,19 @@ export type AgencyUncheckedUpdateManyInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+export type AgencyListRelationFilter = {
+  every?: Prisma.AgencyWhereInput
+  some?: Prisma.AgencyWhereInput
+  none?: Prisma.AgencyWhereInput
+}
+
+export type AgencyOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type AgencyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   legal_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
@@ -412,6 +444,7 @@ export type AgencyCountOrderByAggregateInput = {
 
 export type AgencyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   legal_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
@@ -425,6 +458,7 @@ export type AgencyMaxOrderByAggregateInput = {
 
 export type AgencyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   trade_name?: Prisma.SortOrder
   legal_name?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
@@ -446,20 +480,46 @@ export type AgencyScalarRelationFilter = {
   isNot?: Prisma.AgencyWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type AgencyCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput> | Prisma.AgencyCreateWithoutCompanyInput[] | Prisma.AgencyUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCompanyInput | Prisma.AgencyCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.AgencyCreateManyCompanyInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type AgencyUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput> | Prisma.AgencyCreateWithoutCompanyInput[] | Prisma.AgencyUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCompanyInput | Prisma.AgencyCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.AgencyCreateManyCompanyInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type AgencyUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput> | Prisma.AgencyCreateWithoutCompanyInput[] | Prisma.AgencyUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCompanyInput | Prisma.AgencyCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCompanyInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.AgencyCreateManyCompanyInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput | Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type AgencyUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput> | Prisma.AgencyCreateWithoutCompanyInput[] | Prisma.AgencyUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCompanyInput | Prisma.AgencyCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCompanyInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.AgencyCreateManyCompanyInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput | Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
 }
 
 export type AgencyCreateNestedOneWithoutPropertiesInput = {
@@ -508,6 +568,81 @@ export type AgencyUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutAddressesInput, Prisma.AgencyUpdateWithoutAddressesInput>, Prisma.AgencyUncheckedUpdateWithoutAddressesInput>
 }
 
+export type AgencyCreateWithoutCompanyInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput>
+}
+
+export type AgencyCreateManyCompanyInputEnvelope = {
+  data: Prisma.AgencyCreateManyCompanyInput | Prisma.AgencyCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type AgencyUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  update: Prisma.XOR<Prisma.AgencyUpdateWithoutCompanyInput, Prisma.AgencyUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCompanyInput, Prisma.AgencyUncheckedCreateWithoutCompanyInput>
+}
+
+export type AgencyUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  data: Prisma.XOR<Prisma.AgencyUpdateWithoutCompanyInput, Prisma.AgencyUncheckedUpdateWithoutCompanyInput>
+}
+
+export type AgencyUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.AgencyScalarWhereInput
+  data: Prisma.XOR<Prisma.AgencyUpdateManyMutationInput, Prisma.AgencyUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type AgencyScalarWhereInput = {
+  AND?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+  OR?: Prisma.AgencyScalarWhereInput[]
+  NOT?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+  id?: Prisma.StringFilter<"Agency"> | string
+  company_id?: Prisma.StringFilter<"Agency"> | string
+  trade_name?: Prisma.StringFilter<"Agency"> | string
+  legal_name?: Prisma.StringFilter<"Agency"> | string
+  cnpj?: Prisma.StringFilter<"Agency"> | string
+  state_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
+  municipal_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
+  license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
+  created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
+}
+
 export type AgencyCreateWithoutPropertiesInput = {
   id?: string
   trade_name: string
@@ -521,10 +656,12 @@ export type AgencyCreateWithoutPropertiesInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
 export type AgencyUncheckedCreateWithoutPropertiesInput = {
   id?: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -567,10 +704,12 @@ export type AgencyUpdateWithoutPropertiesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
 export type AgencyUncheckedUpdateWithoutPropertiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.StringFieldUpdateOperationsInput | string
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
@@ -597,10 +736,12 @@ export type AgencyCreateWithoutContactsInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
 export type AgencyUncheckedCreateWithoutContactsInput = {
   id?: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -643,10 +784,12 @@ export type AgencyUpdateWithoutContactsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
 export type AgencyUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.StringFieldUpdateOperationsInput | string
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
@@ -673,10 +816,12 @@ export type AgencyCreateWithoutAddressesInput = {
   deleted_at?: Date | string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
 export type AgencyUncheckedCreateWithoutAddressesInput = {
   id?: string
+  company_id: string
   trade_name: string
   legal_name: string
   cnpj: string
@@ -719,10 +864,12 @@ export type AgencyUpdateWithoutAddressesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
 export type AgencyUncheckedUpdateWithoutAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   trade_name?: Prisma.StringFieldUpdateOperationsInput | string
   legal_name?: Prisma.StringFieldUpdateOperationsInput | string
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
@@ -734,6 +881,64 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyCreateManyCompanyInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type AgencyUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -787,6 +992,7 @@ export type AgencyCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Typ
 
 export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   trade_name?: boolean
   legal_name?: boolean
   cnpj?: boolean
@@ -799,11 +1005,13 @@ export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
 
 export type AgencySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   trade_name?: boolean
   legal_name?: boolean
   cnpj?: boolean
@@ -813,10 +1021,12 @@ export type AgencySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
 
 export type AgencySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   trade_name?: boolean
   legal_name?: boolean
   cnpj?: boolean
@@ -826,10 +1036,12 @@ export type AgencySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
 
 export type AgencySelectScalar = {
   id?: boolean
+  company_id?: boolean
   trade_name?: boolean
   legal_name?: boolean
   cnpj?: boolean
@@ -841,15 +1053,20 @@ export type AgencySelectScalar = {
   deleted_at?: boolean
 }
 
-export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
+export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
 export type AgencyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type AgencyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type AgencyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AgencyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
+export type AgencyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
 
 export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Agency"
@@ -857,9 +1074,11 @@ export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     addresses: Prisma.$AgencyAddressPayload<ExtArgs>[]
     contacts: Prisma.$ContactPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     trade_name: string
     legal_name: string
     cnpj: string
@@ -1266,6 +1485,7 @@ export interface Prisma__AgencyClient<T, Null = never, ExtArgs extends runtime.T
   addresses<T extends Prisma.Agency$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contacts<T extends Prisma.Agency$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Agency$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1296,6 +1516,7 @@ export interface Prisma__AgencyClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface AgencyFieldRefs {
   readonly id: Prisma.FieldRef<"Agency", 'String'>
+  readonly company_id: Prisma.FieldRef<"Agency", 'String'>
   readonly trade_name: Prisma.FieldRef<"Agency", 'String'>
   readonly legal_name: Prisma.FieldRef<"Agency", 'String'>
   readonly cnpj: Prisma.FieldRef<"Agency", 'String'>
@@ -1554,6 +1775,10 @@ export type AgencyCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.AgencyCreateManyInput | Prisma.AgencyCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgencyIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1624,6 +1849,10 @@ export type AgencyUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Agencies to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgencyIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -26,6 +26,7 @@ export type AggregateCategory = {
 
 export type CategoryMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   type: $Enums.TransactionType | null
   is_active: boolean | null
@@ -37,6 +38,7 @@ export type CategoryMinAggregateOutputType = {
 
 export type CategoryMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   name: string | null
   type: $Enums.TransactionType | null
   is_active: boolean | null
@@ -48,6 +50,7 @@ export type CategoryMaxAggregateOutputType = {
 
 export type CategoryCountAggregateOutputType = {
   id: number
+  company_id: number
   name: number
   type: number
   is_active: number
@@ -61,6 +64,7 @@ export type CategoryCountAggregateOutputType = {
 
 export type CategoryMinAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   type?: true
   is_active?: true
@@ -72,6 +76,7 @@ export type CategoryMinAggregateInputType = {
 
 export type CategoryMaxAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   type?: true
   is_active?: true
@@ -83,6 +88,7 @@ export type CategoryMaxAggregateInputType = {
 
 export type CategoryCountAggregateInputType = {
   id?: true
+  company_id?: true
   name?: true
   type?: true
   is_active?: true
@@ -167,6 +173,7 @@ export type CategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type CategoryGroupByOutputType = {
   id: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active: boolean
@@ -199,6 +206,7 @@ export type CategoryWhereInput = {
   OR?: Prisma.CategoryWhereInput[]
   NOT?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
   id?: Prisma.StringFilter<"Category"> | string
+  company_id?: Prisma.StringFilter<"Category"> | string
   name?: Prisma.StringFilter<"Category"> | string
   type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolFilter<"Category"> | boolean
@@ -210,10 +218,12 @@ export type CategoryWhereInput = {
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type CategoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
@@ -225,6 +235,7 @@ export type CategoryOrderByWithRelationInput = {
   subcategories?: Prisma.SubcategoryOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   plannings?: Prisma.PlanningOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type CategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -232,6 +243,7 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
   OR?: Prisma.CategoryWhereInput[]
   NOT?: Prisma.CategoryWhereInput | Prisma.CategoryWhereInput[]
+  company_id?: Prisma.StringFilter<"Category"> | string
   name?: Prisma.StringFilter<"Category"> | string
   type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolFilter<"Category"> | boolean
@@ -243,10 +255,12 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type CategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
@@ -264,6 +278,7 @@ export type CategoryScalarWhereWithAggregatesInput = {
   OR?: Prisma.CategoryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CategoryScalarWhereWithAggregatesInput | Prisma.CategoryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Category"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Category"> | string
   name?: Prisma.StringWithAggregatesFilter<"Category"> | string
   type?: Prisma.EnumTransactionTypeWithAggregatesFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolWithAggregatesFilter<"Category"> | boolean
@@ -286,10 +301,12 @@ export type CategoryCreateInput = {
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
 export type CategoryUncheckedCreateInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -316,10 +333,12 @@ export type CategoryUpdateInput = {
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
 export type CategoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -335,6 +354,7 @@ export type CategoryUncheckedUpdateInput = {
 
 export type CategoryCreateManyInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -357,6 +377,7 @@ export type CategoryUpdateManyMutationInput = {
 
 export type CategoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -366,8 +387,19 @@ export type CategoryUncheckedUpdateManyInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+export type CategoryListRelationFilter = {
+  every?: Prisma.CategoryWhereInput
+  some?: Prisma.CategoryWhereInput
+  none?: Prisma.CategoryWhereInput
+}
+
+export type CategoryOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type CategoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
@@ -379,6 +411,7 @@ export type CategoryCountOrderByAggregateInput = {
 
 export type CategoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
@@ -390,6 +423,7 @@ export type CategoryMaxOrderByAggregateInput = {
 
 export type CategoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
@@ -402,6 +436,48 @@ export type CategoryMinOrderByAggregateInput = {
 export type CategoryScalarRelationFilter = {
   is?: Prisma.CategoryWhereInput
   isNot?: Prisma.CategoryWhereInput
+}
+
+export type CategoryCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput> | Prisma.CategoryCreateWithoutCompanyInput[] | Prisma.CategoryUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCompanyInput | Prisma.CategoryCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.CategoryCreateManyCompanyInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput> | Prisma.CategoryCreateWithoutCompanyInput[] | Prisma.CategoryUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCompanyInput | Prisma.CategoryCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.CategoryCreateManyCompanyInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput> | Prisma.CategoryCreateWithoutCompanyInput[] | Prisma.CategoryUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCompanyInput | Prisma.CategoryCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCompanyInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.CategoryCreateManyCompanyInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCompanyInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCompanyInput | Prisma.CategoryUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput> | Prisma.CategoryCreateWithoutCompanyInput[] | Prisma.CategoryUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCompanyInput | Prisma.CategoryCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCompanyInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.CategoryCreateManyCompanyInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCompanyInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCompanyInput | Prisma.CategoryUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
 }
 
 export type EnumTransactionTypeFieldUpdateOperationsInput = {
@@ -464,6 +540,77 @@ export type CategoryUpdateOneRequiredWithoutPlanningsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutPlanningsInput, Prisma.CategoryUpdateWithoutPlanningsInput>, Prisma.CategoryUncheckedUpdateWithoutPlanningsInput>
 }
 
+export type CategoryCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput>
+}
+
+export type CategoryCreateManyCompanyInputEnvelope = {
+  data: Prisma.CategoryCreateManyCompanyInput | Prisma.CategoryCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type CategoryUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutCompanyInput, Prisma.CategoryUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCompanyInput, Prisma.CategoryUncheckedCreateWithoutCompanyInput>
+}
+
+export type CategoryUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutCompanyInput, Prisma.CategoryUncheckedUpdateWithoutCompanyInput>
+}
+
+export type CategoryUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.CategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type CategoryScalarWhereInput = {
+  AND?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+  OR?: Prisma.CategoryScalarWhereInput[]
+  NOT?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+  id?: Prisma.StringFilter<"Category"> | string
+  company_id?: Prisma.StringFilter<"Category"> | string
+  name?: Prisma.StringFilter<"Category"> | string
+  type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
+  is_active?: Prisma.BoolFilter<"Category"> | boolean
+  is_system?: Prisma.BoolFilter<"Category"> | boolean
+  created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
+}
+
 export type CategoryCreateWithoutSubcategoriesInput = {
   id?: string
   name: string
@@ -476,10 +623,12 @@ export type CategoryCreateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
 export type CategoryUncheckedCreateWithoutSubcategoriesInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -520,10 +669,12 @@ export type CategoryUpdateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutSubcategoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -548,10 +699,12 @@ export type CategoryCreateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
 export type CategoryUncheckedCreateWithoutTransactionsInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -592,10 +745,12 @@ export type CategoryUpdateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -620,10 +775,12 @@ export type CategoryCreateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
 export type CategoryUncheckedCreateWithoutRecurring_configsInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -664,10 +821,12 @@ export type CategoryUpdateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutRecurring_configsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -692,10 +851,12 @@ export type CategoryCreateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
 export type CategoryUncheckedCreateWithoutPlanningsInput = {
   id?: string
+  company_id: string
   name: string
   type: $Enums.TransactionType
   is_active?: boolean
@@ -736,9 +897,51 @@ export type CategoryUpdateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutPlanningsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryCreateManyCompanyInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type CategoryUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -750,6 +953,18 @@ export type CategoryUncheckedUpdateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -812,6 +1027,7 @@ export type CategoryCountOutputTypeCountPlanningsArgs<ExtArgs extends runtime.Ty
 
 export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   type?: boolean
   is_active?: boolean
@@ -823,11 +1039,13 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Category$planningsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
 export type CategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   type?: boolean
   is_active?: boolean
@@ -835,10 +1053,12 @@ export type CategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
 export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   name?: boolean
   type?: boolean
   is_active?: boolean
@@ -846,10 +1066,12 @@ export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
 export type CategorySelectScalar = {
   id?: boolean
+  company_id?: boolean
   name?: boolean
   type?: boolean
   is_active?: boolean
@@ -859,16 +1081,21 @@ export type CategorySelectScalar = {
   deleted_at?: boolean
 }
 
-export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "is_active" | "is_system" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["category"]>
+export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "type" | "is_active" | "is_system" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["category"]>
 export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | Prisma.Category$recurring_configsArgs<ExtArgs>
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Category$planningsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type CategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
+export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
 
 export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Category"
@@ -877,9 +1104,11 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     subcategories: Prisma.$SubcategoryPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
     plannings: Prisma.$PlanningPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     name: string
     type: $Enums.TransactionType
     is_active: boolean
@@ -1285,6 +1514,7 @@ export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime
   subcategories<T extends Prisma.Category$subcategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$subcategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Category$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   plannings<T extends Prisma.Category$planningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$planningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1315,6 +1545,7 @@ export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime
  */
 export interface CategoryFieldRefs {
   readonly id: Prisma.FieldRef<"Category", 'String'>
+  readonly company_id: Prisma.FieldRef<"Category", 'String'>
   readonly name: Prisma.FieldRef<"Category", 'String'>
   readonly type: Prisma.FieldRef<"Category", 'TransactionType'>
   readonly is_active: Prisma.FieldRef<"Category", 'Boolean'>
@@ -1571,6 +1802,10 @@ export type CategoryCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.CategoryCreateManyInput | Prisma.CategoryCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1641,6 +1876,10 @@ export type CategoryUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many Categories to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -387,29 +387,23 @@ export class TransactionService {
     } catch (error: any) { throw error; }
   }
 
-  static async createTransaction(data: any) {
+  static async createTransaction(data: any, company_id: string) {
     try {
       const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
 
-      // Se tem cartão, vincular à fatura do mês
       let invoiceId: string | null = null;
       const cardId = parseFK(data.card_id);
-      
+
       if (cardId && data.effective_date) {
         const { InvoiceService } = await import('./InvoiceService');
         const effectiveDate = parseLocalDate(data.effective_date);
         const invoiceMonth = effectiveDate.getMonth() + 1;
         const invoiceYear = effectiveDate.getFullYear();
-        
+
         try {
-          const invoice = await InvoiceService.findOrCreateInvoice(
-            cardId,
-            invoiceMonth,
-            invoiceYear
-          );
+          const invoice = await InvoiceService.findOrCreateInvoice(cardId, invoiceMonth, invoiceYear, company_id);
           invoiceId = invoice.id;
         } catch (error: any) {
-          // Se fatura estiver fechada/paga, apenas avisa no console
           console.warn(`Não foi possível vincular à fatura: ${error.message}`);
         }
       }
@@ -427,7 +421,8 @@ export class TransactionService {
           card_id: cardId,
           center_id: parseFK(data.center_id),
           supplier_id: parseFK(data.supplier_id),
-          invoice_id: invoiceId
+          invoice_id: invoiceId,
+          company_id,
         },
         include: { category: true, financial_institution: true, supplier: true }
       });
@@ -503,7 +498,7 @@ export class TransactionService {
     } catch (error: any) { throw error; }
   }
 
-  static async createInstallments(data: any) {
+  static async createInstallments(data: any, company_id: string) {
     try {
       const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
       const parseAmount = (val: any): number => {
@@ -589,9 +584,10 @@ export class TransactionService {
             if (cardId) {
               try {
                 const invoice = await InvoiceService.findOrCreateInvoice(
-                  cardId, 
-                  invoiceMonth, 
-                  invoiceYear
+                  cardId,
+                  invoiceMonth,
+                  invoiceYear,
+                  company_id
                 );
                 invoiceId = invoice.id;
                 console.log(`[DEBUG createInstallments] Parcela ${installmentNumber}/${numInstallments} vinculada à fatura ${invoiceId} (${invoiceMonth}/${invoiceYear})`);
@@ -625,6 +621,7 @@ export class TransactionService {
                 invoice_id: invoiceId,
                 status: 'PENDING',
                 payment_mode: 'PARCELADO',
+                company_id,
               },
               include: { category: true, financial_institution: true, supplier: true }
             });
@@ -672,7 +669,7 @@ export class TransactionService {
     } catch (error: any) { throw error; }
   }
 
-  static async createRecurring(data: any) {
+  static async createRecurring(data: any, company_id: string) {
     try {
       const parseFK = (val: any) => (val === '' || val === 'null' || !val) ? null : val;
       const parseAmount = (val: any): number => {
@@ -739,6 +736,7 @@ export class TransactionService {
               recurring_frequency: 'MONTHLY',
               status: 'PENDING',
               payment_mode: 'RECORRENTE',
+              company_id,
             },
             include: { category: true, financial_institution: true, supplier: true }
           });
@@ -831,7 +829,8 @@ export class TransactionService {
               recurring_group_id: config.id,
               recurring_frequency: config.frequency,
               occurrence_number: nextOccurrenceNumber,
-              payment_mode: 'RECORRENTE'
+              payment_mode: 'RECORRENTE',
+              company_id: config.company_id,
             }
           });
 

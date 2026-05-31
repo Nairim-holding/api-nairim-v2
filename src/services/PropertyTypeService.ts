@@ -335,6 +335,7 @@ export class PropertyTypeService {
       const propertyType = await prisma.propertyType.create({
         data: {
           description: data.description,
+          company: { connect: { id: data.company_id } },
         }
       });
 

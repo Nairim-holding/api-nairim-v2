@@ -141,8 +141,9 @@ export class PropertyController {
       const userId = String(req.body?.userId || '');
       if (!id) return res.status(400).json(ApiResponse.error('Property ID is required'));
       
+      const { company_id } = (req as any).user;
       const files = req.files as Record<string, Express.Multer.File[]> | undefined;
-      const documents = await DocumentService.uploadDocuments(id, userId, files || {});
+      const documents = await DocumentService.uploadDocuments(id, userId, files || {}, company_id);
       
       res.status(200).json(ApiResponse.success(documents, 'Documents uploaded successfully'));
     } catch (error: any) {
@@ -238,8 +239,9 @@ export class PropertyController {
       const id = String(req.params?.id || '');
       const userId = String(req.body?.userId || '');
       if (!id) return res.status(400).json(ApiResponse.error('Property ID is required'));
+      const { company_id } = (req as any).user;
       const files = req.files as Record<string, Express.Multer.File[]> | undefined;
-      const documents = await DocumentService.updateDocuments(id, userId, files || {});
+      const documents = await DocumentService.updateDocuments(id, userId, files || {}, company_id);
       res.status(200).json(ApiResponse.success(documents, 'Documents updated successfully'));
     } catch (error: any) {
       if (error.message === 'Property not found') return res.status(404).json(ApiResponse.error('Property not found'));

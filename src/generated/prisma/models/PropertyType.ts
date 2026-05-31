@@ -26,6 +26,7 @@ export type AggregatePropertyType = {
 
 export type PropertyTypeMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   description: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -34,6 +35,7 @@ export type PropertyTypeMinAggregateOutputType = {
 
 export type PropertyTypeMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   description: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -42,6 +44,7 @@ export type PropertyTypeMaxAggregateOutputType = {
 
 export type PropertyTypeCountAggregateOutputType = {
   id: number
+  company_id: number
   description: number
   created_at: number
   updated_at: number
@@ -52,6 +55,7 @@ export type PropertyTypeCountAggregateOutputType = {
 
 export type PropertyTypeMinAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   created_at?: true
   updated_at?: true
@@ -60,6 +64,7 @@ export type PropertyTypeMinAggregateInputType = {
 
 export type PropertyTypeMaxAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   created_at?: true
   updated_at?: true
@@ -68,6 +73,7 @@ export type PropertyTypeMaxAggregateInputType = {
 
 export type PropertyTypeCountAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   created_at?: true
   updated_at?: true
@@ -149,6 +155,7 @@ export type PropertyTypeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type PropertyTypeGroupByOutputType = {
   id: string
+  company_id: string
   description: string
   created_at: Date
   updated_at: Date
@@ -178,22 +185,26 @@ export type PropertyTypeWhereInput = {
   OR?: Prisma.PropertyTypeWhereInput[]
   NOT?: Prisma.PropertyTypeWhereInput | Prisma.PropertyTypeWhereInput[]
   id?: Prisma.StringFilter<"PropertyType"> | string
+  company_id?: Prisma.StringFilter<"PropertyType"> | string
   description?: Prisma.StringFilter<"PropertyType"> | string
   created_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"PropertyType"> | Date | string | null
   leases?: Prisma.LeaseListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type PropertyTypeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   leases?: Prisma.LeaseOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type PropertyTypeWhereUniqueInput = Prisma.AtLeast<{
@@ -201,16 +212,19 @@ export type PropertyTypeWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PropertyTypeWhereInput | Prisma.PropertyTypeWhereInput[]
   OR?: Prisma.PropertyTypeWhereInput[]
   NOT?: Prisma.PropertyTypeWhereInput | Prisma.PropertyTypeWhereInput[]
+  company_id?: Prisma.StringFilter<"PropertyType"> | string
   description?: Prisma.StringFilter<"PropertyType"> | string
   created_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"PropertyType"> | Date | string | null
   leases?: Prisma.LeaseListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type PropertyTypeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -225,6 +239,7 @@ export type PropertyTypeScalarWhereWithAggregatesInput = {
   OR?: Prisma.PropertyTypeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PropertyTypeScalarWhereWithAggregatesInput | Prisma.PropertyTypeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PropertyType"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"PropertyType"> | string
   description?: Prisma.StringWithAggregatesFilter<"PropertyType"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"PropertyType"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"PropertyType"> | Date | string
@@ -239,10 +254,12 @@ export type PropertyTypeCreateInput = {
   deleted_at?: Date | string | null
   leases?: Prisma.LeaseCreateNestedManyWithoutTypeInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTypeInput
+  company: Prisma.CompanyCreateNestedOneWithoutProperty_typesInput
 }
 
 export type PropertyTypeUncheckedCreateInput = {
   id?: string
+  company_id: string
   description: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -259,10 +276,12 @@ export type PropertyTypeUpdateInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   leases?: Prisma.LeaseUpdateManyWithoutTypeNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTypeNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutProperty_typesNestedInput
 }
 
 export type PropertyTypeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -273,6 +292,7 @@ export type PropertyTypeUncheckedUpdateInput = {
 
 export type PropertyTypeCreateManyInput = {
   id?: string
+  company_id: string
   description: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -289,10 +309,21 @@ export type PropertyTypeUpdateManyMutationInput = {
 
 export type PropertyTypeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PropertyTypeListRelationFilter = {
+  every?: Prisma.PropertyTypeWhereInput
+  some?: Prisma.PropertyTypeWhereInput
+  none?: Prisma.PropertyTypeWhereInput
+}
+
+export type PropertyTypeOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PropertyTypeScalarRelationFilter = {
@@ -302,6 +333,7 @@ export type PropertyTypeScalarRelationFilter = {
 
 export type PropertyTypeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -310,6 +342,7 @@ export type PropertyTypeCountOrderByAggregateInput = {
 
 export type PropertyTypeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -318,10 +351,53 @@ export type PropertyTypeMaxOrderByAggregateInput = {
 
 export type PropertyTypeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+}
+
+export type PropertyTypeCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput> | Prisma.PropertyTypeCreateWithoutCompanyInput[] | Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput | Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.PropertyTypeCreateManyCompanyInputEnvelope
+  connect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+}
+
+export type PropertyTypeUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput> | Prisma.PropertyTypeCreateWithoutCompanyInput[] | Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput | Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.PropertyTypeCreateManyCompanyInputEnvelope
+  connect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+}
+
+export type PropertyTypeUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput> | Prisma.PropertyTypeCreateWithoutCompanyInput[] | Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput | Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.PropertyTypeUpsertWithWhereUniqueWithoutCompanyInput | Prisma.PropertyTypeUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.PropertyTypeCreateManyCompanyInputEnvelope
+  set?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  disconnect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  delete?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  connect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  update?: Prisma.PropertyTypeUpdateWithWhereUniqueWithoutCompanyInput | Prisma.PropertyTypeUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.PropertyTypeUpdateManyWithWhereWithoutCompanyInput | Prisma.PropertyTypeUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.PropertyTypeScalarWhereInput | Prisma.PropertyTypeScalarWhereInput[]
+}
+
+export type PropertyTypeUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput> | Prisma.PropertyTypeCreateWithoutCompanyInput[] | Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput | Prisma.PropertyTypeCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.PropertyTypeUpsertWithWhereUniqueWithoutCompanyInput | Prisma.PropertyTypeUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.PropertyTypeCreateManyCompanyInputEnvelope
+  set?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  disconnect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  delete?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  connect?: Prisma.PropertyTypeWhereUniqueInput | Prisma.PropertyTypeWhereUniqueInput[]
+  update?: Prisma.PropertyTypeUpdateWithWhereUniqueWithoutCompanyInput | Prisma.PropertyTypeUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.PropertyTypeUpdateManyWithWhereWithoutCompanyInput | Prisma.PropertyTypeUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.PropertyTypeScalarWhereInput | Prisma.PropertyTypeScalarWhereInput[]
 }
 
 export type PropertyTypeCreateNestedOneWithoutPropertiesInput = {
@@ -352,6 +428,64 @@ export type PropertyTypeUpdateOneRequiredWithoutLeasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyTypeUpdateToOneWithWhereWithoutLeasesInput, Prisma.PropertyTypeUpdateWithoutLeasesInput>, Prisma.PropertyTypeUncheckedUpdateWithoutLeasesInput>
 }
 
+export type PropertyTypeCreateWithoutCompanyInput = {
+  id?: string
+  description: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  leases?: Prisma.LeaseCreateNestedManyWithoutTypeInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTypeInput
+}
+
+export type PropertyTypeUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  description: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutTypeInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTypeInput
+}
+
+export type PropertyTypeCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.PropertyTypeWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput>
+}
+
+export type PropertyTypeCreateManyCompanyInputEnvelope = {
+  data: Prisma.PropertyTypeCreateManyCompanyInput | Prisma.PropertyTypeCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyTypeUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.PropertyTypeWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyTypeUpdateWithoutCompanyInput, Prisma.PropertyTypeUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.PropertyTypeCreateWithoutCompanyInput, Prisma.PropertyTypeUncheckedCreateWithoutCompanyInput>
+}
+
+export type PropertyTypeUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.PropertyTypeWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyTypeUpdateWithoutCompanyInput, Prisma.PropertyTypeUncheckedUpdateWithoutCompanyInput>
+}
+
+export type PropertyTypeUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.PropertyTypeScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyTypeUpdateManyMutationInput, Prisma.PropertyTypeUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type PropertyTypeScalarWhereInput = {
+  AND?: Prisma.PropertyTypeScalarWhereInput | Prisma.PropertyTypeScalarWhereInput[]
+  OR?: Prisma.PropertyTypeScalarWhereInput[]
+  NOT?: Prisma.PropertyTypeScalarWhereInput | Prisma.PropertyTypeScalarWhereInput[]
+  id?: Prisma.StringFilter<"PropertyType"> | string
+  company_id?: Prisma.StringFilter<"PropertyType"> | string
+  description?: Prisma.StringFilter<"PropertyType"> | string
+  created_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"PropertyType"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"PropertyType"> | Date | string | null
+}
+
 export type PropertyTypeCreateWithoutPropertiesInput = {
   id?: string
   description: string
@@ -359,10 +493,12 @@ export type PropertyTypeCreateWithoutPropertiesInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   leases?: Prisma.LeaseCreateNestedManyWithoutTypeInput
+  company: Prisma.CompanyCreateNestedOneWithoutProperty_typesInput
 }
 
 export type PropertyTypeUncheckedCreateWithoutPropertiesInput = {
   id?: string
+  company_id: string
   description: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -393,10 +529,12 @@ export type PropertyTypeUpdateWithoutPropertiesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   leases?: Prisma.LeaseUpdateManyWithoutTypeNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutProperty_typesNestedInput
 }
 
 export type PropertyTypeUncheckedUpdateWithoutPropertiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,10 +549,12 @@ export type PropertyTypeCreateWithoutLeasesInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   properties?: Prisma.PropertyCreateNestedManyWithoutTypeInput
+  company: Prisma.CompanyCreateNestedOneWithoutProperty_typesInput
 }
 
 export type PropertyTypeUncheckedCreateWithoutLeasesInput = {
   id?: string
+  company_id: string
   description: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -445,15 +585,53 @@ export type PropertyTypeUpdateWithoutLeasesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   properties?: Prisma.PropertyUpdateManyWithoutTypeNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutProperty_typesNestedInput
 }
 
 export type PropertyTypeUncheckedUpdateWithoutLeasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTypeNestedInput
+}
+
+export type PropertyTypeCreateManyCompanyInput = {
+  id?: string
+  description: string
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type PropertyTypeUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  leases?: Prisma.LeaseUpdateManyWithoutTypeNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTypeNestedInput
+}
+
+export type PropertyTypeUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutTypeNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTypeNestedInput
+}
+
+export type PropertyTypeUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -498,56 +676,70 @@ export type PropertyTypeCountOutputTypeCountPropertiesArgs<ExtArgs extends runti
 
 export type PropertyTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
   leases?: boolean | Prisma.PropertyType$leasesArgs<ExtArgs>
   properties?: boolean | Prisma.PropertyType$propertiesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyType"]>
 
 export type PropertyTypeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyType"]>
 
 export type PropertyTypeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyType"]>
 
 export type PropertyTypeSelectScalar = {
   id?: boolean
+  company_id?: boolean
   description?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type PropertyTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["propertyType"]>
+export type PropertyTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "description" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["propertyType"]>
 export type PropertyTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   leases?: boolean | Prisma.PropertyType$leasesArgs<ExtArgs>
   properties?: boolean | Prisma.PropertyType$propertiesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyTypeCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type PropertyTypeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type PropertyTypeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type PropertyTypeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
+export type PropertyTypeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+}
 
 export type $PropertyTypePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyType"
   objects: {
     leases: Prisma.$LeasePayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     description: string
     created_at: Date
     updated_at: Date
@@ -948,6 +1140,7 @@ export interface Prisma__PropertyTypeClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   leases<T extends Prisma.PropertyType$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyType$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.PropertyType$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyType$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -978,6 +1171,7 @@ export interface Prisma__PropertyTypeClient<T, Null = never, ExtArgs extends run
  */
 export interface PropertyTypeFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyType", 'String'>
+  readonly company_id: Prisma.FieldRef<"PropertyType", 'String'>
   readonly description: Prisma.FieldRef<"PropertyType", 'String'>
   readonly created_at: Prisma.FieldRef<"PropertyType", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"PropertyType", 'DateTime'>
@@ -1231,6 +1425,10 @@ export type PropertyTypeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    */
   data: Prisma.PropertyTypeCreateManyInput | Prisma.PropertyTypeCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTypeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1301,6 +1499,10 @@ export type PropertyTypeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * Limit how many PropertyTypes to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTypeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

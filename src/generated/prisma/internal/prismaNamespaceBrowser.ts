@@ -51,6 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Company: 'Company',
+  CompanyBranding: 'CompanyBranding',
   Agency: 'Agency',
   Property: 'Property',
   PropertyIptu: 'PropertyIptu',
@@ -99,8 +101,38 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const CompanyBrandingScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  logo_url: 'logo_url',
+  favicon_url: 'favicon_url',
+  primary_color: 'primary_color',
+  secondary_color: 'secondary_color',
+  company_name: 'company_name',
+  company_info: 'company_info',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type CompanyBrandingScalarFieldEnum = (typeof CompanyBrandingScalarFieldEnum)[keyof typeof CompanyBrandingScalarFieldEnum]
+
+
 export const AgencyScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   trade_name: 'trade_name',
   legal_name: 'legal_name',
   cnpj: 'cnpj',
@@ -117,6 +149,7 @@ export type AgencyScalarFieldEnum = (typeof AgencyScalarFieldEnum)[keyof typeof 
 
 export const PropertyScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   owner_id: 'owner_id',
   agency_id: 'agency_id',
   type_id: 'type_id',
@@ -164,6 +197,7 @@ export type PropertyIptuScalarFieldEnum = (typeof PropertyIptuScalarFieldEnum)[k
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   email: 'email',
   password: 'password',
@@ -180,6 +214,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const UserColumnPreferenceScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   user_id: 'user_id',
   resource: 'resource',
   column_order: 'column_order',
@@ -193,6 +228,7 @@ export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceSc
 
 export const DocumentScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   property_id: 'property_id',
   created_by: 'created_by',
   file_path: 'file_path',
@@ -210,6 +246,7 @@ export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typ
 
 export const OwnerScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   internal_code: 'internal_code',
   occupation: 'occupation',
@@ -228,6 +265,7 @@ export type OwnerScalarFieldEnum = (typeof OwnerScalarFieldEnum)[keyof typeof Ow
 
 export const TenantScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   internal_code: 'internal_code',
   nationality: 'nationality',
@@ -250,6 +288,7 @@ export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof 
 
 export const LeaseScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   property_id: 'property_id',
   type_id: 'type_id',
   owner_id: 'owner_id',
@@ -314,6 +353,7 @@ export type PropertyValueScalarFieldEnum = (typeof PropertyValueScalarFieldEnum)
 
 export const PropertyTypeScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   description: 'description',
   created_at: 'created_at',
   updated_at: 'updated_at',
@@ -365,6 +405,7 @@ export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeo
 
 export const FavoriteScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   user_id: 'user_id',
   property_id: 'property_id',
   created_at: 'created_at',
@@ -425,6 +466,7 @@ export type TenantAddressScalarFieldEnum = (typeof TenantAddressScalarFieldEnum)
 
 export const FinancialInstitutionScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   created_at: 'created_at',
   updated_at: 'updated_at',
@@ -440,6 +482,7 @@ export type FinancialInstitutionScalarFieldEnum = (typeof FinancialInstitutionSc
 
 export const CategoryScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   type: 'type',
   is_active: 'is_active',
@@ -454,6 +497,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 
 export const SubcategoryScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   category_id: 'category_id',
   name: 'name',
   is_active: 'is_active',
@@ -467,6 +511,7 @@ export type SubcategoryScalarFieldEnum = (typeof SubcategoryScalarFieldEnum)[key
 
 export const CardScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   limit: 'limit',
   is_active: 'is_active',
@@ -484,6 +529,7 @@ export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof Card
 
 export const CenterScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   name: 'name',
   type: 'type',
   is_active: 'is_active',
@@ -497,6 +543,7 @@ export type CenterScalarFieldEnum = (typeof CenterScalarFieldEnum)[keyof typeof 
 
 export const SupplierScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   sequential_id: 'sequential_id',
   legal_name: 'legal_name',
   trade_name: 'trade_name',
@@ -531,6 +578,7 @@ export type SupplierAddressScalarFieldEnum = (typeof SupplierAddressScalarFieldE
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   event_date: 'event_date',
   effective_date: 'effective_date',
   purchase_date: 'purchase_date',
@@ -562,6 +610,7 @@ export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[key
 
 export const InvoiceScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   card_id: 'card_id',
   month: 'month',
   year: 'year',
@@ -582,6 +631,7 @@ export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeo
 
 export const RecurringConfigScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   description: 'description',
   amount: 'amount',
   frequency: 'frequency',
@@ -607,6 +657,7 @@ export type RecurringConfigScalarFieldEnum = (typeof RecurringConfigScalarFieldE
 
 export const PlanningScalarFieldEnum = {
   id: 'id',
+  company_id: 'company_id',
   category_id: 'category_id',
   subcategory_id: 'subcategory_id',
   year: 'year',

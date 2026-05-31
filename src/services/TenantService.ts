@@ -341,7 +341,8 @@ export class TenantService {
             rg_issuing_state: data.rg_issuing_state ? String(data.rg_issuing_state).trim().substring(0, 2) : null,
             cnpj: data.cnpj ? String(data.cnpj).trim() : null,
             state_registration: data.state_registration ? String(data.state_registration).trim() : null,
-            municipal_registration: data.municipal_registration ? String(data.municipal_registration).trim() : null
+            municipal_registration: data.municipal_registration ? String(data.municipal_registration).trim() : null,
+            company: { connect: { id: data.company_id } },
           }
         });
 

@@ -26,6 +26,7 @@ export type AggregateUserColumnPreference = {
 
 export type UserColumnPreferenceMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   user_id: string | null
   resource: string | null
   created_at: Date | null
@@ -34,6 +35,7 @@ export type UserColumnPreferenceMinAggregateOutputType = {
 
 export type UserColumnPreferenceMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   user_id: string | null
   resource: string | null
   created_at: Date | null
@@ -42,6 +44,7 @@ export type UserColumnPreferenceMaxAggregateOutputType = {
 
 export type UserColumnPreferenceCountAggregateOutputType = {
   id: number
+  company_id: number
   user_id: number
   resource: number
   column_order: number
@@ -54,6 +57,7 @@ export type UserColumnPreferenceCountAggregateOutputType = {
 
 export type UserColumnPreferenceMinAggregateInputType = {
   id?: true
+  company_id?: true
   user_id?: true
   resource?: true
   created_at?: true
@@ -62,6 +66,7 @@ export type UserColumnPreferenceMinAggregateInputType = {
 
 export type UserColumnPreferenceMaxAggregateInputType = {
   id?: true
+  company_id?: true
   user_id?: true
   resource?: true
   created_at?: true
@@ -70,6 +75,7 @@ export type UserColumnPreferenceMaxAggregateInputType = {
 
 export type UserColumnPreferenceCountAggregateInputType = {
   id?: true
+  company_id?: true
   user_id?: true
   resource?: true
   column_order?: true
@@ -153,6 +159,7 @@ export type UserColumnPreferenceGroupByArgs<ExtArgs extends runtime.Types.Extens
 
 export type UserColumnPreferenceGroupByOutputType = {
   id: string
+  company_id: string
   user_id: string
   resource: string
   column_order: runtime.JsonValue
@@ -184,6 +191,7 @@ export type UserColumnPreferenceWhereInput = {
   OR?: Prisma.UserColumnPreferenceWhereInput[]
   NOT?: Prisma.UserColumnPreferenceWhereInput | Prisma.UserColumnPreferenceWhereInput[]
   id?: Prisma.StringFilter<"UserColumnPreference"> | string
+  company_id?: Prisma.StringFilter<"UserColumnPreference"> | string
   user_id?: Prisma.StringFilter<"UserColumnPreference"> | string
   resource?: Prisma.StringFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonFilter<"UserColumnPreference">
@@ -191,10 +199,12 @@ export type UserColumnPreferenceWhereInput = {
   created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type UserColumnPreferenceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
@@ -202,6 +212,7 @@ export type UserColumnPreferenceOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type UserColumnPreferenceWhereUniqueInput = Prisma.AtLeast<{
@@ -210,6 +221,7 @@ export type UserColumnPreferenceWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserColumnPreferenceWhereInput | Prisma.UserColumnPreferenceWhereInput[]
   OR?: Prisma.UserColumnPreferenceWhereInput[]
   NOT?: Prisma.UserColumnPreferenceWhereInput | Prisma.UserColumnPreferenceWhereInput[]
+  company_id?: Prisma.StringFilter<"UserColumnPreference"> | string
   user_id?: Prisma.StringFilter<"UserColumnPreference"> | string
   resource?: Prisma.StringFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonFilter<"UserColumnPreference">
@@ -217,10 +229,12 @@ export type UserColumnPreferenceWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id" | "user_id_resource">
 
 export type UserColumnPreferenceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
@@ -237,6 +251,7 @@ export type UserColumnPreferenceScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserColumnPreferenceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserColumnPreferenceScalarWhereWithAggregatesInput | Prisma.UserColumnPreferenceScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"UserColumnPreference"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"UserColumnPreference"> | string
   user_id?: Prisma.StringWithAggregatesFilter<"UserColumnPreference"> | string
   resource?: Prisma.StringWithAggregatesFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonWithAggregatesFilter<"UserColumnPreference">
@@ -253,10 +268,12 @@ export type UserColumnPreferenceCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutColumnPreferencesInput
+  company: Prisma.CompanyCreateNestedOneWithoutUser_column_preferencesInput
 }
 
 export type UserColumnPreferenceUncheckedCreateInput = {
   id?: string
+  company_id: string
   user_id: string
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -273,10 +290,12 @@ export type UserColumnPreferenceUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutColumnPreferencesNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUser_column_preferencesNestedInput
 }
 
 export type UserColumnPreferenceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -287,6 +306,7 @@ export type UserColumnPreferenceUncheckedUpdateInput = {
 
 export type UserColumnPreferenceCreateManyInput = {
   id?: string
+  company_id: string
   user_id: string
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -306,6 +326,7 @@ export type UserColumnPreferenceUpdateManyMutationInput = {
 
 export type UserColumnPreferenceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -331,6 +352,7 @@ export type UserColumnPreferenceUser_idResourceCompoundUniqueInput = {
 
 export type UserColumnPreferenceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
@@ -341,6 +363,7 @@ export type UserColumnPreferenceCountOrderByAggregateInput = {
 
 export type UserColumnPreferenceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   resource?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -349,10 +372,53 @@ export type UserColumnPreferenceMaxOrderByAggregateInput = {
 
 export type UserColumnPreferenceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   resource?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+}
+
+export type UserColumnPreferenceCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput> | Prisma.UserColumnPreferenceCreateWithoutCompanyInput[] | Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput | Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.UserColumnPreferenceCreateManyCompanyInputEnvelope
+  connect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+}
+
+export type UserColumnPreferenceUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput> | Prisma.UserColumnPreferenceCreateWithoutCompanyInput[] | Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput | Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.UserColumnPreferenceCreateManyCompanyInputEnvelope
+  connect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+}
+
+export type UserColumnPreferenceUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput> | Prisma.UserColumnPreferenceCreateWithoutCompanyInput[] | Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput | Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.UserColumnPreferenceUpsertWithWhereUniqueWithoutCompanyInput | Prisma.UserColumnPreferenceUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.UserColumnPreferenceCreateManyCompanyInputEnvelope
+  set?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  disconnect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  delete?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  connect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  update?: Prisma.UserColumnPreferenceUpdateWithWhereUniqueWithoutCompanyInput | Prisma.UserColumnPreferenceUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.UserColumnPreferenceUpdateManyWithWhereWithoutCompanyInput | Prisma.UserColumnPreferenceUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
+}
+
+export type UserColumnPreferenceUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput> | Prisma.UserColumnPreferenceCreateWithoutCompanyInput[] | Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput | Prisma.UserColumnPreferenceCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.UserColumnPreferenceUpsertWithWhereUniqueWithoutCompanyInput | Prisma.UserColumnPreferenceUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.UserColumnPreferenceCreateManyCompanyInputEnvelope
+  set?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  disconnect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  delete?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  connect?: Prisma.UserColumnPreferenceWhereUniqueInput | Prisma.UserColumnPreferenceWhereUniqueInput[]
+  update?: Prisma.UserColumnPreferenceUpdateWithWhereUniqueWithoutCompanyInput | Prisma.UserColumnPreferenceUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.UserColumnPreferenceUpdateManyWithWhereWithoutCompanyInput | Prisma.UserColumnPreferenceUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
 }
 
 export type UserColumnPreferenceCreateNestedManyWithoutUserInput = {
@@ -397,8 +463,19 @@ export type UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
 }
 
-export type UserColumnPreferenceCreateWithoutUserInput = {
+export type UserColumnPreferenceCreateWithoutCompanyInput = {
   id?: string
+  resource: string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Date | string
+  updated_at?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutColumnPreferencesInput
+}
+
+export type UserColumnPreferenceUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  user_id: string
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -406,8 +483,59 @@ export type UserColumnPreferenceCreateWithoutUserInput = {
   updated_at?: Date | string
 }
 
+export type UserColumnPreferenceCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.UserColumnPreferenceWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput>
+}
+
+export type UserColumnPreferenceCreateManyCompanyInputEnvelope = {
+  data: Prisma.UserColumnPreferenceCreateManyCompanyInput | Prisma.UserColumnPreferenceCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserColumnPreferenceUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.UserColumnPreferenceWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserColumnPreferenceUpdateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.UserColumnPreferenceCreateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedCreateWithoutCompanyInput>
+}
+
+export type UserColumnPreferenceUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.UserColumnPreferenceWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserColumnPreferenceUpdateWithoutCompanyInput, Prisma.UserColumnPreferenceUncheckedUpdateWithoutCompanyInput>
+}
+
+export type UserColumnPreferenceUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.UserColumnPreferenceScalarWhereInput
+  data: Prisma.XOR<Prisma.UserColumnPreferenceUpdateManyMutationInput, Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type UserColumnPreferenceScalarWhereInput = {
+  AND?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
+  OR?: Prisma.UserColumnPreferenceScalarWhereInput[]
+  NOT?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
+  id?: Prisma.StringFilter<"UserColumnPreference"> | string
+  company_id?: Prisma.StringFilter<"UserColumnPreference"> | string
+  user_id?: Prisma.StringFilter<"UserColumnPreference"> | string
+  resource?: Prisma.StringFilter<"UserColumnPreference"> | string
+  column_order?: Prisma.JsonFilter<"UserColumnPreference">
+  column_widths?: Prisma.JsonFilter<"UserColumnPreference">
+  created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
+}
+
+export type UserColumnPreferenceCreateWithoutUserInput = {
+  id?: string
+  resource: string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Date | string
+  updated_at?: Date | string
+  company: Prisma.CompanyCreateNestedOneWithoutUser_column_preferencesInput
+}
+
 export type UserColumnPreferenceUncheckedCreateWithoutUserInput = {
   id?: string
+  company_id: string
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -441,21 +569,49 @@ export type UserColumnPreferenceUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.UserColumnPreferenceUpdateManyMutationInput, Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserInput>
 }
 
-export type UserColumnPreferenceScalarWhereInput = {
-  AND?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
-  OR?: Prisma.UserColumnPreferenceScalarWhereInput[]
-  NOT?: Prisma.UserColumnPreferenceScalarWhereInput | Prisma.UserColumnPreferenceScalarWhereInput[]
-  id?: Prisma.StringFilter<"UserColumnPreference"> | string
-  user_id?: Prisma.StringFilter<"UserColumnPreference"> | string
-  resource?: Prisma.StringFilter<"UserColumnPreference"> | string
-  column_order?: Prisma.JsonFilter<"UserColumnPreference">
-  column_widths?: Prisma.JsonFilter<"UserColumnPreference">
-  created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
+export type UserColumnPreferenceCreateManyCompanyInput = {
+  id?: string
+  user_id: string
+  resource: string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export type UserColumnPreferenceUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  resource?: Prisma.StringFieldUpdateOperationsInput | string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutColumnPreferencesNestedInput
+}
+
+export type UserColumnPreferenceUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  resource?: Prisma.StringFieldUpdateOperationsInput | string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserColumnPreferenceUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  resource?: Prisma.StringFieldUpdateOperationsInput | string
+  column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserColumnPreferenceCreateManyUserInput = {
   id?: string
+  company_id: string
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -470,10 +626,12 @@ export type UserColumnPreferenceUpdateWithoutUserInput = {
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUser_column_preferencesNestedInput
 }
 
 export type UserColumnPreferenceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -483,6 +641,7 @@ export type UserColumnPreferenceUncheckedUpdateWithoutUserInput = {
 
 export type UserColumnPreferenceUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -494,6 +653,7 @@ export type UserColumnPreferenceUncheckedUpdateManyWithoutUserInput = {
 
 export type UserColumnPreferenceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   user_id?: boolean
   resource?: boolean
   column_order?: boolean
@@ -501,10 +661,12 @@ export type UserColumnPreferenceSelect<ExtArgs extends runtime.Types.Extensions.
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userColumnPreference"]>
 
 export type UserColumnPreferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   user_id?: boolean
   resource?: boolean
   column_order?: boolean
@@ -512,10 +674,12 @@ export type UserColumnPreferenceSelectCreateManyAndReturn<ExtArgs extends runtim
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userColumnPreference"]>
 
 export type UserColumnPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   user_id?: boolean
   resource?: boolean
   column_order?: boolean
@@ -523,10 +687,12 @@ export type UserColumnPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtim
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userColumnPreference"]>
 
 export type UserColumnPreferenceSelectScalar = {
   id?: boolean
+  company_id?: boolean
   user_id?: boolean
   resource?: boolean
   column_order?: boolean
@@ -535,24 +701,29 @@ export type UserColumnPreferenceSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserColumnPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "resource" | "column_order" | "column_widths" | "created_at" | "updated_at", ExtArgs["result"]["userColumnPreference"]>
+export type UserColumnPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "user_id" | "resource" | "column_order" | "column_widths" | "created_at" | "updated_at", ExtArgs["result"]["userColumnPreference"]>
 export type UserColumnPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type UserColumnPreferenceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type UserColumnPreferenceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $UserColumnPreferencePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UserColumnPreference"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     user_id: string
     resource: string
     column_order: runtime.JsonValue
@@ -954,6 +1125,7 @@ readonly fields: UserColumnPreferenceFieldRefs;
 export interface Prisma__UserColumnPreferenceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -984,6 +1156,7 @@ export interface Prisma__UserColumnPreferenceClient<T, Null = never, ExtArgs ext
  */
 export interface UserColumnPreferenceFieldRefs {
   readonly id: Prisma.FieldRef<"UserColumnPreference", 'String'>
+  readonly company_id: Prisma.FieldRef<"UserColumnPreference", 'String'>
   readonly user_id: Prisma.FieldRef<"UserColumnPreference", 'String'>
   readonly resource: Prisma.FieldRef<"UserColumnPreference", 'String'>
   readonly column_order: Prisma.FieldRef<"UserColumnPreference", 'Json'>

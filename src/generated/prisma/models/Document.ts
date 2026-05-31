@@ -26,6 +26,7 @@ export type AggregateDocument = {
 
 export type DocumentMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   property_id: string | null
   created_by: string | null
   file_path: string | null
@@ -40,6 +41,7 @@ export type DocumentMinAggregateOutputType = {
 
 export type DocumentMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   property_id: string | null
   created_by: string | null
   file_path: string | null
@@ -54,6 +56,7 @@ export type DocumentMaxAggregateOutputType = {
 
 export type DocumentCountAggregateOutputType = {
   id: number
+  company_id: number
   property_id: number
   created_by: number
   file_path: number
@@ -70,6 +73,7 @@ export type DocumentCountAggregateOutputType = {
 
 export type DocumentMinAggregateInputType = {
   id?: true
+  company_id?: true
   property_id?: true
   created_by?: true
   file_path?: true
@@ -84,6 +88,7 @@ export type DocumentMinAggregateInputType = {
 
 export type DocumentMaxAggregateInputType = {
   id?: true
+  company_id?: true
   property_id?: true
   created_by?: true
   file_path?: true
@@ -98,6 +103,7 @@ export type DocumentMaxAggregateInputType = {
 
 export type DocumentCountAggregateInputType = {
   id?: true
+  company_id?: true
   property_id?: true
   created_by?: true
   file_path?: true
@@ -185,6 +191,7 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type DocumentGroupByOutputType = {
   id: string
+  company_id: string
   property_id: string
   created_by: string | null
   file_path: string
@@ -220,6 +227,7 @@ export type DocumentWhereInput = {
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   id?: Prisma.StringFilter<"Document"> | string
+  company_id?: Prisma.StringFilter<"Document"> | string
   property_id?: Prisma.StringFilter<"Document"> | string
   created_by?: Prisma.StringNullableFilter<"Document"> | string | null
   file_path?: Prisma.StringFilter<"Document"> | string
@@ -232,10 +240,12 @@ export type DocumentWhereInput = {
   is_featured?: Prisma.BoolFilter<"Document"> | boolean
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   created_by?: Prisma.SortOrderInput | Prisma.SortOrder
   file_path?: Prisma.SortOrder
@@ -248,6 +258,7 @@ export type DocumentOrderByWithRelationInput = {
   is_featured?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   property?: Prisma.PropertyOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -255,6 +266,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
+  company_id?: Prisma.StringFilter<"Document"> | string
   property_id?: Prisma.StringFilter<"Document"> | string
   created_by?: Prisma.StringNullableFilter<"Document"> | string | null
   file_path?: Prisma.StringFilter<"Document"> | string
@@ -267,10 +279,12 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   is_featured?: Prisma.BoolFilter<"Document"> | boolean
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   created_by?: Prisma.SortOrderInput | Prisma.SortOrder
   file_path?: Prisma.SortOrder
@@ -291,6 +305,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   OR?: Prisma.DocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   property_id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   created_by?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   file_path?: Prisma.StringWithAggregatesFilter<"Document"> | string
@@ -315,10 +330,12 @@ export type DocumentCreateInput = {
   is_featured?: boolean
   user?: Prisma.UserCreateNestedOneWithoutDocumentsInput
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateInput = {
   id?: string
+  company_id: string
   property_id: string
   created_by?: string | null
   file_path: string
@@ -343,10 +360,12 @@ export type DocumentUpdateInput = {
   is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneWithoutDocumentsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
@@ -361,6 +380,7 @@ export type DocumentUncheckedUpdateInput = {
 
 export type DocumentCreateManyInput = {
   id?: string
+  company_id: string
   property_id: string
   created_by?: string | null
   file_path: string
@@ -387,6 +407,7 @@ export type DocumentUpdateManyMutationInput = {
 
 export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
@@ -411,6 +432,7 @@ export type DocumentOrderByRelationAggregateInput = {
 
 export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   file_path?: Prisma.SortOrder
@@ -425,6 +447,7 @@ export type DocumentCountOrderByAggregateInput = {
 
 export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   file_path?: Prisma.SortOrder
@@ -439,6 +462,7 @@ export type DocumentMaxOrderByAggregateInput = {
 
 export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   file_path?: Prisma.SortOrder
@@ -449,6 +473,48 @@ export type DocumentMinOrderByAggregateInput = {
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
   is_featured?: Prisma.SortOrder
+}
+
+export type DocumentCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput> | Prisma.DocumentCreateWithoutCompanyInput[] | Prisma.DocumentUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompanyInput | Prisma.DocumentCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.DocumentCreateManyCompanyInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput> | Prisma.DocumentCreateWithoutCompanyInput[] | Prisma.DocumentUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompanyInput | Prisma.DocumentCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.DocumentCreateManyCompanyInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput> | Prisma.DocumentCreateWithoutCompanyInput[] | Prisma.DocumentUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompanyInput | Prisma.DocumentCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutCompanyInput | Prisma.DocumentUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.DocumentCreateManyCompanyInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutCompanyInput | Prisma.DocumentUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutCompanyInput | Prisma.DocumentUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
+export type DocumentUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput> | Prisma.DocumentCreateWithoutCompanyInput[] | Prisma.DocumentUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompanyInput | Prisma.DocumentCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutCompanyInput | Prisma.DocumentUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.DocumentCreateManyCompanyInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutCompanyInput | Prisma.DocumentUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutCompanyInput | Prisma.DocumentUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
 export type DocumentCreateNestedManyWithoutPropertyInput = {
@@ -539,6 +605,78 @@ export type EnumDocumentTypeFieldUpdateOperationsInput = {
   set?: $Enums.DocumentType
 }
 
+export type DocumentCreateWithoutCompanyInput = {
+  id?: string
+  file_path: string
+  file_type: string
+  description?: string | null
+  type: $Enums.DocumentType
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_featured?: boolean
+  user?: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
+}
+
+export type DocumentUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  property_id: string
+  created_by?: string | null
+  file_path: string
+  file_type: string
+  description?: string | null
+  type: $Enums.DocumentType
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_featured?: boolean
+}
+
+export type DocumentCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput>
+}
+
+export type DocumentCreateManyCompanyInputEnvelope = {
+  data: Prisma.DocumentCreateManyCompanyInput | Prisma.DocumentCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutCompanyInput, Prisma.DocumentUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCompanyInput, Prisma.DocumentUncheckedCreateWithoutCompanyInput>
+}
+
+export type DocumentUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutCompanyInput, Prisma.DocumentUncheckedUpdateWithoutCompanyInput>
+}
+
+export type DocumentUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.DocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type DocumentScalarWhereInput = {
+  AND?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+  OR?: Prisma.DocumentScalarWhereInput[]
+  NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"Document"> | string
+  company_id?: Prisma.StringFilter<"Document"> | string
+  property_id?: Prisma.StringFilter<"Document"> | string
+  created_by?: Prisma.StringNullableFilter<"Document"> | string | null
+  file_path?: Prisma.StringFilter<"Document"> | string
+  file_type?: Prisma.StringFilter<"Document"> | string
+  description?: Prisma.StringNullableFilter<"Document"> | string | null
+  type?: Prisma.EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
+  created_at?: Prisma.DateTimeFilter<"Document"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
+  is_featured?: Prisma.BoolFilter<"Document"> | boolean
+}
+
 export type DocumentCreateWithoutPropertyInput = {
   id?: string
   file_path: string
@@ -550,10 +688,12 @@ export type DocumentCreateWithoutPropertyInput = {
   deleted_at?: Date | string | null
   is_featured?: boolean
   user?: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateWithoutPropertyInput = {
   id?: string
+  company_id: string
   created_by?: string | null
   file_path: string
   file_type: string
@@ -591,23 +731,6 @@ export type DocumentUpdateManyWithWhereWithoutPropertyInput = {
   data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutPropertyInput>
 }
 
-export type DocumentScalarWhereInput = {
-  AND?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
-  OR?: Prisma.DocumentScalarWhereInput[]
-  NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"Document"> | string
-  property_id?: Prisma.StringFilter<"Document"> | string
-  created_by?: Prisma.StringNullableFilter<"Document"> | string | null
-  file_path?: Prisma.StringFilter<"Document"> | string
-  file_type?: Prisma.StringFilter<"Document"> | string
-  description?: Prisma.StringNullableFilter<"Document"> | string | null
-  type?: Prisma.EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-  created_at?: Prisma.DateTimeFilter<"Document"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Document"> | Date | string
-  deleted_at?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
-  is_featured?: Prisma.BoolFilter<"Document"> | boolean
-}
-
 export type DocumentCreateWithoutUserInput = {
   id?: string
   file_path: string
@@ -619,10 +742,12 @@ export type DocumentCreateWithoutUserInput = {
   deleted_at?: Date | string | null
   is_featured?: boolean
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateWithoutUserInput = {
   id?: string
+  company_id: string
   property_id: string
   file_path: string
   file_type: string
@@ -660,8 +785,65 @@ export type DocumentUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutUserInput>
 }
 
+export type DocumentCreateManyCompanyInput = {
+  id?: string
+  property_id: string
+  created_by?: string | null
+  file_path: string
+  file_type: string
+  description?: string | null
+  type: $Enums.DocumentType
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_featured?: boolean
+}
+
+export type DocumentUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  file_path?: Prisma.StringFieldUpdateOperationsInput | string
+  file_type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneWithoutDocumentsNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  property_id?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_path?: Prisma.StringFieldUpdateOperationsInput | string
+  file_type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type DocumentUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  property_id?: Prisma.StringFieldUpdateOperationsInput | string
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_path?: Prisma.StringFieldUpdateOperationsInput | string
+  file_type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
 export type DocumentCreateManyPropertyInput = {
   id?: string
+  company_id: string
   created_by?: string | null
   file_path: string
   file_type: string
@@ -684,10 +866,12 @@ export type DocumentUpdateWithoutPropertyInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneWithoutDocumentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -701,6 +885,7 @@ export type DocumentUncheckedUpdateWithoutPropertyInput = {
 
 export type DocumentUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -714,6 +899,7 @@ export type DocumentUncheckedUpdateManyWithoutPropertyInput = {
 
 export type DocumentCreateManyUserInput = {
   id?: string
+  company_id: string
   property_id: string
   file_path: string
   file_type: string
@@ -736,10 +922,12 @@ export type DocumentUpdateWithoutUserInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   is_featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -753,6 +941,7 @@ export type DocumentUncheckedUpdateWithoutUserInput = {
 
 export type DocumentUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   file_path?: Prisma.StringFieldUpdateOperationsInput | string
   file_type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -768,6 +957,7 @@ export type DocumentUncheckedUpdateManyWithoutUserInput = {
 
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   property_id?: boolean
   created_by?: boolean
   file_path?: boolean
@@ -780,10 +970,12 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   is_featured?: boolean
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   property_id?: boolean
   created_by?: boolean
   file_path?: boolean
@@ -796,10 +988,12 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   is_featured?: boolean
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   property_id?: boolean
   created_by?: boolean
   file_path?: boolean
@@ -812,10 +1006,12 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   is_featured?: boolean
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectScalar = {
   id?: boolean
+  company_id?: boolean
   property_id?: boolean
   created_by?: boolean
   file_path?: boolean
@@ -828,18 +1024,21 @@ export type DocumentSelectScalar = {
   is_featured?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "created_by" | "file_path" | "file_type" | "description" | "type" | "created_at" | "updated_at" | "deleted_at" | "is_featured", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "property_id" | "created_by" | "file_path" | "file_type" | "description" | "type" | "created_at" | "updated_at" | "deleted_at" | "is_featured", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Document$userArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -847,9 +1046,11 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     user: Prisma.$UserPayload<ExtArgs> | null
     property: Prisma.$PropertyPayload<ExtArgs>
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     property_id: string
     created_by: string | null
     file_path: string
@@ -1256,6 +1457,7 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.Document$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1286,6 +1488,7 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
  */
 export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
+  readonly company_id: Prisma.FieldRef<"Document", 'String'>
   readonly property_id: Prisma.FieldRef<"Document", 'String'>
   readonly created_by: Prisma.FieldRef<"Document", 'String'>
   readonly file_path: Prisma.FieldRef<"Document", 'String'>

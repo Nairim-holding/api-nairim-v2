@@ -185,7 +185,8 @@ export class UserController {
         );
       }
 
-      const user = await UserService.createUser(req.body);
+      const { company_id } = (req as any).user;
+      const user = await UserService.createUser(req.body, company_id);
 
       res.status(201).json(
         ApiResponse.success(user, `Usuário ${user.name} criado com sucesso`)

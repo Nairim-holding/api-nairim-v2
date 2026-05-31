@@ -209,7 +209,8 @@ export class FavoriteService {
       const favorite = await prisma.favorite.create({
         data: {
           user_id: data.user_id,
-          property_id: data.property_id
+          property_id: data.property_id,
+          company_id: data.company_id,
         },
         include: {
           user: {

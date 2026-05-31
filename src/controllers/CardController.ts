@@ -60,7 +60,8 @@ export class CardController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const data = await CardService.createCard(req.body);
+      const { company_id } = (req as any).user;
+      const data = await CardService.createCard(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Cartão criado com sucesso'));
     } catch (error: any) {
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
@@ -126,7 +127,8 @@ export class CardController {
       const { name } = req.body ?? {};
       if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
       
-      const data = await CardService.quickCreate({ name });
+      const { company_id } = (req as any).user;
+      const data = await CardService.quickCreate({ name }, company_id);
       res.status(201).json(ApiResponse.success(data, 'Cartão criado com sucesso'));
     } catch (error: any) {
       res.status(500).json(ApiResponse.error(error.message));

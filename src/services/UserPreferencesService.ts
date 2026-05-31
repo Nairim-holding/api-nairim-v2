@@ -42,7 +42,8 @@ export class UserPreferencesService {
 
   static async saveColumnPreferences(
     userId: string,
-    input: SaveColumnPreferencesInput
+    input: SaveColumnPreferencesInput,
+    company_id: string
   ): Promise<ColumnPreferencesResponse> {
     try {
       console.log(`💾 Saving column preferences: user_id=${userId}, resource=${input.resource}`);
@@ -80,7 +81,8 @@ export class UserPreferencesService {
             user_id: userId,
             resource: input.resource,
             column_order: input.columnOrder,
-            column_widths: input.columnWidths
+            column_widths: input.columnWidths,
+            company_id,
           }
         });
 

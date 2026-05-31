@@ -55,13 +55,14 @@ export class PlanningService {
     };
   }
 
-  static async upsertPlanning(data: UpsertPlanningInput) {
+  static async upsertPlanning(data: UpsertPlanningInput, company_id: string) {
     try {
       const existing = await prisma.planning.findFirst({
         where: {
           category_id: data.category_id,
           subcategory_id: data.subcategory_id ?? null,
           year: Number(data.year),
+          company_id,
           deleted_at: null,
         },
       });
@@ -80,6 +81,7 @@ export class PlanningService {
         min_recommended: min,
         max_recommended: max,
         is_active: true,
+        company_id,
       };
 
       const monthlyValuesData = data.type === 'FIXED'

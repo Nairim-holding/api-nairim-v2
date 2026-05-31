@@ -113,15 +113,16 @@ export class FinancialInstitutionService {
     } catch (error: any) { throw error; }
   }
 
-  static async createInstitution(data: any) {
+  static async createInstitution(data: any, company_id: string) {
     try {
       const newInstitution = await prisma.financialInstitution.create({
-        data: { 
+        data: {
           name: data.name,
           bank_number: data.bank_number || null,
           agency_number: data.agency_number || null,
           account_number: data.account_number || null,
-          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true // <-- CORRIGIDO AQUI
+          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true,
+          company: { connect: { id: company_id } },
         }
       });
       return newInstitution;
@@ -181,20 +182,21 @@ export class FinancialInstitutionService {
     } catch (error: any) { throw error; }
   }
 
-  static async quickCreate(data: { name: string }) {
+  static async quickCreate(data: { name: string }, company_id: string) {
     try {
       const name = String(data.name ?? '').trim();
       if (!name) throw new Error('Nome é obrigatório');
 
       const existing = await prisma.financialInstitution.findFirst({
-        where: { name: { equals: name, mode: 'insensitive' }, deleted_at: null }
+        where: { name: { equals: name, mode: 'insensitive' }, company_id, deleted_at: null }
       });
       if (existing) return existing;
 
       return await prisma.financialInstitution.create({
         data: {
           name,
-          is_active: true
+          is_active: true,
+          company: { connect: { id: company_id } },
         }
       });
     } catch (error: any) {

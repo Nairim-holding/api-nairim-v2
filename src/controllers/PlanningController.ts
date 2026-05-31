@@ -5,7 +5,8 @@ import { ApiResponse } from '../utils/api-response';
 export class PlanningController {
   static async upsert(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await PlanningService.upsertPlanning(req.body);
+      const { company_id } = (req as any).user;
+      const data = await PlanningService.upsertPlanning(req.body, company_id);
       res.status(200).json(ApiResponse.success(data, 'Planejamento salvo com sucesso'));
     } catch (error: any) {
       next(error);

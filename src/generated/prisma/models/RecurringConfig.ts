@@ -40,6 +40,7 @@ export type RecurringConfigSumAggregateOutputType = {
 
 export type RecurringConfigMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   description: string | null
   amount: runtime.Decimal | null
   frequency: $Enums.RecurringFrequency | null
@@ -62,6 +63,7 @@ export type RecurringConfigMinAggregateOutputType = {
 
 export type RecurringConfigMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   description: string | null
   amount: runtime.Decimal | null
   frequency: $Enums.RecurringFrequency | null
@@ -84,6 +86,7 @@ export type RecurringConfigMaxAggregateOutputType = {
 
 export type RecurringConfigCountAggregateOutputType = {
   id: number
+  company_id: number
   description: number
   amount: number
   frequency: number
@@ -120,6 +123,7 @@ export type RecurringConfigSumAggregateInputType = {
 
 export type RecurringConfigMinAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   amount?: true
   frequency?: true
@@ -142,6 +146,7 @@ export type RecurringConfigMinAggregateInputType = {
 
 export type RecurringConfigMaxAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   amount?: true
   frequency?: true
@@ -164,6 +169,7 @@ export type RecurringConfigMaxAggregateInputType = {
 
 export type RecurringConfigCountAggregateInputType = {
   id?: true
+  company_id?: true
   description?: true
   amount?: true
   frequency?: true
@@ -273,6 +279,7 @@ export type RecurringConfigGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type RecurringConfigGroupByOutputType = {
   id: string
+  company_id: string
   description: string
   amount: runtime.Decimal
   frequency: $Enums.RecurringFrequency
@@ -318,6 +325,7 @@ export type RecurringConfigWhereInput = {
   OR?: Prisma.RecurringConfigWhereInput[]
   NOT?: Prisma.RecurringConfigWhereInput | Prisma.RecurringConfigWhereInput[]
   id?: Prisma.StringFilter<"RecurringConfig"> | string
+  company_id?: Prisma.StringFilter<"RecurringConfig"> | string
   description?: Prisma.StringFilter<"RecurringConfig"> | string
   amount?: Prisma.DecimalFilter<"RecurringConfig"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFilter<"RecurringConfig"> | $Enums.RecurringFrequency
@@ -343,10 +351,12 @@ export type RecurringConfigWhereInput = {
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
   transactions?: Prisma.TransactionListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type RecurringConfigOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
@@ -372,6 +382,7 @@ export type RecurringConfigOrderByWithRelationInput = {
   subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   supplier?: Prisma.SupplierOrderByWithRelationInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type RecurringConfigWhereUniqueInput = Prisma.AtLeast<{
@@ -379,6 +390,7 @@ export type RecurringConfigWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.RecurringConfigWhereInput | Prisma.RecurringConfigWhereInput[]
   OR?: Prisma.RecurringConfigWhereInput[]
   NOT?: Prisma.RecurringConfigWhereInput | Prisma.RecurringConfigWhereInput[]
+  company_id?: Prisma.StringFilter<"RecurringConfig"> | string
   description?: Prisma.StringFilter<"RecurringConfig"> | string
   amount?: Prisma.DecimalFilter<"RecurringConfig"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFilter<"RecurringConfig"> | $Enums.RecurringFrequency
@@ -404,10 +416,12 @@ export type RecurringConfigWhereUniqueInput = Prisma.AtLeast<{
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
   transactions?: Prisma.TransactionListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type RecurringConfigOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
@@ -438,6 +452,7 @@ export type RecurringConfigScalarWhereWithAggregatesInput = {
   OR?: Prisma.RecurringConfigScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RecurringConfigScalarWhereWithAggregatesInput | Prisma.RecurringConfigScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"RecurringConfig"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"RecurringConfig"> | string
   description?: Prisma.StringWithAggregatesFilter<"RecurringConfig"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"RecurringConfig"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyWithAggregatesFilter<"RecurringConfig"> | $Enums.RecurringFrequency
@@ -479,10 +494,12 @@ export type RecurringConfigCreateInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -525,10 +542,12 @@ export type RecurringConfigUpdateInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -552,6 +571,7 @@ export type RecurringConfigUncheckedUpdateInput = {
 
 export type RecurringConfigCreateManyInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -590,6 +610,7 @@ export type RecurringConfigUpdateManyMutationInput = {
 
 export type RecurringConfigUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -627,6 +648,7 @@ export type RecurringConfigNullableScalarRelationFilter = {
 
 export type RecurringConfigCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
@@ -655,6 +677,7 @@ export type RecurringConfigAvgOrderByAggregateInput = {
 
 export type RecurringConfigMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
@@ -677,6 +700,7 @@ export type RecurringConfigMaxOrderByAggregateInput = {
 
 export type RecurringConfigMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   description?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
@@ -701,6 +725,48 @@ export type RecurringConfigSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   total_occurrences?: Prisma.SortOrder
   generated_occurrences?: Prisma.SortOrder
+}
+
+export type RecurringConfigCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput> | Prisma.RecurringConfigCreateWithoutCompanyInput[] | Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput | Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.RecurringConfigCreateManyCompanyInputEnvelope
+  connect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+}
+
+export type RecurringConfigUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput> | Prisma.RecurringConfigCreateWithoutCompanyInput[] | Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput | Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.RecurringConfigCreateManyCompanyInputEnvelope
+  connect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+}
+
+export type RecurringConfigUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput> | Prisma.RecurringConfigCreateWithoutCompanyInput[] | Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput | Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.RecurringConfigUpsertWithWhereUniqueWithoutCompanyInput | Prisma.RecurringConfigUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.RecurringConfigCreateManyCompanyInputEnvelope
+  set?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  disconnect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  delete?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  connect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  update?: Prisma.RecurringConfigUpdateWithWhereUniqueWithoutCompanyInput | Prisma.RecurringConfigUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.RecurringConfigUpdateManyWithWhereWithoutCompanyInput | Prisma.RecurringConfigUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
+}
+
+export type RecurringConfigUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput> | Prisma.RecurringConfigCreateWithoutCompanyInput[] | Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput | Prisma.RecurringConfigCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.RecurringConfigUpsertWithWhereUniqueWithoutCompanyInput | Prisma.RecurringConfigUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.RecurringConfigCreateManyCompanyInputEnvelope
+  set?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  disconnect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  delete?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  connect?: Prisma.RecurringConfigWhereUniqueInput | Prisma.RecurringConfigWhereUniqueInput[]
+  update?: Prisma.RecurringConfigUpdateWithWhereUniqueWithoutCompanyInput | Prisma.RecurringConfigUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.RecurringConfigUpdateManyWithWhereWithoutCompanyInput | Prisma.RecurringConfigUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
 }
 
 export type RecurringConfigCreateNestedManyWithoutFinancial_institutionInput = {
@@ -975,6 +1041,104 @@ export type EnumRecurringFrequencyFieldUpdateOperationsInput = {
   set?: $Enums.RecurringFrequency
 }
 
+export type RecurringConfigCreateWithoutCompanyInput = {
+  id?: string
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency: $Enums.RecurringFrequency
+  start_date: Date | string
+  end_date?: Date | string | null
+  next_generation_date?: Date | string | null
+  is_active?: boolean
+  total_occurrences?: number | null
+  generated_occurrences?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  card?: Prisma.CardCreateNestedOneWithoutRecurring_configsInput
+  category: Prisma.CategoryCreateNestedOneWithoutRecurring_configsInput
+  center?: Prisma.CenterCreateNestedOneWithoutRecurring_configsInput
+  financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutRecurring_configsInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+}
+
+export type RecurringConfigUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency: $Enums.RecurringFrequency
+  category_id: string
+  subcategory_id?: string | null
+  financial_institution_id: string
+  card_id?: string | null
+  center_id?: string | null
+  supplier_id?: string | null
+  start_date: Date | string
+  end_date?: Date | string | null
+  next_generation_date?: Date | string | null
+  is_active?: boolean
+  total_occurrences?: number | null
+  generated_occurrences?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutRecurring_configInput
+}
+
+export type RecurringConfigCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.RecurringConfigWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput>
+}
+
+export type RecurringConfigCreateManyCompanyInputEnvelope = {
+  data: Prisma.RecurringConfigCreateManyCompanyInput | Prisma.RecurringConfigCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type RecurringConfigUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.RecurringConfigWhereUniqueInput
+  update: Prisma.XOR<Prisma.RecurringConfigUpdateWithoutCompanyInput, Prisma.RecurringConfigUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.RecurringConfigCreateWithoutCompanyInput, Prisma.RecurringConfigUncheckedCreateWithoutCompanyInput>
+}
+
+export type RecurringConfigUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.RecurringConfigWhereUniqueInput
+  data: Prisma.XOR<Prisma.RecurringConfigUpdateWithoutCompanyInput, Prisma.RecurringConfigUncheckedUpdateWithoutCompanyInput>
+}
+
+export type RecurringConfigUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.RecurringConfigScalarWhereInput
+  data: Prisma.XOR<Prisma.RecurringConfigUpdateManyMutationInput, Prisma.RecurringConfigUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type RecurringConfigScalarWhereInput = {
+  AND?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
+  OR?: Prisma.RecurringConfigScalarWhereInput[]
+  NOT?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
+  id?: Prisma.StringFilter<"RecurringConfig"> | string
+  company_id?: Prisma.StringFilter<"RecurringConfig"> | string
+  description?: Prisma.StringFilter<"RecurringConfig"> | string
+  amount?: Prisma.DecimalFilter<"RecurringConfig"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency?: Prisma.EnumRecurringFrequencyFilter<"RecurringConfig"> | $Enums.RecurringFrequency
+  category_id?: Prisma.StringFilter<"RecurringConfig"> | string
+  subcategory_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
+  financial_institution_id?: Prisma.StringFilter<"RecurringConfig"> | string
+  card_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
+  center_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
+  supplier_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
+  start_date?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
+  end_date?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
+  next_generation_date?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
+  is_active?: Prisma.BoolFilter<"RecurringConfig"> | boolean
+  total_occurrences?: Prisma.IntNullableFilter<"RecurringConfig"> | number | null
+  generated_occurrences?: Prisma.IntFilter<"RecurringConfig"> | number
+  created_at?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
+}
+
 export type RecurringConfigCreateWithoutFinancial_institutionInput = {
   id?: string
   description: string
@@ -995,10 +1159,12 @@ export type RecurringConfigCreateWithoutFinancial_institutionInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutFinancial_institutionInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1045,31 +1211,6 @@ export type RecurringConfigUpdateManyWithWhereWithoutFinancial_institutionInput 
   data: Prisma.XOR<Prisma.RecurringConfigUpdateManyMutationInput, Prisma.RecurringConfigUncheckedUpdateManyWithoutFinancial_institutionInput>
 }
 
-export type RecurringConfigScalarWhereInput = {
-  AND?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
-  OR?: Prisma.RecurringConfigScalarWhereInput[]
-  NOT?: Prisma.RecurringConfigScalarWhereInput | Prisma.RecurringConfigScalarWhereInput[]
-  id?: Prisma.StringFilter<"RecurringConfig"> | string
-  description?: Prisma.StringFilter<"RecurringConfig"> | string
-  amount?: Prisma.DecimalFilter<"RecurringConfig"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  frequency?: Prisma.EnumRecurringFrequencyFilter<"RecurringConfig"> | $Enums.RecurringFrequency
-  category_id?: Prisma.StringFilter<"RecurringConfig"> | string
-  subcategory_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
-  financial_institution_id?: Prisma.StringFilter<"RecurringConfig"> | string
-  card_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
-  center_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
-  supplier_id?: Prisma.StringNullableFilter<"RecurringConfig"> | string | null
-  start_date?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
-  end_date?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
-  next_generation_date?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
-  is_active?: Prisma.BoolFilter<"RecurringConfig"> | boolean
-  total_occurrences?: Prisma.IntNullableFilter<"RecurringConfig"> | number | null
-  generated_occurrences?: Prisma.IntFilter<"RecurringConfig"> | number
-  created_at?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"RecurringConfig"> | Date | string
-  deleted_at?: Prisma.DateTimeNullableFilter<"RecurringConfig"> | Date | string | null
-}
-
 export type RecurringConfigCreateWithoutCategoryInput = {
   id?: string
   description: string
@@ -1090,10 +1231,12 @@ export type RecurringConfigCreateWithoutCategoryInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutCategoryInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1160,10 +1303,12 @@ export type RecurringConfigCreateWithoutSubcategoryInput = {
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutSubcategoryInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1230,10 +1375,12 @@ export type RecurringConfigCreateWithoutCardInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutCardInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1300,10 +1447,12 @@ export type RecurringConfigCreateWithoutCenterInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutCenterInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1370,10 +1519,12 @@ export type RecurringConfigCreateWithoutSupplierInput = {
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutRecurring_configsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutRecurring_configInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutSupplierInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1440,10 +1591,12 @@ export type RecurringConfigCreateWithoutTransactionsInput = {
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutRecurring_configsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutRecurring_configsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutRecurring_configsInput
+  company: Prisma.CompanyCreateNestedOneWithoutRecurring_configsInput
 }
 
 export type RecurringConfigUncheckedCreateWithoutTransactionsInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1500,9 +1653,101 @@ export type RecurringConfigUpdateWithoutTransactionsInput = {
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutRecurring_configsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financial_institution_id?: Prisma.StringFieldUpdateOperationsInput | string
+  card_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  start_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  next_generation_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  total_occurrences?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generated_occurrences?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type RecurringConfigCreateManyCompanyInput = {
+  id?: string
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency: $Enums.RecurringFrequency
+  category_id: string
+  subcategory_id?: string | null
+  financial_institution_id: string
+  card_id?: string | null
+  center_id?: string | null
+  supplier_id?: string | null
+  start_date: Date | string
+  end_date?: Date | string | null
+  next_generation_date?: Date | string | null
+  is_active?: boolean
+  total_occurrences?: number | null
+  generated_occurrences?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type RecurringConfigUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
+  start_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  next_generation_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  total_occurrences?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generated_occurrences?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  card?: Prisma.CardUpdateOneWithoutRecurring_configsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutRecurring_configsNestedInput
+  center?: Prisma.CenterUpdateOneWithoutRecurring_configsNestedInput
+  financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutRecurring_configsNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+}
+
+export type RecurringConfigUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financial_institution_id?: Prisma.StringFieldUpdateOperationsInput | string
+  card_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  start_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  next_generation_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  total_occurrences?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  generated_occurrences?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutRecurring_configNestedInput
+}
+
+export type RecurringConfigUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1526,6 +1771,7 @@ export type RecurringConfigUncheckedUpdateWithoutTransactionsInput = {
 
 export type RecurringConfigCreateManyFinancial_institutionInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1565,10 +1811,12 @@ export type RecurringConfigUpdateWithoutFinancial_institutionInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1591,6 +1839,7 @@ export type RecurringConfigUncheckedUpdateWithoutFinancial_institutionInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1612,6 +1861,7 @@ export type RecurringConfigUncheckedUpdateManyWithoutFinancial_institutionInput 
 
 export type RecurringConfigCreateManyCategoryInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1651,10 +1901,12 @@ export type RecurringConfigUpdateWithoutCategoryInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1677,6 +1929,7 @@ export type RecurringConfigUncheckedUpdateWithoutCategoryInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1698,6 +1951,7 @@ export type RecurringConfigUncheckedUpdateManyWithoutCategoryInput = {
 
 export type RecurringConfigCreateManySubcategoryInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1737,10 +1991,12 @@ export type RecurringConfigUpdateWithoutSubcategoryInput = {
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1763,6 +2019,7 @@ export type RecurringConfigUncheckedUpdateWithoutSubcategoryInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1784,6 +2041,7 @@ export type RecurringConfigUncheckedUpdateManyWithoutSubcategoryInput = {
 
 export type RecurringConfigCreateManyCardInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1823,10 +2081,12 @@ export type RecurringConfigUpdateWithoutCardInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1849,6 +2109,7 @@ export type RecurringConfigUncheckedUpdateWithoutCardInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1870,6 +2131,7 @@ export type RecurringConfigUncheckedUpdateManyWithoutCardInput = {
 
 export type RecurringConfigCreateManyCenterInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1909,10 +2171,12 @@ export type RecurringConfigUpdateWithoutCenterInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1935,6 +2199,7 @@ export type RecurringConfigUncheckedUpdateWithoutCenterInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -1956,6 +2221,7 @@ export type RecurringConfigUncheckedUpdateManyWithoutCenterInput = {
 
 export type RecurringConfigCreateManySupplierInput = {
   id?: string
+  company_id: string
   description: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency: $Enums.RecurringFrequency
@@ -1995,10 +2261,12 @@ export type RecurringConfigUpdateWithoutSupplierInput = {
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutRecurring_configsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutRecurring_configsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutRecurring_configNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutRecurring_configsNestedInput
 }
 
 export type RecurringConfigUncheckedUpdateWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -2021,6 +2289,7 @@ export type RecurringConfigUncheckedUpdateWithoutSupplierInput = {
 
 export type RecurringConfigUncheckedUpdateManyWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   frequency?: Prisma.EnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency
@@ -2073,6 +2342,7 @@ export type RecurringConfigCountOutputTypeCountTransactionsArgs<ExtArgs extends 
 
 export type RecurringConfigSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   amount?: boolean
   frequency?: boolean
@@ -2098,11 +2368,13 @@ export type RecurringConfigSelect<ExtArgs extends runtime.Types.Extensions.Inter
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
   transactions?: boolean | Prisma.RecurringConfig$transactionsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RecurringConfigCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recurringConfig"]>
 
 export type RecurringConfigSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   amount?: boolean
   frequency?: boolean
@@ -2127,10 +2399,12 @@ export type RecurringConfigSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   financial_institution?: boolean | Prisma.FinancialInstitutionDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recurringConfig"]>
 
 export type RecurringConfigSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   description?: boolean
   amount?: boolean
   frequency?: boolean
@@ -2155,10 +2429,12 @@ export type RecurringConfigSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   financial_institution?: boolean | Prisma.FinancialInstitutionDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recurringConfig"]>
 
 export type RecurringConfigSelectScalar = {
   id?: boolean
+  company_id?: boolean
   description?: boolean
   amount?: boolean
   frequency?: boolean
@@ -2179,7 +2455,7 @@ export type RecurringConfigSelectScalar = {
   deleted_at?: boolean
 }
 
-export type RecurringConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "amount" | "frequency" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "supplier_id" | "start_date" | "end_date" | "next_generation_date" | "is_active" | "total_occurrences" | "generated_occurrences" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["recurringConfig"]>
+export type RecurringConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "description" | "amount" | "frequency" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "supplier_id" | "start_date" | "end_date" | "next_generation_date" | "is_active" | "total_occurrences" | "generated_occurrences" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["recurringConfig"]>
 export type RecurringConfigInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.RecurringConfig$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -2188,6 +2464,7 @@ export type RecurringConfigInclude<ExtArgs extends runtime.Types.Extensions.Inte
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
   transactions?: boolean | Prisma.RecurringConfig$transactionsArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RecurringConfigCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecurringConfigIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2197,6 +2474,7 @@ export type RecurringConfigIncludeCreateManyAndReturn<ExtArgs extends runtime.Ty
   financial_institution?: boolean | Prisma.FinancialInstitutionDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type RecurringConfigIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.RecurringConfig$cardArgs<ExtArgs>
@@ -2205,6 +2483,7 @@ export type RecurringConfigIncludeUpdateManyAndReturn<ExtArgs extends runtime.Ty
   financial_institution?: boolean | Prisma.FinancialInstitutionDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.RecurringConfig$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.RecurringConfig$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $RecurringConfigPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2217,9 +2496,11 @@ export type $RecurringConfigPayload<ExtArgs extends runtime.Types.Extensions.Int
     subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     supplier: Prisma.$SupplierPayload<ExtArgs> | null
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     description: string
     amount: runtime.Decimal
     frequency: $Enums.RecurringFrequency
@@ -2639,6 +2920,7 @@ export interface Prisma__RecurringConfigClient<T, Null = never, ExtArgs extends 
   subcategory<T extends Prisma.RecurringConfig$subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecurringConfig$subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   supplier<T extends Prisma.RecurringConfig$supplierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecurringConfig$supplierArgs<ExtArgs>>): Prisma.Prisma__SupplierClient<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transactions<T extends Prisma.RecurringConfig$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecurringConfig$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2669,6 +2951,7 @@ export interface Prisma__RecurringConfigClient<T, Null = never, ExtArgs extends 
  */
 export interface RecurringConfigFieldRefs {
   readonly id: Prisma.FieldRef<"RecurringConfig", 'String'>
+  readonly company_id: Prisma.FieldRef<"RecurringConfig", 'String'>
   readonly description: Prisma.FieldRef<"RecurringConfig", 'String'>
   readonly amount: Prisma.FieldRef<"RecurringConfig", 'Decimal'>
   readonly frequency: Prisma.FieldRef<"RecurringConfig", 'RecurringFrequency'>

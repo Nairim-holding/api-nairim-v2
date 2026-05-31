@@ -57,7 +57,8 @@ export class FinancialInstitutionController {
       const validation = FinancialInstitutionValidator.validateCreate(req.body);
       if (!validation.isValid) return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
 
-      const data = await FinancialInstitutionService.createInstitution(req.body);
+      const { company_id } = (req as any).user;
+      const data = await FinancialInstitutionService.createInstitution(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Instituição criada com sucesso'));
     } catch (error: any) {
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
@@ -120,7 +121,8 @@ export class FinancialInstitutionController {
       const { name } = req.body ?? {};
       if (!name) return res.status(400).json(ApiResponse.error('Nome é obrigatório'));
       
-      const data = await FinancialInstitutionService.quickCreate({ name });
+      const { company_id } = (req as any).user;
+      const data = await FinancialInstitutionService.quickCreate({ name }, company_id);
       res.status(201).json(ApiResponse.success(data, 'Instituição criada com sucesso'));
     } catch (error: any) {
       res.status(500).json(ApiResponse.error(error.message));

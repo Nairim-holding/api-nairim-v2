@@ -65,7 +65,7 @@ export class InvoiceService {
   }
 
   // Criar nova fatura
-  static async createInvoice(data: CreateInvoiceInput) {
+  static async createInvoice(data: CreateInvoiceInput, company_id: string) {
     const { card_id, month, year, closing_date, due_date } = data;
 
     // Verificar se o cartão existe
@@ -117,7 +117,8 @@ export class InvoiceService {
         due_date: finalDueDate,
         total_amount: 0,
         paid_amount: 0,
-        status: 'PENDING'
+        status: 'PENDING',
+        company_id,
       },
       include: {
         card: {
@@ -229,16 +230,17 @@ export class InvoiceService {
 
   // Criar transação de pagamento da fatura
   private static async createPaymentTransaction(
-    invoice: any, 
-    institutionId: string, 
-    paidDate: Date, 
-    paidAmount: number
+    invoice: any,
+    institutionId: string,
+    paidDate: Date,
+    paidAmount: number,
+    company_id: string
   ) {
-    // Buscar ou criar categoria "Pagamento de Cartão"
     let category = await prisma.category.findFirst({
-      where: { 
+      where: {
         name: { contains: 'Pagamento de Cartão', mode: 'insensitive' },
-        type: 'EXPENSE'
+        type: 'EXPENSE',
+        company_id,
       }
     });
 
@@ -247,12 +249,12 @@ export class InvoiceService {
         data: {
           name: 'Pagamento de Cartão',
           type: 'EXPENSE',
-          is_system: true
+          is_system: true,
+          company: { connect: { id: company_id } },
         }
       });
     }
 
-    // Criar a transação de despesa
     await prisma.transaction.create({
       data: {
         description: `Pagamento fatura ${invoice.card.name} - ${String(invoice.month).padStart(2, '0')}/${invoice.year}`,
@@ -263,7 +265,8 @@ export class InvoiceService {
         category_id: category.id,
         financial_institution_id: institutionId,
         card_id: invoice.card_id,
-        invoice_id: invoice.id
+        invoice_id: invoice.id,
+        company_id,
       }
     });
   }
@@ -295,27 +298,19 @@ export class InvoiceService {
 
   // Buscar ou criar fatura automaticamente
   static async findOrCreateInvoice(
-    cardId: string, 
-    month: number, 
-    year: number
+    cardId: string,
+    month: number,
+    year: number,
+    company_id: string
   ) {
-    // Tentar buscar fatura existente
-    let invoice = await prisma.invoice.findUnique({
-      where: {
-        card_id_month_year: { card_id: cardId, month, year }
-      }
+    let invoice = await prisma.invoice.findFirst({
+      where: { card_id: cardId, month, year, company_id }
     });
 
-    // Se não existe, criar automaticamente
     if (!invoice) {
-      invoice = await this.createInvoice({
-        card_id: cardId,
-        month,
-        year
-      });
+      invoice = await this.createInvoice({ card_id: cardId, month, year }, company_id);
     }
 
-    // Retorna a fatura independente do status
     return invoice;
   }
 

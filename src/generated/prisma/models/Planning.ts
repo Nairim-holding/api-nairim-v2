@@ -42,6 +42,7 @@ export type PlanningSumAggregateOutputType = {
 
 export type PlanningMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   category_id: string | null
   subcategory_id: string | null
   year: number | null
@@ -57,6 +58,7 @@ export type PlanningMinAggregateOutputType = {
 
 export type PlanningMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   category_id: string | null
   subcategory_id: string | null
   year: number | null
@@ -72,6 +74,7 @@ export type PlanningMaxAggregateOutputType = {
 
 export type PlanningCountAggregateOutputType = {
   id: number
+  company_id: number
   category_id: number
   subcategory_id: number
   year: number
@@ -103,6 +106,7 @@ export type PlanningSumAggregateInputType = {
 
 export type PlanningMinAggregateInputType = {
   id?: true
+  company_id?: true
   category_id?: true
   subcategory_id?: true
   year?: true
@@ -118,6 +122,7 @@ export type PlanningMinAggregateInputType = {
 
 export type PlanningMaxAggregateInputType = {
   id?: true
+  company_id?: true
   category_id?: true
   subcategory_id?: true
   year?: true
@@ -133,6 +138,7 @@ export type PlanningMaxAggregateInputType = {
 
 export type PlanningCountAggregateInputType = {
   id?: true
+  company_id?: true
   category_id?: true
   subcategory_id?: true
   year?: true
@@ -235,6 +241,7 @@ export type PlanningGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type PlanningGroupByOutputType = {
   id: string
+  company_id: string
   category_id: string
   subcategory_id: string | null
   year: number
@@ -273,6 +280,7 @@ export type PlanningWhereInput = {
   OR?: Prisma.PlanningWhereInput[]
   NOT?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
   id?: Prisma.StringFilter<"Planning"> | string
+  company_id?: Prisma.StringFilter<"Planning"> | string
   category_id?: Prisma.StringFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
   year?: Prisma.IntFilter<"Planning"> | number
@@ -287,10 +295,12 @@ export type PlanningWhereInput = {
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   monthly_values?: Prisma.PlanningMonthListRelationFilter
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type PlanningOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -305,14 +315,16 @@ export type PlanningOrderByWithRelationInput = {
   category?: Prisma.CategoryOrderByWithRelationInput
   subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   monthly_values?: Prisma.PlanningMonthOrderByRelationAggregateInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  category_id_subcategory_id_year?: Prisma.PlanningCategory_idSubcategory_idYearCompoundUniqueInput
+  company_id_category_id_subcategory_id_year?: Prisma.PlanningCompany_idCategory_idSubcategory_idYearCompoundUniqueInput
   AND?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
   OR?: Prisma.PlanningWhereInput[]
   NOT?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
+  company_id?: Prisma.StringFilter<"Planning"> | string
   category_id?: Prisma.StringFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
   year?: Prisma.IntFilter<"Planning"> | number
@@ -327,10 +339,12 @@ export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   monthly_values?: Prisma.PlanningMonthListRelationFilter
-}, "id" | "category_id_subcategory_id_year">
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+}, "id" | "company_id_category_id_subcategory_id_year">
 
 export type PlanningOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -354,6 +368,7 @@ export type PlanningScalarWhereWithAggregatesInput = {
   OR?: Prisma.PlanningScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanningScalarWhereWithAggregatesInput | Prisma.PlanningScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Planning"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Planning"> | string
   category_id?: Prisma.StringWithAggregatesFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Planning"> | string | null
   year?: Prisma.IntWithAggregatesFilter<"Planning"> | number
@@ -381,10 +396,12 @@ export type PlanningCreateInput = {
   category: Prisma.CategoryCreateNestedOneWithoutPlanningsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPlanningsInput
   monthly_values?: Prisma.PlanningMonthCreateNestedManyWithoutPlanningInput
+  company: Prisma.CompanyCreateNestedOneWithoutPlanningsInput
 }
 
 export type PlanningUncheckedCreateInput = {
   id?: string
+  company_id: string
   category_id: string
   subcategory_id?: string | null
   year: number
@@ -413,10 +430,12 @@ export type PlanningUpdateInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutPlanningsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPlanningsNestedInput
   monthly_values?: Prisma.PlanningMonthUpdateManyWithoutPlanningNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPlanningsNestedInput
 }
 
 export type PlanningUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -433,6 +452,7 @@ export type PlanningUncheckedUpdateInput = {
 
 export type PlanningCreateManyInput = {
   id?: string
+  company_id: string
   category_id: string
   subcategory_id?: string | null
   year: number
@@ -461,6 +481,7 @@ export type PlanningUpdateManyMutationInput = {
 
 export type PlanningUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -484,7 +505,8 @@ export type PlanningOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type PlanningCategory_idSubcategory_idYearCompoundUniqueInput = {
+export type PlanningCompany_idCategory_idSubcategory_idYearCompoundUniqueInput = {
+  company_id: string
   category_id: string
   subcategory_id: string
   year: number
@@ -492,6 +514,7 @@ export type PlanningCategory_idSubcategory_idYearCompoundUniqueInput = {
 
 export type PlanningCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -514,6 +537,7 @@ export type PlanningAvgOrderByAggregateInput = {
 
 export type PlanningMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -529,6 +553,7 @@ export type PlanningMaxOrderByAggregateInput = {
 
 export type PlanningMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -552,6 +577,48 @@ export type PlanningSumOrderByAggregateInput = {
 export type PlanningScalarRelationFilter = {
   is?: Prisma.PlanningWhereInput
   isNot?: Prisma.PlanningWhereInput
+}
+
+export type PlanningCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput> | Prisma.PlanningCreateWithoutCompanyInput[] | Prisma.PlanningUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PlanningCreateOrConnectWithoutCompanyInput | Prisma.PlanningCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.PlanningCreateManyCompanyInputEnvelope
+  connect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+}
+
+export type PlanningUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput> | Prisma.PlanningCreateWithoutCompanyInput[] | Prisma.PlanningUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PlanningCreateOrConnectWithoutCompanyInput | Prisma.PlanningCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.PlanningCreateManyCompanyInputEnvelope
+  connect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+}
+
+export type PlanningUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput> | Prisma.PlanningCreateWithoutCompanyInput[] | Prisma.PlanningUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PlanningCreateOrConnectWithoutCompanyInput | Prisma.PlanningCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.PlanningUpsertWithWhereUniqueWithoutCompanyInput | Prisma.PlanningUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.PlanningCreateManyCompanyInputEnvelope
+  set?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  disconnect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  delete?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  connect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  update?: Prisma.PlanningUpdateWithWhereUniqueWithoutCompanyInput | Prisma.PlanningUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.PlanningUpdateManyWithWhereWithoutCompanyInput | Prisma.PlanningUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
+}
+
+export type PlanningUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput> | Prisma.PlanningCreateWithoutCompanyInput[] | Prisma.PlanningUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.PlanningCreateOrConnectWithoutCompanyInput | Prisma.PlanningCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.PlanningUpsertWithWhereUniqueWithoutCompanyInput | Prisma.PlanningUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.PlanningCreateManyCompanyInputEnvelope
+  set?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  disconnect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  delete?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  connect?: Prisma.PlanningWhereUniqueInput | Prisma.PlanningWhereUniqueInput[]
+  update?: Prisma.PlanningUpdateWithWhereUniqueWithoutCompanyInput | Prisma.PlanningUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.PlanningUpdateManyWithWhereWithoutCompanyInput | Prisma.PlanningUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
 }
 
 export type PlanningCreateNestedManyWithoutCategoryInput = {
@@ -656,6 +723,83 @@ export type PlanningUpdateOneRequiredWithoutMonthly_valuesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlanningUpdateToOneWithWhereWithoutMonthly_valuesInput, Prisma.PlanningUpdateWithoutMonthly_valuesInput>, Prisma.PlanningUncheckedUpdateWithoutMonthly_valuesInput>
 }
 
+export type PlanningCreateWithoutCompanyInput = {
+  id?: string
+  year: number
+  type: $Enums.PlanningType
+  default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  category: Prisma.CategoryCreateNestedOneWithoutPlanningsInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPlanningsInput
+  monthly_values?: Prisma.PlanningMonthCreateNestedManyWithoutPlanningInput
+}
+
+export type PlanningUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  category_id: string
+  subcategory_id?: string | null
+  year: number
+  type: $Enums.PlanningType
+  default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  monthly_values?: Prisma.PlanningMonthUncheckedCreateNestedManyWithoutPlanningInput
+}
+
+export type PlanningCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.PlanningWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput>
+}
+
+export type PlanningCreateManyCompanyInputEnvelope = {
+  data: Prisma.PlanningCreateManyCompanyInput | Prisma.PlanningCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type PlanningUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.PlanningWhereUniqueInput
+  update: Prisma.XOR<Prisma.PlanningUpdateWithoutCompanyInput, Prisma.PlanningUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.PlanningCreateWithoutCompanyInput, Prisma.PlanningUncheckedCreateWithoutCompanyInput>
+}
+
+export type PlanningUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.PlanningWhereUniqueInput
+  data: Prisma.XOR<Prisma.PlanningUpdateWithoutCompanyInput, Prisma.PlanningUncheckedUpdateWithoutCompanyInput>
+}
+
+export type PlanningUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.PlanningScalarWhereInput
+  data: Prisma.XOR<Prisma.PlanningUpdateManyMutationInput, Prisma.PlanningUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type PlanningScalarWhereInput = {
+  AND?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
+  OR?: Prisma.PlanningScalarWhereInput[]
+  NOT?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
+  id?: Prisma.StringFilter<"Planning"> | string
+  company_id?: Prisma.StringFilter<"Planning"> | string
+  category_id?: Prisma.StringFilter<"Planning"> | string
+  subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
+  year?: Prisma.IntFilter<"Planning"> | number
+  type?: Prisma.EnumPlanningTypeFilter<"Planning"> | $Enums.PlanningType
+  default_amount?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: Prisma.BoolFilter<"Planning"> | boolean
+  created_at?: Prisma.DateTimeFilter<"Planning"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Planning"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Planning"> | Date | string | null
+}
+
 export type PlanningCreateWithoutCategoryInput = {
   id?: string
   year: number
@@ -669,10 +813,12 @@ export type PlanningCreateWithoutCategoryInput = {
   deleted_at?: Date | string | null
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPlanningsInput
   monthly_values?: Prisma.PlanningMonthCreateNestedManyWithoutPlanningInput
+  company: Prisma.CompanyCreateNestedOneWithoutPlanningsInput
 }
 
 export type PlanningUncheckedCreateWithoutCategoryInput = {
   id?: string
+  company_id: string
   subcategory_id?: string | null
   year: number
   type: $Enums.PlanningType
@@ -712,24 +858,6 @@ export type PlanningUpdateManyWithWhereWithoutCategoryInput = {
   data: Prisma.XOR<Prisma.PlanningUpdateManyMutationInput, Prisma.PlanningUncheckedUpdateManyWithoutCategoryInput>
 }
 
-export type PlanningScalarWhereInput = {
-  AND?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
-  OR?: Prisma.PlanningScalarWhereInput[]
-  NOT?: Prisma.PlanningScalarWhereInput | Prisma.PlanningScalarWhereInput[]
-  id?: Prisma.StringFilter<"Planning"> | string
-  category_id?: Prisma.StringFilter<"Planning"> | string
-  subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
-  year?: Prisma.IntFilter<"Planning"> | number
-  type?: Prisma.EnumPlanningTypeFilter<"Planning"> | $Enums.PlanningType
-  default_amount?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  min_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  max_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  is_active?: Prisma.BoolFilter<"Planning"> | boolean
-  created_at?: Prisma.DateTimeFilter<"Planning"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Planning"> | Date | string
-  deleted_at?: Prisma.DateTimeNullableFilter<"Planning"> | Date | string | null
-}
-
 export type PlanningCreateWithoutSubcategoryInput = {
   id?: string
   year: number
@@ -743,10 +871,12 @@ export type PlanningCreateWithoutSubcategoryInput = {
   deleted_at?: Date | string | null
   category: Prisma.CategoryCreateNestedOneWithoutPlanningsInput
   monthly_values?: Prisma.PlanningMonthCreateNestedManyWithoutPlanningInput
+  company: Prisma.CompanyCreateNestedOneWithoutPlanningsInput
 }
 
 export type PlanningUncheckedCreateWithoutSubcategoryInput = {
   id?: string
+  company_id: string
   category_id: string
   year: number
   type: $Enums.PlanningType
@@ -799,10 +929,12 @@ export type PlanningCreateWithoutMonthly_valuesInput = {
   deleted_at?: Date | string | null
   category: Prisma.CategoryCreateNestedOneWithoutPlanningsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPlanningsInput
+  company: Prisma.CompanyCreateNestedOneWithoutPlanningsInput
 }
 
 export type PlanningUncheckedCreateWithoutMonthly_valuesInput = {
   id?: string
+  company_id: string
   category_id: string
   subcategory_id?: string | null
   year: number
@@ -845,9 +977,73 @@ export type PlanningUpdateWithoutMonthly_valuesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutPlanningsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPlanningsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPlanningsNestedInput
 }
 
 export type PlanningUncheckedUpdateWithoutMonthly_valuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
+  default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PlanningCreateManyCompanyInput = {
+  id?: string
+  category_id: string
+  subcategory_id?: string | null
+  year: number
+  type: $Enums.PlanningType
+  default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type PlanningUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
+  default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  category?: Prisma.CategoryUpdateOneRequiredWithoutPlanningsNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutPlanningsNestedInput
+  monthly_values?: Prisma.PlanningMonthUpdateManyWithoutPlanningNestedInput
+}
+
+export type PlanningUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
+  default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  max_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  monthly_values?: Prisma.PlanningMonthUncheckedUpdateManyWithoutPlanningNestedInput
+}
+
+export type PlanningUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -864,6 +1060,7 @@ export type PlanningUncheckedUpdateWithoutMonthly_valuesInput = {
 
 export type PlanningCreateManyCategoryInput = {
   id?: string
+  company_id: string
   subcategory_id?: string | null
   year: number
   type: $Enums.PlanningType
@@ -889,10 +1086,12 @@ export type PlanningUpdateWithoutCategoryInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPlanningsNestedInput
   monthly_values?: Prisma.PlanningMonthUpdateManyWithoutPlanningNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPlanningsNestedInput
 }
 
 export type PlanningUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
@@ -908,6 +1107,7 @@ export type PlanningUncheckedUpdateWithoutCategoryInput = {
 
 export type PlanningUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
@@ -922,6 +1122,7 @@ export type PlanningUncheckedUpdateManyWithoutCategoryInput = {
 
 export type PlanningCreateManySubcategoryInput = {
   id?: string
+  company_id: string
   category_id: string
   year: number
   type: $Enums.PlanningType
@@ -947,10 +1148,12 @@ export type PlanningUpdateWithoutSubcategoryInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutPlanningsNestedInput
   monthly_values?: Prisma.PlanningMonthUpdateManyWithoutPlanningNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPlanningsNestedInput
 }
 
 export type PlanningUncheckedUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
@@ -966,6 +1169,7 @@ export type PlanningUncheckedUpdateWithoutSubcategoryInput = {
 
 export type PlanningUncheckedUpdateManyWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
@@ -1011,6 +1215,7 @@ export type PlanningCountOutputTypeCountMonthly_valuesArgs<ExtArgs extends runti
 
 export type PlanningSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
   year?: boolean
@@ -1025,11 +1230,13 @@ export type PlanningSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
   monthly_values?: boolean | Prisma.Planning$monthly_valuesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PlanningCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planning"]>
 
 export type PlanningSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
   year?: boolean
@@ -1043,10 +1250,12 @@ export type PlanningSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   deleted_at?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planning"]>
 
 export type PlanningSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
   year?: boolean
@@ -1060,10 +1269,12 @@ export type PlanningSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   deleted_at?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planning"]>
 
 export type PlanningSelectScalar = {
   id?: boolean
+  company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
   year?: boolean
@@ -1077,20 +1288,23 @@ export type PlanningSelectScalar = {
   deleted_at?: boolean
 }
 
-export type PlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "category_id" | "subcategory_id" | "year" | "type" | "default_amount" | "min_recommended" | "max_recommended" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["planning"]>
+export type PlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "category_id" | "subcategory_id" | "year" | "type" | "default_amount" | "min_recommended" | "max_recommended" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["planning"]>
 export type PlanningInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
   monthly_values?: boolean | Prisma.Planning$monthly_valuesArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PlanningCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlanningIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type PlanningIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $PlanningPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1099,9 +1313,11 @@ export type $PlanningPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     category: Prisma.$CategoryPayload<ExtArgs>
     subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     monthly_values: Prisma.$PlanningMonthPayload<ExtArgs>[]
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     category_id: string
     subcategory_id: string | null
     year: number
@@ -1510,6 +1726,7 @@ export interface Prisma__PlanningClient<T, Null = never, ExtArgs extends runtime
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   subcategory<T extends Prisma.Planning$subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Planning$subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   monthly_values<T extends Prisma.Planning$monthly_valuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Planning$monthly_valuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningMonthPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1540,6 +1757,7 @@ export interface Prisma__PlanningClient<T, Null = never, ExtArgs extends runtime
  */
 export interface PlanningFieldRefs {
   readonly id: Prisma.FieldRef<"Planning", 'String'>
+  readonly company_id: Prisma.FieldRef<"Planning", 'String'>
   readonly category_id: Prisma.FieldRef<"Planning", 'String'>
   readonly subcategory_id: Prisma.FieldRef<"Planning", 'String'>
   readonly year: Prisma.FieldRef<"Planning", 'Int'>

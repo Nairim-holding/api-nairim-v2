@@ -42,6 +42,7 @@ export type TransactionSumAggregateOutputType = {
 
 export type TransactionMinAggregateOutputType = {
   id: string | null
+  company_id: string | null
   event_date: Date | null
   effective_date: Date | null
   purchase_date: Date | null
@@ -70,6 +71,7 @@ export type TransactionMinAggregateOutputType = {
 
 export type TransactionMaxAggregateOutputType = {
   id: string | null
+  company_id: string | null
   event_date: Date | null
   effective_date: Date | null
   purchase_date: Date | null
@@ -98,6 +100,7 @@ export type TransactionMaxAggregateOutputType = {
 
 export type TransactionCountAggregateOutputType = {
   id: number
+  company_id: number
   event_date: number
   effective_date: number
   purchase_date: number
@@ -142,6 +145,7 @@ export type TransactionSumAggregateInputType = {
 
 export type TransactionMinAggregateInputType = {
   id?: true
+  company_id?: true
   event_date?: true
   effective_date?: true
   purchase_date?: true
@@ -170,6 +174,7 @@ export type TransactionMinAggregateInputType = {
 
 export type TransactionMaxAggregateInputType = {
   id?: true
+  company_id?: true
   event_date?: true
   effective_date?: true
   purchase_date?: true
@@ -198,6 +203,7 @@ export type TransactionMaxAggregateInputType = {
 
 export type TransactionCountAggregateInputType = {
   id?: true
+  company_id?: true
   event_date?: true
   effective_date?: true
   purchase_date?: true
@@ -313,6 +319,7 @@ export type TransactionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type TransactionGroupByOutputType = {
   id: string
+  company_id: string
   event_date: Date
   effective_date: Date
   purchase_date: Date | null
@@ -364,6 +371,7 @@ export type TransactionWhereInput = {
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   id?: Prisma.StringFilter<"Transaction"> | string
+  company_id?: Prisma.StringFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
@@ -398,10 +406,12 @@ export type TransactionWhereInput = {
   recurring_config?: Prisma.XOR<Prisma.RecurringConfigNullableScalarRelationFilter, Prisma.RecurringConfigWhereInput> | null
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type TransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
   purchase_date?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -436,6 +446,7 @@ export type TransactionOrderByWithRelationInput = {
   recurring_config?: Prisma.RecurringConfigOrderByWithRelationInput
   subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   supplier?: Prisma.SupplierOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -443,6 +454,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   OR?: Prisma.TransactionWhereInput[]
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
+  company_id?: Prisma.StringFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
@@ -477,10 +489,12 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   recurring_config?: Prisma.XOR<Prisma.RecurringConfigNullableScalarRelationFilter, Prisma.RecurringConfigWhereInput> | null
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type TransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
   purchase_date?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -517,6 +531,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
   OR?: Prisma.TransactionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
+  company_id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   event_date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   effective_date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   purchase_date?: Prisma.DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
@@ -570,10 +585,12 @@ export type TransactionCreateInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -628,10 +645,12 @@ export type TransactionUpdateInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -661,6 +680,7 @@ export type TransactionUncheckedUpdateInput = {
 
 export type TransactionCreateManyInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -708,6 +728,7 @@ export type TransactionUpdateManyMutationInput = {
 
 export type TransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -751,6 +772,7 @@ export type TransactionNullableScalarRelationFilter = {
 
 export type TransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
   purchase_date?: Prisma.SortOrder
@@ -786,6 +808,7 @@ export type TransactionAvgOrderByAggregateInput = {
 
 export type TransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
   purchase_date?: Prisma.SortOrder
@@ -814,6 +837,7 @@ export type TransactionMaxOrderByAggregateInput = {
 
 export type TransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  company_id?: Prisma.SortOrder
   event_date?: Prisma.SortOrder
   effective_date?: Prisma.SortOrder
   purchase_date?: Prisma.SortOrder
@@ -845,6 +869,48 @@ export type TransactionSumOrderByAggregateInput = {
   installment_number?: Prisma.SortOrder
   occurrence_number?: Prisma.SortOrder
   total_installments?: Prisma.SortOrder
+}
+
+export type TransactionCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput> | Prisma.TransactionCreateWithoutCompanyInput[] | Prisma.TransactionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutCompanyInput | Prisma.TransactionCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.TransactionCreateManyCompanyInputEnvelope
+  connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+}
+
+export type TransactionUncheckedCreateNestedManyWithoutCompanyInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput> | Prisma.TransactionCreateWithoutCompanyInput[] | Prisma.TransactionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutCompanyInput | Prisma.TransactionCreateOrConnectWithoutCompanyInput[]
+  createMany?: Prisma.TransactionCreateManyCompanyInputEnvelope
+  connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+}
+
+export type TransactionUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput> | Prisma.TransactionCreateWithoutCompanyInput[] | Prisma.TransactionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutCompanyInput | Prisma.TransactionCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutCompanyInput | Prisma.TransactionUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.TransactionCreateManyCompanyInputEnvelope
+  set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  update?: Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput | Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput | Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
+}
+
+export type TransactionUncheckedUpdateManyWithoutCompanyNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput> | Prisma.TransactionCreateWithoutCompanyInput[] | Prisma.TransactionUncheckedCreateWithoutCompanyInput[]
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutCompanyInput | Prisma.TransactionCreateOrConnectWithoutCompanyInput[]
+  upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutCompanyInput | Prisma.TransactionUpsertWithWhereUniqueWithoutCompanyInput[]
+  createMany?: Prisma.TransactionCreateManyCompanyInputEnvelope
+  set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[]
+  update?: Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput | Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput[]
+  updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput | Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput[]
+  deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
 }
 
 export type TransactionCreateNestedManyWithoutFinancial_institutionInput = {
@@ -1253,6 +1319,122 @@ export type TransactionUncheckedUpdateManyWithoutRecurring_configNestedInput = {
   deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
 }
 
+export type TransactionCreateWithoutCompanyInput = {
+  id?: string
+  event_date: Date | string
+  effective_date: Date | string
+  purchase_date?: Date | string | null
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TransactionStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  installment_number?: number | null
+  is_recurring?: boolean
+  occurrence_number?: number | null
+  payment_mode?: $Enums.PaymentMode | null
+  recurring_frequency?: $Enums.RecurringFrequency | null
+  total_installments?: number | null
+  card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
+  category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
+  center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
+  financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutTransactionsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutTransactionsInput
+  parent_transaction?: Prisma.TransactionCreateNestedOneWithoutChild_transactionsInput
+  child_transactions?: Prisma.TransactionCreateNestedManyWithoutParent_transactionInput
+  recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+}
+
+export type TransactionUncheckedCreateWithoutCompanyInput = {
+  id?: string
+  event_date: Date | string
+  effective_date: Date | string
+  purchase_date?: Date | string | null
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TransactionStatus
+  category_id: string
+  subcategory_id?: string | null
+  financial_institution_id: string
+  card_id?: string | null
+  center_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  supplier_id?: string | null
+  installment_number?: number | null
+  is_recurring?: boolean
+  occurrence_number?: number | null
+  parent_transaction_id?: string | null
+  payment_mode?: $Enums.PaymentMode | null
+  recurring_frequency?: $Enums.RecurringFrequency | null
+  recurring_group_id?: string | null
+  total_installments?: number | null
+  invoice_id?: string | null
+  child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+}
+
+export type TransactionCreateOrConnectWithoutCompanyInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput>
+}
+
+export type TransactionCreateManyCompanyInputEnvelope = {
+  data: Prisma.TransactionCreateManyCompanyInput | Prisma.TransactionCreateManyCompanyInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransactionUpsertWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransactionUpdateWithoutCompanyInput, Prisma.TransactionUncheckedUpdateWithoutCompanyInput>
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutCompanyInput, Prisma.TransactionUncheckedCreateWithoutCompanyInput>
+}
+
+export type TransactionUpdateWithWhereUniqueWithoutCompanyInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransactionUpdateWithoutCompanyInput, Prisma.TransactionUncheckedUpdateWithoutCompanyInput>
+}
+
+export type TransactionUpdateManyWithWhereWithoutCompanyInput = {
+  where: Prisma.TransactionScalarWhereInput
+  data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutCompanyInput>
+}
+
+export type TransactionScalarWhereInput = {
+  AND?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
+  OR?: Prisma.TransactionScalarWhereInput[]
+  NOT?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
+  id?: Prisma.StringFilter<"Transaction"> | string
+  company_id?: Prisma.StringFilter<"Transaction"> | string
+  event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
+  description?: Prisma.StringFilter<"Transaction"> | string
+  amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
+  category_id?: Prisma.StringFilter<"Transaction"> | string
+  subcategory_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  financial_institution_id?: Prisma.StringFilter<"Transaction"> | string
+  card_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  center_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  created_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
+  deleted_at?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
+  supplier_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  installment_number?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  is_recurring?: Prisma.BoolFilter<"Transaction"> | boolean
+  occurrence_number?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  parent_transaction_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  payment_mode?: Prisma.EnumPaymentModeNullableFilter<"Transaction"> | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.EnumRecurringFrequencyNullableFilter<"Transaction"> | $Enums.RecurringFrequency | null
+  recurring_group_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  total_installments?: Prisma.IntNullableFilter<"Transaction"> | number | null
+  invoice_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+}
+
 export type TransactionCreateWithoutFinancial_institutionInput = {
   id?: string
   event_date: Date | string
@@ -1279,10 +1461,12 @@ export type TransactionCreateWithoutFinancial_institutionInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutFinancial_institutionInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1335,37 +1519,6 @@ export type TransactionUpdateManyWithWhereWithoutFinancial_institutionInput = {
   data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutFinancial_institutionInput>
 }
 
-export type TransactionScalarWhereInput = {
-  AND?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
-  OR?: Prisma.TransactionScalarWhereInput[]
-  NOT?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
-  id?: Prisma.StringFilter<"Transaction"> | string
-  event_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  effective_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  purchase_date?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
-  description?: Prisma.StringFilter<"Transaction"> | string
-  amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
-  category_id?: Prisma.StringFilter<"Transaction"> | string
-  subcategory_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  financial_institution_id?: Prisma.StringFilter<"Transaction"> | string
-  card_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  center_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  created_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  deleted_at?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null
-  supplier_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  installment_number?: Prisma.IntNullableFilter<"Transaction"> | number | null
-  is_recurring?: Prisma.BoolFilter<"Transaction"> | boolean
-  occurrence_number?: Prisma.IntNullableFilter<"Transaction"> | number | null
-  parent_transaction_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  payment_mode?: Prisma.EnumPaymentModeNullableFilter<"Transaction"> | $Enums.PaymentMode | null
-  recurring_frequency?: Prisma.EnumRecurringFrequencyNullableFilter<"Transaction"> | $Enums.RecurringFrequency | null
-  recurring_group_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-  total_installments?: Prisma.IntNullableFilter<"Transaction"> | number | null
-  invoice_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
-}
-
 export type TransactionCreateWithoutCategoryInput = {
   id?: string
   event_date: Date | string
@@ -1392,10 +1545,12 @@ export type TransactionCreateWithoutCategoryInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutCategoryInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1474,10 +1629,12 @@ export type TransactionCreateWithoutSubcategoryInput = {
   child_transactions?: Prisma.TransactionCreateNestedManyWithoutParent_transactionInput
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutSubcategoryInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1556,10 +1713,12 @@ export type TransactionCreateWithoutCardInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutCardInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1638,10 +1797,12 @@ export type TransactionCreateWithoutCenterInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutCenterInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1720,10 +1881,12 @@ export type TransactionCreateWithoutSupplierInput = {
   child_transactions?: Prisma.TransactionCreateNestedManyWithoutParent_transactionInput
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutSupplierInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1802,10 +1965,12 @@ export type TransactionCreateWithoutChild_transactionsInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutChild_transactionsInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1863,10 +2028,12 @@ export type TransactionCreateWithoutParent_transactionInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutParent_transactionInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -1940,10 +2107,12 @@ export type TransactionUpdateWithoutChild_transactionsInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutChild_transactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2012,10 +2181,12 @@ export type TransactionCreateWithoutInvoiceInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutInvoiceInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2094,10 +2265,12 @@ export type TransactionCreateWithoutRecurring_configInput = {
   child_transactions?: Prisma.TransactionCreateNestedManyWithoutParent_transactionInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutRecurring_configInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2150,8 +2323,123 @@ export type TransactionUpdateManyWithWhereWithoutRecurring_configInput = {
   data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutRecurring_configInput>
 }
 
+export type TransactionCreateManyCompanyInput = {
+  id?: string
+  event_date: Date | string
+  effective_date: Date | string
+  purchase_date?: Date | string | null
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TransactionStatus
+  category_id: string
+  subcategory_id?: string | null
+  financial_institution_id: string
+  card_id?: string | null
+  center_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  supplier_id?: string | null
+  installment_number?: number | null
+  is_recurring?: boolean
+  occurrence_number?: number | null
+  parent_transaction_id?: string | null
+  payment_mode?: $Enums.PaymentMode | null
+  recurring_frequency?: $Enums.RecurringFrequency | null
+  recurring_group_id?: string | null
+  total_installments?: number | null
+  invoice_id?: string | null
+}
+
+export type TransactionUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  installment_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  occurrence_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
+  total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
+  center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
+  financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutTransactionsNestedInput
+  parent_transaction?: Prisma.TransactionUpdateOneWithoutChild_transactionsNestedInput
+  child_transactions?: Prisma.TransactionUpdateManyWithoutParent_transactionNestedInput
+  recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+}
+
+export type TransactionUncheckedUpdateWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financial_institution_id?: Prisma.StringFieldUpdateOperationsInput | string
+  card_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installment_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  occurrence_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parent_transaction_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
+  recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+}
+
+export type TransactionUncheckedUpdateManyWithoutCompanyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financial_institution_id?: Prisma.StringFieldUpdateOperationsInput | string
+  card_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installment_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  occurrence_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parent_transaction_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
+  recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type TransactionCreateManyFinancial_institutionInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2203,10 +2491,12 @@ export type TransactionUpdateWithoutFinancial_institutionInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2235,6 +2525,7 @@ export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
 
 export type TransactionUncheckedUpdateManyWithoutFinancial_institutionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2262,6 +2553,7 @@ export type TransactionUncheckedUpdateManyWithoutFinancial_institutionInput = {
 
 export type TransactionCreateManyCategoryInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2313,10 +2605,12 @@ export type TransactionUpdateWithoutCategoryInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2345,6 +2639,7 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
 
 export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2372,6 +2667,7 @@ export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
 
 export type TransactionCreateManySubcategoryInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2423,10 +2719,12 @@ export type TransactionUpdateWithoutSubcategoryInput = {
   child_transactions?: Prisma.TransactionUpdateManyWithoutParent_transactionNestedInput
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2455,6 +2753,7 @@ export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
 
 export type TransactionUncheckedUpdateManyWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2482,6 +2781,7 @@ export type TransactionUncheckedUpdateManyWithoutSubcategoryInput = {
 
 export type TransactionCreateManyCardInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2533,10 +2833,12 @@ export type TransactionUpdateWithoutCardInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2565,6 +2867,7 @@ export type TransactionUncheckedUpdateWithoutCardInput = {
 
 export type TransactionUncheckedUpdateManyWithoutCardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2592,6 +2895,7 @@ export type TransactionUncheckedUpdateManyWithoutCardInput = {
 
 export type TransactionCreateManyCenterInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2643,10 +2947,12 @@ export type TransactionUpdateWithoutCenterInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2675,6 +2981,7 @@ export type TransactionUncheckedUpdateWithoutCenterInput = {
 
 export type TransactionUncheckedUpdateManyWithoutCenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2702,6 +3009,7 @@ export type TransactionUncheckedUpdateManyWithoutCenterInput = {
 
 export type TransactionCreateManySupplierInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2753,10 +3061,12 @@ export type TransactionUpdateWithoutSupplierInput = {
   child_transactions?: Prisma.TransactionUpdateManyWithoutParent_transactionNestedInput
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2785,6 +3095,7 @@ export type TransactionUncheckedUpdateWithoutSupplierInput = {
 
 export type TransactionUncheckedUpdateManyWithoutSupplierInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2812,6 +3123,7 @@ export type TransactionUncheckedUpdateManyWithoutSupplierInput = {
 
 export type TransactionCreateManyParent_transactionInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2863,10 +3175,12 @@ export type TransactionUpdateWithoutParent_transactionInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2895,6 +3209,7 @@ export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
 
 export type TransactionUncheckedUpdateManyWithoutParent_transactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2922,6 +3237,7 @@ export type TransactionUncheckedUpdateManyWithoutParent_transactionInput = {
 
 export type TransactionCreateManyInvoiceInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -2973,10 +3289,12 @@ export type TransactionUpdateWithoutInvoiceInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3005,6 +3323,7 @@ export type TransactionUncheckedUpdateWithoutInvoiceInput = {
 
 export type TransactionUncheckedUpdateManyWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3032,6 +3351,7 @@ export type TransactionUncheckedUpdateManyWithoutInvoiceInput = {
 
 export type TransactionCreateManyRecurring_configInput = {
   id?: string
+  company_id: string
   event_date: Date | string
   effective_date: Date | string
   purchase_date?: Date | string | null
@@ -3083,10 +3403,12 @@ export type TransactionUpdateWithoutRecurring_configInput = {
   child_transactions?: Prisma.TransactionUpdateManyWithoutParent_transactionNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3115,6 +3437,7 @@ export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
 
 export type TransactionUncheckedUpdateManyWithoutRecurring_configInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
   event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3173,6 +3496,7 @@ export type TransactionCountOutputTypeCountChild_transactionsArgs<ExtArgs extend
 
 export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   event_date?: boolean
   effective_date?: boolean
   purchase_date?: boolean
@@ -3207,11 +3531,13 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
 export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   event_date?: boolean
   effective_date?: boolean
   purchase_date?: boolean
@@ -3245,10 +3571,12 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
 export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  company_id?: boolean
   event_date?: boolean
   effective_date?: boolean
   purchase_date?: boolean
@@ -3282,10 +3610,12 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
 export type TransactionSelectScalar = {
   id?: boolean
+  company_id?: boolean
   event_date?: boolean
   effective_date?: boolean
   purchase_date?: boolean
@@ -3312,7 +3642,7 @@ export type TransactionSelectScalar = {
   invoice_id?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "event_date" | "effective_date" | "purchase_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "event_date" | "effective_date" | "purchase_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -3324,6 +3654,7 @@ export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.Internal
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3336,6 +3667,7 @@ export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
@@ -3347,6 +3679,7 @@ export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.
   recurring_config?: boolean | Prisma.Transaction$recurring_configArgs<ExtArgs>
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3362,9 +3695,11 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     recurring_config: Prisma.$RecurringConfigPayload<ExtArgs> | null
     subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     supplier: Prisma.$SupplierPayload<ExtArgs> | null
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    company_id: string
     event_date: Date
     effective_date: Date
     purchase_date: Date | null
@@ -3793,6 +4128,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
   recurring_config<T extends Prisma.Transaction$recurring_configArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$recurring_configArgs<ExtArgs>>): Prisma.Prisma__RecurringConfigClient<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   subcategory<T extends Prisma.Transaction$subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   supplier<T extends Prisma.Transaction$supplierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$supplierArgs<ExtArgs>>): Prisma.Prisma__SupplierClient<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3823,6 +4159,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
  */
 export interface TransactionFieldRefs {
   readonly id: Prisma.FieldRef<"Transaction", 'String'>
+  readonly company_id: Prisma.FieldRef<"Transaction", 'String'>
   readonly event_date: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly effective_date: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly purchase_date: Prisma.FieldRef<"Transaction", 'DateTime'>

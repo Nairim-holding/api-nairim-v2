@@ -60,7 +60,8 @@ export class SupplierController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const data = await SupplierService.createSupplier(req.body);
+      const { company_id } = (req as any).user;
+      const data = await SupplierService.createSupplier(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Fornecedor criado com sucesso'));
     } catch (error: any) {
       if (error.message === 'CNPJ already registered') return res.status(409).json(ApiResponse.error('Este CNPJ já está cadastrado'));
@@ -129,7 +130,8 @@ export class SupplierController {
         return res.status(400).json(ApiResponse.error('legal_name é obrigatório e deve ser uma string'));
       }
       
-      const data = await SupplierService.quickCreate({ legal_name });
+      const { company_id } = (req as any).user;
+      const data = await SupplierService.quickCreate({ legal_name }, company_id);
       res.status(201).json(ApiResponse.success(data, 'Fornecedor criado com sucesso'));
     } catch (error: any) {
       if (error.message.includes('legal_name é obrigatório')) {

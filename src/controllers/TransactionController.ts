@@ -74,7 +74,8 @@ export class TransactionController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const data = await TransactionService.createTransaction(req.body);
+      const { company_id } = (req as any).user;
+      const data = await TransactionService.createTransaction(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Lançamento criado com sucesso'));
     } catch (error: any) {
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
@@ -135,8 +136,8 @@ export class TransactionController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const result = await TransactionService.createInstallments(req.body);
-      // v2: installments está dentro de result.data
+      const { company_id } = (req as any).user;
+      const result = await TransactionService.createInstallments(req.body, company_id);
       res.status(201).json(ApiResponse.success(result, result.message));
     } catch (error: any) {
       console.error('Error creating installments:', error);
@@ -155,7 +156,8 @@ export class TransactionController {
         return res.status(400).json(ApiResponse.error('Erro de validação', validation.errors));
       }
 
-      const result = await TransactionService.createRecurring(req.body);
+      const { company_id } = (req as any).user;
+      const result = await TransactionService.createRecurring(req.body, company_id);
       res.status(201).json(ApiResponse.success(result.data, result.message));
     } catch (error: any) {
       console.error('Error creating recurring:', error);
