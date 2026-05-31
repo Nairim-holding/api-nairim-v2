@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import { ApiResponse } from '../utils/api-response';
 import { CompanyService } from '@/services/CompanyService';
 import { ValidationUtil } from '../utils/validation';
+import { env } from '@/env';
 
 export class CompanyController {
   // ─── Branding (public + admin) ────────────────────────────────────────────
@@ -138,6 +140,38 @@ export class CompanyController {
       return res.json(ApiResponse.success(null, 'Empresa desativada com sucesso'));
     } catch (error: any) {
       if (error.message === 'Empresa não encontrada') return res.status(404).json(ApiResponse.error(error.message));
+      return res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
+
+  // Emite um novo JWT com o company_id da empresa destino.
+  // O usuário permanece autenticado — apenas o contexto de empresa muda.
+  static async switchCompany(req: Request, res: Response) {
+    try {
+      const { slug } = req.body;
+      if (!slug) return res.status(400).json(ApiResponse.error('"slug" é obrigatório'));
+
+      // Company não está no TENANT_MODELS, então esta query ignora o filtro de empresa
+      const target = await CompanyService.getBrandingBySlug(slug);
+      if (!target?.company) return res.status(404).json(ApiResponse.error('Empresa não encontrada ou inativa'));
+
+      const currentUser = (req as any).user;
+      const payload = {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        role: currentUser.role,
+        company_id: target.company.id,
+      };
+
+      const token = jwt.sign(payload, env.JWT_SECRET as string, { expiresIn: '2h' });
+
+      return res.json(ApiResponse.success({
+        token,
+        user: { ...currentUser, company_id: target.company.id },
+        company: { id: target.company.id, name: target.company.name, slug: target.company.slug },
+      }, 'Contexto de empresa alterado com sucesso'));
+    } catch (error: any) {
       return res.status(500).json(ApiResponse.error(error.message));
     }
   }

@@ -13,6 +13,9 @@ router.put('/branding', authenticateJWT, requireTenant, requireAdmin, CompanyCon
 router.post('/branding/logo', authenticateJWT, requireTenant, requireAdmin, upload.single('file'), CompanyController.uploadLogo);
 router.post('/branding/favicon', authenticateJWT, requireTenant, requireAdmin, upload.single('file'), CompanyController.uploadFavicon);
 
+// Troca o contexto de empresa emitindo novo JWT — sem re-login
+router.post('/switch', authenticateJWT, CompanyController.switchCompany);
+
 // ─── CRUD de Empresas (admin) ─────────────────────────────────────────────
 router.get('/list', authenticateJWT, requireTenant, requireAdmin, CompanyController.listCompanies);
 router.get('/list/filters', authenticateJWT, requireTenant, requireAdmin, CompanyController.getCompanyFilters);
