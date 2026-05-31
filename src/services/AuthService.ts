@@ -12,7 +12,7 @@ export class AuthService {
       const user = await prisma.user.findFirst({
         where: { email, deleted_at: null },
         select: {
-          id: true, name: true, email: true, password: true, role: true, created_at: true
+          id: true, name: true, email: true, password: true, role: true, company_id: true, created_at: true
         }
       });
 
@@ -39,17 +39,24 @@ export class AuthService {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: roleMap[user.role] || user.role
+        role: roleMap[user.role] || user.role,
+        company_id: user.company_id
       };
 
       const token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
 
       console.log(`✅ Login successful for user: ${user.email}`);
 
+      // Busca o slug da empresa para o frontend redirecionar para /{slug}/dashboard
+      const company = await prisma.company.findUnique({
+        where: { id: user.company_id },
+        select: { slug: true },
+      });
+
       const { password: _, ...userWithoutPassword } = user;
 
       return {
-        user: userWithoutPassword,
+        user: { ...userWithoutPassword, company_slug: company?.slug ?? '' },
         token,
         expiresIn: '2h'
       };
@@ -106,7 +113,8 @@ export class AuthService {
         id: decoded.id,
         name: decoded.name,
         email: decoded.email,
-        role: decoded.role
+        role: decoded.role,
+        company_id: decoded.company_id
       };
 
       // ✅ MUDANÇA AQUI: Alterado de '8h' para '2h'

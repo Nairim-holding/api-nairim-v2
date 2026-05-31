@@ -175,7 +175,7 @@ export class CompanyController {
 
       return res.json(ApiResponse.success({
         token,
-        user: { ...currentUser, company_id: target.company.id },
+        user: { ...currentUser, company_id: target.company.id, company_slug: target.company.slug },
         company: { id: target.company.id, name: target.company.name, slug: target.company.slug },
       }, 'Contexto de empresa alterado com sucesso'));
     } catch (error: any) {
