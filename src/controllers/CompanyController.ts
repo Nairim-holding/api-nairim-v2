@@ -91,9 +91,17 @@ export class CompanyController {
 
   static async createCompany(req: Request, res: Response) {
     try {
-      const { name, slug } = req.body;
+      const { name, slug, company_name, primary_color, secondary_color, logo_url, favicon_url } = req.body;
       if (!name || !slug) return res.status(400).json(ApiResponse.error('name e slug são obrigatórios'));
-      const company = await CompanyService.createCompany({ name, slug: slug.toLowerCase().trim() });
+      const company = await CompanyService.createCompany({
+        name,
+        slug: slug.toLowerCase().trim(),
+        company_name,
+        primary_color,
+        secondary_color,
+        logo_url,
+        favicon_url,
+      });
       return res.status(201).json(ApiResponse.success(company, 'Empresa criada com sucesso'));
     } catch (error: any) {
       if (error.message.includes('slug')) return res.status(409).json(ApiResponse.error(error.message));
@@ -104,11 +112,16 @@ export class CompanyController {
   static async updateCompany(req: Request, res: Response) {
     try {
       const id = String(req.params.id);
-      const { name, slug, is_active } = req.body;
+      const { name, slug, is_active, company_name, primary_color, secondary_color, logo_url, favicon_url } = req.body;
       const updated = await CompanyService.updateCompany(id, {
         name,
         slug: slug ? slug.toLowerCase().trim() : undefined,
         is_active,
+        company_name,
+        primary_color,
+        secondary_color,
+        logo_url,
+        favicon_url,
       });
       return res.json(ApiResponse.success(updated, 'Empresa atualizada com sucesso'));
     } catch (error: any) {
