@@ -13,6 +13,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
     "db:backup": "tsx scripts/backup.ts",
+    "db:migrate-prod": "psql $DATABASE_URL -f scripts/migrate-production.sql && npx prisma generate",
     "db:migrate": "prisma db push --accept-data-loss && tsx prisma/seed-default-company.ts && prisma generate"
   },
   "prisma": {
