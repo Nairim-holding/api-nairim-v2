@@ -35,7 +35,10 @@ const filepath = path.join(BACKUP_DIR, filename);
 console.log(`\n📦  Iniciando backup do banco de dados...`);
 console.log(`🗄️   Destino: ${filepath}\n`);
 
-const result = spawnSync('pg_dump', ['--no-password', DATABASE_URL], {
+// pg_dump não aceita query params como ?schema= ou ?pgbouncer= na URL
+const pgDumpUrl = DATABASE_URL.split('?')[0];
+
+const result = spawnSync('pg_dump', ['--no-password', pgDumpUrl], {
   maxBuffer: 1024 * 1024 * 512, // 512 MB
   timeout: 5 * 60 * 1000,       // 5 minutos
 });
