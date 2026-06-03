@@ -13,6 +13,7 @@ services:
     volumes:
       - ./.env:/app/.env
       - ./uploads:/app/uploads
+      - ./backup:/app/backup
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-public" 
@@ -56,6 +57,7 @@ services:
     volumes:
       - ./.env.test:/app/.env
       - ./uploads-test:/app/uploads
+      - ./backup-test:/app/backup
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-public"
@@ -84,8 +86,9 @@ services:
     environment:
       - PORT=5000
     volumes:
-      - ./.env.test2:/app/.env 
+      - ./.env.test2:/app/.env
       - ./uploads-test-2:/app/uploads
+      - ./backup-test-2:/app/backup
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-public"
