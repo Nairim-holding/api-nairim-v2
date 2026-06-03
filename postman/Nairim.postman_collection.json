@@ -2733,6 +2733,252 @@
         }
       ]
     }
+    ,
+    {
+      "name": "Empresa",
+      "item": [
+        {
+          "name": "company-branding-publico",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/branding",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "branding"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-branding-me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/branding/me",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "branding", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-branding-atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"company_name\": \"Nairim Holding\",\r\n  \"primary_color\": \"#1A73E8\",\r\n  \"secondary_color\": \"#FFFFFF\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseURL}}/company/branding",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "branding"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/list",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "list"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-filtros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/list/filters",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "list", "filters"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/00000000-0000-0000-0000-000000000001",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "00000000-0000-0000-0000-000000000001"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-criar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Nova Empresa\",\r\n  \"slug\": \"nova-empresa\",\r\n  \"is_active\": true\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseURL}}/company",
+              "host": ["{{baseURL}}"],
+              "path": ["company"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-alterar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Empresa Atualizada\",\r\n  \"is_active\": true\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseURL}}/company/00000000-0000-0000-0000-000000000001",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "00000000-0000-0000-0000-000000000001"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-inativar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/00000000-0000-0000-0000-000000000001",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "00000000-0000-0000-0000-000000000001"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-restaurar",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/company/00000000-0000-0000-0000-000000000001/restore",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "00000000-0000-0000-0000-000000000001", "restore"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "company-switch",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"company_id\": \"00000000-0000-0000-0000-000000000001\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseURL}}/company/switch",
+              "host": ["{{baseURL}}"],
+              "path": ["company", "switch"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Planejamento",
+      "item": [
+        {
+          "name": "planning-dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/planning/dashboard?year=2026",
+              "host": ["{{baseURL}}"],
+              "path": ["planning", "dashboard"],
+              "query": [{ "key": "year", "value": "2026" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "planning-listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/planning?year=2026",
+              "host": ["{{baseURL}}"],
+              "path": ["planning"],
+              "query": [{ "key": "year", "value": "2026" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "planning-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/planning/{{planning_id}}",
+              "host": ["{{baseURL}}"],
+              "path": ["planning", "{{planning_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "planning-criar-ou-atualizar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"category_id\": \"f75c50bc-7887-47ec-a642-654a39f4b312\",\r\n  \"subcategory_id\": null,\r\n  \"year\": 2026,\r\n  \"months\": [\r\n    { \"month\": 1, \"planned_amount\": 1000.00 },\r\n    { \"month\": 2, \"planned_amount\": 1200.00 },\r\n    { \"month\": 3, \"planned_amount\": 900.00 }\r\n  ]\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseURL}}/planning",
+              "host": ["{{baseURL}}"],
+              "path": ["planning"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "planning-deletar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/planning/{{planning_id}}",
+              "host": ["{{baseURL}}"],
+              "path": ["planning", "{{planning_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
   ],
   "variable": [
     {
