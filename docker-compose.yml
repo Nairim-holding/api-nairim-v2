@@ -118,10 +118,57 @@ services:
     networks:
       - default
 
+  # ==========================================
+  # AMBIENTE DE HOMOLOGAÇÃO
+  # ==========================================
+  api-nairim-homolog:
+    container_name: nairim-api-homolog
+    build: .
+    restart: always
+    depends_on:
+      - postgres-homolog
+    env_file:
+      - .env.homolog
+    environment:
+      - PORT=5000
+    volumes:
+      - ./.env.homolog:/app/.env
+      - ./uploads-homolog:/app/uploads
+      - ./backup-homolog:/app/backup
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.api-nairim-homolog.rule=Host(`nairim.com.br`) && PathPrefix(`/backend-homolog`)"
+      - "traefik.http.routers.api-nairim-homolog.entrypoints=websecure"
+      - "traefik.http.routers.api-nairim-homolog.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.api-homolog-strip.stripprefix.prefixes=/backend-homolog"
+      - "traefik.http.middlewares.api-homolog-buffer.buffering.maxRequestBodyBytes=0"
+      - "traefik.http.routers.api-nairim-homolog.middlewares=api-homolog-strip,api-homolog-buffer"
+      - "traefik.http.services.api-nairim-homolog.loadbalancer.server.port=5000"
+    networks:
+      - traefik-public
+      - default
+
+  postgres-homolog:
+    image: postgres:16-alpine
+    container_name: nairim-postgres-homolog
+    restart: always
+    environment:
+      POSTGRES_USER: nairim
+      POSTGRES_PASSWORD: nairim
+      POSTGRES_DB: nairim_homolog_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_homolog_data:/var/lib/postgresql/data
+    networks:
+      - default
+
 networks:
-  traefik-public: 
+  traefik-public:
     external: true
 
 volumes:
   postgres_data:
-  postgres_test2_data: # Declarando o novo volume do banco 2
+  postgres_test2_data:
+  postgres_homolog_data:
