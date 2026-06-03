@@ -19,7 +19,7 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl postgresql-client
 COPY package*.json ./
 RUN npm ci --omit=dev && npm install prisma
 
