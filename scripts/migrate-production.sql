@@ -215,13 +215,14 @@ ALTER TABLE "Planning" DROP CONSTRAINT IF EXISTS "Planning_category_id_subcatego
 CREATE UNIQUE INDEX IF NOT EXISTS "Planning_company_id_category_id_subcategory_id_year_key"
   ON "Planning"("company_id", "category_id", "subcategory_id", "year");
 
+COMMIT;
+
 -- ============================================================
 -- FASE 9: Enum Role - adicionar SUPER_ADMIN
+-- (fora da transação: ALTER TYPE ADD VALUE não suporta transações no PostgreSQL)
 -- ============================================================
 
 ALTER TYPE "Role" ADD VALUE IF NOT EXISTS 'SUPER_ADMIN';
-
-COMMIT;
 
 -- Verificação final
 SELECT
