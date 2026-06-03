@@ -140,30 +140,30 @@ ALTER TABLE "UserColumnPreference" ALTER COLUMN "company_id" SET NOT NULL;
 ALTER TABLE "invoices"             ALTER COLUMN "company_id" SET NOT NULL;
 
 -- ============================================================
--- FASE 6: Foreign keys para Company
+-- FASE 6: Foreign keys para Company (idempotente via DO/EXCEPTION)
 -- ============================================================
 
-ALTER TABLE "CompanyBranding"    ADD CONSTRAINT "CompanyBranding_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Agency"               ADD CONSTRAINT "Agency_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Card"                 ADD CONSTRAINT "Card_company_id_fkey"                 FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Category"             ADD CONSTRAINT "Category_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Center"               ADD CONSTRAINT "Center_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Document"             ADD CONSTRAINT "Document_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Favorite"             ADD CONSTRAINT "Favorite_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "FinancialInstitution" ADD CONSTRAINT "FinancialInstitution_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Lease"                ADD CONSTRAINT "Lease_company_id_fkey"                FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Owner"                ADD CONSTRAINT "Owner_company_id_fkey"                FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Planning"             ADD CONSTRAINT "Planning_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Property"             ADD CONSTRAINT "Property_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "PropertyType"         ADD CONSTRAINT "PropertyType_company_id_fkey"         FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "RecurringConfig"      ADD CONSTRAINT "RecurringConfig_company_id_fkey"      FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Subcategory"          ADD CONSTRAINT "Subcategory_company_id_fkey"          FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Supplier"             ADD CONSTRAINT "Supplier_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Tenant"               ADD CONSTRAINT "Tenant_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Transaction"          ADD CONSTRAINT "Transaction_company_id_fkey"          FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "User"                 ADD CONSTRAINT "User_company_id_fkey"                 FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "UserColumnPreference" ADD CONSTRAINT "UserColumnPreference_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "invoices"             ADD CONSTRAINT "invoices_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN ALTER TABLE "CompanyBranding"    ADD CONSTRAINT "CompanyBranding_company_id_fkey"    FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Agency"               ADD CONSTRAINT "Agency_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Card"                 ADD CONSTRAINT "Card_company_id_fkey"                 FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Category"             ADD CONSTRAINT "Category_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Center"               ADD CONSTRAINT "Center_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Document"             ADD CONSTRAINT "Document_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Favorite"             ADD CONSTRAINT "Favorite_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "FinancialInstitution" ADD CONSTRAINT "FinancialInstitution_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Lease"                ADD CONSTRAINT "Lease_company_id_fkey"                FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Owner"                ADD CONSTRAINT "Owner_company_id_fkey"                FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Planning"             ADD CONSTRAINT "Planning_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Property"             ADD CONSTRAINT "Property_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "PropertyType"         ADD CONSTRAINT "PropertyType_company_id_fkey"         FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "RecurringConfig"      ADD CONSTRAINT "RecurringConfig_company_id_fkey"      FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Subcategory"          ADD CONSTRAINT "Subcategory_company_id_fkey"          FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Supplier"             ADD CONSTRAINT "Supplier_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Tenant"               ADD CONSTRAINT "Tenant_company_id_fkey"               FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Transaction"          ADD CONSTRAINT "Transaction_company_id_fkey"          FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "User"                 ADD CONSTRAINT "User_company_id_fkey"                 FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "UserColumnPreference" ADD CONSTRAINT "UserColumnPreference_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "invoices"             ADD CONSTRAINT "invoices_company_id_fkey"             FOREIGN KEY ("company_id") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- ============================================================
 -- FASE 7: Índices de performance
