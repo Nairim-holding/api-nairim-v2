@@ -57,7 +57,7 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
 
   // Verificar se o usuário tem role de administrador
   // Dependendo de como seu payload JWT é estruturado
-  if (user.role !== 'administrador' && user.role !== 'ADMIN') {
+  if (user.role !== 'administrador' && user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
     return res.status(403).json(
       ApiResponse.error('Acesso negado. Permissão de administrador necessária.')
     );
@@ -78,7 +78,7 @@ export const requireSelfOrAdmin = (req: Request, res: Response, next: NextFuncti
   }
 
   // Se for admin, permite acesso
-  if (user.role === 'administrador' || user.role === 'ADMIN') {
+  if (user.role === 'administrador' || user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') {
     return next();
   }
 
