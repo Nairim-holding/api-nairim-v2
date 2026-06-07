@@ -18,6 +18,8 @@ const s3Client = new S3Client({
   },
 });
 
+const PUBLIC_PREFIX = () => `${env.MINIO_PUBLIC_URL}/${env.MINIO_BUCKET}/`;
+
 export interface MinioUploadResult {
   url: string;
   key: string;
@@ -25,6 +27,31 @@ export interface MinioUploadResult {
 }
 
 export class MinioService {
+  /** Monta a URL pública final a partir da key do objeto no bucket. */
+  static urlFromKey(key: string): string {
+    return `${PUBLIC_PREFIX()}${key}`;
+  }
+
+  /** Extrai a key do objeto a partir da URL pública salva no banco (ou null se não pertencer ao bucket). */
+  static keyFromUrl(url: string): string | null {
+    const prefix = PUBLIC_PREFIX();
+    return url.startsWith(prefix) ? url.slice(prefix.length) : null;
+  }
+
+  /** Envia um buffer para o bucket sob a key informada e retorna a URL pública final. */
+  static async uploadBuffer(buffer: Buffer, key: string, contentType: string, originalFilename?: string): Promise<string> {
+    await s3Client.send(
+      new PutObjectCommand({
+        Bucket: env.MINIO_BUCKET,
+        Key: key,
+        Body: buffer,
+        ContentType: contentType,
+        ContentDisposition: originalFilename ? `inline; filename="${originalFilename}"` : 'inline',
+      }),
+    );
+    return this.urlFromKey(key);
+  }
+
   /**
    * Envia o arquivo para o bucket do MinIO e retorna a URL pública final
    * (montada a partir de MINIO_PUBLIC_URL, o domínio exposto via Traefik)
@@ -46,29 +73,15 @@ export class MinioService {
       throw new Error('Nenhum dado de arquivo disponível (nem buffer nem path)');
     }
 
-    await s3Client.send(
-      new PutObjectCommand({
-        Bucket: env.MINIO_BUCKET,
-        Key: key,
-        Body: body,
-        ContentType: file.mimetype,
-        ContentDisposition: `inline; filename="${file.originalname}"`,
-      }),
-    );
+    const url = await this.uploadBuffer(body, key, file.mimetype, file.originalname);
 
-    return {
-      url: `${env.MINIO_PUBLIC_URL}/${env.MINIO_BUCKET}/${key}`,
-      key,
-      contentType: file.mimetype,
-    };
+    return { url, key, contentType: file.mimetype };
   }
 
   /** Remove um arquivo do bucket a partir da URL pública salva no banco. */
   static async deleteFile(url: string): Promise<void> {
-    const prefix = `${env.MINIO_PUBLIC_URL}/${env.MINIO_BUCKET}/`;
-    if (!url.startsWith(prefix)) return;
-
-    const key = url.slice(prefix.length);
+    const key = this.keyFromUrl(url);
+    if (!key) return;
 
     await s3Client
       .send(new DeleteObjectCommand({ Bucket: env.MINIO_BUCKET, Key: key }))

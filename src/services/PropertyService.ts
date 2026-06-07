@@ -694,6 +694,7 @@ export class PropertyService {
     propertyId: string,
     files: Record<string, Express.Multer.File[]>,
     userId: string,
+    companyId: string,
   ): Promise<any[]> {
     const fileTypes: Record<string, any> = {
       arquivosImagens: 'IMAGE',
@@ -735,6 +736,7 @@ export class PropertyService {
           const fileNameWithoutExt = file.originalname.replace(/\.[^/.]+$/, '');
           const documentData: any = {
             property_id: propertyId,
+            company_id: companyId,
             file_path: blobResult.url,
             file_type: file.mimetype?.substring(0, 100) || 'application/octet-stream',
             type: docType,
@@ -797,6 +799,7 @@ export class PropertyService {
     propertyId: string,
     tempFiles: Array<{ fieldname: string; tempPath: string; originalname: string; mimetype: string }>,
     userId: string,
+    companyId: string,
     featuredImageIdentifier?: string,
   ): Promise<void> {
     const fileTypes: Record<string, string> = {
@@ -836,6 +839,7 @@ export class PropertyService {
           const fileNameWithoutExt = originalname.replace(/\.[^/.]+$/, '');
           const documentData: any = {
             property_id: propertyId,
+            company_id: companyId,
             file_path: blobResult.url,
             file_type: fileInfo.mimetype?.substring(0, 100) || 'application/octet-stream',
             type: docType,
@@ -1639,10 +1643,10 @@ export class PropertyService {
         timeout: 10000, 
       });
 
-      const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
+      const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId, property.company_id);
 
       if (featuredImageIdentifier) {
-        const matchedNewDoc = uploadedDocuments.find(d => 
+        const matchedNewDoc = uploadedDocuments.find(d =>
           d.filename === featuredImageIdentifier || d.name === featuredImageIdentifier
         );
         
@@ -1902,7 +1906,7 @@ export class PropertyService {
         return { property, address, propertyValue };
       }, { timeout: 10000 });
 
-      const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId);
+      const uploadedDocuments = await this.uploadFilesToProperty(property.id, files, userId, property.company_id);
 
       if (featuredImageIdentifier) {
         await prisma.document.updateMany({

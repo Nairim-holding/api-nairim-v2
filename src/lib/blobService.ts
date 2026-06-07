@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { ImageConverter } from '../utils/imageConverter';
+import { MinioService } from './minioService';
 
 export interface UploadResult {
   url: string;
@@ -15,58 +16,36 @@ export interface MoveResult {
   isImage: boolean;
 }
 
-const getBaseUrl = () => process.env.BASE_URL || 'http://localhost:5000';
-
 export class BlobService {
   /**
-   * Move o arquivo do diretório temp para o destino final.
+   * Envia o arquivo (que o busboy/multer já gravou em uploads/temp) para o
+   * bucket do MinIO (CDN) e retorna a URL pública final.
    *
-   * Com diskStorage o arquivo já está em disco quando o handler roda —
-   * fs.rename() é uma operação atômica do SO (microssegundos).
-   * Fallback para fs.writeFile quando vem de memoryStorage.
+   * Arquivos que não são imagem têm o temp removido na hora — não há mais
+   * conversão a ser feita. Imagens mantêm o temp até a conversão AVIF em
+   * background terminar (scheduleAvifConversion cuida da limpeza).
    */
   static async moveFile(
     file: Express.Multer.File,
     filename: string,
     folder: string = 'properties',
   ): Promise<MoveResult> {
-    const safeFilename = filename.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
-    const uniqueFilename = `${Date.now()}-${safeFilename}`;
-    const relativePath = path.posix.join(folder, uniqueFilename);
-    const absolutePath = path.join(process.cwd(), 'uploads', relativePath);
-
-    await fs.mkdir(path.dirname(absolutePath), { recursive: true });
-
-    if (file.path) {
-      // diskStorage: rename atômico (mesmo filesystem)
-      try {
-        await fs.rename(file.path, absolutePath);
-      } catch (err: any) {
-        if (err.code === 'EXDEV') {
-          // Filesystems diferentes: copia e apaga
-          await fs.copyFile(file.path, absolutePath);
-          await fs.unlink(file.path).catch(() => {});
-        } else {
-          throw err;
-        }
-      }
-    } else if (file.buffer) {
-      // memoryStorage: fallback (não recomendado para arquivos grandes)
-      await fs.writeFile(absolutePath, file.buffer);
-    } else {
-      throw new Error('Nenhum dado de arquivo disponível (nem path nem buffer)');
-    }
-
     const isImage = ImageConverter.isSupportedImageFormat(file.mimetype);
+
+    const { url, key, contentType } = await MinioService.uploadFile(file, folder);
+
+    if (!isImage && file.path) {
+      await fs.unlink(file.path).catch(() => {});
+    }
 
     return {
       result: {
-        url: `${getBaseUrl()}/uploads/${relativePath}`,
-        pathname: relativePath,
-        contentType: file.mimetype,
+        url,
+        pathname: key,
+        contentType,
         contentDisposition: `inline; filename="${filename}"`,
       },
-      absolutePath,
+      absolutePath: file.path ?? '',
       isImage,
     };
   }
@@ -74,7 +53,9 @@ export class BlobService {
   /**
    * Agenda a conversão AVIF em background (setImmediate).
    * A resposta HTTP já foi enviada antes deste código executar.
-   * onComplete recebe a nova URL AVIF para atualizar o banco.
+   *
+   * Lê o temp local, converte, sobe a versão AVIF para o MinIO, remove o
+   * objeto original do bucket e o temp local, e avisa o chamador da nova URL.
    */
   static scheduleAvifConversion(
     sourcePath: string,
@@ -86,20 +67,23 @@ export class BlobService {
         const buffer = await fs.readFile(sourcePath);
         const avifBuffer = await ImageConverter.convertToAVIF(buffer, 80);
 
-        const avifPath = sourcePath.replace(/\.[^/.]+$/, '') + '.avif';
         const avifUrl = originalUrl.replace(/\.[^/.]+$/, '') + '.avif';
+        const originalKey = MinioService.keyFromUrl(originalUrl);
+        const avifKey = originalKey ? originalKey.replace(/\.[^/.]+$/, '') + '.avif' : null;
 
-        await fs.writeFile(avifPath, avifBuffer);
-        // Apaga original somente após AVIF escrito com sucesso
+        if (!avifKey) {
+          throw new Error('Não foi possível derivar a key do MinIO a partir da URL original');
+        }
+
+        await MinioService.uploadBuffer(avifBuffer, avifKey, 'image/avif');
+        await MinioService.deleteFile(originalUrl);
         await fs.unlink(sourcePath).catch(() => {});
 
         await onComplete(avifUrl);
-        console.log(`✅ AVIF pronto: ${path.basename(avifPath)}`);
+        console.log(`✅ AVIF pronto: ${avifKey}`);
       } catch (err: any) {
-        console.error(
-          `⚠️  Conversão AVIF falhou para ${path.basename(sourcePath)}: ${err.message}`,
-        );
-        // Arquivo original mantido intacto em caso de erro
+        console.error(`⚠️  Conversão AVIF falhou para ${path.basename(sourcePath)}: ${err.message}`);
+        // Arquivo original mantido intacto no bucket em caso de erro
       }
     });
   }

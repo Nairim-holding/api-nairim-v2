@@ -1,10 +1,12 @@
+import fs from 'fs/promises';
+import path from 'path';
 import { BlobService } from '../lib/blobService';
-import { ImageConverter } from './imageConverter';
+import { MinioService } from '../lib/minioService';
 
-export class LocalUploadService {
+export class CdnUploadService {
   async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
     try {
-      // Usa BlobService.moveFile que suporta tanto diskStorage quanto memoryStorage
+      // BlobService.moveFile envia o arquivo para o bucket do MinIO (CDN)
       const { result, absolutePath, isImage } = await BlobService.moveFile(
         file,
         file.originalname,
@@ -31,10 +33,16 @@ export class LocalUploadService {
 
   async deleteFile(url: string): Promise<void> {
     try {
+      if (MinioService.keyFromUrl(url)) {
+        await MinioService.deleteFile(url);
+        return;
+      }
+
+      // Compatibilidade com arquivos antigos salvos localmente antes da migração para o MinIO
       const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
       const filePath = url.replace(`${baseUrl}/uploads/`, '');
-      const absolutePath = require('path').join(process.cwd(), 'uploads', filePath);
-      await require('fs/promises').unlink(absolutePath).catch(() => {});
+      const absolutePath = path.join(process.cwd(), 'uploads', filePath);
+      await fs.unlink(absolutePath).catch(() => {});
     } catch (error) {
       console.error('Error deleting file:', error);
     }
@@ -43,6 +51,6 @@ export class LocalUploadService {
 
 export class UploadServiceFactory {
   static create() {
-    return new LocalUploadService();
+    return new CdnUploadService();
   }
 }

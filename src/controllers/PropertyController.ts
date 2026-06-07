@@ -268,6 +268,7 @@ export class PropertyController {
       return;
     }
 
+    const { company_id: companyId } = (req as any).user;
     const bb = busboy({ headers: req.headers, limits: { files: 100 } });
     const fields: Record<string, string> = {};
     const tempFiles: TempFileInfo[] = [];
@@ -376,7 +377,7 @@ export class PropertyController {
 
             if (successFiles.length > 0) {
               console.log(`📁 Processando ${successFiles.length} arquivos em background para property ${pid}`);
-              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, featuredId);
+              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, companyId, featuredId);
               console.log(`✅ ${successFiles.length} arquivos processados com sucesso para property ${pid}`);
             }
           })
@@ -408,6 +409,7 @@ export class PropertyController {
       return;
     }
 
+    const { company_id: companyId } = (req as any).user;
     const bb = busboy({ headers: req.headers, limits: { files: 100 } });
     const fields: Record<string, string> = {};
     const tempFiles: TempFileInfo[] = [];
@@ -517,7 +519,7 @@ export class PropertyController {
 
             if (successFiles.length > 0) {
               console.log(`📁 Processando ${successFiles.length} arquivos em background para property ${pid}`);
-              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, featuredId);
+              await PropertyService.processUploadedTempFiles(pid, successFiles, uid, companyId, featuredId);
               console.log(`✅ ${successFiles.length} arquivos processados com sucesso para property ${pid}`);
             }
           })
