@@ -22,14 +22,17 @@ import iptuPropertyRoutes from "./iptu-property";
 import planningRoutes from "./planning";
 import companyRoutes from "./company";
 import companiesRoutes from "./companies";
+import publicRoutes from "./public";
 import { authenticateJWT } from '../middlewares/auth';
 import { requireTenant } from '../middlewares/tenant';
+import { resolveCompanyBySlug } from '../middlewares/publicTenant';
 
 const router = Router();
 
 // Public routes (no auth required)
 router.use("/auth", authRoutes);
 router.use("/company", companyRoutes);
+router.use("/public/:companySlug", resolveCompanyBySlug, publicRoutes);
 
 // All routes below require a valid JWT with company_id
 router.use(authenticateJWT, requireTenant);

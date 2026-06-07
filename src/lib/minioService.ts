@@ -1,6 +1,7 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 import { env } from '@/env';
 
 /**
@@ -56,6 +57,12 @@ export class MinioService {
    * Envia o arquivo para o bucket do MinIO e retorna a URL pública final
    * (montada a partir de MINIO_PUBLIC_URL, o domínio exposto via Traefik)
    * para ser salva no banco de dados.
+   *
+   * Usa @aws-sdk/lib-storage (Upload) com leitura via stream direto do disco:
+   * em vez de carregar o arquivo inteiro em memória (fs.readFile) e mandar num
+   * único PUT, faz upload multipart com partes enviadas em paralelo. Isso é
+   * crítico para vídeos grandes (centenas de MB) — evita picos de memória e
+   * acelera o envio através do paralelismo das partes.
    */
   static async uploadFile(
     file: Express.Multer.File,
@@ -64,18 +71,27 @@ export class MinioService {
     const safeFilename = file.originalname.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
     const key = path.posix.join(folder, `${Date.now()}-${safeFilename}`);
 
-    let body: Buffer;
-    if (file.buffer) {
-      body = file.buffer;
-    } else if (file.path) {
-      body = await fs.readFile(file.path);
-    } else {
+    const body = file.buffer ?? (file.path ? fs.createReadStream(file.path) : null);
+    if (!body) {
       throw new Error('Nenhum dado de arquivo disponível (nem buffer nem path)');
     }
 
-    const url = await this.uploadBuffer(body, key, file.mimetype, file.originalname);
+    const upload = new Upload({
+      client: s3Client,
+      params: {
+        Bucket: env.MINIO_BUCKET,
+        Key: key,
+        Body: body,
+        ContentType: file.mimetype,
+        ContentDisposition: `inline; filename="${file.originalname}"`,
+      },
+      queueSize: 4,
+      partSize: 10 * 1024 * 1024,
+    });
 
-    return { url, key, contentType: file.mimetype };
+    await upload.done();
+
+    return { url: this.urlFromKey(key), key, contentType: file.mimetype };
   }
 
   /** Remove um arquivo do bucket a partir da URL pública salva no banco. */
