@@ -164,6 +164,38 @@ services:
     networks:
       - default
 
+  # ==========================================
+  # MINIO - CDN / Armazenamento de imagens self-hosted (S3 compatível)
+  # ==========================================
+  minio:
+    image: minio/minio:latest
+    container_name: nairim-minio
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - ./minio-data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      # Rota da API/CDN (porta 9000) — onde as imagens ficam públicas
+      - "traefik.http.routers.minio-api.rule=Host(`cdn.nairim.com.br`)"
+      - "traefik.http.routers.minio-api.entrypoints=websecure"
+      - "traefik.http.routers.minio-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.minio-api.service=minio-api"
+      - "traefik.http.services.minio-api.loadbalancer.server.port=9000"
+      # Rota do Console/Painel administrativo (porta 9001)
+      - "traefik.http.routers.minio-console.rule=Host(`cdn-painel.nairim.com.br`)"
+      - "traefik.http.routers.minio-console.entrypoints=websecure"
+      - "traefik.http.routers.minio-console.tls.certresolver=myresolver"
+      - "traefik.http.routers.minio-console.service=minio-console"
+      - "traefik.http.services.minio-console.loadbalancer.server.port=9001"
+    networks:
+      - traefik-public
+      - default
+
 networks:
   traefik-public:
     external: true
