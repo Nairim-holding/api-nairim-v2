@@ -21,8 +21,7 @@ services:
       - "traefik.http.routers.api-nairim.entrypoints=websecure"
       - "traefik.http.routers.api-nairim.tls.certresolver=myresolver" 
       - "traefik.http.middlewares.api-strip.stripprefix.prefixes=/backend"
-      - "traefik.http.middlewares.api-buffer.buffering.maxRequestBodyBytes=0"
-      - "traefik.http.routers.api-nairim.middlewares=api-strip,api-buffer"
+      - "traefik.http.routers.api-nairim.middlewares=api-strip"
       - "traefik.http.services.api-nairim.loadbalancer.server.port=5000"
     networks:
       - traefik-public 
@@ -65,8 +64,7 @@ services:
       - "traefik.http.routers.api-nairim-test.entrypoints=websecure"
       - "traefik.http.routers.api-nairim-test.tls.certresolver=myresolver"
       - "traefik.http.middlewares.api-test-strip.stripprefix.prefixes=/backend-test"
-      - "traefik.http.middlewares.api-test-buffer.buffering.maxRequestBodyBytes=0"
-      - "traefik.http.routers.api-nairim-test.middlewares=api-test-strip,api-test-buffer"
+      - "traefik.http.routers.api-nairim-test.middlewares=api-test-strip"
       - "traefik.http.services.api-nairim-test.loadbalancer.server.port=5000"
     networks:
       - traefik-public
@@ -96,8 +94,7 @@ services:
       - "traefik.http.routers.api-nairim-test-2.entrypoints=websecure"
       - "traefik.http.routers.api-nairim-test-2.tls.certresolver=myresolver"
       - "traefik.http.middlewares.api-test-2-strip.stripprefix.prefixes=/backend-test-2"
-      - "traefik.http.middlewares.api-test-2-buffer.buffering.maxRequestBodyBytes=0"
-      - "traefik.http.routers.api-nairim-test-2.middlewares=api-test-2-strip,api-test-2-buffer"
+      - "traefik.http.routers.api-nairim-test-2.middlewares=api-test-2-strip"
       - "traefik.http.services.api-nairim-test-2.loadbalancer.server.port=5000"
     networks:
       - traefik-public
@@ -142,8 +139,7 @@ services:
       - "traefik.http.routers.api-nairim-homolog.entrypoints=websecure"
       - "traefik.http.routers.api-nairim-homolog.tls.certresolver=myresolver"
       - "traefik.http.middlewares.api-homolog-strip.stripprefix.prefixes=/backend-homolog"
-      - "traefik.http.middlewares.api-homolog-buffer.buffering.maxRequestBodyBytes=0"
-      - "traefik.http.routers.api-nairim-homolog.middlewares=api-homolog-strip,api-homolog-buffer"
+      - "traefik.http.routers.api-nairim-homolog.middlewares=api-homolog-strip"
       - "traefik.http.services.api-nairim-homolog.loadbalancer.server.port=5000"
     networks:
       - traefik-public

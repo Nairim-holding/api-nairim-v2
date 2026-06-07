@@ -20,7 +20,6 @@ async function startServer() {
     logger.info('✅ Database connected successfully');
 
     const server: http.Server = app.listen(PORT, () => {
-      logger.info(`teste`);
       logger.info(`🚀 Server running at http://localhost:${PORT}`);
       logger.info(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
