@@ -32,6 +32,32 @@ export type CompanyBrandingMinAggregateOutputType = {
   primary_color: string | null
   secondary_color: string | null
   company_name: string | null
+  trade_name: string | null
+  app_title: string | null
+  app_description: string | null
+  logo_sidebar_url: string | null
+  logo_dark_url: string | null
+  og_image_url: string | null
+  accent_color: string | null
+  success_color: string | null
+  warning_color: string | null
+  error_color: string | null
+  info_color: string | null
+  bg_color: string | null
+  card_color: string | null
+  border_color: string | null
+  text_color: string | null
+  primary_color_dark: string | null
+  secondary_color_dark: string | null
+  accent_color_dark: string | null
+  success_color_dark: string | null
+  warning_color_dark: string | null
+  error_color_dark: string | null
+  info_color_dark: string | null
+  bg_color_dark: string | null
+  card_color_dark: string | null
+  border_color_dark: string | null
+  text_color_dark: string | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -44,6 +70,32 @@ export type CompanyBrandingMaxAggregateOutputType = {
   primary_color: string | null
   secondary_color: string | null
   company_name: string | null
+  trade_name: string | null
+  app_title: string | null
+  app_description: string | null
+  logo_sidebar_url: string | null
+  logo_dark_url: string | null
+  og_image_url: string | null
+  accent_color: string | null
+  success_color: string | null
+  warning_color: string | null
+  error_color: string | null
+  info_color: string | null
+  bg_color: string | null
+  card_color: string | null
+  border_color: string | null
+  text_color: string | null
+  primary_color_dark: string | null
+  secondary_color_dark: string | null
+  accent_color_dark: string | null
+  success_color_dark: string | null
+  warning_color_dark: string | null
+  error_color_dark: string | null
+  info_color_dark: string | null
+  bg_color_dark: string | null
+  card_color_dark: string | null
+  border_color_dark: string | null
+  text_color_dark: string | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -57,6 +109,32 @@ export type CompanyBrandingCountAggregateOutputType = {
   secondary_color: number
   company_name: number
   company_info: number
+  trade_name: number
+  app_title: number
+  app_description: number
+  logo_sidebar_url: number
+  logo_dark_url: number
+  og_image_url: number
+  accent_color: number
+  success_color: number
+  warning_color: number
+  error_color: number
+  info_color: number
+  bg_color: number
+  card_color: number
+  border_color: number
+  text_color: number
+  primary_color_dark: number
+  secondary_color_dark: number
+  accent_color_dark: number
+  success_color_dark: number
+  warning_color_dark: number
+  error_color_dark: number
+  info_color_dark: number
+  bg_color_dark: number
+  card_color_dark: number
+  border_color_dark: number
+  text_color_dark: number
   created_at: number
   updated_at: number
   _all: number
@@ -71,6 +149,32 @@ export type CompanyBrandingMinAggregateInputType = {
   primary_color?: true
   secondary_color?: true
   company_name?: true
+  trade_name?: true
+  app_title?: true
+  app_description?: true
+  logo_sidebar_url?: true
+  logo_dark_url?: true
+  og_image_url?: true
+  accent_color?: true
+  success_color?: true
+  warning_color?: true
+  error_color?: true
+  info_color?: true
+  bg_color?: true
+  card_color?: true
+  border_color?: true
+  text_color?: true
+  primary_color_dark?: true
+  secondary_color_dark?: true
+  accent_color_dark?: true
+  success_color_dark?: true
+  warning_color_dark?: true
+  error_color_dark?: true
+  info_color_dark?: true
+  bg_color_dark?: true
+  card_color_dark?: true
+  border_color_dark?: true
+  text_color_dark?: true
   created_at?: true
   updated_at?: true
 }
@@ -83,6 +187,32 @@ export type CompanyBrandingMaxAggregateInputType = {
   primary_color?: true
   secondary_color?: true
   company_name?: true
+  trade_name?: true
+  app_title?: true
+  app_description?: true
+  logo_sidebar_url?: true
+  logo_dark_url?: true
+  og_image_url?: true
+  accent_color?: true
+  success_color?: true
+  warning_color?: true
+  error_color?: true
+  info_color?: true
+  bg_color?: true
+  card_color?: true
+  border_color?: true
+  text_color?: true
+  primary_color_dark?: true
+  secondary_color_dark?: true
+  accent_color_dark?: true
+  success_color_dark?: true
+  warning_color_dark?: true
+  error_color_dark?: true
+  info_color_dark?: true
+  bg_color_dark?: true
+  card_color_dark?: true
+  border_color_dark?: true
+  text_color_dark?: true
   created_at?: true
   updated_at?: true
 }
@@ -96,6 +226,32 @@ export type CompanyBrandingCountAggregateInputType = {
   secondary_color?: true
   company_name?: true
   company_info?: true
+  trade_name?: true
+  app_title?: true
+  app_description?: true
+  logo_sidebar_url?: true
+  logo_dark_url?: true
+  og_image_url?: true
+  accent_color?: true
+  success_color?: true
+  warning_color?: true
+  error_color?: true
+  info_color?: true
+  bg_color?: true
+  card_color?: true
+  border_color?: true
+  text_color?: true
+  primary_color_dark?: true
+  secondary_color_dark?: true
+  accent_color_dark?: true
+  success_color_dark?: true
+  warning_color_dark?: true
+  error_color_dark?: true
+  info_color_dark?: true
+  bg_color_dark?: true
+  card_color_dark?: true
+  border_color_dark?: true
+  text_color_dark?: true
   created_at?: true
   updated_at?: true
   _all?: true
@@ -182,6 +338,32 @@ export type CompanyBrandingGroupByOutputType = {
   secondary_color: string | null
   company_name: string | null
   company_info: runtime.JsonValue | null
+  trade_name: string | null
+  app_title: string | null
+  app_description: string | null
+  logo_sidebar_url: string | null
+  logo_dark_url: string | null
+  og_image_url: string | null
+  accent_color: string | null
+  success_color: string | null
+  warning_color: string | null
+  error_color: string | null
+  info_color: string | null
+  bg_color: string | null
+  card_color: string | null
+  border_color: string | null
+  text_color: string | null
+  primary_color_dark: string | null
+  secondary_color_dark: string | null
+  accent_color_dark: string | null
+  success_color_dark: string | null
+  warning_color_dark: string | null
+  error_color_dark: string | null
+  info_color_dark: string | null
+  bg_color_dark: string | null
+  card_color_dark: string | null
+  border_color_dark: string | null
+  text_color_dark: string | null
   created_at: Date
   updated_at: Date
   _count: CompanyBrandingCountAggregateOutputType | null
@@ -216,6 +398,32 @@ export type CompanyBrandingWhereInput = {
   secondary_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   company_name?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   company_info?: Prisma.JsonNullableFilter<"CompanyBranding">
+  trade_name?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  app_title?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  app_description?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  logo_sidebar_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  logo_dark_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  og_image_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  accent_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  success_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  warning_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  error_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  info_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  bg_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  card_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  border_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  text_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  primary_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  secondary_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  accent_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  success_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  warning_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  error_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  info_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  bg_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  card_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  border_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  text_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   created_at?: Prisma.DateTimeFilter<"CompanyBranding"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"CompanyBranding"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -230,6 +438,32 @@ export type CompanyBrandingOrderByWithRelationInput = {
   secondary_color?: Prisma.SortOrderInput | Prisma.SortOrder
   company_name?: Prisma.SortOrderInput | Prisma.SortOrder
   company_info?: Prisma.SortOrderInput | Prisma.SortOrder
+  trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  app_title?: Prisma.SortOrderInput | Prisma.SortOrder
+  app_description?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo_sidebar_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo_dark_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  og_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  accent_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  success_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  warning_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  error_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  info_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  bg_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  card_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  border_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  primary_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  secondary_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  accent_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  success_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  warning_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  error_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  info_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  bg_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  card_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  border_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
@@ -247,6 +481,32 @@ export type CompanyBrandingWhereUniqueInput = Prisma.AtLeast<{
   secondary_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   company_name?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   company_info?: Prisma.JsonNullableFilter<"CompanyBranding">
+  trade_name?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  app_title?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  app_description?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  logo_sidebar_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  logo_dark_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  og_image_url?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  accent_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  success_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  warning_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  error_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  info_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  bg_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  card_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  border_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  text_color?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  primary_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  secondary_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  accent_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  success_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  warning_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  error_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  info_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  bg_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  card_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  border_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
+  text_color_dark?: Prisma.StringNullableFilter<"CompanyBranding"> | string | null
   created_at?: Prisma.DateTimeFilter<"CompanyBranding"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"CompanyBranding"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
@@ -261,6 +521,32 @@ export type CompanyBrandingOrderByWithAggregationInput = {
   secondary_color?: Prisma.SortOrderInput | Prisma.SortOrder
   company_name?: Prisma.SortOrderInput | Prisma.SortOrder
   company_info?: Prisma.SortOrderInput | Prisma.SortOrder
+  trade_name?: Prisma.SortOrderInput | Prisma.SortOrder
+  app_title?: Prisma.SortOrderInput | Prisma.SortOrder
+  app_description?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo_sidebar_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo_dark_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  og_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  accent_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  success_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  warning_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  error_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  info_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  bg_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  card_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  border_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_color?: Prisma.SortOrderInput | Prisma.SortOrder
+  primary_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  secondary_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  accent_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  success_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  warning_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  error_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  info_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  bg_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  card_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  border_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_color_dark?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.CompanyBrandingCountOrderByAggregateInput
@@ -280,6 +566,32 @@ export type CompanyBrandingScalarWhereWithAggregatesInput = {
   secondary_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
   company_name?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
   company_info?: Prisma.JsonNullableWithAggregatesFilter<"CompanyBranding">
+  trade_name?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  app_title?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  app_description?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  logo_sidebar_url?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  logo_dark_url?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  og_image_url?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  accent_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  success_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  warning_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  error_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  info_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  bg_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  card_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  border_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  text_color?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  primary_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  secondary_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  accent_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  success_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  warning_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  error_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  info_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  bg_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  card_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  border_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
+  text_color_dark?: Prisma.StringNullableWithAggregatesFilter<"CompanyBranding"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"CompanyBranding"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"CompanyBranding"> | Date | string
 }
@@ -292,6 +604,32 @@ export type CompanyBrandingCreateInput = {
   secondary_color?: string | null
   company_name?: string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: string | null
+  app_title?: string | null
+  app_description?: string | null
+  logo_sidebar_url?: string | null
+  logo_dark_url?: string | null
+  og_image_url?: string | null
+  accent_color?: string | null
+  success_color?: string | null
+  warning_color?: string | null
+  error_color?: string | null
+  info_color?: string | null
+  bg_color?: string | null
+  card_color?: string | null
+  border_color?: string | null
+  text_color?: string | null
+  primary_color_dark?: string | null
+  secondary_color_dark?: string | null
+  accent_color_dark?: string | null
+  success_color_dark?: string | null
+  warning_color_dark?: string | null
+  error_color_dark?: string | null
+  info_color_dark?: string | null
+  bg_color_dark?: string | null
+  card_color_dark?: string | null
+  border_color_dark?: string | null
+  text_color_dark?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutBrandingInput
@@ -306,6 +644,32 @@ export type CompanyBrandingUncheckedCreateInput = {
   secondary_color?: string | null
   company_name?: string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: string | null
+  app_title?: string | null
+  app_description?: string | null
+  logo_sidebar_url?: string | null
+  logo_dark_url?: string | null
+  og_image_url?: string | null
+  accent_color?: string | null
+  success_color?: string | null
+  warning_color?: string | null
+  error_color?: string | null
+  info_color?: string | null
+  bg_color?: string | null
+  card_color?: string | null
+  border_color?: string | null
+  text_color?: string | null
+  primary_color_dark?: string | null
+  secondary_color_dark?: string | null
+  accent_color_dark?: string | null
+  success_color_dark?: string | null
+  warning_color_dark?: string | null
+  error_color_dark?: string | null
+  info_color_dark?: string | null
+  bg_color_dark?: string | null
+  card_color_dark?: string | null
+  border_color_dark?: string | null
+  text_color_dark?: string | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -318,6 +682,32 @@ export type CompanyBrandingUpdateInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutBrandingNestedInput
@@ -332,6 +722,32 @@ export type CompanyBrandingUncheckedUpdateInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -345,6 +761,32 @@ export type CompanyBrandingCreateManyInput = {
   secondary_color?: string | null
   company_name?: string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: string | null
+  app_title?: string | null
+  app_description?: string | null
+  logo_sidebar_url?: string | null
+  logo_dark_url?: string | null
+  og_image_url?: string | null
+  accent_color?: string | null
+  success_color?: string | null
+  warning_color?: string | null
+  error_color?: string | null
+  info_color?: string | null
+  bg_color?: string | null
+  card_color?: string | null
+  border_color?: string | null
+  text_color?: string | null
+  primary_color_dark?: string | null
+  secondary_color_dark?: string | null
+  accent_color_dark?: string | null
+  success_color_dark?: string | null
+  warning_color_dark?: string | null
+  error_color_dark?: string | null
+  info_color_dark?: string | null
+  bg_color_dark?: string | null
+  card_color_dark?: string | null
+  border_color_dark?: string | null
+  text_color_dark?: string | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -357,6 +799,32 @@ export type CompanyBrandingUpdateManyMutationInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -370,6 +838,32 @@ export type CompanyBrandingUncheckedUpdateManyInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -388,6 +882,32 @@ export type CompanyBrandingCountOrderByAggregateInput = {
   secondary_color?: Prisma.SortOrder
   company_name?: Prisma.SortOrder
   company_info?: Prisma.SortOrder
+  trade_name?: Prisma.SortOrder
+  app_title?: Prisma.SortOrder
+  app_description?: Prisma.SortOrder
+  logo_sidebar_url?: Prisma.SortOrder
+  logo_dark_url?: Prisma.SortOrder
+  og_image_url?: Prisma.SortOrder
+  accent_color?: Prisma.SortOrder
+  success_color?: Prisma.SortOrder
+  warning_color?: Prisma.SortOrder
+  error_color?: Prisma.SortOrder
+  info_color?: Prisma.SortOrder
+  bg_color?: Prisma.SortOrder
+  card_color?: Prisma.SortOrder
+  border_color?: Prisma.SortOrder
+  text_color?: Prisma.SortOrder
+  primary_color_dark?: Prisma.SortOrder
+  secondary_color_dark?: Prisma.SortOrder
+  accent_color_dark?: Prisma.SortOrder
+  success_color_dark?: Prisma.SortOrder
+  warning_color_dark?: Prisma.SortOrder
+  error_color_dark?: Prisma.SortOrder
+  info_color_dark?: Prisma.SortOrder
+  bg_color_dark?: Prisma.SortOrder
+  card_color_dark?: Prisma.SortOrder
+  border_color_dark?: Prisma.SortOrder
+  text_color_dark?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -400,6 +920,32 @@ export type CompanyBrandingMaxOrderByAggregateInput = {
   primary_color?: Prisma.SortOrder
   secondary_color?: Prisma.SortOrder
   company_name?: Prisma.SortOrder
+  trade_name?: Prisma.SortOrder
+  app_title?: Prisma.SortOrder
+  app_description?: Prisma.SortOrder
+  logo_sidebar_url?: Prisma.SortOrder
+  logo_dark_url?: Prisma.SortOrder
+  og_image_url?: Prisma.SortOrder
+  accent_color?: Prisma.SortOrder
+  success_color?: Prisma.SortOrder
+  warning_color?: Prisma.SortOrder
+  error_color?: Prisma.SortOrder
+  info_color?: Prisma.SortOrder
+  bg_color?: Prisma.SortOrder
+  card_color?: Prisma.SortOrder
+  border_color?: Prisma.SortOrder
+  text_color?: Prisma.SortOrder
+  primary_color_dark?: Prisma.SortOrder
+  secondary_color_dark?: Prisma.SortOrder
+  accent_color_dark?: Prisma.SortOrder
+  success_color_dark?: Prisma.SortOrder
+  warning_color_dark?: Prisma.SortOrder
+  error_color_dark?: Prisma.SortOrder
+  info_color_dark?: Prisma.SortOrder
+  bg_color_dark?: Prisma.SortOrder
+  card_color_dark?: Prisma.SortOrder
+  border_color_dark?: Prisma.SortOrder
+  text_color_dark?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -412,6 +958,32 @@ export type CompanyBrandingMinOrderByAggregateInput = {
   primary_color?: Prisma.SortOrder
   secondary_color?: Prisma.SortOrder
   company_name?: Prisma.SortOrder
+  trade_name?: Prisma.SortOrder
+  app_title?: Prisma.SortOrder
+  app_description?: Prisma.SortOrder
+  logo_sidebar_url?: Prisma.SortOrder
+  logo_dark_url?: Prisma.SortOrder
+  og_image_url?: Prisma.SortOrder
+  accent_color?: Prisma.SortOrder
+  success_color?: Prisma.SortOrder
+  warning_color?: Prisma.SortOrder
+  error_color?: Prisma.SortOrder
+  info_color?: Prisma.SortOrder
+  bg_color?: Prisma.SortOrder
+  card_color?: Prisma.SortOrder
+  border_color?: Prisma.SortOrder
+  text_color?: Prisma.SortOrder
+  primary_color_dark?: Prisma.SortOrder
+  secondary_color_dark?: Prisma.SortOrder
+  accent_color_dark?: Prisma.SortOrder
+  success_color_dark?: Prisma.SortOrder
+  warning_color_dark?: Prisma.SortOrder
+  error_color_dark?: Prisma.SortOrder
+  info_color_dark?: Prisma.SortOrder
+  bg_color_dark?: Prisma.SortOrder
+  card_color_dark?: Prisma.SortOrder
+  border_color_dark?: Prisma.SortOrder
+  text_color_dark?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -460,6 +1032,32 @@ export type CompanyBrandingCreateWithoutCompanyInput = {
   secondary_color?: string | null
   company_name?: string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: string | null
+  app_title?: string | null
+  app_description?: string | null
+  logo_sidebar_url?: string | null
+  logo_dark_url?: string | null
+  og_image_url?: string | null
+  accent_color?: string | null
+  success_color?: string | null
+  warning_color?: string | null
+  error_color?: string | null
+  info_color?: string | null
+  bg_color?: string | null
+  card_color?: string | null
+  border_color?: string | null
+  text_color?: string | null
+  primary_color_dark?: string | null
+  secondary_color_dark?: string | null
+  accent_color_dark?: string | null
+  success_color_dark?: string | null
+  warning_color_dark?: string | null
+  error_color_dark?: string | null
+  info_color_dark?: string | null
+  bg_color_dark?: string | null
+  card_color_dark?: string | null
+  border_color_dark?: string | null
+  text_color_dark?: string | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -472,6 +1070,32 @@ export type CompanyBrandingUncheckedCreateWithoutCompanyInput = {
   secondary_color?: string | null
   company_name?: string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: string | null
+  app_title?: string | null
+  app_description?: string | null
+  logo_sidebar_url?: string | null
+  logo_dark_url?: string | null
+  og_image_url?: string | null
+  accent_color?: string | null
+  success_color?: string | null
+  warning_color?: string | null
+  error_color?: string | null
+  info_color?: string | null
+  bg_color?: string | null
+  card_color?: string | null
+  border_color?: string | null
+  text_color?: string | null
+  primary_color_dark?: string | null
+  secondary_color_dark?: string | null
+  accent_color_dark?: string | null
+  success_color_dark?: string | null
+  warning_color_dark?: string | null
+  error_color_dark?: string | null
+  info_color_dark?: string | null
+  bg_color_dark?: string | null
+  card_color_dark?: string | null
+  border_color_dark?: string | null
+  text_color_dark?: string | null
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -500,6 +1124,32 @@ export type CompanyBrandingUpdateWithoutCompanyInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -512,6 +1162,32 @@ export type CompanyBrandingUncheckedUpdateWithoutCompanyInput = {
   secondary_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company_info?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  trade_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  app_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_sidebar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo_dark_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  og_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondary_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accent_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  success_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  warning_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  error_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  info_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bg_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  card_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  border_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_color_dark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -527,6 +1203,32 @@ export type CompanyBrandingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   secondary_color?: boolean
   company_name?: boolean
   company_info?: boolean
+  trade_name?: boolean
+  app_title?: boolean
+  app_description?: boolean
+  logo_sidebar_url?: boolean
+  logo_dark_url?: boolean
+  og_image_url?: boolean
+  accent_color?: boolean
+  success_color?: boolean
+  warning_color?: boolean
+  error_color?: boolean
+  info_color?: boolean
+  bg_color?: boolean
+  card_color?: boolean
+  border_color?: boolean
+  text_color?: boolean
+  primary_color_dark?: boolean
+  secondary_color_dark?: boolean
+  accent_color_dark?: boolean
+  success_color_dark?: boolean
+  warning_color_dark?: boolean
+  error_color_dark?: boolean
+  info_color_dark?: boolean
+  bg_color_dark?: boolean
+  card_color_dark?: boolean
+  border_color_dark?: boolean
+  text_color_dark?: boolean
   created_at?: boolean
   updated_at?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -541,6 +1243,32 @@ export type CompanyBrandingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   secondary_color?: boolean
   company_name?: boolean
   company_info?: boolean
+  trade_name?: boolean
+  app_title?: boolean
+  app_description?: boolean
+  logo_sidebar_url?: boolean
+  logo_dark_url?: boolean
+  og_image_url?: boolean
+  accent_color?: boolean
+  success_color?: boolean
+  warning_color?: boolean
+  error_color?: boolean
+  info_color?: boolean
+  bg_color?: boolean
+  card_color?: boolean
+  border_color?: boolean
+  text_color?: boolean
+  primary_color_dark?: boolean
+  secondary_color_dark?: boolean
+  accent_color_dark?: boolean
+  success_color_dark?: boolean
+  warning_color_dark?: boolean
+  error_color_dark?: boolean
+  info_color_dark?: boolean
+  bg_color_dark?: boolean
+  card_color_dark?: boolean
+  border_color_dark?: boolean
+  text_color_dark?: boolean
   created_at?: boolean
   updated_at?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -555,6 +1283,32 @@ export type CompanyBrandingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   secondary_color?: boolean
   company_name?: boolean
   company_info?: boolean
+  trade_name?: boolean
+  app_title?: boolean
+  app_description?: boolean
+  logo_sidebar_url?: boolean
+  logo_dark_url?: boolean
+  og_image_url?: boolean
+  accent_color?: boolean
+  success_color?: boolean
+  warning_color?: boolean
+  error_color?: boolean
+  info_color?: boolean
+  bg_color?: boolean
+  card_color?: boolean
+  border_color?: boolean
+  text_color?: boolean
+  primary_color_dark?: boolean
+  secondary_color_dark?: boolean
+  accent_color_dark?: boolean
+  success_color_dark?: boolean
+  warning_color_dark?: boolean
+  error_color_dark?: boolean
+  info_color_dark?: boolean
+  bg_color_dark?: boolean
+  card_color_dark?: boolean
+  border_color_dark?: boolean
+  text_color_dark?: boolean
   created_at?: boolean
   updated_at?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -569,11 +1323,37 @@ export type CompanyBrandingSelectScalar = {
   secondary_color?: boolean
   company_name?: boolean
   company_info?: boolean
+  trade_name?: boolean
+  app_title?: boolean
+  app_description?: boolean
+  logo_sidebar_url?: boolean
+  logo_dark_url?: boolean
+  og_image_url?: boolean
+  accent_color?: boolean
+  success_color?: boolean
+  warning_color?: boolean
+  error_color?: boolean
+  info_color?: boolean
+  bg_color?: boolean
+  card_color?: boolean
+  border_color?: boolean
+  text_color?: boolean
+  primary_color_dark?: boolean
+  secondary_color_dark?: boolean
+  accent_color_dark?: boolean
+  success_color_dark?: boolean
+  warning_color_dark?: boolean
+  error_color_dark?: boolean
+  info_color_dark?: boolean
+  bg_color_dark?: boolean
+  card_color_dark?: boolean
+  border_color_dark?: boolean
+  text_color_dark?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type CompanyBrandingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "logo_url" | "favicon_url" | "primary_color" | "secondary_color" | "company_name" | "company_info" | "created_at" | "updated_at", ExtArgs["result"]["companyBranding"]>
+export type CompanyBrandingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "logo_url" | "favicon_url" | "primary_color" | "secondary_color" | "company_name" | "company_info" | "trade_name" | "app_title" | "app_description" | "logo_sidebar_url" | "logo_dark_url" | "og_image_url" | "accent_color" | "success_color" | "warning_color" | "error_color" | "info_color" | "bg_color" | "card_color" | "border_color" | "text_color" | "primary_color_dark" | "secondary_color_dark" | "accent_color_dark" | "success_color_dark" | "warning_color_dark" | "error_color_dark" | "info_color_dark" | "bg_color_dark" | "card_color_dark" | "border_color_dark" | "text_color_dark" | "created_at" | "updated_at", ExtArgs["result"]["companyBranding"]>
 export type CompanyBrandingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
@@ -598,6 +1378,32 @@ export type $CompanyBrandingPayload<ExtArgs extends runtime.Types.Extensions.Int
     secondary_color: string | null
     company_name: string | null
     company_info: runtime.JsonValue | null
+    trade_name: string | null
+    app_title: string | null
+    app_description: string | null
+    logo_sidebar_url: string | null
+    logo_dark_url: string | null
+    og_image_url: string | null
+    accent_color: string | null
+    success_color: string | null
+    warning_color: string | null
+    error_color: string | null
+    info_color: string | null
+    bg_color: string | null
+    card_color: string | null
+    border_color: string | null
+    text_color: string | null
+    primary_color_dark: string | null
+    secondary_color_dark: string | null
+    accent_color_dark: string | null
+    success_color_dark: string | null
+    warning_color_dark: string | null
+    error_color_dark: string | null
+    info_color_dark: string | null
+    bg_color_dark: string | null
+    card_color_dark: string | null
+    border_color_dark: string | null
+    text_color_dark: string | null
     created_at: Date
     updated_at: Date
   }, ExtArgs["result"]["companyBranding"]>
@@ -1032,6 +1838,32 @@ export interface CompanyBrandingFieldRefs {
   readonly secondary_color: Prisma.FieldRef<"CompanyBranding", 'String'>
   readonly company_name: Prisma.FieldRef<"CompanyBranding", 'String'>
   readonly company_info: Prisma.FieldRef<"CompanyBranding", 'Json'>
+  readonly trade_name: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly app_title: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly app_description: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly logo_sidebar_url: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly logo_dark_url: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly og_image_url: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly accent_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly success_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly warning_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly error_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly info_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly bg_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly card_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly border_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly text_color: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly primary_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly secondary_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly accent_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly success_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly warning_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly error_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly info_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly bg_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly card_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly border_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
+  readonly text_color_dark: Prisma.FieldRef<"CompanyBranding", 'String'>
   readonly created_at: Prisma.FieldRef<"CompanyBranding", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"CompanyBranding", 'DateTime'>
 }

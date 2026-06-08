@@ -50,8 +50,41 @@ model CompanyBranding {
   secondary_color String?
   company_name    String?
   company_info    Json?
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+
+  // Identidade estendida
+  trade_name       String?
+  app_title        String?
+  app_description  String?
+  logo_sidebar_url String?
+  logo_dark_url    String?
+  og_image_url     String?
+
+  // Tema light (cores adicionais — primary/secondary já existem acima)
+  accent_color  String?
+  success_color String?
+  warning_color String?
+  error_color   String?
+  info_color    String?
+  bg_color      String?
+  card_color    String?
+  border_color  String?
+  text_color    String?
+
+  // Tema dark (espelha o conjunto do tema light)
+  primary_color_dark   String?
+  secondary_color_dark String?
+  accent_color_dark    String?
+  success_color_dark   String?
+  warning_color_dark   String?
+  error_color_dark     String?
+  info_color_dark      String?
+  bg_color_dark        String?
+  card_color_dark      String?
+  border_color_dark    String?
+  text_color_dark      String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   company Company @relation(fields: [company_id], references: [id])
 }

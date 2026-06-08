@@ -48,7 +48,7 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
 // Middleware para verificar se usuário é admin
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
   const user = (req as any).user;
-  
+
   if (!user) {
     return res.status(401).json(
       ApiResponse.error('Usuário não autenticado')
@@ -60,6 +60,24 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
   if (user.role !== 'administrador' && user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
     return res.status(403).json(
       ApiResponse.error('Acesso negado. Permissão de administrador necessária.')
+    );
+  }
+
+  next();
+};
+
+export const requireSuperAdmin = (req: Request, res: Response, next: NextFunction) => {
+  const user = (req as any).user;
+
+  if (!user) {
+    return res.status(401).json(
+      ApiResponse.error('Usuário não autenticado')
+    );
+  }
+
+  if (user.role !== 'SUPER_ADMIN') {
+    return res.status(403).json(
+      ApiResponse.error('Acesso negado. Permissão de super administrador necessária.')
     );
   }
 

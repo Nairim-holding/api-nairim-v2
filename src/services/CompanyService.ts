@@ -1,55 +1,137 @@
 import prisma from '../lib/prisma';
 import { BlobService } from '../lib/blobService';
 
+export interface BrandingUpdateData {
+  logo_url?: string;
+  favicon_url?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  company_name?: string;
+  company_info?: object;
+
+  trade_name?: string;
+  app_title?: string;
+  app_description?: string;
+  logo_sidebar_url?: string;
+  logo_dark_url?: string;
+  og_image_url?: string;
+
+  accent_color?: string;
+  success_color?: string;
+  warning_color?: string;
+  error_color?: string;
+  info_color?: string;
+  bg_color?: string;
+  card_color?: string;
+  border_color?: string;
+  text_color?: string;
+
+  primary_color_dark?: string;
+  secondary_color_dark?: string;
+  accent_color_dark?: string;
+  success_color_dark?: string;
+  warning_color_dark?: string;
+  error_color_dark?: string;
+  info_color_dark?: string;
+  bg_color_dark?: string;
+  card_color_dark?: string;
+  border_color_dark?: string;
+  text_color_dark?: string;
+}
+
+// Cache em memória do branding público por slug — endpoint chamado a cada
+// renderização de página no front (ISR só amortece no nível do Next.js).
+// TTL curto: dados mudam raramente e a invalidação explícita em updateBranding/
+// uploadX já cobre o caso comum (admin altera e quer ver refletido na hora).
+const BRANDING_CACHE_TTL_MS = 60_000;
+const brandingCache = new Map<string, { data: { company: any; branding: any }; expiresAt: number }>();
+
+function invalidateBrandingCacheBySlug(slug: string) {
+  brandingCache.delete(slug);
+}
+
+async function invalidateBrandingCacheByCompanyId(company_id: string) {
+  const company = await prisma.company.findUnique({ where: { id: company_id }, select: { slug: true } });
+  if (company?.slug) invalidateBrandingCacheBySlug(company.slug);
+}
+
 export class CompanyService {
+  // ─── Validação ────────────────────────────────────────────────────────────
+
+  static async checkSlugExists(slug: string): Promise<boolean> {
+    const company = await prisma.company.findUnique({ where: { slug } });
+    return !!company;
+  }
+
   // ─── Branding ─────────────────────────────────────────────────────────────
 
   static async getBrandingBySlug(slug: string) {
+    const cached = brandingCache.get(slug);
+    if (cached && cached.expiresAt > Date.now()) return cached.data;
+
     const company = await prisma.company.findUnique({
       where: { slug, is_active: true, deleted_at: null },
       include: { branding: true },
     });
     if (!company) return null;
-    return { company, branding: company.branding };
+
+    const data = { company, branding: company.branding };
+    brandingCache.set(slug, { data, expiresAt: Date.now() + BRANDING_CACHE_TTL_MS });
+    return data;
   }
 
   static async getBrandingByCompanyId(company_id: string) {
     return prisma.companyBranding.findUnique({ where: { company_id } });
   }
 
-  static async updateBranding(company_id: string, data: {
-    logo_url?: string;
-    favicon_url?: string;
-    primary_color?: string;
-    secondary_color?: string;
-    company_name?: string;
-    company_info?: object;
-  }) {
-    return prisma.companyBranding.upsert({
+  static async updateBranding(company_id: string, data: BrandingUpdateData) {
+    const updated = await prisma.companyBranding.upsert({
       where: { company_id },
       update: { ...data, updated_at: new Date() },
       create: { company_id, ...data },
     });
+    await invalidateBrandingCacheByCompanyId(company_id);
+    return updated;
   }
 
-  static async uploadLogo(company_id: string, file: Express.Multer.File): Promise<string> {
+  static async uploadBrandingAsset(
+    company_id: string,
+    file: Express.Multer.File,
+    field: 'logo_url' | 'favicon_url' | 'logo_sidebar_url' | 'logo_dark_url' | 'og_image_url',
+  ): Promise<string> {
     const result = await BlobService.moveFile(file, file.originalname, `companies/${company_id}`);
+    const url = result.result.url;
+
+    const updateData: any = { [field]: url, updated_at: new Date() };
+    const createData: any = { company_id, [field]: url };
+
     await prisma.companyBranding.upsert({
       where: { company_id },
-      update: { logo_url: result.result.url },
-      create: { company_id, logo_url: result.result.url },
+      update: updateData,
+      create: createData,
     });
-    return result.result.url;
+    await invalidateBrandingCacheByCompanyId(company_id);
+    return url;
   }
 
-  static async uploadFavicon(company_id: string, file: Express.Multer.File): Promise<string> {
-    const result = await BlobService.moveFile(file, file.originalname, `companies/${company_id}`);
-    await prisma.companyBranding.upsert({
-      where: { company_id },
-      update: { favicon_url: result.result.url },
-      create: { company_id, favicon_url: result.result.url },
-    });
-    return result.result.url;
+  static uploadLogo(company_id: string, file: Express.Multer.File): Promise<string> {
+    return this.uploadBrandingAsset(company_id, file, 'logo_url');
+  }
+
+  static uploadFavicon(company_id: string, file: Express.Multer.File): Promise<string> {
+    return this.uploadBrandingAsset(company_id, file, 'favicon_url');
+  }
+
+  static uploadLogoSidebar(company_id: string, file: Express.Multer.File): Promise<string> {
+    return this.uploadBrandingAsset(company_id, file, 'logo_sidebar_url');
+  }
+
+  static uploadLogoDark(company_id: string, file: Express.Multer.File): Promise<string> {
+    return this.uploadBrandingAsset(company_id, file, 'logo_dark_url');
+  }
+
+  static uploadOgImage(company_id: string, file: Express.Multer.File): Promise<string> {
+    return this.uploadBrandingAsset(company_id, file, 'og_image_url');
   }
 
   // ─── CRUD de Empresas ─────────────────────────────────────────────────────
@@ -79,7 +161,7 @@ export class CompanyService {
         skip,
         take,
         orderBy: { name: 'asc' },
-        include: { branding: { select: { company_name: true, logo_url: true, primary_color: true } } },
+        include: { branding: { select: { company_name: true, trade_name: true, logo_url: true, logo_dark_url: true, primary_color: true } } },
       }),
       prisma.company.count({ where }),
     ]);
@@ -99,17 +181,12 @@ export class CompanyService {
   static async createCompany(data: {
     name: string;
     slug: string;
-    company_name?: string;
-    primary_color?: string;
-    secondary_color?: string;
-    logo_url?: string;
-    favicon_url?: string;
-  }) {
+  } & BrandingUpdateData) {
     const existing = await prisma.company.findUnique({ where: { slug: data.slug } });
     if (existing) throw new Error('Já existe uma empresa com este slug');
 
     const { name, slug, ...branding } = data;
-    const hasBranding = Object.values(branding).some(v => v);
+    const hasBranding = Object.values(branding).some(v => v !== undefined);
 
     return prisma.company.create({
       data: {
@@ -128,12 +205,7 @@ export class CompanyService {
     name?: string;
     slug?: string;
     is_active?: boolean;
-    company_name?: string;
-    primary_color?: string;
-    secondary_color?: string;
-    logo_url?: string;
-    favicon_url?: string;
-  }) {
+  } & BrandingUpdateData) {
     const existing = await prisma.company.findUnique({ where: { id } });
     if (!existing) throw new Error('Empresa não encontrada');
 
@@ -142,10 +214,10 @@ export class CompanyService {
       if (slugExists) throw new Error('Já existe uma empresa com este slug');
     }
 
-    const { name, slug, is_active, company_name, primary_color, secondary_color, logo_url, favicon_url } = data;
-    const hasBranding = [company_name, primary_color, secondary_color, logo_url, favicon_url].some(v => v !== undefined);
+    const { name, slug, is_active, ...branding } = data;
+    const hasBranding = Object.values(branding).some(v => v !== undefined);
 
-    return prisma.company.update({
+    const updated = await prisma.company.update({
       where: { id },
       data: {
         ...(name !== undefined ? { name } : {}),
@@ -154,20 +226,16 @@ export class CompanyService {
         ...(hasBranding ? {
           branding: {
             upsert: {
-              create: { company_name, primary_color, secondary_color, logo_url, favicon_url },
-              update: {
-                ...(company_name !== undefined ? { company_name } : {}),
-                ...(primary_color !== undefined ? { primary_color } : {}),
-                ...(secondary_color !== undefined ? { secondary_color } : {}),
-                ...(logo_url !== undefined ? { logo_url } : {}),
-                ...(favicon_url !== undefined ? { favicon_url } : {}),
-              },
+              create: { ...branding },
+              update: { ...branding, updated_at: new Date() },
             },
           },
         } : {}),
       },
       include: { branding: true },
     });
+    if (hasBranding) await invalidateBrandingCacheBySlug(updated.slug);
+    return updated;
   }
 
   static async deleteCompany(id: string) {

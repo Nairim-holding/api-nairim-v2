@@ -71,30 +71,37 @@ async function main() {
 
   console.log(`👤 Verificando se o usuário ${email} já existe...`);
 
-  // 2. Criar ou atualizar o usuário de teste
-  const testUser = await prisma.user.upsert({
+  // 2. Deletar se existir e criar novo usuário de teste
+  const existingUser = await prisma.user.findUnique({
     where: {
       company_id_email: {
         company_id: company.id,
         email: email,
       },
     },
-    update: {
-      name: 'João Silva',
-      password: hashedPassword,
-      birth_date: new Date('1990-01-01'),
-      gender: 'MALE',
-      role: 'ADMIN',
-      deleted_at: null, // Garante que se foi desativado/deletado logico, ele seja restaurado
-    },
-    create: {
+  });
+
+  if (existingUser) {
+    console.log(`🗑️ Usuário existente encontrado. Deletando...`);
+    await prisma.user.delete({
+      where: {
+        company_id_email: {
+          company_id: company.id,
+          email: email,
+        },
+      },
+    });
+  }
+
+  const testUser = await prisma.user.create({
+    data: {
       company_id: company.id,
       name: 'João Silva',
       email: email,
       password: hashedPassword,
       birth_date: new Date('1990-01-01'),
       gender: 'MALE',
-      role: 'ADMIN',
+      role: 'SUPER_ADMIN',
     },
   });
 

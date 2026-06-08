@@ -5,6 +5,33 @@ import { CompanyService } from '@/services/CompanyService';
 import { ValidationUtil } from '../utils/validation';
 import { env } from '@/env';
 
+const BRANDING_FIELDS = [
+  'primary_color', 'secondary_color', 'company_name', 'company_info', 'logo_url', 'favicon_url',
+  'trade_name', 'app_title', 'app_description', 'logo_sidebar_url', 'logo_dark_url', 'og_image_url',
+  'accent_color', 'success_color', 'warning_color', 'error_color', 'info_color',
+  'bg_color', 'card_color', 'border_color', 'text_color',
+  'primary_color_dark', 'secondary_color_dark', 'accent_color_dark', 'success_color_dark',
+  'warning_color_dark', 'error_color_dark', 'info_color_dark',
+  'bg_color_dark', 'card_color_dark', 'border_color_dark', 'text_color_dark',
+] as const;
+
+function pickBrandingFields(body: Record<string, unknown>) {
+  const data: Record<string, unknown> = {};
+  for (const field of BRANDING_FIELDS) {
+    if (body[field] !== undefined) data[field] = body[field];
+  }
+  return data;
+}
+
+// Validação de upload de assets de branding — multer (utils/upload.ts) não aplica
+// fileFilter/limits por ser usado em vários fluxos; checagem fica aqui, específica
+// para imagens de marca (logos, favicon, OG).
+function validateBrandingImage(file: Express.Multer.File, maxSizeMB: number): string | null {
+  if (!file.mimetype.startsWith('image/')) return 'Arquivo deve ser uma imagem';
+  if (file.size > maxSizeMB * 1024 * 1024) return `Arquivo excede o limite de ${maxSizeMB}MB`;
+  return null;
+}
+
 export class CompanyController {
   // ─── Branding (public + admin) ────────────────────────────────────────────
 
@@ -33,39 +60,90 @@ export class CompanyController {
   static async updateBranding(req: Request, res: Response) {
     try {
       const { company_id } = (req as any).user;
-      const { primary_color, secondary_color, company_name, company_info, logo_url, favicon_url } = req.body;
-      const updated = await CompanyService.updateBranding(company_id, {
-        primary_color, secondary_color, company_name, company_info, logo_url, favicon_url,
-      });
+      const updated = await CompanyService.updateBranding(company_id, pickBrandingFields(req.body));
       return res.json(ApiResponse.success(updated));
     } catch (error: any) {
       return res.status(500).json(ApiResponse.error(error.message));
     }
   }
 
-  static async uploadLogo(req: Request, res: Response) {
+  // `companyId` explícito permite que o admin gerencie assets de QUALQUER empresa
+  // (telas de cadastrar/editar empresa); sem ele, usa o company_id do próprio JWT
+  // (auto-atendimento via /company/branding/*).
+  private static async handleAssetUpload(
+    req: Request,
+    res: Response,
+    maxSizeMB: number,
+    upload: (company_id: string, file: Express.Multer.File) => Promise<string>,
+    companyId?: string,
+  ) {
     try {
-      const { company_id } = (req as any).user;
+      const company_id = companyId ?? (req as any).user.company_id;
       if (!req.file) return res.status(400).json(ApiResponse.error('Nenhum arquivo enviado'));
-      const url = await CompanyService.uploadLogo(company_id, req.file);
+      const validationError = validateBrandingImage(req.file, maxSizeMB);
+      if (validationError) return res.status(400).json(ApiResponse.error(validationError));
+      const url = await upload(company_id, req.file);
       return res.json(ApiResponse.success({ url }));
     } catch (error: any) {
       return res.status(500).json(ApiResponse.error(error.message));
     }
   }
 
-  static async uploadFavicon(req: Request, res: Response) {
-    try {
-      const { company_id } = (req as any).user;
-      if (!req.file) return res.status(400).json(ApiResponse.error('Nenhum arquivo enviado'));
-      const url = await CompanyService.uploadFavicon(company_id, req.file);
-      return res.json(ApiResponse.success({ url }));
-    } catch (error: any) {
-      return res.status(500).json(ApiResponse.error(error.message));
-    }
+  static uploadLogo(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogo(cid, file));
+  }
+
+  static uploadFavicon(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadFavicon(cid, file));
+  }
+
+  static uploadLogoSidebar(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogoSidebar(cid, file));
+  }
+
+  static uploadLogoDark(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogoDark(cid, file));
+  }
+
+  static uploadOgImage(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 10, (cid, file) => CompanyService.uploadOgImage(cid, file));
+  }
+
+  // ─── Upload de assets para QUALQUER empresa (admin gerenciando outras empresas) ──
+
+  static uploadLogoForCompany(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogo(cid, file), String(req.params.id));
+  }
+
+  static uploadFaviconForCompany(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadFavicon(cid, file), String(req.params.id));
+  }
+
+  static uploadLogoSidebarForCompany(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogoSidebar(cid, file), String(req.params.id));
+  }
+
+  static uploadLogoDarkForCompany(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 5, (cid, file) => CompanyService.uploadLogoDark(cid, file), String(req.params.id));
+  }
+
+  static uploadOgImageForCompany(req: Request, res: Response) {
+    return CompanyController.handleAssetUpload(req, res, 10, (cid, file) => CompanyService.uploadOgImage(cid, file), String(req.params.id));
   }
 
   // ─── CRUD de Empresas ─────────────────────────────────────────────────────
+
+  static async checkSlugAvailability(req: Request, res: Response) {
+    try {
+      const slug = String(req.params.slug ?? '').toLowerCase().trim();
+      if (!slug) return res.status(400).json(ApiResponse.error('Slug é obrigatório'));
+
+      const existing = await CompanyService.checkSlugExists(slug);
+      return res.json(ApiResponse.success({ available: !existing }));
+    } catch (error: any) {
+      return res.status(500).json(ApiResponse.error(error.message));
+    }
+  }
 
   static async listCompanies(req: Request, res: Response) {
     try {
@@ -100,16 +178,12 @@ export class CompanyController {
 
   static async createCompany(req: Request, res: Response) {
     try {
-      const { name, slug, company_name, primary_color, secondary_color, logo_url, favicon_url } = req.body;
+      const { name, slug } = req.body;
       if (!name || !slug) return res.status(400).json(ApiResponse.error('name e slug são obrigatórios'));
       const company = await CompanyService.createCompany({
         name,
         slug: slug.toLowerCase().trim(),
-        company_name,
-        primary_color,
-        secondary_color,
-        logo_url,
-        favicon_url,
+        ...pickBrandingFields(req.body),
       });
       return res.status(201).json(ApiResponse.success(company, 'Empresa criada com sucesso'));
     } catch (error: any) {
@@ -121,16 +195,12 @@ export class CompanyController {
   static async updateCompany(req: Request, res: Response) {
     try {
       const id = String(req.params.id);
-      const { name, slug, is_active, company_name, primary_color, secondary_color, logo_url, favicon_url } = req.body;
+      const { name, slug, is_active } = req.body;
       const updated = await CompanyService.updateCompany(id, {
         name,
         slug: slug ? slug.toLowerCase().trim() : undefined,
         is_active,
-        company_name,
-        primary_color,
-        secondary_color,
-        logo_url,
-        favicon_url,
+        ...pickBrandingFields(req.body),
       });
       return res.json(ApiResponse.success(updated, 'Empresa atualizada com sucesso'));
     } catch (error: any) {
