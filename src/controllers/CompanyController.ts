@@ -18,7 +18,11 @@ const BRANDING_FIELDS = [
 function pickBrandingFields(body: Record<string, unknown>) {
   const data: Record<string, unknown> = {};
   for (const field of BRANDING_FIELDS) {
-    if (body[field] !== undefined) data[field] = body[field];
+    const value = body[field];
+    // Filtrar arrays vazios, strings vazias e undefined
+    if (value !== undefined && value !== '' && (!Array.isArray(value) || value.length > 0)) {
+      data[field] = value;
+    }
   }
   return data;
 }
