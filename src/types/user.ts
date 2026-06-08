@@ -6,7 +6,8 @@ export enum Gender {
 
 export enum Role {
   ADMIN = 'ADMIN',
-  DEFAULT = 'DEFAULT'
+  DEFAULT = 'DEFAULT',
+  SUPER_ADMIN = 'SUPER_ADMIN'
 }
 
 export interface User {
@@ -116,5 +117,6 @@ export const genderLabels: Record<Gender, string> = {
 
 export const roleLabels: Record<Role, string> = {
   [Role.ADMIN]: 'Administrador',
-  [Role.DEFAULT]: 'Usuário Padrão'
+  [Role.DEFAULT]: 'Usuário Padrão',
+  [Role.SUPER_ADMIN]: 'Super Administrador'
 };
