@@ -209,6 +209,13 @@ export class UserController {
         return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
       }
 
+      const currentUser = (req as any).user;
+
+      // Apenas SUPER_ADMIN pode alterar a role de outro usuário
+      if (req.body.role && currentUser?.role !== 'SUPER_ADMIN') {
+        return res.status(403).json(ApiResponse.error('Apenas super administrador pode alterar a role'));
+      }
+
       const validation = UserValidator.validateUpdate(req.body);
       if (!validation.isValid) {
         return res.status(400).json(
