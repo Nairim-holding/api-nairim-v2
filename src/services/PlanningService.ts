@@ -38,8 +38,8 @@ export class PlanningService {
 
     const monthlyTotals = new Map<string, number>();
     for (const tx of transactions) {
-      const monthKey = `${tx.effective_date.getFullYear()}-${String(
-        tx.effective_date.getMonth() + 1,
+      const monthKey = `${tx.effective_date.getUTCFullYear()}-${String(
+        tx.effective_date.getUTCMonth() + 1,
       ).padStart(2, '0')}`;
       const amount = Number(tx.amount);
       monthlyTotals.set(monthKey, (monthlyTotals.get(monthKey) ?? 0) + amount);
@@ -225,12 +225,20 @@ export class PlanningService {
         throw new Error('Invalid date format. Use YYYY-MM-DD');
       }
 
-      // Gera lista de meses no período
+      // Gera lista de meses no período a partir das strings (evita problemas de
+      // fuso horário do new Date() e de overflow de dia em setMonth, ex: dia 31)
       const months: { month: number; year: number }[] = [];
-      const current = new Date(start);
-      while (current <= end) {
-        months.push({ month: current.getMonth() + 1, year: current.getFullYear() });
-        current.setMonth(current.getMonth() + 1);
+      const [startYear, startMonth] = startDate.split('-').map(Number);
+      const [endYear, endMonth] = endDate.split('-').map(Number);
+      let cursorYear = startYear;
+      let cursorMonth = startMonth;
+      while (cursorYear < endYear || (cursorYear === endYear && cursorMonth <= endMonth)) {
+        months.push({ month: cursorMonth, year: cursorYear });
+        cursorMonth++;
+        if (cursorMonth > 12) {
+          cursorMonth = 1;
+          cursorYear++;
+        }
       }
 
       // Busca categorias ativas com subcategorias
@@ -285,8 +293,8 @@ export class PlanningService {
       for (const tx of transactions) {
         const catId = tx.category_id;
         const subId = tx.subcategory_id ?? '';
-        const monthKey = `${tx.effective_date.getFullYear()}-${String(
-          tx.effective_date.getMonth() + 1,
+        const monthKey = `${tx.effective_date.getUTCFullYear()}-${String(
+          tx.effective_date.getUTCMonth() + 1,
         ).padStart(2, '0')}`;
         const amount = Number(tx.amount);
 
@@ -469,49 +477,34 @@ export class PlanningService {
         }
 
         let catPlannedTotal = 0;
-        let catRealizedTotal = 0;
-        let catMinTotal = 0;
-        let catMaxTotal = 0;
-        let catMedTotal = 0;
-        const catMonthlyData: MonthlyData[] = months.map(({ month, year }) => ({
-          month,
-          year,
-          realized_amount: 0,
-        }));
 
         for (const subItem of subcategoryItems) {
           catPlannedTotal += subItem.planned_amount;
-          catRealizedTotal += subItem.realized_amount;
-          catMinTotal += subItem.min ?? 0;
-          catMaxTotal += subItem.max ?? 0;
-          catMedTotal += subItem.med;
-
-          for (const monthData of subItem.monthly_data) {
-            const idx = catMonthlyData.findIndex(
-              (m) => m.month === monthData.month && m.year === monthData.year,
-            );
-            if (idx !== -1) {
-              catMonthlyData[idx].realized_amount += monthData.realized_amount;
-            }
-          }
         }
 
-        // Inclui planejamento da categoria (subcategory_id: null)
+        // Realizado da categoria vem do mapa 'TOTAL' (inclui transações COM e SEM subcategoria)
+        const catMonthlyData: MonthlyData[] = months.map(({ month, year }) => {
+          const mk = `${year}-${String(month).padStart(2, '0')}`;
+          return {
+            month,
+            year,
+            realized_amount: Math.round((catTxMap?.get(mk) ?? 0) * 100) / 100,
+          };
+        });
+
+        const catRealizedTotal = catMonthlyData.reduce((s, m) => s + m.realized_amount, 0);
+
+        // Inclui planejamento da categoria (subcategory_id: null) — apenas meses do período
         if (catPlanning) {
           if (catPlanning.type === 'FIXED') {
-            catPlannedTotal += Number(catPlanning.default_amount ?? 0);
+            catPlannedTotal += Number(catPlanning.default_amount ?? 0) * months.length;
           } else if (catPlanning.type === 'VARIABLE') {
-            for (const monthValue of catPlanning.monthly_values) {
-              catPlannedTotal += Number(monthValue.amount);
+            for (const { month } of months) {
+              const monthValue = catPlanning.monthly_values.find((mv) => mv.month === month);
+              catPlannedTotal += Number(monthValue?.amount ?? 0);
             }
           }
-          catMinTotal += Number(catPlanning.min_recommended ?? 0);
-          catMaxTotal += Number(catPlanning.max_recommended ?? 0);
         }
-
-        catMonthlyData.forEach((m) => {
-          m.realized_amount = Math.round(m.realized_amount * 100) / 100;
-        });
 
         const catPercentage =
           catPlannedTotal > 0 ? Math.round((catRealizedTotal / catPlannedTotal) * 10000) / 100 : 0;
@@ -525,6 +518,16 @@ export class PlanningService {
                   100,
               ) / 100
             : 0;
+
+        // Min/Max dos valores REALIZADOS no período (mesma lógica de buildItem)
+        const catMinValue =
+          nonZeroMonths.length > 0
+            ? Math.min(...nonZeroMonths.map((m) => m.realized_amount))
+            : null;
+        const catMaxValue =
+          nonZeroMonths.length > 0
+            ? Math.max(...nonZeroMonths.map((m) => m.realized_amount))
+            : null;
 
         // Constrói monthly_values para a categoria (soma das subcategorias + planejamento direto)
         const catMonthlyValues: Array<{ month: number; amount: number }> = months.map(({ month, year }) => {
@@ -558,9 +561,9 @@ export class PlanningService {
           planned_amount: Math.round(catPlannedTotal * 100) / 100,
           realized_amount: Math.round(catRealizedTotal * 100) / 100,
           percentage: catPercentage,
-          min: subcategoryItems.length > 0 ? Math.round(catMinTotal * 100) / 100 : 0,
+          min: catMinValue,
           med: Math.round(catAverage * 100) / 100,
-          max: subcategoryItems.length > 0 ? Math.round(catMaxTotal * 100) / 100 : 0,
+          max: catMaxValue,
           monthly_data: catMonthlyData,
           monthly_values: catMonthlyValues,
           subcategories: subcategoryItems,
