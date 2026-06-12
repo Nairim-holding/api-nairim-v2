@@ -370,16 +370,15 @@ export class PlanningService {
 
         const realizedTotal = monthlyRealized.reduce((s, m) => s + m.realized_amount, 0);
 
-        // Calcula planejado apenas dos MESES DO PERÍODO (não anual)
+        // Calcula planejado
         let plannedTotal = 0;
         if (planningData) {
           if (planningData.type === 'FIXED') {
-            // Para FIXED: default_amount * número de meses no período
-            const fixedAmount = Number(planningData.default_amount ?? 0);
-            plannedTotal = fixedAmount * months.length;
+            // Para FIXED: o valor informado se mantém como está (NÃO multiplica por meses)
+            plannedTotal = Number(planningData.default_amount ?? 0);
           } else if (planningData.type === 'VARIABLE') {
             // Para VARIABLE: soma apenas dos meses no período
-            for (const { month, year } of months) {
+            for (const { month } of months) {
               const monthValue = planningData.monthly_values.find((mv) => mv.month === month);
               plannedTotal += Number(monthValue?.amount ?? 0);
             }
@@ -494,10 +493,11 @@ export class PlanningService {
 
         const catRealizedTotal = catMonthlyData.reduce((s, m) => s + m.realized_amount, 0);
 
-        // Inclui planejamento da categoria (subcategory_id: null) — apenas meses do período
+        // Inclui planejamento da categoria (subcategory_id: null)
         if (catPlanning) {
           if (catPlanning.type === 'FIXED') {
-            catPlannedTotal += Number(catPlanning.default_amount ?? 0) * months.length;
+            // Valor informado se mantém como está (NÃO multiplica por meses)
+            catPlannedTotal += Number(catPlanning.default_amount ?? 0);
           } else if (catPlanning.type === 'VARIABLE') {
             for (const { month } of months) {
               const monthValue = catPlanning.monthly_values.find((mv) => mv.month === month);
