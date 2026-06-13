@@ -208,6 +208,7 @@ export type CenterWhereInput = {
   deleted_at?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -222,6 +223,7 @@ export type CenterOrderByWithRelationInput = {
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   recurring_configs?: Prisma.RecurringConfigOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
+  properties?: Prisma.PropertyOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
 
@@ -239,6 +241,7 @@ export type CenterWhereUniqueInput = Prisma.AtLeast<{
   deleted_at?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
   recurring_configs?: Prisma.RecurringConfigListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
@@ -280,6 +283,7 @@ export type CenterCreateInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCenterInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCenterInput
   company: Prisma.CompanyCreateNestedOneWithoutCentersInput
 }
 
@@ -294,6 +298,7 @@ export type CenterUncheckedCreateInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCenterInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUpdateInput = {
@@ -306,6 +311,7 @@ export type CenterUpdateInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCenterNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCenterNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCentersNestedInput
 }
 
@@ -320,6 +326,7 @@ export type CenterUncheckedUpdateInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCenterNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateManyInput = {
@@ -364,6 +371,11 @@ export type CenterOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type CenterNullableScalarRelationFilter = {
+  is?: Prisma.CenterWhereInput | null
+  isNot?: Prisma.CenterWhereInput | null
+}
+
 export type CenterCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
@@ -395,11 +407,6 @@ export type CenterMinOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
-}
-
-export type CenterNullableScalarRelationFilter = {
-  is?: Prisma.CenterWhereInput | null
-  isNot?: Prisma.CenterWhereInput | null
 }
 
 export type CenterCreateNestedManyWithoutCompanyInput = {
@@ -444,6 +451,22 @@ export type CenterUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.CenterScalarWhereInput | Prisma.CenterScalarWhereInput[]
 }
 
+export type CenterCreateNestedOneWithoutPropertiesInput = {
+  create?: Prisma.XOR<Prisma.CenterCreateWithoutPropertiesInput, Prisma.CenterUncheckedCreateWithoutPropertiesInput>
+  connectOrCreate?: Prisma.CenterCreateOrConnectWithoutPropertiesInput
+  connect?: Prisma.CenterWhereUniqueInput
+}
+
+export type CenterUpdateOneWithoutPropertiesNestedInput = {
+  create?: Prisma.XOR<Prisma.CenterCreateWithoutPropertiesInput, Prisma.CenterUncheckedCreateWithoutPropertiesInput>
+  connectOrCreate?: Prisma.CenterCreateOrConnectWithoutPropertiesInput
+  upsert?: Prisma.CenterUpsertWithoutPropertiesInput
+  disconnect?: Prisma.CenterWhereInput | boolean
+  delete?: Prisma.CenterWhereInput | boolean
+  connect?: Prisma.CenterWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CenterUpdateToOneWithWhereWithoutPropertiesInput, Prisma.CenterUpdateWithoutPropertiesInput>, Prisma.CenterUncheckedUpdateWithoutPropertiesInput>
+}
+
 export type CenterCreateNestedOneWithoutTransactionsInput = {
   create?: Prisma.XOR<Prisma.CenterCreateWithoutTransactionsInput, Prisma.CenterUncheckedCreateWithoutTransactionsInput>
   connectOrCreate?: Prisma.CenterCreateOrConnectWithoutTransactionsInput
@@ -486,6 +509,7 @@ export type CenterCreateWithoutCompanyInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCenterInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCenterInput
 }
 
 export type CenterUncheckedCreateWithoutCompanyInput = {
@@ -498,6 +522,7 @@ export type CenterUncheckedCreateWithoutCompanyInput = {
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCenterInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutCompanyInput = {
@@ -540,6 +565,74 @@ export type CenterScalarWhereInput = {
   deleted_at?: Prisma.DateTimeNullableFilter<"Center"> | Date | string | null
 }
 
+export type CenterCreateWithoutPropertiesInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCenterInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCenterInput
+  company: Prisma.CompanyCreateNestedOneWithoutCentersInput
+}
+
+export type CenterUncheckedCreateWithoutPropertiesInput = {
+  id?: string
+  company_id: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCenterInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCenterInput
+}
+
+export type CenterCreateOrConnectWithoutPropertiesInput = {
+  where: Prisma.CenterWhereUniqueInput
+  create: Prisma.XOR<Prisma.CenterCreateWithoutPropertiesInput, Prisma.CenterUncheckedCreateWithoutPropertiesInput>
+}
+
+export type CenterUpsertWithoutPropertiesInput = {
+  update: Prisma.XOR<Prisma.CenterUpdateWithoutPropertiesInput, Prisma.CenterUncheckedUpdateWithoutPropertiesInput>
+  create: Prisma.XOR<Prisma.CenterCreateWithoutPropertiesInput, Prisma.CenterUncheckedCreateWithoutPropertiesInput>
+  where?: Prisma.CenterWhereInput
+}
+
+export type CenterUpdateToOneWithWhereWithoutPropertiesInput = {
+  where?: Prisma.CenterWhereInput
+  data: Prisma.XOR<Prisma.CenterUpdateWithoutPropertiesInput, Prisma.CenterUncheckedUpdateWithoutPropertiesInput>
+}
+
+export type CenterUpdateWithoutPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCenterNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCenterNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCentersNestedInput
+}
+
+export type CenterUncheckedUpdateWithoutPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCenterNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCenterNestedInput
+}
+
 export type CenterCreateWithoutTransactionsInput = {
   id?: string
   name: string
@@ -549,6 +642,7 @@ export type CenterCreateWithoutTransactionsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCenterInput
   company: Prisma.CompanyCreateNestedOneWithoutCentersInput
 }
 
@@ -562,6 +656,7 @@ export type CenterUncheckedCreateWithoutTransactionsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutTransactionsInput = {
@@ -589,6 +684,7 @@ export type CenterUpdateWithoutTransactionsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCenterNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCentersNestedInput
 }
 
@@ -602,6 +698,7 @@ export type CenterUncheckedUpdateWithoutTransactionsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateWithoutRecurring_configsInput = {
@@ -613,6 +710,7 @@ export type CenterCreateWithoutRecurring_configsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   transactions?: Prisma.TransactionCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCenterInput
   company: Prisma.CompanyCreateNestedOneWithoutCentersInput
 }
 
@@ -626,6 +724,7 @@ export type CenterUncheckedCreateWithoutRecurring_configsInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCenterInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCenterInput
 }
 
 export type CenterCreateOrConnectWithoutRecurring_configsInput = {
@@ -653,6 +752,7 @@ export type CenterUpdateWithoutRecurring_configsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transactions?: Prisma.TransactionUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCenterNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCentersNestedInput
 }
 
@@ -666,6 +766,7 @@ export type CenterUncheckedUpdateWithoutRecurring_configsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterCreateManyCompanyInput = {
@@ -688,6 +789,7 @@ export type CenterUpdateWithoutCompanyInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCenterNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateWithoutCompanyInput = {
@@ -700,6 +802,7 @@ export type CenterUncheckedUpdateWithoutCompanyInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCenterNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCenterNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCenterNestedInput
 }
 
 export type CenterUncheckedUpdateManyWithoutCompanyInput = {
@@ -720,11 +823,13 @@ export type CenterUncheckedUpdateManyWithoutCompanyInput = {
 export type CenterCountOutputType = {
   recurring_configs: number
   transactions: number
+  properties: number
 }
 
 export type CenterCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | CenterCountOutputTypeCountRecurring_configsArgs
   transactions?: boolean | CenterCountOutputTypeCountTransactionsArgs
+  properties?: boolean | CenterCountOutputTypeCountPropertiesArgs
 }
 
 /**
@@ -751,6 +856,13 @@ export type CenterCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.T
   where?: Prisma.TransactionWhereInput
 }
 
+/**
+ * CenterCountOutputType without action
+ */
+export type CenterCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyWhereInput
+}
+
 
 export type CenterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -763,6 +875,7 @@ export type CenterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   deleted_at?: boolean
   recurring_configs?: boolean | Prisma.Center$recurring_configsArgs<ExtArgs>
   transactions?: boolean | Prisma.Center$transactionsArgs<ExtArgs>
+  properties?: boolean | Prisma.Center$propertiesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CenterCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["center"]>
@@ -806,6 +919,7 @@ export type CenterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type CenterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | Prisma.Center$recurring_configsArgs<ExtArgs>
   transactions?: boolean | Prisma.Center$transactionsArgs<ExtArgs>
+  properties?: boolean | Prisma.Center$propertiesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CenterCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -821,6 +935,7 @@ export type $CenterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     recurring_configs: Prisma.$RecurringConfigPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    properties: Prisma.$PropertyPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1228,6 +1343,7 @@ export interface Prisma__CenterClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   recurring_configs<T extends Prisma.Center$recurring_configsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$recurring_configsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Center$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  properties<T extends Prisma.Center$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Center$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1707,6 +1823,30 @@ export type Center$transactionsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
+}
+
+/**
+ * Center.properties
+ */
+export type Center$propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Property
+   */
+  select?: Prisma.PropertySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Property
+   */
+  omit?: Prisma.PropertyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyInclude<ExtArgs> | null
+  where?: Prisma.PropertyWhereInput
+  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
 }
 
 /**

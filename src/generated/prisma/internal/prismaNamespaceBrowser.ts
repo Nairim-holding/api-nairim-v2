@@ -179,6 +179,7 @@ export const PropertyScalarFieldEnum = {
   owner_id: 'owner_id',
   agency_id: 'agency_id',
   type_id: 'type_id',
+  center_id: 'center_id',
   title: 'title',
   registration_number: 'registration_number',
   bedrooms: 'bedrooms',
@@ -319,6 +320,8 @@ export const LeaseScalarFieldEnum = {
   type_id: 'type_id',
   owner_id: 'owner_id',
   tenant_id: 'tenant_id',
+  agency_id: 'agency_id',
+  financial_institution_id: 'financial_institution_id',
   contract_number: 'contract_number',
   start_date: 'start_date',
   end_date: 'end_date',
@@ -340,12 +343,15 @@ export const LeaseScalarFieldEnum = {
   status: 'status',
   payment_condition: 'payment_condition',
   property_tax_cash: 'property_tax_cash',
+  property_tax_cash_due_date: 'property_tax_cash_due_date',
+  property_tax_first_installment: 'property_tax_first_installment',
+  property_tax_first_installment_due_date: 'property_tax_first_installment_due_date',
   property_tax_second_installment: 'property_tax_second_installment',
+  property_tax_second_installment_due_date: 'property_tax_second_installment_due_date',
   iptu_year: 'iptu_year',
   iptu_installments: 'iptu_installments',
   iptu_installments_due_dates: 'iptu_installments_due_dates',
   iptu_installments_count: 'iptu_installments_count',
-  property_tax_first_installment: 'property_tax_first_installment',
   insurance_company: 'insurance_company',
   insurance_type: 'insurance_type',
   insurance_policy: 'insurance_policy',
@@ -584,7 +590,8 @@ export const SupplierScalarFieldEnum = {
   created_via: 'created_via',
   is_active: 'is_active',
   marital_status: 'marital_status',
-  occupation: 'occupation'
+  occupation: 'occupation',
+  agency_id: 'agency_id'
 } as const
 
 export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
@@ -628,7 +635,8 @@ export const TransactionScalarFieldEnum = {
   recurring_frequency: 'recurring_frequency',
   recurring_group_id: 'recurring_group_id',
   total_installments: 'total_installments',
-  invoice_id: 'invoice_id'
+  invoice_id: 'invoice_id',
+  lease_id: 'lease_id'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]

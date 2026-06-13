@@ -233,6 +233,8 @@ export type AgencyWhereInput = {
   addresses?: Prisma.AgencyAddressListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  leases?: Prisma.LeaseListRelationFilter
+  suppliers?: Prisma.SupplierListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -251,6 +253,8 @@ export type AgencyOrderByWithRelationInput = {
   addresses?: Prisma.AgencyAddressOrderByRelationAggregateInput
   contacts?: Prisma.ContactOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
+  leases?: Prisma.LeaseOrderByRelationAggregateInput
+  suppliers?: Prisma.SupplierOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
 
@@ -272,6 +276,8 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   addresses?: Prisma.AgencyAddressListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  leases?: Prisma.LeaseListRelationFilter
+  suppliers?: Prisma.SupplierListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
@@ -323,6 +329,8 @@ export type AgencyCreateInput = {
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -341,6 +349,8 @@ export type AgencyUncheckedCreateInput = {
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyUpdateInput = {
@@ -357,6 +367,8 @@ export type AgencyUpdateInput = {
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -375,6 +387,8 @@ export type AgencyUncheckedUpdateInput = {
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyCreateManyInput = {
@@ -538,6 +552,22 @@ export type AgencyUpdateOneWithoutPropertiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutPropertiesInput, Prisma.AgencyUpdateWithoutPropertiesInput>, Prisma.AgencyUncheckedUpdateWithoutPropertiesInput>
 }
 
+export type AgencyCreateNestedOneWithoutLeasesInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutLeasesInput, Prisma.AgencyUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutLeasesInput
+  connect?: Prisma.AgencyWhereUniqueInput
+}
+
+export type AgencyUpdateOneWithoutLeasesNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutLeasesInput, Prisma.AgencyUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutLeasesInput
+  upsert?: Prisma.AgencyUpsertWithoutLeasesInput
+  disconnect?: Prisma.AgencyWhereInput | boolean
+  delete?: Prisma.AgencyWhereInput | boolean
+  connect?: Prisma.AgencyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutLeasesInput, Prisma.AgencyUpdateWithoutLeasesInput>, Prisma.AgencyUncheckedUpdateWithoutLeasesInput>
+}
+
 export type AgencyCreateNestedOneWithoutContactsInput = {
   create?: Prisma.XOR<Prisma.AgencyCreateWithoutContactsInput, Prisma.AgencyUncheckedCreateWithoutContactsInput>
   connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutContactsInput
@@ -568,6 +598,22 @@ export type AgencyUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutAddressesInput, Prisma.AgencyUpdateWithoutAddressesInput>, Prisma.AgencyUncheckedUpdateWithoutAddressesInput>
 }
 
+export type AgencyCreateNestedOneWithoutSuppliersInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutSuppliersInput, Prisma.AgencyUncheckedCreateWithoutSuppliersInput>
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutSuppliersInput
+  connect?: Prisma.AgencyWhereUniqueInput
+}
+
+export type AgencyUpdateOneWithoutSuppliersNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutSuppliersInput, Prisma.AgencyUncheckedCreateWithoutSuppliersInput>
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutSuppliersInput
+  upsert?: Prisma.AgencyUpsertWithoutSuppliersInput
+  disconnect?: Prisma.AgencyWhereInput | boolean
+  delete?: Prisma.AgencyWhereInput | boolean
+  connect?: Prisma.AgencyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutSuppliersInput, Prisma.AgencyUpdateWithoutSuppliersInput>, Prisma.AgencyUncheckedUpdateWithoutSuppliersInput>
+}
+
 export type AgencyCreateWithoutCompanyInput = {
   id?: string
   trade_name: string
@@ -582,6 +628,8 @@ export type AgencyCreateWithoutCompanyInput = {
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyUncheckedCreateWithoutCompanyInput = {
@@ -598,6 +646,8 @@ export type AgencyUncheckedCreateWithoutCompanyInput = {
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyCreateOrConnectWithoutCompanyInput = {
@@ -656,6 +706,8 @@ export type AgencyCreateWithoutPropertiesInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -673,6 +725,8 @@ export type AgencyUncheckedCreateWithoutPropertiesInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyCreateOrConnectWithoutPropertiesInput = {
@@ -704,6 +758,8 @@ export type AgencyUpdateWithoutPropertiesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -721,6 +777,96 @@ export type AgencyUncheckedUpdateWithoutPropertiesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyCreateWithoutLeasesInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
+}
+
+export type AgencyUncheckedCreateWithoutLeasesInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyCreateOrConnectWithoutLeasesInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutLeasesInput, Prisma.AgencyUncheckedCreateWithoutLeasesInput>
+}
+
+export type AgencyUpsertWithoutLeasesInput = {
+  update: Prisma.XOR<Prisma.AgencyUpdateWithoutLeasesInput, Prisma.AgencyUncheckedUpdateWithoutLeasesInput>
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutLeasesInput, Prisma.AgencyUncheckedCreateWithoutLeasesInput>
+  where?: Prisma.AgencyWhereInput
+}
+
+export type AgencyUpdateToOneWithWhereWithoutLeasesInput = {
+  where?: Prisma.AgencyWhereInput
+  data: Prisma.XOR<Prisma.AgencyUpdateWithoutLeasesInput, Prisma.AgencyUncheckedUpdateWithoutLeasesInput>
+}
+
+export type AgencyUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
+}
+
+export type AgencyUncheckedUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyCreateWithoutContactsInput = {
@@ -736,6 +882,8 @@ export type AgencyCreateWithoutContactsInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -753,6 +901,8 @@ export type AgencyUncheckedCreateWithoutContactsInput = {
   deleted_at?: Date | string | null
   addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyCreateOrConnectWithoutContactsInput = {
@@ -784,6 +934,8 @@ export type AgencyUpdateWithoutContactsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -801,6 +953,8 @@ export type AgencyUncheckedUpdateWithoutContactsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyCreateWithoutAddressesInput = {
@@ -816,6 +970,8 @@ export type AgencyCreateWithoutAddressesInput = {
   deleted_at?: Date | string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -833,6 +989,8 @@ export type AgencyUncheckedCreateWithoutAddressesInput = {
   deleted_at?: Date | string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
 }
 
 export type AgencyCreateOrConnectWithoutAddressesInput = {
@@ -864,6 +1022,8 @@ export type AgencyUpdateWithoutAddressesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -881,6 +1041,96 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyCreateWithoutSuppliersInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
+}
+
+export type AgencyUncheckedCreateWithoutSuppliersInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyCreateOrConnectWithoutSuppliersInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutSuppliersInput, Prisma.AgencyUncheckedCreateWithoutSuppliersInput>
+}
+
+export type AgencyUpsertWithoutSuppliersInput = {
+  update: Prisma.XOR<Prisma.AgencyUpdateWithoutSuppliersInput, Prisma.AgencyUncheckedUpdateWithoutSuppliersInput>
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutSuppliersInput, Prisma.AgencyUncheckedCreateWithoutSuppliersInput>
+  where?: Prisma.AgencyWhereInput
+}
+
+export type AgencyUpdateToOneWithWhereWithoutSuppliersInput = {
+  where?: Prisma.AgencyWhereInput
+  data: Prisma.XOR<Prisma.AgencyUpdateWithoutSuppliersInput, Prisma.AgencyUncheckedUpdateWithoutSuppliersInput>
+}
+
+export type AgencyUpdateWithoutSuppliersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
+}
+
+export type AgencyUncheckedUpdateWithoutSuppliersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyCreateManyCompanyInput = {
@@ -910,6 +1160,8 @@ export type AgencyUpdateWithoutCompanyInput = {
   addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyUncheckedUpdateWithoutCompanyInput = {
@@ -926,6 +1178,8 @@ export type AgencyUncheckedUpdateWithoutCompanyInput = {
   addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
 }
 
 export type AgencyUncheckedUpdateManyWithoutCompanyInput = {
@@ -950,12 +1204,16 @@ export type AgencyCountOutputType = {
   addresses: number
   contacts: number
   properties: number
+  leases: number
+  suppliers: number
 }
 
 export type AgencyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   addresses?: boolean | AgencyCountOutputTypeCountAddressesArgs
   contacts?: boolean | AgencyCountOutputTypeCountContactsArgs
   properties?: boolean | AgencyCountOutputTypeCountPropertiesArgs
+  leases?: boolean | AgencyCountOutputTypeCountLeasesArgs
+  suppliers?: boolean | AgencyCountOutputTypeCountSuppliersArgs
 }
 
 /**
@@ -989,6 +1247,20 @@ export type AgencyCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Typ
   where?: Prisma.PropertyWhereInput
 }
 
+/**
+ * AgencyCountOutputType without action
+ */
+export type AgencyCountOutputTypeCountLeasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaseWhereInput
+}
+
+/**
+ * AgencyCountOutputType without action
+ */
+export type AgencyCountOutputTypeCountSuppliersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupplierWhereInput
+}
+
 
 export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1005,6 +1277,8 @@ export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
+  leases?: boolean | Prisma.Agency$leasesArgs<ExtArgs>
+  suppliers?: boolean | Prisma.Agency$suppliersArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
@@ -1058,6 +1332,8 @@ export type AgencyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
+  leases?: boolean | Prisma.Agency$leasesArgs<ExtArgs>
+  suppliers?: boolean | Prisma.Agency$suppliersArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1074,6 +1350,8 @@ export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     addresses: Prisma.$AgencyAddressPayload<ExtArgs>[]
     contacts: Prisma.$ContactPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
+    leases: Prisma.$LeasePayload<ExtArgs>[]
+    suppliers: Prisma.$SupplierPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1485,6 +1763,8 @@ export interface Prisma__AgencyClient<T, Null = never, ExtArgs extends runtime.T
   addresses<T extends Prisma.Agency$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contacts<T extends Prisma.Agency$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Agency$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leases<T extends Prisma.Agency$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  suppliers<T extends Prisma.Agency$suppliersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$suppliersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1991,6 +2271,54 @@ export type Agency$propertiesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+}
+
+/**
+ * Agency.leases
+ */
+export type Agency$leasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lease
+   */
+  select?: Prisma.LeaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lease
+   */
+  omit?: Prisma.LeaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaseInclude<ExtArgs> | null
+  where?: Prisma.LeaseWhereInput
+  orderBy?: Prisma.LeaseOrderByWithRelationInput | Prisma.LeaseOrderByWithRelationInput[]
+  cursor?: Prisma.LeaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaseScalarFieldEnum | Prisma.LeaseScalarFieldEnum[]
+}
+
+/**
+ * Agency.suppliers
+ */
+export type Agency$suppliersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Supplier
+   */
+  select?: Prisma.SupplierSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Supplier
+   */
+  omit?: Prisma.SupplierOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupplierInclude<ExtArgs> | null
+  where?: Prisma.SupplierWhereInput
+  orderBy?: Prisma.SupplierOrderByWithRelationInput | Prisma.SupplierOrderByWithRelationInput[]
+  cursor?: Prisma.SupplierWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupplierScalarFieldEnum | Prisma.SupplierScalarFieldEnum[]
 }
 
 /**

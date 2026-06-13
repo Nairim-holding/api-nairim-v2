@@ -5,6 +5,7 @@ import {
   PaginatedLeaseResponse,
   LeaseWithRelations
 } from '../types/lease';
+import { LeaseFinanceService } from './LeaseFinanceService';
 
 export class LeaseService {
   static readonly FIELD_MAPPING: Record<string, { 
@@ -21,8 +22,11 @@ export class LeaseService {
     'property_tax': { type: 'direct', realField: 'property_tax' },
     
     'property_tax_cash': { type: 'direct', realField: 'property_tax_cash' },
+    'property_tax_cash_due_date': { type: 'direct', realField: 'property_tax_cash_due_date' },
     'property_tax_first_installment': { type: 'direct', realField: 'property_tax_first_installment' },
+    'property_tax_first_installment_due_date': { type: 'direct', realField: 'property_tax_first_installment_due_date' },
     'property_tax_second_installment': { type: 'direct', realField: 'property_tax_second_installment' },
+    'property_tax_second_installment_due_date': { type: 'direct', realField: 'property_tax_second_installment_due_date' },
     'iptu_installments_count': { type: 'direct', realField: 'iptu_installments_count' },
 
     'extra_charges': { type: 'direct', realField: 'extra_charges' },
@@ -386,12 +390,14 @@ export class LeaseService {
           tenant: {
             include: {
               addresses: { where: { deleted_at: null }, include: { address: true } },
-              contacts: { 
+              contacts: {
                 where: { deleted_at: null }
               }
             }
           },
-          type: true
+          type: true,
+          agency: true,
+          financial_institution: true
         }
       }) as any;
 
@@ -421,6 +427,8 @@ export class LeaseService {
             type_id: data.type_id,
             owner_id: data.owner_id,
             tenant_id: data.tenant_id,
+            agency_id: data.agency_id || null,
+            financial_institution_id: data.financial_institution_id || null,
             contract_number: data.contract_number,
             start_date: new Date(data.start_date),
             end_date: new Date(data.end_date),
@@ -429,8 +437,11 @@ export class LeaseService {
             property_tax: data.property_tax ? Number(data.property_tax) : null,
             
             property_tax_cash: data.property_tax_cash ? Number(data.property_tax_cash) : null,
+            property_tax_cash_due_date: data.property_tax_cash_due_date ? new Date(data.property_tax_cash_due_date) : null,
             property_tax_first_installment: data.property_tax_first_installment ? Number(data.property_tax_first_installment) : null,
+            property_tax_first_installment_due_date: data.property_tax_first_installment_due_date ? new Date(data.property_tax_first_installment_due_date) : null,
             property_tax_second_installment: data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null,
+            property_tax_second_installment_due_date: data.property_tax_second_installment_due_date ? new Date(data.property_tax_second_installment_due_date) : null,
             iptu_year: data.iptu_year ? parseInt(data.iptu_year) : null,
             iptu_installments_count: data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null,
             iptu_installments: data.iptu_installments && Array.isArray(data.iptu_installments) ? data.iptu_installments : null,
@@ -469,6 +480,17 @@ export class LeaseService {
 
         return newLease;
       });
+
+      // Gera os lançamentos financeiros da locação (após o commit).
+      // Falha aqui não invalida a locação já criada — apenas registra aviso.
+      try {
+        const result = await LeaseFinanceService.syncLeaseTransactions(lease.id, lease.company_id);
+        if (result.warning) (lease as any).finance_warning = result.warning;
+      } catch (err: any) {
+        console.error('Erro ao gerar lançamentos da locação:', err);
+        (lease as any).finance_warning = 'Locação salva, mas houve um erro ao gerar os lançamentos financeiros.';
+      }
+
       return lease;
     } catch (error: any) {
       throw error;
@@ -497,6 +519,8 @@ export class LeaseService {
             type_id: data.type_id ?? existing.type_id,
             owner_id: data.owner_id ?? existing.owner_id,
             tenant_id: data.tenant_id ?? existing.tenant_id,
+            agency_id: data.agency_id !== undefined ? (data.agency_id || null) : existing.agency_id,
+            financial_institution_id: data.financial_institution_id !== undefined ? (data.financial_institution_id || null) : existing.financial_institution_id,
             contract_number: data.contract_number ?? existing.contract_number,
             start_date: data.start_date ? new Date(data.start_date) : existing.start_date,
             end_date: data.end_date ? new Date(data.end_date) : existing.end_date,
@@ -505,8 +529,11 @@ export class LeaseService {
             property_tax: data.property_tax !== undefined ? (data.property_tax ? Number(data.property_tax) : null) : existing.property_tax,
             
             property_tax_cash: data.property_tax_cash !== undefined ? (data.property_tax_cash ? Number(data.property_tax_cash) : null) : existing.property_tax_cash,
+            property_tax_cash_due_date: data.property_tax_cash_due_date !== undefined ? (data.property_tax_cash_due_date ? new Date(data.property_tax_cash_due_date) : null) : existing.property_tax_cash_due_date,
             property_tax_first_installment: data.property_tax_first_installment !== undefined ? (data.property_tax_first_installment ? Number(data.property_tax_first_installment) : null) : existing.property_tax_first_installment,
+            property_tax_first_installment_due_date: data.property_tax_first_installment_due_date !== undefined ? (data.property_tax_first_installment_due_date ? new Date(data.property_tax_first_installment_due_date) : null) : existing.property_tax_first_installment_due_date,
             property_tax_second_installment: data.property_tax_second_installment !== undefined ? (data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null) : existing.property_tax_second_installment,
+            property_tax_second_installment_due_date: data.property_tax_second_installment_due_date !== undefined ? (data.property_tax_second_installment_due_date ? new Date(data.property_tax_second_installment_due_date) : null) : existing.property_tax_second_installment_due_date,
             iptu_year: data.iptu_year !== undefined ? (data.iptu_year ? parseInt(data.iptu_year) : null) : existing.iptu_year,
             iptu_installments_count: data.iptu_installments_count !== undefined ? (data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null) : existing.iptu_installments_count,
             iptu_installments: data.iptu_installments !== undefined ? (Array.isArray(data.iptu_installments) ? data.iptu_installments : null) : existing.iptu_installments,
@@ -567,6 +594,16 @@ export class LeaseService {
 
         return updatedLease;
       });
+
+      // Re-sincroniza os lançamentos financeiros após a edição (idempotente).
+      try {
+        const result = await LeaseFinanceService.syncLeaseTransactions(lease.id, lease.company_id);
+        if (result.warning) (lease as any).finance_warning = result.warning;
+      } catch (err: any) {
+        console.error('Erro ao re-sincronizar lançamentos da locação:', err);
+        (lease as any).finance_warning = 'Locação atualizada, mas houve um erro ao sincronizar os lançamentos financeiros.';
+      }
+
       return lease;
     } catch (error: any) {
       throw error;
@@ -617,6 +654,53 @@ export class LeaseService {
         return deletedLease;
       });
       return lease;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  /**
+   * Exclusão definitiva (hard delete) da locação + cascata dos lançamentos
+   * financeiros vinculados (lease_id). Libera o imóvel se não houver outra
+   * locação ativa.
+   */
+  static async permanentlyDeleteLease(id: string) {
+    try {
+      const result = await prisma.$transaction(async (tx: any) => {
+        const existing = await tx.lease.findUnique({ where: { id } });
+        if (!existing) throw new Error('Lease not found');
+
+        // Cascata: remove os lançamentos financeiros gerados por esta locação.
+        await tx.transaction.deleteMany({ where: { lease_id: id } });
+
+        await tx.lease.delete({ where: { id } });
+
+        // Libera o imóvel se nenhuma outra locação ativa o mantém ocupado.
+        const propertyValue = await tx.propertyValue.findFirst({
+          where: { property_id: existing.property_id, deleted_at: null },
+          orderBy: { created_at: 'desc' },
+        });
+
+        if (propertyValue && propertyValue.status === 'OCCUPIED') {
+          const activeLeases = await tx.lease.count({
+            where: {
+              property_id: existing.property_id,
+              NOT: { id },
+              deleted_at: null,
+              status: { not: 'CANCELED' },
+            },
+          });
+          if (activeLeases === 0) {
+            await tx.propertyValue.update({
+              where: { id: propertyValue.id },
+              data: { status: 'AVAILABLE' },
+            });
+          }
+        }
+
+        return existing;
+      });
+      return result;
     } catch (error: any) {
       throw error;
     }

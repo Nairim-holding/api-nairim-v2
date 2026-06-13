@@ -106,6 +106,8 @@ model Agency {
   addresses              AgencyAddress[]
   contacts               Contact[]
   properties             Property[]
+  leases                 Lease[]
+  suppliers              Supplier[]
   company                Company        @relation(fields: [company_id], references: [id])
 
   @@index([cnpj])
@@ -118,6 +120,7 @@ model Property {
   owner_id            String
   agency_id           String?
   type_id             String
+  center_id           String?
   title               String
   registration_number String?           @db.VarChar(50)
   bedrooms            Int
@@ -140,6 +143,7 @@ model Property {
   agency              Agency?           @relation(fields: [agency_id], references: [id])
   owner               Owner             @relation(fields: [owner_id], references: [id])
   type                PropertyType      @relation(fields: [type_id], references: [id])
+  center              Center?           @relation(fields: [center_id], references: [id])
   addresses           PropertyAddress[]
   iptus               PropertyIptu[]
   values              PropertyValue[]
@@ -147,6 +151,7 @@ model Property {
 
   @@index([owner_id])
   @@index([agency_id])
+  @@index([center_id])
   @@index([company_id])
 }
 
@@ -294,6 +299,8 @@ model Lease {
   type_id                         String
   owner_id                        String
   tenant_id                       String
+  agency_id                       String?
+  financial_institution_id        String?
   contract_number                 String
   start_date                      DateTime          @db.Date
   end_date                        DateTime          @db.Date
@@ -313,14 +320,17 @@ model Lease {
   cancellation_penalty            Decimal?          @db.Decimal(20, 2)
   other_cancellation_amounts      Decimal?          @db.Decimal(20, 2)
   status                          LeaseStatus       @default(ACTIVE)
-  payment_condition               PaymentCondition?
-  property_tax_cash               Decimal?          @db.Decimal(20, 2)
-  property_tax_second_installment Decimal?          @db.Decimal(20, 2)
-  iptu_year                       Int?
-  iptu_installments               Json?
-  iptu_installments_due_dates     Json?
-  iptu_installments_count         Int?
-  property_tax_first_installment  Decimal?          @db.Decimal(20, 2)
+  payment_condition                          PaymentCondition?
+  property_tax_cash                          Decimal?          @db.Decimal(20, 2)
+  property_tax_cash_due_date                 DateTime?         @db.Date
+  property_tax_first_installment             Decimal?          @db.Decimal(20, 2)
+  property_tax_first_installment_due_date    DateTime?         @db.Date
+  property_tax_second_installment            Decimal?          @db.Decimal(20, 2)
+  property_tax_second_installment_due_date   DateTime?         @db.Date
+  iptu_year                                  Int?
+  iptu_installments                          Json?
+  iptu_installments_due_dates                Json?
+  iptu_installments_count                    Int?
   insurance_company               String?
   insurance_type                  String?
   insurance_policy                String?
@@ -329,10 +339,15 @@ model Lease {
   property                        Property          @relation(fields: [property_id], references: [id])
   tenant                          Tenant            @relation(fields: [tenant_id], references: [id])
   type                            PropertyType      @relation(fields: [type_id], references: [id])
+  agency                          Agency?               @relation(fields: [agency_id], references: [id])
+  financial_institution           FinancialInstitution? @relation(fields: [financial_institution_id], references: [id])
+  transactions                    Transaction[]
   company                         Company          @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
   @@index([tenant_id])
+  @@index([agency_id])
+  @@index([financial_institution_id])
   @@index([company_id])
 }
 
@@ -495,6 +510,7 @@ model FinancialInstitution {
   bank_number       String?           @db.VarChar(20)
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
+  leases            Lease[]
   company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([company_id])
@@ -570,6 +586,7 @@ model Center {
   deleted_at        DateTime?
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
+  properties        Property[]
   company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([company_id])
@@ -593,15 +610,18 @@ model Supplier {
   is_active              Boolean           @default(true)
   marital_status         String?
   occupation             String?
+  agency_id              String?
   contacts               Contact[]
   recurring_configs      RecurringConfig[]
   addresses              SupplierAddress[]
   transactions           Transaction[]
+  agency                 Agency?           @relation(fields: [agency_id], references: [id])
   company                Company          @relation(fields: [company_id], references: [id])
 
   @@unique([company_id, internal_code])
   @@index([cnpj])
   @@index([cpf])
+  @@index([agency_id])
   @@index([company_id])
 }
 
@@ -646,11 +666,13 @@ model Transaction {
   recurring_group_id       String?
   total_installments       Int?
   invoice_id               String?
+  lease_id                 String?
   card                     Card?                @relation(fields: [card_id], references: [id])
   category                 Category             @relation(fields: [category_id], references: [id])
   center                   Center?              @relation(fields: [center_id], references: [id])
   financial_institution    FinancialInstitution @relation(fields: [financial_institution_id], references: [id])
   invoice                  Invoice?             @relation(fields: [invoice_id], references: [id])
+  lease                    Lease?               @relation(fields: [lease_id], references: [id])
   parent_transaction       Transaction?         @relation("TransactionToChildren", fields: [parent_transaction_id], references: [id])
   child_transactions       Transaction[]        @relation("TransactionToChildren")
   recurring_config         RecurringConfig?     @relation(fields: [recurring_group_id], references: [id])
@@ -668,6 +690,7 @@ model Transaction {
   @@index([recurring_group_id])
   @@index([payment_mode])
   @@index([invoice_id])
+  @@index([lease_id])
   @@index([company_id])
 }
 
