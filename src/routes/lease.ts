@@ -13,6 +13,7 @@ router.get('/filters', LeaseController.getLeaseFilters);
 router.get('/:id', LeaseController.getLeaseById);
 router.post('/', validateCreateLease, LeaseController.createLease);
 router.put('/:id', validateUpdateLease, LeaseController.updateLease);
+router.delete('/:id/permanent', LeaseController.permanentlyDeleteLease);
 router.delete('/:id', LeaseController.deleteLease);
 router.patch('/:id/restore', LeaseController.restoreLease);
 

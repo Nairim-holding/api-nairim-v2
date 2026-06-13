@@ -137,17 +137,23 @@ export class PropertyService {
       const take = Math.max(1, Math.min(limit, 100));
       const skip = (Math.max(1, page) - 1) * take;
 
-      const where = this.buildWhereClauseWithoutSearch(filters, includeInactive);
-      
+      // Status (disponibilidade) é filtrado in-memory sobre o PropertyValue mais
+      // recente — não vai para o WHERE do banco (ver buildFilterConditions).
+      const statusFilter = filters?.status ? String(filters.status) : '';
+      const restFilters = { ...filters };
+      delete restFilters.status;
+
+      const where = this.buildWhereClauseWithoutSearch(restFilters, includeInactive);
+
       const sortEntries = Object.entries(sortOptions);
       const sortField = sortEntries.length > 0 ? sortEntries[0][0] : '';
-      const sortDirection = sortEntries.length > 0 ? 
+      const sortDirection = sortEntries.length > 0 ?
         this.normalizeSortDirection(sortEntries[0][1]) : 'asc';
-      
+
       let properties: PropertyWithRelations[] = [];
       let total = 0;
 
-      if (search.trim() || (sortField && sortDirection && this.FIELD_MAPPING[sortField]?.type !== 'direct')) {
+      if (search.trim() || statusFilter || (sortField && sortDirection && this.FIELD_MAPPING[sortField]?.type !== 'direct')) {
         const allProperties = await prisma.property.findMany({
           where,
           include: {
@@ -172,6 +178,12 @@ export class PropertyService {
               select: {
                 id: true,
                 trade_name: true
+              }
+            },
+            center: {
+              select: {
+                id: true,
+                name: true
               }
             },
             documents: {
@@ -203,6 +215,14 @@ export class PropertyService {
         let filteredProperties = allProperties;
         if (search.trim()) {
           filteredProperties = this.filterPropertiesBySearch(allProperties, search);
+        }
+
+        // Filtro de disponibilidade pelo status do PropertyValue mais recente.
+        // Imóvel sem nenhum value é tratado como 'AVAILABLE' (default do cadastro).
+        if (statusFilter) {
+          filteredProperties = filteredProperties.filter(
+            (p) => (p.values?.[0]?.status ?? 'AVAILABLE') === statusFilter,
+          );
         }
 
         total = filteredProperties.length;
@@ -411,7 +431,7 @@ export class PropertyService {
         return;
       }
 
-      if (key === 'owner_id' || key === 'type_id' || key === 'agency_id') {
+      if (key === 'owner_id' || key === 'type_id' || key === 'agency_id' || key === 'center_id') {
         conditions[key] = value;
       }
       else if (key === 'furnished') {
@@ -444,14 +464,10 @@ export class PropertyService {
           mode: 'insensitive' as Prisma.QueryMode 
         };
       }
-      else if (key === 'status') {
-        conditions.values = {
-          some: {
-            status: value as PropertyStatus,
-            deleted_at: null
-          }
-        };
-      }
+      // 'status' (disponibilidade) NÃO é filtrado aqui: o status vive no
+      // PropertyValue mais recente. Usar `values: { some }` casava com qualquer
+      // valor histórico e sumia com imóveis sem PropertyValue. O filtro de
+      // status é aplicado in-memory sobre values[0] em getProperties.
       else if (key === 'created_at') {
         conditions.created_at = this.buildDateCondition(value);
       }
@@ -546,6 +562,7 @@ export class PropertyService {
             orderBy: { year: 'desc' }
           },
           agency: true,
+          center: true,
           leases: {
             where: { deleted_at: null },
             include: {
@@ -632,6 +649,7 @@ export class PropertyService {
             owner_id: data.owner_id,
             type_id: data.type_id,
             agency_id: data.agency_id || null,
+            center_id: data.center_id || null,
           }
         });
 
@@ -916,6 +934,7 @@ export class PropertyService {
           owner_id: data.owner_id,
           type_id: data.type_id,
           agency_id: data.agency_id || null,
+          center_id: data.center_id || null,
         },
       });
 
@@ -994,6 +1013,7 @@ export class PropertyService {
         values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' } },
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
+        center: true,
       },
     });
 
@@ -1043,6 +1063,7 @@ export class PropertyService {
           owner_id: data.owner_id,
           type_id: data.type_id,
           agency_id: data.agency_id || null,
+          center_id: data.center_id || null,
         },
       });
 
@@ -1134,6 +1155,7 @@ export class PropertyService {
         values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' } },
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
+        center: true,
       },
     });
 
@@ -1173,6 +1195,7 @@ export class PropertyService {
             owner_id: data.owner_id,
             type_id: data.type_id,
             agency_id: data.agency_id || null,
+            center_id: data.center_id || null,
           }
         });
 
@@ -1250,6 +1273,8 @@ export class PropertyService {
               where.type_id = value;
             } else if (key === 'agency_id') {
               where.agency_id = value;
+            } else if (key === 'center_id') {
+              where.center_id = value;
             } else if (key === 'city' || key === 'state' || key === 'district' || key === 'street') {
               where.addresses = {
                 some: {
@@ -1270,6 +1295,7 @@ export class PropertyService {
         owners,
         propertyTypes,
         agencies,
+        centers,
         addresses,
         dateRange,
       ] = await Promise.all([
@@ -1304,6 +1330,11 @@ export class PropertyService {
           where: { deleted_at: null },
           select: { id: true, trade_name: true },
           orderBy: { trade_name: 'asc' }
+        }),
+        prisma.center.findMany({
+          where: { deleted_at: null, is_active: true },
+          select: { id: true, name: true },
+          orderBy: { name: 'asc' }
         }),
         prisma.address.findMany({
           where: {
@@ -1431,6 +1462,14 @@ export class PropertyService {
           label: 'Imobiliária',
           description: 'Agência responsável',
           options: agencies.map(a => ({ value: a.id, label: a.trade_name })),
+          searchable: true
+        },
+        {
+          field: 'center_id',
+          type: 'select',
+          label: 'Centro de Custo',
+          description: 'Centro de custo do imóvel',
+          options: centers.map(c => ({ value: c.id, label: c.name })),
           searchable: true
         },
         {
@@ -1565,6 +1604,7 @@ export class PropertyService {
             owner_id: data.owner_id,
             type_id: data.type_id,
             agency_id: data.agency_id || null,
+            center_id: data.center_id || null,
           }
         });
 
@@ -1681,7 +1721,8 @@ export class PropertyService {
           iptus: {
             orderBy: { year: 'desc' }
           },
-          agency: true
+          agency: true,
+          center: true
         }
       });
 
@@ -1781,6 +1822,7 @@ export class PropertyService {
             owner_id: data.owner_id,
             type_id: data.type_id,
             agency_id: data.agency_id || null,
+            center_id: data.center_id || null,
           }
         });
 
@@ -1952,7 +1994,8 @@ export class PropertyService {
           iptus: {
             orderBy: { year: 'desc' }
           },
-          agency: true
+          agency: true,
+          center: true
         }
       });
 

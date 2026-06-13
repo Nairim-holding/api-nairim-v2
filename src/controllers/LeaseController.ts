@@ -115,9 +115,12 @@ export class LeaseController {
 
       const lease = await LeaseService.createLease(req.body);
 
+      const warnings = [...validation.warnings];
+      if ((lease as any).finance_warning) warnings.push((lease as any).finance_warning);
+
       const response = ApiResponse.success(lease, `Locação ${lease.contract_number} criada com sucesso`);
       res.status(201).json(
-        validation.warnings.length > 0 ? { ...response, warnings: validation.warnings } : response
+        warnings.length > 0 ? { ...response, warnings } : response
       );
     } catch (error: any) {
       console.error('Erro ao criar locação:', error);
@@ -146,9 +149,12 @@ export class LeaseController {
 
       const lease = await LeaseService.updateLease(id, req.body);
 
+      const warnings = [...validation.warnings];
+      if ((lease as any).finance_warning) warnings.push((lease as any).finance_warning);
+
       const response = ApiResponse.success(lease, `Locação ${lease.contract_number} atualizada com sucesso`);
       res.status(200).json(
-        validation.warnings.length > 0 ? { ...response, warnings: validation.warnings } : response
+        warnings.length > 0 ? { ...response, warnings } : response
       );
     } catch (error: any) {
       console.error('Erro ao atualizar locação:', error);
@@ -189,6 +195,29 @@ export class LeaseController {
       }
 
       res.status(500).json(ApiResponse.error('Erro ao cancelar locação'));
+    }
+  }
+
+  static async permanentlyDeleteLease(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const lease = await LeaseService.permanentlyDeleteLease(id);
+
+      res.status(200).json(
+        ApiResponse.success(null, `Locação ${lease.contract_number} excluída definitivamente`)
+      );
+    } catch (error: any) {
+      console.error('Erro ao excluir locação:', error);
+
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
+      }
+
+      res.status(500).json(ApiResponse.error('Erro ao excluir locação'));
     }
   }
 
