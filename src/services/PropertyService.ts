@@ -986,6 +986,7 @@ export class PropertyService {
             data: {
               property_id: property.id,
               year: parseInt(iptu.year),
+              property_tax: iptu.property_tax ? parseFloat(iptu.property_tax) : null,
               property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
               property_tax_cash_due_date: iptu.property_tax_cash_due_date ? new Date(iptu.property_tax_cash_due_date) : null,
               property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
@@ -1122,23 +1123,31 @@ export class PropertyService {
       }
 
       if (data.iptus && Array.isArray(data.iptus)) {
-        await tx.propertyIptu.deleteMany({ where: { property_id: property.id } });
+        const sentIds = (data.iptus as any[]).filter(i => i.id).map(i => i.id);
+        await tx.propertyIptu.deleteMany({
+          where: {
+            property_id: property.id,
+            ...(sentIds.length > 0 ? { id: { notIn: sentIds } } : {}),
+          },
+        });
         for (const iptu of data.iptus) {
-          await tx.propertyIptu.create({
-            data: {
-              property_id: property.id,
-              year: parseInt(iptu.year),
-              property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
-              property_tax_cash_due_date: iptu.property_tax_cash_due_date ? new Date(iptu.property_tax_cash_due_date) : null,
-              property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
-              property_tax_first_installment_due_date: iptu.property_tax_first_installment_due_date ? new Date(iptu.property_tax_first_installment_due_date) : null,
-              property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
-              property_tax_second_installment_due_date: iptu.property_tax_second_installment_due_date ? new Date(iptu.property_tax_second_installment_due_date) : null,
-              iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
-              iptu_installments: iptu.iptu_installments || null,
-              payment_condition: (iptu.payment_condition as PaymentCondition) || null,
-            },
-          });
+          const iptuData = {
+            property_tax: iptu.property_tax ? parseFloat(iptu.property_tax) : null,
+            property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
+            property_tax_cash_due_date: iptu.property_tax_cash_due_date ? new Date(iptu.property_tax_cash_due_date) : null,
+            property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,
+            property_tax_first_installment_due_date: iptu.property_tax_first_installment_due_date ? new Date(iptu.property_tax_first_installment_due_date) : null,
+            property_tax_second_installment: iptu.property_tax_second_installment ? parseFloat(iptu.property_tax_second_installment) : null,
+            property_tax_second_installment_due_date: iptu.property_tax_second_installment_due_date ? new Date(iptu.property_tax_second_installment_due_date) : null,
+            iptu_installments_count: iptu.iptu_installments_count ? parseInt(iptu.iptu_installments_count) : null,
+            iptu_installments: iptu.iptu_installments || null,
+            payment_condition: (iptu.payment_condition as PaymentCondition) || null,
+          };
+          if (iptu.id) {
+            await tx.propertyIptu.update({ where: { id: iptu.id }, data: iptuData });
+          } else {
+            await tx.propertyIptu.create({ data: { property_id: property.id, year: parseInt(iptu.year), ...iptuData } });
+          }
         }
       }
 
@@ -1664,6 +1673,7 @@ export class PropertyService {
               data: {
                 property_id: property.id,
                 year: parseInt(iptu.year),
+                property_tax: iptu.property_tax ? parseFloat(iptu.property_tax) : null,
                 property_tax_cash: iptu.property_tax_cash ? parseFloat(iptu.property_tax_cash) : null,
                 property_tax_cash_due_date: iptu.property_tax_cash_due_date ? new Date(iptu.property_tax_cash_due_date) : null,
                 property_tax_first_installment: iptu.property_tax_first_installment ? parseFloat(iptu.property_tax_first_installment) : null,

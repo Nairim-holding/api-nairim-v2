@@ -159,6 +159,7 @@ model PropertyIptu {
   id                                       String            @id @default(uuid())
   property_id                              String
   year                                     Int
+  property_tax                             Decimal?          @db.Decimal(20, 2)
   property_tax_cash                        Decimal?          @db.Decimal(20, 2)
   property_tax_cash_due_date               DateTime?         @db.Date
   property_tax_first_installment           Decimal?          @db.Decimal(20, 2)
