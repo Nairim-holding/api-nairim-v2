@@ -28,6 +28,7 @@ export type AggregatePropertyIptu = {
 
 export type PropertyIptuAvgAggregateOutputType = {
   year: number | null
+  property_tax: runtime.Decimal | null
   property_tax_cash: runtime.Decimal | null
   property_tax_first_installment: runtime.Decimal | null
   property_tax_second_installment: runtime.Decimal | null
@@ -36,6 +37,7 @@ export type PropertyIptuAvgAggregateOutputType = {
 
 export type PropertyIptuSumAggregateOutputType = {
   year: number | null
+  property_tax: runtime.Decimal | null
   property_tax_cash: runtime.Decimal | null
   property_tax_first_installment: runtime.Decimal | null
   property_tax_second_installment: runtime.Decimal | null
@@ -46,6 +48,7 @@ export type PropertyIptuMinAggregateOutputType = {
   id: string | null
   property_id: string | null
   year: number | null
+  property_tax: runtime.Decimal | null
   property_tax_cash: runtime.Decimal | null
   property_tax_cash_due_date: Date | null
   property_tax_first_installment: runtime.Decimal | null
@@ -63,6 +66,7 @@ export type PropertyIptuMaxAggregateOutputType = {
   id: string | null
   property_id: string | null
   year: number | null
+  property_tax: runtime.Decimal | null
   property_tax_cash: runtime.Decimal | null
   property_tax_cash_due_date: Date | null
   property_tax_first_installment: runtime.Decimal | null
@@ -80,6 +84,7 @@ export type PropertyIptuCountAggregateOutputType = {
   id: number
   property_id: number
   year: number
+  property_tax: number
   property_tax_cash: number
   property_tax_cash_due_date: number
   property_tax_first_installment: number
@@ -98,6 +103,7 @@ export type PropertyIptuCountAggregateOutputType = {
 
 export type PropertyIptuAvgAggregateInputType = {
   year?: true
+  property_tax?: true
   property_tax_cash?: true
   property_tax_first_installment?: true
   property_tax_second_installment?: true
@@ -106,6 +112,7 @@ export type PropertyIptuAvgAggregateInputType = {
 
 export type PropertyIptuSumAggregateInputType = {
   year?: true
+  property_tax?: true
   property_tax_cash?: true
   property_tax_first_installment?: true
   property_tax_second_installment?: true
@@ -116,6 +123,7 @@ export type PropertyIptuMinAggregateInputType = {
   id?: true
   property_id?: true
   year?: true
+  property_tax?: true
   property_tax_cash?: true
   property_tax_cash_due_date?: true
   property_tax_first_installment?: true
@@ -133,6 +141,7 @@ export type PropertyIptuMaxAggregateInputType = {
   id?: true
   property_id?: true
   year?: true
+  property_tax?: true
   property_tax_cash?: true
   property_tax_cash_due_date?: true
   property_tax_first_installment?: true
@@ -150,6 +159,7 @@ export type PropertyIptuCountAggregateInputType = {
   id?: true
   property_id?: true
   year?: true
+  property_tax?: true
   property_tax_cash?: true
   property_tax_cash_due_date?: true
   property_tax_first_installment?: true
@@ -255,6 +265,7 @@ export type PropertyIptuGroupByOutputType = {
   id: string
   property_id: string
   year: number
+  property_tax: runtime.Decimal | null
   property_tax_cash: runtime.Decimal | null
   property_tax_cash_due_date: Date | null
   property_tax_first_installment: runtime.Decimal | null
@@ -296,6 +307,7 @@ export type PropertyIptuWhereInput = {
   id?: Prisma.StringFilter<"PropertyIptu"> | string
   property_id?: Prisma.StringFilter<"PropertyIptu"> | string
   year?: Prisma.IntFilter<"PropertyIptu"> | number
+  property_tax?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.DateTimeNullableFilter<"PropertyIptu"> | Date | string | null
   property_tax_first_installment?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -315,6 +327,7 @@ export type PropertyIptuOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_cash_due_date?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -337,6 +350,7 @@ export type PropertyIptuWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PropertyIptuWhereInput | Prisma.PropertyIptuWhereInput[]
   property_id?: Prisma.StringFilter<"PropertyIptu"> | string
   year?: Prisma.IntFilter<"PropertyIptu"> | number
+  property_tax?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.DateTimeNullableFilter<"PropertyIptu"> | Date | string | null
   property_tax_first_installment?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -356,6 +370,7 @@ export type PropertyIptuOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_cash_due_date?: Prisma.SortOrderInput | Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -382,6 +397,7 @@ export type PropertyIptuScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"PropertyIptu"> | string
   property_id?: Prisma.StringWithAggregatesFilter<"PropertyIptu"> | string
   year?: Prisma.IntWithAggregatesFilter<"PropertyIptu"> | number
+  property_tax?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyIptu"> | Date | string | null
   property_tax_first_installment?: Prisma.DecimalNullableWithAggregatesFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -399,6 +415,7 @@ export type PropertyIptuScalarWhereWithAggregatesInput = {
 export type PropertyIptuCreateInput = {
   id?: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -418,6 +435,7 @@ export type PropertyIptuUncheckedCreateInput = {
   id?: string
   property_id: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -435,6 +453,7 @@ export type PropertyIptuUncheckedCreateInput = {
 export type PropertyIptuUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -454,6 +473,7 @@ export type PropertyIptuUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -472,6 +492,7 @@ export type PropertyIptuCreateManyInput = {
   id?: string
   property_id: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -489,6 +510,7 @@ export type PropertyIptuCreateManyInput = {
 export type PropertyIptuUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -507,6 +529,7 @@ export type PropertyIptuUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   property_id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -535,6 +558,7 @@ export type PropertyIptuCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrder
   property_tax_cash_due_date?: Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrder
@@ -551,6 +575,7 @@ export type PropertyIptuCountOrderByAggregateInput = {
 
 export type PropertyIptuAvgOrderByAggregateInput = {
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrder
   property_tax_second_installment?: Prisma.SortOrder
@@ -561,6 +586,7 @@ export type PropertyIptuMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrder
   property_tax_cash_due_date?: Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrder
@@ -578,6 +604,7 @@ export type PropertyIptuMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   property_id?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrder
   property_tax_cash_due_date?: Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrder
@@ -593,6 +620,7 @@ export type PropertyIptuMinOrderByAggregateInput = {
 
 export type PropertyIptuSumOrderByAggregateInput = {
   year?: Prisma.SortOrder
+  property_tax?: Prisma.SortOrder
   property_tax_cash?: Prisma.SortOrder
   property_tax_first_installment?: Prisma.SortOrder
   property_tax_second_installment?: Prisma.SortOrder
@@ -656,6 +684,7 @@ export type NullableEnumPaymentConditionFieldUpdateOperationsInput = {
 export type PropertyIptuCreateWithoutPropertyInput = {
   id?: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -673,6 +702,7 @@ export type PropertyIptuCreateWithoutPropertyInput = {
 export type PropertyIptuUncheckedCreateWithoutPropertyInput = {
   id?: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -720,6 +750,7 @@ export type PropertyIptuScalarWhereInput = {
   id?: Prisma.StringFilter<"PropertyIptu"> | string
   property_id?: Prisma.StringFilter<"PropertyIptu"> | string
   year?: Prisma.IntFilter<"PropertyIptu"> | number
+  property_tax?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.DateTimeNullableFilter<"PropertyIptu"> | Date | string | null
   property_tax_first_installment?: Prisma.DecimalNullableFilter<"PropertyIptu"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -737,6 +768,7 @@ export type PropertyIptuScalarWhereInput = {
 export type PropertyIptuCreateManyPropertyInput = {
   id?: string
   year: number
+  property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Date | string | null
   property_tax_first_installment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -754,6 +786,7 @@ export type PropertyIptuCreateManyPropertyInput = {
 export type PropertyIptuUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -771,6 +804,7 @@ export type PropertyIptuUpdateWithoutPropertyInput = {
 export type PropertyIptuUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -788,6 +822,7 @@ export type PropertyIptuUncheckedUpdateWithoutPropertyInput = {
 export type PropertyIptuUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
+  property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   property_tax_cash_due_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   property_tax_first_installment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -808,6 +843,7 @@ export type PropertyIptuSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   property_id?: boolean
   year?: boolean
+  property_tax?: boolean
   property_tax_cash?: boolean
   property_tax_cash_due_date?: boolean
   property_tax_first_installment?: boolean
@@ -827,6 +863,7 @@ export type PropertyIptuSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   property_id?: boolean
   year?: boolean
+  property_tax?: boolean
   property_tax_cash?: boolean
   property_tax_cash_due_date?: boolean
   property_tax_first_installment?: boolean
@@ -846,6 +883,7 @@ export type PropertyIptuSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   property_id?: boolean
   year?: boolean
+  property_tax?: boolean
   property_tax_cash?: boolean
   property_tax_cash_due_date?: boolean
   property_tax_first_installment?: boolean
@@ -865,6 +903,7 @@ export type PropertyIptuSelectScalar = {
   id?: boolean
   property_id?: boolean
   year?: boolean
+  property_tax?: boolean
   property_tax_cash?: boolean
   property_tax_cash_due_date?: boolean
   property_tax_first_installment?: boolean
@@ -879,7 +918,7 @@ export type PropertyIptuSelectScalar = {
   deleted_at?: boolean
 }
 
-export type PropertyIptuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "year" | "property_tax_cash" | "property_tax_cash_due_date" | "property_tax_first_installment" | "property_tax_first_installment_due_date" | "property_tax_second_installment" | "property_tax_second_installment_due_date" | "iptu_installments_count" | "iptu_installments" | "payment_condition" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["propertyIptu"]>
+export type PropertyIptuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "property_id" | "year" | "property_tax" | "property_tax_cash" | "property_tax_cash_due_date" | "property_tax_first_installment" | "property_tax_first_installment_due_date" | "property_tax_second_installment" | "property_tax_second_installment_due_date" | "iptu_installments_count" | "iptu_installments" | "payment_condition" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["propertyIptu"]>
 export type PropertyIptuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
@@ -899,6 +938,7 @@ export type $PropertyIptuPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     property_id: string
     year: number
+    property_tax: runtime.Decimal | null
     property_tax_cash: runtime.Decimal | null
     property_tax_cash_due_date: Date | null
     property_tax_first_installment: runtime.Decimal | null
@@ -1338,6 +1378,7 @@ export interface PropertyIptuFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyIptu", 'String'>
   readonly property_id: Prisma.FieldRef<"PropertyIptu", 'String'>
   readonly year: Prisma.FieldRef<"PropertyIptu", 'Int'>
+  readonly property_tax: Prisma.FieldRef<"PropertyIptu", 'Decimal'>
   readonly property_tax_cash: Prisma.FieldRef<"PropertyIptu", 'Decimal'>
   readonly property_tax_cash_due_date: Prisma.FieldRef<"PropertyIptu", 'DateTime'>
   readonly property_tax_first_installment: Prisma.FieldRef<"PropertyIptu", 'Decimal'>

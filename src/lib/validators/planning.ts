@@ -6,13 +6,6 @@ export class PlanningValidator {
       errors.push('category_id é obrigatório');
     }
 
-    if (!data.year || isNaN(Number(data.year))) {
-      errors.push('year deve ser um número válido');
-    } else {
-      const y = Number(data.year);
-      if (y < 2000 || y > 2100) errors.push('year deve estar entre 2000 e 2100');
-    }
-
     if (!data.type || !['FIXED', 'VARIABLE'].includes(data.type)) {
       errors.push('type deve ser FIXED ou VARIABLE');
     }
@@ -89,18 +82,7 @@ export class PlanningValidator {
     return { isValid: errors.length === 0, errors };
   }
 
-  static validatePlanningsQuery(query: any): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-
-    if (!query.year) {
-      errors.push('year é obrigatório');
-    } else {
-      const y = Number(query.year);
-      if (isNaN(y) || y < 2000 || y > 2100) {
-        errors.push('year deve ser um número válido entre 2000 e 2100');
-      }
-    }
-
-    return { isValid: errors.length === 0, errors };
+  static validatePlanningsQuery(_query: any): { isValid: boolean; errors: string[] } {
+    return { isValid: true, errors: [] };
   }
 }

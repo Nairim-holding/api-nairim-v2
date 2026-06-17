@@ -769,7 +769,6 @@ model Planning {
   company_id      String
   category_id     String
   subcategory_id  String?
-  year            Int
   type            PlanningType
   default_amount  Decimal?        @db.Decimal(20, 2)
   min_recommended Decimal?        @db.Decimal(20, 2)
@@ -784,10 +783,9 @@ model Planning {
   monthly_values PlanningMonth[]
   company        Company        @relation(fields: [company_id], references: [id])
 
-  @@unique([company_id, category_id, subcategory_id, year])
+  @@unique([company_id, category_id, subcategory_id])
   @@index([category_id])
   @@index([subcategory_id])
-  @@index([year])
   @@index([company_id])
 }
 

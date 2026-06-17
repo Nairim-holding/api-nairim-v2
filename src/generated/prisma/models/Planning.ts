@@ -27,14 +27,12 @@ export type AggregatePlanning = {
 }
 
 export type PlanningAvgAggregateOutputType = {
-  year: number | null
   default_amount: runtime.Decimal | null
   min_recommended: runtime.Decimal | null
   max_recommended: runtime.Decimal | null
 }
 
 export type PlanningSumAggregateOutputType = {
-  year: number | null
   default_amount: runtime.Decimal | null
   min_recommended: runtime.Decimal | null
   max_recommended: runtime.Decimal | null
@@ -45,7 +43,6 @@ export type PlanningMinAggregateOutputType = {
   company_id: string | null
   category_id: string | null
   subcategory_id: string | null
-  year: number | null
   type: $Enums.PlanningType | null
   default_amount: runtime.Decimal | null
   min_recommended: runtime.Decimal | null
@@ -61,7 +58,6 @@ export type PlanningMaxAggregateOutputType = {
   company_id: string | null
   category_id: string | null
   subcategory_id: string | null
-  year: number | null
   type: $Enums.PlanningType | null
   default_amount: runtime.Decimal | null
   min_recommended: runtime.Decimal | null
@@ -77,7 +73,6 @@ export type PlanningCountAggregateOutputType = {
   company_id: number
   category_id: number
   subcategory_id: number
-  year: number
   type: number
   default_amount: number
   min_recommended: number
@@ -91,14 +86,12 @@ export type PlanningCountAggregateOutputType = {
 
 
 export type PlanningAvgAggregateInputType = {
-  year?: true
   default_amount?: true
   min_recommended?: true
   max_recommended?: true
 }
 
 export type PlanningSumAggregateInputType = {
-  year?: true
   default_amount?: true
   min_recommended?: true
   max_recommended?: true
@@ -109,7 +102,6 @@ export type PlanningMinAggregateInputType = {
   company_id?: true
   category_id?: true
   subcategory_id?: true
-  year?: true
   type?: true
   default_amount?: true
   min_recommended?: true
@@ -125,7 +117,6 @@ export type PlanningMaxAggregateInputType = {
   company_id?: true
   category_id?: true
   subcategory_id?: true
-  year?: true
   type?: true
   default_amount?: true
   min_recommended?: true
@@ -141,7 +132,6 @@ export type PlanningCountAggregateInputType = {
   company_id?: true
   category_id?: true
   subcategory_id?: true
-  year?: true
   type?: true
   default_amount?: true
   min_recommended?: true
@@ -244,7 +234,6 @@ export type PlanningGroupByOutputType = {
   company_id: string
   category_id: string
   subcategory_id: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount: runtime.Decimal | null
   min_recommended: runtime.Decimal | null
@@ -283,7 +272,6 @@ export type PlanningWhereInput = {
   company_id?: Prisma.StringFilter<"Planning"> | string
   category_id?: Prisma.StringFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
-  year?: Prisma.IntFilter<"Planning"> | number
   type?: Prisma.EnumPlanningTypeFilter<"Planning"> | $Enums.PlanningType
   default_amount?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -303,7 +291,6 @@ export type PlanningOrderByWithRelationInput = {
   company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  year?: Prisma.SortOrder
   type?: Prisma.SortOrder
   default_amount?: Prisma.SortOrderInput | Prisma.SortOrder
   min_recommended?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -320,14 +307,13 @@ export type PlanningOrderByWithRelationInput = {
 
 export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  company_id_category_id_subcategory_id_year?: Prisma.PlanningCompany_idCategory_idSubcategory_idYearCompoundUniqueInput
+  company_id_category_id_subcategory_id?: Prisma.PlanningCompany_idCategory_idSubcategory_idCompoundUniqueInput
   AND?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
   OR?: Prisma.PlanningWhereInput[]
   NOT?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
   company_id?: Prisma.StringFilter<"Planning"> | string
   category_id?: Prisma.StringFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
-  year?: Prisma.IntFilter<"Planning"> | number
   type?: Prisma.EnumPlanningTypeFilter<"Planning"> | $Enums.PlanningType
   default_amount?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -340,14 +326,13 @@ export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   monthly_values?: Prisma.PlanningMonthListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
-}, "id" | "company_id_category_id_subcategory_id_year">
+}, "id" | "company_id_category_id_subcategory_id">
 
 export type PlanningOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  year?: Prisma.SortOrder
   type?: Prisma.SortOrder
   default_amount?: Prisma.SortOrderInput | Prisma.SortOrder
   min_recommended?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -371,7 +356,6 @@ export type PlanningScalarWhereWithAggregatesInput = {
   company_id?: Prisma.StringWithAggregatesFilter<"Planning"> | string
   category_id?: Prisma.StringWithAggregatesFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Planning"> | string | null
-  year?: Prisma.IntWithAggregatesFilter<"Planning"> | number
   type?: Prisma.EnumPlanningTypeWithAggregatesFilter<"Planning"> | $Enums.PlanningType
   default_amount?: Prisma.DecimalNullableWithAggregatesFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.DecimalNullableWithAggregatesFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -384,7 +368,6 @@ export type PlanningScalarWhereWithAggregatesInput = {
 
 export type PlanningCreateInput = {
   id?: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -404,7 +387,6 @@ export type PlanningUncheckedCreateInput = {
   company_id: string
   category_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -418,7 +400,6 @@ export type PlanningUncheckedCreateInput = {
 
 export type PlanningUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -438,7 +419,6 @@ export type PlanningUncheckedUpdateInput = {
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -455,7 +435,6 @@ export type PlanningCreateManyInput = {
   company_id: string
   category_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -468,7 +447,6 @@ export type PlanningCreateManyInput = {
 
 export type PlanningUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -484,7 +462,6 @@ export type PlanningUncheckedUpdateManyInput = {
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -505,11 +482,10 @@ export type PlanningOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type PlanningCompany_idCategory_idSubcategory_idYearCompoundUniqueInput = {
+export type PlanningCompany_idCategory_idSubcategory_idCompoundUniqueInput = {
   company_id: string
   category_id: string
   subcategory_id: string
-  year: number
 }
 
 export type PlanningCountOrderByAggregateInput = {
@@ -517,7 +493,6 @@ export type PlanningCountOrderByAggregateInput = {
   company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   type?: Prisma.SortOrder
   default_amount?: Prisma.SortOrder
   min_recommended?: Prisma.SortOrder
@@ -529,7 +504,6 @@ export type PlanningCountOrderByAggregateInput = {
 }
 
 export type PlanningAvgOrderByAggregateInput = {
-  year?: Prisma.SortOrder
   default_amount?: Prisma.SortOrder
   min_recommended?: Prisma.SortOrder
   max_recommended?: Prisma.SortOrder
@@ -540,7 +514,6 @@ export type PlanningMaxOrderByAggregateInput = {
   company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   type?: Prisma.SortOrder
   default_amount?: Prisma.SortOrder
   min_recommended?: Prisma.SortOrder
@@ -556,7 +529,6 @@ export type PlanningMinOrderByAggregateInput = {
   company_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   type?: Prisma.SortOrder
   default_amount?: Prisma.SortOrder
   min_recommended?: Prisma.SortOrder
@@ -568,7 +540,6 @@ export type PlanningMinOrderByAggregateInput = {
 }
 
 export type PlanningSumOrderByAggregateInput = {
-  year?: Prisma.SortOrder
   default_amount?: Prisma.SortOrder
   min_recommended?: Prisma.SortOrder
   max_recommended?: Prisma.SortOrder
@@ -725,7 +696,6 @@ export type PlanningUpdateOneRequiredWithoutMonthly_valuesNestedInput = {
 
 export type PlanningCreateWithoutCompanyInput = {
   id?: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -743,7 +713,6 @@ export type PlanningUncheckedCreateWithoutCompanyInput = {
   id?: string
   category_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -789,7 +758,6 @@ export type PlanningScalarWhereInput = {
   company_id?: Prisma.StringFilter<"Planning"> | string
   category_id?: Prisma.StringFilter<"Planning"> | string
   subcategory_id?: Prisma.StringNullableFilter<"Planning"> | string | null
-  year?: Prisma.IntFilter<"Planning"> | number
   type?: Prisma.EnumPlanningTypeFilter<"Planning"> | $Enums.PlanningType
   default_amount?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.DecimalNullableFilter<"Planning"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -802,7 +770,6 @@ export type PlanningScalarWhereInput = {
 
 export type PlanningCreateWithoutCategoryInput = {
   id?: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -820,7 +787,6 @@ export type PlanningUncheckedCreateWithoutCategoryInput = {
   id?: string
   company_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -860,7 +826,6 @@ export type PlanningUpdateManyWithWhereWithoutCategoryInput = {
 
 export type PlanningCreateWithoutSubcategoryInput = {
   id?: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -878,7 +843,6 @@ export type PlanningUncheckedCreateWithoutSubcategoryInput = {
   id?: string
   company_id: string
   category_id: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -918,7 +882,6 @@ export type PlanningUpdateManyWithWhereWithoutSubcategoryInput = {
 
 export type PlanningCreateWithoutMonthly_valuesInput = {
   id?: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -937,7 +900,6 @@ export type PlanningUncheckedCreateWithoutMonthly_valuesInput = {
   company_id: string
   category_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -966,7 +928,6 @@ export type PlanningUpdateToOneWithWhereWithoutMonthly_valuesInput = {
 
 export type PlanningUpdateWithoutMonthly_valuesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -985,7 +946,6 @@ export type PlanningUncheckedUpdateWithoutMonthly_valuesInput = {
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1000,7 +960,6 @@ export type PlanningCreateManyCompanyInput = {
   id?: string
   category_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1013,7 +972,6 @@ export type PlanningCreateManyCompanyInput = {
 
 export type PlanningUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1031,7 +989,6 @@ export type PlanningUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1047,7 +1004,6 @@ export type PlanningUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1062,7 +1018,6 @@ export type PlanningCreateManyCategoryInput = {
   id?: string
   company_id: string
   subcategory_id?: string | null
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1075,7 +1030,6 @@ export type PlanningCreateManyCategoryInput = {
 
 export type PlanningUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1093,7 +1047,6 @@ export type PlanningUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1109,7 +1062,6 @@ export type PlanningUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1124,7 +1076,6 @@ export type PlanningCreateManySubcategoryInput = {
   id?: string
   company_id: string
   category_id: string
-  year: number
   type: $Enums.PlanningType
   default_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1137,7 +1088,6 @@ export type PlanningCreateManySubcategoryInput = {
 
 export type PlanningUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1155,7 +1105,6 @@ export type PlanningUncheckedUpdateWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1171,7 +1120,6 @@ export type PlanningUncheckedUpdateManyWithoutSubcategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
   category_id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumPlanningTypeFieldUpdateOperationsInput | $Enums.PlanningType
   default_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   min_recommended?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1218,7 +1166,6 @@ export type PlanningSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
-  year?: boolean
   type?: boolean
   default_amount?: boolean
   min_recommended?: boolean
@@ -1239,7 +1186,6 @@ export type PlanningSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
-  year?: boolean
   type?: boolean
   default_amount?: boolean
   min_recommended?: boolean
@@ -1258,7 +1204,6 @@ export type PlanningSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
-  year?: boolean
   type?: boolean
   default_amount?: boolean
   min_recommended?: boolean
@@ -1277,7 +1222,6 @@ export type PlanningSelectScalar = {
   company_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
-  year?: boolean
   type?: boolean
   default_amount?: boolean
   min_recommended?: boolean
@@ -1288,7 +1232,7 @@ export type PlanningSelectScalar = {
   deleted_at?: boolean
 }
 
-export type PlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "category_id" | "subcategory_id" | "year" | "type" | "default_amount" | "min_recommended" | "max_recommended" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["planning"]>
+export type PlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "category_id" | "subcategory_id" | "type" | "default_amount" | "min_recommended" | "max_recommended" | "is_active" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["planning"]>
 export type PlanningInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   subcategory?: boolean | Prisma.Planning$subcategoryArgs<ExtArgs>
@@ -1320,7 +1264,6 @@ export type $PlanningPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     company_id: string
     category_id: string
     subcategory_id: string | null
-    year: number
     type: $Enums.PlanningType
     default_amount: runtime.Decimal | null
     min_recommended: runtime.Decimal | null
@@ -1760,7 +1703,6 @@ export interface PlanningFieldRefs {
   readonly company_id: Prisma.FieldRef<"Planning", 'String'>
   readonly category_id: Prisma.FieldRef<"Planning", 'String'>
   readonly subcategory_id: Prisma.FieldRef<"Planning", 'String'>
-  readonly year: Prisma.FieldRef<"Planning", 'Int'>
   readonly type: Prisma.FieldRef<"Planning", 'PlanningType'>
   readonly default_amount: Prisma.FieldRef<"Planning", 'Decimal'>
   readonly min_recommended: Prisma.FieldRef<"Planning", 'Decimal'>

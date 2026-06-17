@@ -15,8 +15,7 @@ export class PlanningController {
 
   static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const year = Number(req.query.year);
-      const data = await PlanningService.getPlannings(year);
+      const data = await PlanningService.getPlannings();
       res.status(200).json(ApiResponse.success(data, 'Planejamentos recuperados com sucesso'));
     } catch (error: any) {
       next(error);
@@ -25,8 +24,7 @@ export class PlanningController {
 
   static async listByYear(req: Request, res: Response, next: NextFunction) {
     try {
-      const year = Number(req.query.year);
-      const data = await PlanningService.getPlannings(year);
+      const data = await PlanningService.getPlannings();
       res.status(200).json(ApiResponse.success(data, 'Planejamentos recuperados com sucesso'));
     } catch (error: any) {
       next(error);

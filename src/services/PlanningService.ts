@@ -9,7 +9,6 @@ interface MonthlyValueInput {
 interface UpsertPlanningInput {
   category_id: string;
   subcategory_id?: string | null;
-  year: number;
   type: 'FIXED' | 'VARIABLE';
   default_amount?: number | null;
   monthly_values?: MonthlyValueInput[];
@@ -61,7 +60,6 @@ export class PlanningService {
         where: {
           category_id: data.category_id,
           subcategory_id: data.subcategory_id ?? null,
-          year: Number(data.year),
           company_id,
           deleted_at: null,
         },
@@ -75,7 +73,6 @@ export class PlanningService {
       const planningData = {
         category_id: data.category_id,
         subcategory_id: data.subcategory_id ?? null,
-        year: Number(data.year),
         type: data.type,
         default_amount: data.default_amount != null ? Number(data.default_amount) : null,
         min_recommended: min,
@@ -84,14 +81,16 @@ export class PlanningService {
         company_id,
       };
 
+      // FIXED usa default_amount diretamente — sem registros mensais.
+      // VARIABLE armazena sempre os 12 meses (zeros incluídos).
+      const sentMonths = new Map(
+        (data.monthly_values ?? []).map((mv) => [Number(mv.month), Number(mv.amount)]),
+      );
       const monthlyValuesData = data.type === 'FIXED'
-        ? Array.from({ length: 12 }, (_, i) => ({
+        ? []
+        : Array.from({ length: 12 }, (_, i) => ({
             month: i + 1,
-            amount: Number(data.default_amount ?? 0),
-          }))
-        : (data.monthly_values ?? []).map((mv) => ({
-            month: Number(mv.month),
-            amount: Number(mv.amount),
+            amount: sentMonths.get(i + 1) ?? 0,
           }));
 
       let planning;
@@ -140,7 +139,7 @@ export class PlanningService {
     }
   }
 
-  static async getPlannings(year: number) {
+  static async getPlannings() {
     try {
       const [categories, plannings] = await Promise.all([
         prisma.category.findMany({
@@ -154,7 +153,7 @@ export class PlanningService {
           orderBy: [{ type: 'asc' }, { name: 'asc' }],
         }),
         prisma.planning.findMany({
-          where: { year: Number(year), deleted_at: null },
+          where: { deleted_at: null },
           include: { monthly_values: { orderBy: { month: 'asc' } } },
         }),
       ]);
@@ -250,13 +249,9 @@ export class PlanningService {
         orderBy: [{ type: 'asc' }, { name: 'asc' }],
       });
 
-      // Busca planejamentos dos anos envolvidos
-      const yearsInPeriod = [...new Set(months.map((m) => m.year))];
+      // Busca todos os planejamentos ativos (globais, sem filtro de ano)
       const plannings = await prisma.planning.findMany({
-        where: {
-          year: { in: yearsInPeriod },
-          deleted_at: null,
-        },
+        where: { deleted_at: null },
         include: { monthly_values: { orderBy: { month: 'asc' } } },
       });
 
@@ -377,11 +372,10 @@ export class PlanningService {
             // Para FIXED: o valor informado se mantém como está (NÃO multiplica por meses)
             plannedTotal = Number(planningData.default_amount ?? 0);
           } else if (planningData.type === 'VARIABLE') {
-            // Para VARIABLE: soma apenas dos meses no período
-            for (const { month } of months) {
-              const monthValue = planningData.monthly_values.find((mv) => mv.month === month);
-              plannedTotal += Number(monthValue?.amount ?? 0);
-            }
+            // Para VARIABLE: mostra o valor planejado do mês atual (sem somar meses)
+            const currentMonth = new Date().getMonth() + 1;
+            const mv = planningData.monthly_values.find((m) => m.month === currentMonth);
+            plannedTotal = Number(mv?.amount ?? 0);
           }
         }
 
@@ -408,27 +402,25 @@ export class PlanningService {
           maxValue = Math.max(...nonZeroMonths.map((m) => m.realized_amount));
         }
 
-        // Constrói monthly_values (planejado) para TODOS os meses do período
+        // Constrói monthly_values:
+        // VARIABLE → sempre os 12 meses (para o modal ter os dados completos ao editar)
+        // FIXED    → apenas os meses do período (para exibição nas colunas)
         const monthlyValues: Array<{ month: number; amount: number }> = [];
-        for (const { month, year } of months) {
+        for (let m = 1; m <= 12; m++) {
           let amount = 0;
-          if (planningData) {
-            if (planningData.type === 'FIXED') {
-              amount = Number(planningData.default_amount ?? 0);
-            } else if (planningData.type === 'VARIABLE') {
-              const monthValue = planningData.monthly_values.find((mv) => mv.month === month);
-              amount = Number(monthValue?.amount ?? 0);
-            }
+          if (planningData?.type === 'VARIABLE') {
+            const mv = planningData.monthly_values.find((v) => v.month === m);
+            amount = Number(mv?.amount ?? 0);
+          } else if (planningData?.type === 'FIXED') {
+            amount = Number(planningData.default_amount ?? 0);
           }
-          monthlyValues.push({
-            month,
-            amount: Math.round(amount * 100) / 100,
-          });
+          monthlyValues.push({ month: m, amount: Math.round(amount * 100) / 100 });
         }
 
         return {
           id,
           name,
+          planning_type: planningData?.type ?? undefined,
           planned_amount: Math.round(plannedTotal * 100) / 100,
           realized_amount: Math.round(realizedTotal * 100) / 100,
           percentage,
@@ -499,10 +491,10 @@ export class PlanningService {
             // Valor informado se mantém como está (NÃO multiplica por meses)
             catPlannedTotal += Number(catPlanning.default_amount ?? 0);
           } else if (catPlanning.type === 'VARIABLE') {
-            for (const { month } of months) {
-              const monthValue = catPlanning.monthly_values.find((mv) => mv.month === month);
-              catPlannedTotal += Number(monthValue?.amount ?? 0);
-            }
+            // Para VARIABLE: usa o valor planejado do mês atual (sem somar meses)
+            const currentMonth = new Date().getMonth() + 1;
+            const mv = catPlanning.monthly_values.find((m) => m.month === currentMonth);
+            catPlannedTotal += Number(mv?.amount ?? 0);
           }
         }
 
@@ -529,35 +521,41 @@ export class PlanningService {
             ? Math.max(...nonZeroMonths.map((m) => m.realized_amount))
             : null;
 
-        // Constrói monthly_values para a categoria (soma das subcategorias + planejamento direto)
-        const catMonthlyValues: Array<{ month: number; amount: number }> = months.map(({ month, year }) => {
-          let amount = 0;
+        // Constrói monthly_values para a categoria (soma das subcategorias + planejamento direto).
+        // Sempre os 12 meses para que o modal mostre todos os meses, independente do filtro.
+        const catMonthlyValues: Array<{ month: number; amount: number }> = Array.from(
+          { length: 12 },
+          (_, i) => {
+            const month = i + 1;
+            let amount = 0;
 
-          // Soma monthly_values de todas as subcategorias
-          for (const subItem of subcategoryItems) {
-            const subMonthValue = subItem.monthly_values.find((mv) => mv.month === month);
-            if (subMonthValue) {
-              amount += subMonthValue.amount;
+            // Soma monthly_values de todas as subcategorias
+            for (const subItem of subcategoryItems) {
+              const subMonthValue = subItem.monthly_values.find((mv) => mv.month === month);
+              if (subMonthValue) {
+                amount += subMonthValue.amount;
+              }
             }
-          }
 
-          // Adiciona planejamento direto da categoria (se houver)
-          if (catPlanning) {
-            if (catPlanning.type === 'FIXED') {
-              amount += Number(catPlanning.default_amount ?? 0);
-            } else if (catPlanning.type === 'VARIABLE') {
-              const monthValue = catPlanning.monthly_values.find((mv) => mv.month === month);
-              amount += Number(monthValue?.amount ?? 0);
+            // Adiciona planejamento direto da categoria (se houver)
+            if (catPlanning) {
+              if (catPlanning.type === 'FIXED') {
+                amount += Number(catPlanning.default_amount ?? 0);
+              } else if (catPlanning.type === 'VARIABLE') {
+                const monthValue = catPlanning.monthly_values.find((mv) => mv.month === month);
+                amount += Number(monthValue?.amount ?? 0);
+              }
             }
-          }
 
-          return { month, amount: Math.round(amount * 100) / 100 };
-        });
+            return { month, amount: Math.round(amount * 100) / 100 };
+          },
+        );
 
         const catDashboard: CategoryDashboard = {
           id: cat.id,
           name: cat.name,
           type: cat.type as 'INCOME' | 'EXPENSE',
+          planning_type: catPlanning?.type ?? undefined,
           planned_amount: Math.round(catPlannedTotal * 100) / 100,
           realized_amount: Math.round(catRealizedTotal * 100) / 100,
           percentage: catPercentage,
