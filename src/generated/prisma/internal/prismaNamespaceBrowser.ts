@@ -165,6 +165,8 @@ export const AgencyScalarFieldEnum = {
   state_registration: 'state_registration',
   municipal_registration: 'municipal_registration',
   license_number: 'license_number',
+  commission_category_id: 'commission_category_id',
+  commission_subcategory_id: 'commission_subcategory_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -180,6 +182,8 @@ export const PropertyScalarFieldEnum = {
   agency_id: 'agency_id',
   type_id: 'type_id',
   center_id: 'center_id',
+  category_id: 'category_id',
+  subcategory_id: 'subcategory_id',
   title: 'title',
   registration_number: 'registration_number',
   bedrooms: 'bedrooms',

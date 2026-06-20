@@ -563,6 +563,8 @@ export class PropertyService {
           },
           agency: true,
           center: true,
+          category: true,
+          subcategory: true,
           leases: {
             where: { deleted_at: null },
             include: {
@@ -650,6 +652,8 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            category_id: data.category_id || null,
+            subcategory_id: data.subcategory_id || null,
           }
         });
 
@@ -935,6 +939,8 @@ export class PropertyService {
           type_id: data.type_id,
           agency_id: data.agency_id || null,
           center_id: data.center_id || null,
+          category_id: data.category_id || null,
+          subcategory_id: data.subcategory_id || null,
         },
       });
 
@@ -1015,6 +1021,8 @@ export class PropertyService {
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
         center: true,
+        category: true,
+        subcategory: true,
       },
     });
 
@@ -1065,6 +1073,8 @@ export class PropertyService {
           type_id: data.type_id,
           agency_id: data.agency_id || null,
           center_id: data.center_id || null,
+          category_id: data.category_id || null,
+          subcategory_id: data.subcategory_id || null,
         },
       });
 
@@ -1165,6 +1175,8 @@ export class PropertyService {
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
         center: true,
+        category: true,
+        subcategory: true,
       },
     });
 
@@ -1205,6 +1217,8 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            category_id: data.category_id || null,
+            subcategory_id: data.subcategory_id || null,
           }
         });
 
@@ -1614,6 +1628,8 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            category_id: data.category_id || null,
+            subcategory_id: data.subcategory_id || null,
           }
         });
 
@@ -1833,6 +1849,8 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            category_id: data.category_id || null,
+            subcategory_id: data.subcategory_id || null,
           }
         });
 

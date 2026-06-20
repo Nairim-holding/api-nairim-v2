@@ -1,14 +1,15 @@
 import prisma from '../lib/prisma';
-import { CategoryService } from './CategoryService';
 import { createDateLocal, parseLocalDate } from '../utils/date-utils';
 
 /**
  * Geração automática dos lançamentos financeiros de uma locação.
  *
  * Regras (definidas com o cliente):
- *  - Aluguel: 1 lançamento de RECEITA (INCOME) por mês do período (start..end), no rent_due_day.
- *  - Comissão: 1 lançamento de DESPESA (EXPENSE) por mês (se commission_amount > 0).
- *  - IPTU: 1 lançamento de RECEITA (INCOME) por parcela, conforme payment_condition.
+ *  - Categoria/subcategoria: SEMPRE as do imóvel (definidas pelo usuário). O sistema
+ *    NÃO cria categorias próprias. Sem categoria no imóvel → não gera lançamentos.
+ *  - Aluguel: 1 lançamento por mês do período (start+1..end), no rent_due_day.
+ *  - Comissão: 1 lançamento por mês (se commission_amount > 0).
+ *  - IPTU: 1 lançamento por parcela, conforme payment_condition.
  *  - Contato (supplier_id) = fornecedor-espelho da imobiliária vinculada.
  *  - Centro de custo (center_id) = centro do imóvel, quando houver.
  *
@@ -17,14 +18,9 @@ import { createDateLocal, parseLocalDate } from '../utils/date-utils';
  * preservadas e seus períodos não são duplicados.
  */
 
-const LEASE_CATEGORIES = {
-  RENT: { name: 'Receita de Locação', type: 'INCOME' as const },
-  COMMISSION: { name: 'Comissão Imobiliária', type: 'EXPENSE' as const },
-  IPTU: { name: 'IPTU', type: 'INCOME' as const },
-};
-
 interface ScheduleItem {
   category_id: string;
+  subcategory_id?: string | null;
   amount: number;
   date: Date;
   installment_number: number;
@@ -89,7 +85,11 @@ export class LeaseFinanceService {
   }
 
   /** Monta as parcelas de IPTU conforme a condição de pagamento da locação. */
-  private static buildIptuItems(lease: any, iptuCategoryId: string): ScheduleItem[] {
+  private static buildIptuItems(
+    lease: any,
+    categoryId: string,
+    subcategoryId: string | null,
+  ): ScheduleItem[] {
     const year = lease.iptu_year || new Date().getUTCFullYear();
     const taxDay = lease.tax_due_day || 10;
     const items: { amount: number; date: Date }[] = [];
@@ -150,7 +150,8 @@ export class LeaseFinanceService {
     }
 
     return items.map((it, idx) => ({
-      category_id: iptuCategoryId,
+      category_id: categoryId,
+      subcategory_id: subcategoryId,
       amount: it.amount,
       date: it.date,
       installment_number: idx + 1,
@@ -169,7 +170,10 @@ export class LeaseFinanceService {
   ): Promise<{ generated: number; warning?: string }> {
     const lease = await prisma.lease.findUnique({
       where: { id: leaseId },
-      include: { property: { select: { center_id: true } } },
+      include: {
+        property: { select: { center_id: true, category_id: true, subcategory_id: true } },
+        agency: { select: { commission_category_id: true, commission_subcategory_id: true } },
+      },
     });
     if (!lease || lease.deleted_at) return { generated: 0 };
 
@@ -180,12 +184,23 @@ export class LeaseFinanceService {
       };
     }
 
-    // 1. Categorias (find-or-create)
-    const [rentCat, commissionCat, iptuCat] = await Promise.all([
-      CategoryService.quickCreate(LEASE_CATEGORIES.RENT, company_id),
-      CategoryService.quickCreate(LEASE_CATEGORIES.COMMISSION, company_id),
-      CategoryService.quickCreate(LEASE_CATEGORIES.IPTU, company_id),
-    ]);
+    // 1. Categoria/subcategoria do imóvel (definidas pelo usuário). Obrigatórias —
+    // o sistema NÃO cria categorias próprias.
+    const propCategoryId = lease.property?.category_id ?? null;
+    const propSubcategoryId = lease.property?.subcategory_id ?? null;
+    if (!propCategoryId) {
+      return {
+        generated: 0,
+        warning: 'Selecione uma categoria no imóvel antes de gerar os lançamentos da locação.',
+      };
+    }
+
+    // Categoria da comissão = categoria definida na imobiliária; se não houver,
+    // cai na categoria do imóvel (mesma do aluguel).
+    const commissionCategoryId = lease.agency?.commission_category_id ?? propCategoryId;
+    const commissionSubcategoryId = lease.agency?.commission_category_id
+      ? (lease.agency.commission_subcategory_id ?? null)
+      : propSubcategoryId;
 
     // 2. Fornecedor-espelho da imobiliária + centro do imóvel
     const supplierId = lease.agency_id
@@ -194,15 +209,19 @@ export class LeaseFinanceService {
     const centerId = lease.property?.center_id ?? null;
 
     // 3. Schedule desejado
+    // Regra: o primeiro lançamento de aluguel/comissão é gerado 1 mês APÓS a
+    // data de início (nunca no próprio mês de início). monthsBetween é inclusivo
+    // do mês inicial, então descartamos o primeiro mês (slice(1)).
     const items: ScheduleItem[] = [];
-    const months = this.monthsBetween(lease.start_date, lease.end_date);
+    const months = this.monthsBetween(lease.start_date, lease.end_date).slice(1);
     const rentAmount = Number(lease.rent_amount);
     const commissionAmount = lease.commission_amount ? Number(lease.commission_amount) : 0;
 
     months.forEach((m, idx) => {
       const date = this.dueDate(m.year, m.month, lease.rent_due_day);
       items.push({
-        category_id: rentCat.id,
+        category_id: propCategoryId,
+        subcategory_id: propSubcategoryId,
         amount: rentAmount,
         date,
         installment_number: idx + 1,
@@ -211,7 +230,8 @@ export class LeaseFinanceService {
       });
       if (commissionAmount > 0) {
         items.push({
-          category_id: commissionCat.id,
+          category_id: commissionCategoryId,
+          subcategory_id: commissionSubcategoryId,
           amount: commissionAmount,
           date,
           installment_number: idx + 1,
@@ -221,17 +241,22 @@ export class LeaseFinanceService {
       }
     });
 
-    items.push(...this.buildIptuItems(lease, iptuCat.id));
+    items.push(...this.buildIptuItems(lease, propCategoryId, propSubcategoryId));
 
-    // 4. Idempotência: separa existentes PENDING (regerar) de COMPLETED (preservar)
+    // 4. Idempotência: separa existentes PENDING (regerar) de COMPLETED (preservar).
+    // Como aluguel/comissão/IPTU agora usam a MESMA categoria do imóvel, a chave
+    // diferencia pelo tipo via 1ª palavra da descrição (Aluguel/Comissão/IPTU).
+    const keyOf = (desc: string | null, inst: number | null) =>
+      `${String(desc ?? '').split(' ')[0]}::${inst ?? 0}`;
+
     const existing = await prisma.transaction.findMany({
       where: { lease_id: leaseId, deleted_at: null },
-      select: { id: true, status: true, category_id: true, installment_number: true },
+      select: { id: true, status: true, description: true, installment_number: true },
     });
     const completedKeys = new Set(
       existing
         .filter((t) => t.status === 'COMPLETED')
-        .map((t) => `${t.category_id}::${t.installment_number}`),
+        .map((t) => keyOf(t.description, t.installment_number)),
     );
     const pendingIds = existing.filter((t) => t.status !== 'COMPLETED').map((t) => t.id);
 
@@ -244,7 +269,7 @@ export class LeaseFinanceService {
 
     // 5. Cria apenas o que não está coberto por uma transação COMPLETED
     const toCreate = items.filter(
-      (it) => !completedKeys.has(`${it.category_id}::${it.installment_number}`),
+      (it) => !completedKeys.has(keyOf(it.description, it.installment_number)),
     );
 
     for (const it of toCreate) {
@@ -256,6 +281,7 @@ export class LeaseFinanceService {
           amount: it.amount,
           status: 'PENDING',
           category_id: it.category_id,
+          subcategory_id: it.subcategory_id ?? null,
           financial_institution_id: lease.financial_institution_id,
           supplier_id: supplierId,
           center_id: centerId,

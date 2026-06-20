@@ -218,6 +218,8 @@ export type CategoryWhereInput = {
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
+  commission_agencies?: Prisma.AgencyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -235,6 +237,8 @@ export type CategoryOrderByWithRelationInput = {
   subcategories?: Prisma.SubcategoryOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   plannings?: Prisma.PlanningOrderByRelationAggregateInput
+  properties?: Prisma.PropertyOrderByRelationAggregateInput
+  commission_agencies?: Prisma.AgencyOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
 
@@ -255,6 +259,8 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   subcategories?: Prisma.SubcategoryListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
+  properties?: Prisma.PropertyListRelationFilter
+  commission_agencies?: Prisma.AgencyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
@@ -301,6 +307,8 @@ export type CategoryCreateInput = {
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
   company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
@@ -318,6 +326,8 @@ export type CategoryUncheckedCreateInput = {
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryUpdateInput = {
@@ -333,6 +343,8 @@ export type CategoryUpdateInput = {
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
@@ -350,6 +362,8 @@ export type CategoryUncheckedUpdateInput = {
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryCreateManyInput = {
@@ -395,6 +409,11 @@ export type CategoryListRelationFilter = {
 
 export type CategoryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type CategoryNullableScalarRelationFilter = {
+  is?: Prisma.CategoryWhereInput | null
+  isNot?: Prisma.CategoryWhereInput | null
 }
 
 export type CategoryCountOrderByAggregateInput = {
@@ -480,6 +499,38 @@ export type CategoryUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
 }
 
+export type CategoryCreateNestedOneWithoutCommission_agenciesInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedCreateWithoutCommission_agenciesInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCommission_agenciesInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryUpdateOneWithoutCommission_agenciesNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedCreateWithoutCommission_agenciesInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCommission_agenciesInput
+  upsert?: Prisma.CategoryUpsertWithoutCommission_agenciesInput
+  disconnect?: Prisma.CategoryWhereInput | boolean
+  delete?: Prisma.CategoryWhereInput | boolean
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutCommission_agenciesInput, Prisma.CategoryUpdateWithoutCommission_agenciesInput>, Prisma.CategoryUncheckedUpdateWithoutCommission_agenciesInput>
+}
+
+export type CategoryCreateNestedOneWithoutPropertiesInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPropertiesInput, Prisma.CategoryUncheckedCreateWithoutPropertiesInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPropertiesInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryUpdateOneWithoutPropertiesNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPropertiesInput, Prisma.CategoryUncheckedCreateWithoutPropertiesInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPropertiesInput
+  upsert?: Prisma.CategoryUpsertWithoutPropertiesInput
+  disconnect?: Prisma.CategoryWhereInput | boolean
+  delete?: Prisma.CategoryWhereInput | boolean
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutPropertiesInput, Prisma.CategoryUpdateWithoutPropertiesInput>, Prisma.CategoryUncheckedUpdateWithoutPropertiesInput>
+}
+
 export type EnumTransactionTypeFieldUpdateOperationsInput = {
   set?: $Enums.TransactionType
 }
@@ -553,6 +604,8 @@ export type CategoryCreateWithoutCompanyInput = {
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryUncheckedCreateWithoutCompanyInput = {
@@ -568,6 +621,8 @@ export type CategoryUncheckedCreateWithoutCompanyInput = {
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryCreateOrConnectWithoutCompanyInput = {
@@ -611,6 +666,174 @@ export type CategoryScalarWhereInput = {
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
 }
 
+export type CategoryCreateWithoutCommission_agenciesInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
+}
+
+export type CategoryUncheckedCreateWithoutCommission_agenciesInput = {
+  id?: string
+  company_id: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutCommission_agenciesInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedCreateWithoutCommission_agenciesInput>
+}
+
+export type CategoryUpsertWithoutCommission_agenciesInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedUpdateWithoutCommission_agenciesInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedCreateWithoutCommission_agenciesInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutCommission_agenciesInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutCommission_agenciesInput, Prisma.CategoryUncheckedUpdateWithoutCommission_agenciesInput>
+}
+
+export type CategoryUpdateWithoutCommission_agenciesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutCommission_agenciesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryCreateWithoutPropertiesInput = {
+  id?: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
+}
+
+export type CategoryUncheckedCreateWithoutPropertiesInput = {
+  id?: string
+  company_id: string
+  name: string
+  type: $Enums.TransactionType
+  is_active?: boolean
+  is_system?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
+  subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
+}
+
+export type CategoryCreateOrConnectWithoutPropertiesInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutPropertiesInput, Prisma.CategoryUncheckedCreateWithoutPropertiesInput>
+}
+
+export type CategoryUpsertWithoutPropertiesInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutPropertiesInput, Prisma.CategoryUncheckedUpdateWithoutPropertiesInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutPropertiesInput, Prisma.CategoryUncheckedCreateWithoutPropertiesInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutPropertiesInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutPropertiesInput, Prisma.CategoryUncheckedUpdateWithoutPropertiesInput>
+}
+
+export type CategoryUpdateWithoutPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutPropertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
+  subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
+}
+
 export type CategoryCreateWithoutSubcategoriesInput = {
   id?: string
   name: string
@@ -623,6 +846,8 @@ export type CategoryCreateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
   company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
@@ -639,6 +864,8 @@ export type CategoryUncheckedCreateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryCreateOrConnectWithoutSubcategoriesInput = {
@@ -669,6 +896,8 @@ export type CategoryUpdateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
@@ -685,6 +914,8 @@ export type CategoryUncheckedUpdateWithoutSubcategoriesInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryCreateWithoutTransactionsInput = {
@@ -699,6 +930,8 @@ export type CategoryCreateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
   company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
@@ -715,6 +948,8 @@ export type CategoryUncheckedCreateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryCreateOrConnectWithoutTransactionsInput = {
@@ -745,6 +980,8 @@ export type CategoryUpdateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
@@ -761,6 +998,8 @@ export type CategoryUncheckedUpdateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryCreateWithoutRecurring_configsInput = {
@@ -775,6 +1014,8 @@ export type CategoryCreateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
   company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
@@ -791,6 +1032,8 @@ export type CategoryUncheckedCreateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryCreateOrConnectWithoutRecurring_configsInput = {
@@ -821,6 +1064,8 @@ export type CategoryUpdateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
@@ -837,6 +1082,8 @@ export type CategoryUncheckedUpdateWithoutRecurring_configsInput = {
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryCreateWithoutPlanningsInput = {
@@ -851,6 +1098,8 @@ export type CategoryCreateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_categoryInput
   company: Prisma.CompanyCreateNestedOneWithoutCategoriesInput
 }
 
@@ -867,6 +1116,8 @@ export type CategoryUncheckedCreateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCategoryInput
   subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput
 }
 
 export type CategoryCreateOrConnectWithoutPlanningsInput = {
@@ -897,6 +1148,8 @@ export type CategoryUpdateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutCategoriesNestedInput
 }
 
@@ -913,6 +1166,8 @@ export type CategoryUncheckedUpdateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCategoryNestedInput
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryCreateManyCompanyInput = {
@@ -939,6 +1194,8 @@ export type CategoryUpdateWithoutCompanyInput = {
   subcategories?: Prisma.SubcategoryUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutCompanyInput = {
@@ -954,6 +1211,8 @@ export type CategoryUncheckedUpdateWithoutCompanyInput = {
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput
 }
 
 export type CategoryUncheckedUpdateManyWithoutCompanyInput = {
@@ -977,6 +1236,8 @@ export type CategoryCountOutputType = {
   subcategories: number
   transactions: number
   plannings: number
+  properties: number
+  commission_agencies: number
 }
 
 export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -984,6 +1245,8 @@ export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   subcategories?: boolean | CategoryCountOutputTypeCountSubcategoriesArgs
   transactions?: boolean | CategoryCountOutputTypeCountTransactionsArgs
   plannings?: boolean | CategoryCountOutputTypeCountPlanningsArgs
+  properties?: boolean | CategoryCountOutputTypeCountPropertiesArgs
+  commission_agencies?: boolean | CategoryCountOutputTypeCountCommission_agenciesArgs
 }
 
 /**
@@ -1024,6 +1287,20 @@ export type CategoryCountOutputTypeCountPlanningsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.PlanningWhereInput
 }
 
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyWhereInput
+}
+
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountCommission_agenciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgencyWhereInput
+}
+
 
 export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1039,6 +1316,8 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Category$planningsArgs<ExtArgs>
+  properties?: boolean | Prisma.Category$propertiesArgs<ExtArgs>
+  commission_agencies?: boolean | Prisma.Category$commission_agenciesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
@@ -1087,6 +1366,8 @@ export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
   transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Category$planningsArgs<ExtArgs>
+  properties?: boolean | Prisma.Category$propertiesArgs<ExtArgs>
+  commission_agencies?: boolean | Prisma.Category$commission_agenciesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1104,6 +1385,8 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     subcategories: Prisma.$SubcategoryPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
     plannings: Prisma.$PlanningPayload<ExtArgs>[]
+    properties: Prisma.$PropertyPayload<ExtArgs>[]
+    commission_agencies: Prisma.$AgencyPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1514,6 +1797,8 @@ export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime
   subcategories<T extends Prisma.Category$subcategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$subcategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Category$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   plannings<T extends Prisma.Category$planningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$planningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  properties<T extends Prisma.Category$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commission_agencies<T extends Prisma.Category$commission_agenciesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$commission_agenciesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2042,6 +2327,54 @@ export type Category$planningsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.PlanningScalarFieldEnum | Prisma.PlanningScalarFieldEnum[]
+}
+
+/**
+ * Category.properties
+ */
+export type Category$propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Property
+   */
+  select?: Prisma.PropertySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Property
+   */
+  omit?: Prisma.PropertyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyInclude<ExtArgs> | null
+  where?: Prisma.PropertyWhereInput
+  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+}
+
+/**
+ * Category.commission_agencies
+ */
+export type Category$commission_agenciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Agency
+   */
+  select?: Prisma.AgencySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Agency
+   */
+  omit?: Prisma.AgencyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgencyInclude<ExtArgs> | null
+  where?: Prisma.AgencyWhereInput
+  orderBy?: Prisma.AgencyOrderByWithRelationInput | Prisma.AgencyOrderByWithRelationInput[]
+  cursor?: Prisma.AgencyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgencyScalarFieldEnum | Prisma.AgencyScalarFieldEnum[]
 }
 
 /**

@@ -377,6 +377,9 @@ export class LeaseService {
               type: true,
               addresses: { where: { deleted_at: null }, include: { address: true } },
               owner: true,
+              category: true,
+              subcategory: true,
+              center: true,
             }
           },
           owner: {
@@ -396,7 +399,12 @@ export class LeaseService {
             }
           },
           type: true,
-          agency: true,
+          agency: {
+            include: {
+              commission_category: true,
+              commission_subcategory: true,
+            }
+          },
           financial_institution: true
         }
       }) as any;
@@ -411,6 +419,15 @@ export class LeaseService {
 
   static async createLease(data: any) {
     try {
+      // Exige categoria no imóvel — não usamos categorias criadas pelo sistema.
+      const property = await prisma.property.findFirst({
+        where: { id: data.property_id, deleted_at: null },
+        select: { category_id: true },
+      });
+      if (!property?.category_id) {
+        throw new Error('É necessário selecionar uma categoria no imóvel antes de criar a locação.');
+      }
+
       const lease = await prisma.$transaction(async (tx: any) => {
         if (data.contract_number) {
           const existingContract = await tx.lease.findFirst({

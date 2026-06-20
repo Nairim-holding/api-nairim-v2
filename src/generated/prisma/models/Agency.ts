@@ -33,6 +33,8 @@ export type AgencyMinAggregateOutputType = {
   state_registration: string | null
   municipal_registration: string | null
   license_number: string | null
+  commission_category_id: string | null
+  commission_subcategory_id: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -47,6 +49,8 @@ export type AgencyMaxAggregateOutputType = {
   state_registration: string | null
   municipal_registration: string | null
   license_number: string | null
+  commission_category_id: string | null
+  commission_subcategory_id: string | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -61,6 +65,8 @@ export type AgencyCountAggregateOutputType = {
   state_registration: number
   municipal_registration: number
   license_number: number
+  commission_category_id: number
+  commission_subcategory_id: number
   created_at: number
   updated_at: number
   deleted_at: number
@@ -77,6 +83,8 @@ export type AgencyMinAggregateInputType = {
   state_registration?: true
   municipal_registration?: true
   license_number?: true
+  commission_category_id?: true
+  commission_subcategory_id?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -91,6 +99,8 @@ export type AgencyMaxAggregateInputType = {
   state_registration?: true
   municipal_registration?: true
   license_number?: true
+  commission_category_id?: true
+  commission_subcategory_id?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -105,6 +115,8 @@ export type AgencyCountAggregateInputType = {
   state_registration?: true
   municipal_registration?: true
   license_number?: true
+  commission_category_id?: true
+  commission_subcategory_id?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -192,6 +204,8 @@ export type AgencyGroupByOutputType = {
   state_registration: string | null
   municipal_registration: string | null
   license_number: string | null
+  commission_category_id: string | null
+  commission_subcategory_id: string | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
@@ -227,6 +241,8 @@ export type AgencyWhereInput = {
   state_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -235,6 +251,8 @@ export type AgencyWhereInput = {
   properties?: Prisma.PropertyListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   suppliers?: Prisma.SupplierListRelationFilter
+  commission_category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  commission_subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -247,6 +265,8 @@ export type AgencyOrderByWithRelationInput = {
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   license_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -255,6 +275,8 @@ export type AgencyOrderByWithRelationInput = {
   properties?: Prisma.PropertyOrderByRelationAggregateInput
   leases?: Prisma.LeaseOrderByRelationAggregateInput
   suppliers?: Prisma.SupplierOrderByRelationAggregateInput
+  commission_category?: Prisma.CategoryOrderByWithRelationInput
+  commission_subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
 
@@ -270,6 +292,8 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   state_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -278,6 +302,8 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   properties?: Prisma.PropertyListRelationFilter
   leases?: Prisma.LeaseListRelationFilter
   suppliers?: Prisma.SupplierListRelationFilter
+  commission_category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  commission_subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
@@ -290,6 +316,8 @@ export type AgencyOrderByWithAggregationInput = {
   state_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   municipal_registration?: Prisma.SortOrderInput | Prisma.SortOrder
   license_number?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -310,6 +338,8 @@ export type AgencyScalarWhereWithAggregatesInput = {
   state_registration?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
   municipal_registration?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
   license_number?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
+  commission_category_id?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
+  commission_subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Agency"> | Date | string | null
@@ -331,6 +361,8 @@ export type AgencyCreateInput = {
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -343,6 +375,8 @@ export type AgencyUncheckedCreateInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -369,6 +403,8 @@ export type AgencyUpdateInput = {
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -381,6 +417,8 @@ export type AgencyUncheckedUpdateInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -400,6 +438,8 @@ export type AgencyCreateManyInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -427,6 +467,8 @@ export type AgencyUncheckedUpdateManyInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -451,6 +493,8 @@ export type AgencyCountOrderByAggregateInput = {
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   license_number?: Prisma.SortOrder
+  commission_category_id?: Prisma.SortOrder
+  commission_subcategory_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -465,6 +509,8 @@ export type AgencyMaxOrderByAggregateInput = {
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   license_number?: Prisma.SortOrder
+  commission_category_id?: Prisma.SortOrder
+  commission_subcategory_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -479,6 +525,8 @@ export type AgencyMinOrderByAggregateInput = {
   state_registration?: Prisma.SortOrder
   municipal_registration?: Prisma.SortOrder
   license_number?: Prisma.SortOrder
+  commission_category_id?: Prisma.SortOrder
+  commission_subcategory_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -598,6 +646,90 @@ export type AgencyUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgencyUpdateToOneWithWhereWithoutAddressesInput, Prisma.AgencyUpdateWithoutAddressesInput>, Prisma.AgencyUncheckedUpdateWithoutAddressesInput>
 }
 
+export type AgencyCreateNestedManyWithoutCommission_categoryInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput> | Prisma.AgencyCreateWithoutCommission_categoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_categoryInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+}
+
+export type AgencyUncheckedCreateNestedManyWithoutCommission_categoryInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput> | Prisma.AgencyCreateWithoutCommission_categoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_categoryInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+}
+
+export type AgencyUpdateManyWithoutCommission_categoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput> | Prisma.AgencyCreateWithoutCommission_categoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_categoryInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_categoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_categoryInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_categoryInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_categoryInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCommission_categoryInput | Prisma.AgencyUpdateManyWithWhereWithoutCommission_categoryInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+}
+
+export type AgencyUncheckedUpdateManyWithoutCommission_categoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput> | Prisma.AgencyCreateWithoutCommission_categoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_categoryInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_categoryInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_categoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_categoryInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_categoryInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_categoryInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCommission_categoryInput | Prisma.AgencyUpdateManyWithWhereWithoutCommission_categoryInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+}
+
+export type AgencyCreateNestedManyWithoutCommission_subcategoryInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput> | Prisma.AgencyCreateWithoutCommission_subcategoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_subcategoryInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+}
+
+export type AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput> | Prisma.AgencyCreateWithoutCommission_subcategoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_subcategoryInputEnvelope
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+}
+
+export type AgencyUpdateManyWithoutCommission_subcategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput> | Prisma.AgencyCreateWithoutCommission_subcategoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_subcategoryInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_subcategoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_subcategoryInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_subcategoryInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_subcategoryInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCommission_subcategoryInput | Prisma.AgencyUpdateManyWithWhereWithoutCommission_subcategoryInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+}
+
+export type AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput> | Prisma.AgencyCreateWithoutCommission_subcategoryInput[] | Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput[]
+  connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput | Prisma.AgencyCreateOrConnectWithoutCommission_subcategoryInput[]
+  upsert?: Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_subcategoryInput | Prisma.AgencyUpsertWithWhereUniqueWithoutCommission_subcategoryInput[]
+  createMany?: Prisma.AgencyCreateManyCommission_subcategoryInputEnvelope
+  set?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  disconnect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  delete?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  connect?: Prisma.AgencyWhereUniqueInput | Prisma.AgencyWhereUniqueInput[]
+  update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_subcategoryInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCommission_subcategoryInput[]
+  updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCommission_subcategoryInput | Prisma.AgencyUpdateManyWithWhereWithoutCommission_subcategoryInput[]
+  deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+}
+
 export type AgencyCreateNestedOneWithoutSuppliersInput = {
   create?: Prisma.XOR<Prisma.AgencyCreateWithoutSuppliersInput, Prisma.AgencyUncheckedCreateWithoutSuppliersInput>
   connectOrCreate?: Prisma.AgencyCreateOrConnectWithoutSuppliersInput
@@ -630,6 +762,8 @@ export type AgencyCreateWithoutCompanyInput = {
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
 }
 
 export type AgencyUncheckedCreateWithoutCompanyInput = {
@@ -640,6 +774,8 @@ export type AgencyUncheckedCreateWithoutCompanyInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -688,6 +824,8 @@ export type AgencyScalarWhereInput = {
   state_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   municipal_registration?: Prisma.StringNullableFilter<"Agency"> | string | null
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -708,6 +846,8 @@ export type AgencyCreateWithoutPropertiesInput = {
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -720,6 +860,8 @@ export type AgencyUncheckedCreateWithoutPropertiesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -760,6 +902,8 @@ export type AgencyUpdateWithoutPropertiesInput = {
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -772,6 +916,8 @@ export type AgencyUncheckedUpdateWithoutPropertiesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -796,6 +942,8 @@ export type AgencyCreateWithoutLeasesInput = {
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -808,6 +956,8 @@ export type AgencyUncheckedCreateWithoutLeasesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -848,6 +998,8 @@ export type AgencyUpdateWithoutLeasesInput = {
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -860,6 +1012,8 @@ export type AgencyUncheckedUpdateWithoutLeasesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -884,6 +1038,8 @@ export type AgencyCreateWithoutContactsInput = {
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -896,6 +1052,8 @@ export type AgencyUncheckedCreateWithoutContactsInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -936,6 +1094,8 @@ export type AgencyUpdateWithoutContactsInput = {
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -948,6 +1108,8 @@ export type AgencyUncheckedUpdateWithoutContactsInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -972,6 +1134,8 @@ export type AgencyCreateWithoutAddressesInput = {
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
   suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -984,6 +1148,8 @@ export type AgencyUncheckedCreateWithoutAddressesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1024,6 +1190,8 @@ export type AgencyUpdateWithoutAddressesInput = {
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -1036,6 +1204,8 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1043,6 +1213,138 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyCreateWithoutCommission_categoryInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
+}
+
+export type AgencyUncheckedCreateWithoutCommission_categoryInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  commission_subcategory_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyCreateOrConnectWithoutCommission_categoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput>
+}
+
+export type AgencyCreateManyCommission_categoryInputEnvelope = {
+  data: Prisma.AgencyCreateManyCommission_categoryInput | Prisma.AgencyCreateManyCommission_categoryInput[]
+  skipDuplicates?: boolean
+}
+
+export type AgencyUpsertWithWhereUniqueWithoutCommission_categoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  update: Prisma.XOR<Prisma.AgencyUpdateWithoutCommission_categoryInput, Prisma.AgencyUncheckedUpdateWithoutCommission_categoryInput>
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_categoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_categoryInput>
+}
+
+export type AgencyUpdateWithWhereUniqueWithoutCommission_categoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  data: Prisma.XOR<Prisma.AgencyUpdateWithoutCommission_categoryInput, Prisma.AgencyUncheckedUpdateWithoutCommission_categoryInput>
+}
+
+export type AgencyUpdateManyWithWhereWithoutCommission_categoryInput = {
+  where: Prisma.AgencyScalarWhereInput
+  data: Prisma.XOR<Prisma.AgencyUpdateManyMutationInput, Prisma.AgencyUncheckedUpdateManyWithoutCommission_categoryInput>
+}
+
+export type AgencyCreateWithoutCommission_subcategoryInput = {
+  id?: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
+}
+
+export type AgencyUncheckedCreateWithoutCommission_subcategoryInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  commission_category_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedCreateNestedManyWithoutAgencyInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAgencyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgencyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutAgencyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutAgencyInput
+}
+
+export type AgencyCreateOrConnectWithoutCommission_subcategoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput>
+}
+
+export type AgencyCreateManyCommission_subcategoryInputEnvelope = {
+  data: Prisma.AgencyCreateManyCommission_subcategoryInput | Prisma.AgencyCreateManyCommission_subcategoryInput[]
+  skipDuplicates?: boolean
+}
+
+export type AgencyUpsertWithWhereUniqueWithoutCommission_subcategoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  update: Prisma.XOR<Prisma.AgencyUpdateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedUpdateWithoutCommission_subcategoryInput>
+  create: Prisma.XOR<Prisma.AgencyCreateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedCreateWithoutCommission_subcategoryInput>
+}
+
+export type AgencyUpdateWithWhereUniqueWithoutCommission_subcategoryInput = {
+  where: Prisma.AgencyWhereUniqueInput
+  data: Prisma.XOR<Prisma.AgencyUpdateWithoutCommission_subcategoryInput, Prisma.AgencyUncheckedUpdateWithoutCommission_subcategoryInput>
+}
+
+export type AgencyUpdateManyWithWhereWithoutCommission_subcategoryInput = {
+  where: Prisma.AgencyScalarWhereInput
+  data: Prisma.XOR<Prisma.AgencyUpdateManyMutationInput, Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryInput>
 }
 
 export type AgencyCreateWithoutSuppliersInput = {
@@ -1060,6 +1362,8 @@ export type AgencyCreateWithoutSuppliersInput = {
   contacts?: Prisma.ContactCreateNestedManyWithoutAgencyInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgencyInput
   leases?: Prisma.LeaseCreateNestedManyWithoutAgencyInput
+  commission_category?: Prisma.CategoryCreateNestedOneWithoutCommission_agenciesInput
+  commission_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutCommission_agenciesInput
   company: Prisma.CompanyCreateNestedOneWithoutAgenciesInput
 }
 
@@ -1072,6 +1376,8 @@ export type AgencyUncheckedCreateWithoutSuppliersInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1112,6 +1418,8 @@ export type AgencyUpdateWithoutSuppliersInput = {
   contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
 }
 
@@ -1124,6 +1432,8 @@ export type AgencyUncheckedUpdateWithoutSuppliersInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1141,6 +1451,8 @@ export type AgencyCreateManyCompanyInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_category_id?: string | null
+  commission_subcategory_id?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1162,6 +1474,8 @@ export type AgencyUpdateWithoutCompanyInput = {
   properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
   leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
   suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
 }
 
 export type AgencyUncheckedUpdateWithoutCompanyInput = {
@@ -1172,6 +1486,8 @@ export type AgencyUncheckedUpdateWithoutCompanyInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1190,6 +1506,148 @@ export type AgencyUncheckedUpdateManyWithoutCompanyInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type AgencyCreateManyCommission_categoryInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  commission_subcategory_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type AgencyUpdateWithoutCommission_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_subcategory?: Prisma.SubcategoryUpdateOneWithoutCommission_agenciesNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
+}
+
+export type AgencyUncheckedUpdateWithoutCommission_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyUncheckedUpdateManyWithoutCommission_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type AgencyCreateManyCommission_subcategoryInput = {
+  id?: string
+  company_id: string
+  trade_name: string
+  legal_name: string
+  cnpj: string
+  state_registration?: string | null
+  municipal_registration?: string | null
+  license_number?: string | null
+  commission_category_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type AgencyUpdateWithoutCommission_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutAgencyNestedInput
+  commission_category?: Prisma.CategoryUpdateOneWithoutCommission_agenciesNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAgenciesNestedInput
+}
+
+export type AgencyUncheckedUpdateWithoutCommission_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  addresses?: Prisma.AgencyAddressUncheckedUpdateManyWithoutAgencyNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutAgencyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgencyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutAgencyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutAgencyNestedInput
+}
+
+export type AgencyUncheckedUpdateManyWithoutCommission_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  trade_name?: Prisma.StringFieldUpdateOperationsInput | string
+  legal_name?: Prisma.StringFieldUpdateOperationsInput | string
+  cnpj?: Prisma.StringFieldUpdateOperationsInput | string
+  state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1271,6 +1729,8 @@ export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   state_registration?: boolean
   municipal_registration?: boolean
   license_number?: boolean
+  commission_category_id?: boolean
+  commission_subcategory_id?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1279,6 +1739,8 @@ export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
   leases?: boolean | Prisma.Agency$leasesArgs<ExtArgs>
   suppliers?: boolean | Prisma.Agency$suppliersArgs<ExtArgs>
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
@@ -1292,9 +1754,13 @@ export type AgencySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   state_registration?: boolean
   municipal_registration?: boolean
   license_number?: boolean
+  commission_category_id?: boolean
+  commission_subcategory_id?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
 
@@ -1307,9 +1773,13 @@ export type AgencySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   state_registration?: boolean
   municipal_registration?: boolean
   license_number?: boolean
+  commission_category_id?: boolean
+  commission_subcategory_id?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agency"]>
 
@@ -1322,25 +1792,33 @@ export type AgencySelectScalar = {
   state_registration?: boolean
   municipal_registration?: boolean
   license_number?: boolean
+  commission_category_id?: boolean
+  commission_subcategory_id?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
+export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "commission_category_id" | "commission_subcategory_id" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
 export type AgencyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
   properties?: boolean | Prisma.Agency$propertiesArgs<ExtArgs>
   leases?: boolean | Prisma.Agency$leasesArgs<ExtArgs>
   suppliers?: boolean | Prisma.Agency$suppliersArgs<ExtArgs>
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.AgencyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AgencyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type AgencyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  commission_category?: boolean | Prisma.Agency$commission_categoryArgs<ExtArgs>
+  commission_subcategory?: boolean | Prisma.Agency$commission_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
@@ -1352,6 +1830,8 @@ export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     properties: Prisma.$PropertyPayload<ExtArgs>[]
     leases: Prisma.$LeasePayload<ExtArgs>[]
     suppliers: Prisma.$SupplierPayload<ExtArgs>[]
+    commission_category: Prisma.$CategoryPayload<ExtArgs> | null
+    commission_subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1363,6 +1843,8 @@ export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     state_registration: string | null
     municipal_registration: string | null
     license_number: string | null
+    commission_category_id: string | null
+    commission_subcategory_id: string | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
@@ -1765,6 +2247,8 @@ export interface Prisma__AgencyClient<T, Null = never, ExtArgs extends runtime.T
   properties<T extends Prisma.Agency$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   leases<T extends Prisma.Agency$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   suppliers<T extends Prisma.Agency$suppliersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$suppliersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commission_category<T extends Prisma.Agency$commission_categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$commission_categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  commission_subcategory<T extends Prisma.Agency$commission_subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agency$commission_subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1803,6 +2287,8 @@ export interface AgencyFieldRefs {
   readonly state_registration: Prisma.FieldRef<"Agency", 'String'>
   readonly municipal_registration: Prisma.FieldRef<"Agency", 'String'>
   readonly license_number: Prisma.FieldRef<"Agency", 'String'>
+  readonly commission_category_id: Prisma.FieldRef<"Agency", 'String'>
+  readonly commission_subcategory_id: Prisma.FieldRef<"Agency", 'String'>
   readonly created_at: Prisma.FieldRef<"Agency", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Agency", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Agency", 'DateTime'>
@@ -2319,6 +2805,44 @@ export type Agency$suppliersArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.SupplierScalarFieldEnum | Prisma.SupplierScalarFieldEnum[]
+}
+
+/**
+ * Agency.commission_category
+ */
+export type Agency$commission_categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * Agency.commission_subcategory
+ */
+export type Agency$commission_subcategoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subcategory
+   */
+  select?: Prisma.SubcategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subcategory
+   */
+  omit?: Prisma.SubcategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcategoryInclude<ExtArgs> | null
+  where?: Prisma.SubcategoryWhereInput
 }
 
 /**

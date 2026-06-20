@@ -88,7 +88,9 @@ export class AgencyService {
             },
             contacts: {
               where: { deleted_at: null }
-            }
+            },
+            commission_category: true,
+            commission_subcategory: true
           }
         });
 
@@ -129,7 +131,9 @@ export class AgencyService {
               },
               contacts: {
                 where: { deleted_at: null }
-              }
+              },
+              commission_category: true,
+              commission_subcategory: true
             }
           }),
           prisma.agency.count({ where })
@@ -358,6 +362,8 @@ export class AgencyService {
             state_registration: data.state_registration,
             municipal_registration: data.municipal_registration,
             license_number: data.license_number,
+            commission_category_id: data.commission_category_id || null,
+            commission_subcategory_id: data.commission_subcategory_id || null,
           }
         });
 
@@ -431,6 +437,8 @@ export class AgencyService {
             state_registration: data.state_registration,
             municipal_registration: data.municipal_registration,
             license_number: data.license_number,
+            commission_category_id: data.commission_category_id || null,
+            commission_subcategory_id: data.commission_subcategory_id || null,
           }
         });
 

@@ -100,6 +100,8 @@ model Agency {
   state_registration     String?
   municipal_registration String?
   license_number         String?         @db.VarChar(20)
+  commission_category_id    String?
+  commission_subcategory_id String?
   created_at             DateTime        @default(now())
   updated_at             DateTime        @updatedAt
   deleted_at             DateTime?
@@ -108,9 +110,13 @@ model Agency {
   properties             Property[]
   leases                 Lease[]
   suppliers              Supplier[]
+  commission_category    Category?       @relation(fields: [commission_category_id], references: [id])
+  commission_subcategory Subcategory?    @relation(fields: [commission_subcategory_id], references: [id])
   company                Company        @relation(fields: [company_id], references: [id])
 
   @@index([cnpj])
+  @@index([commission_category_id])
+  @@index([commission_subcategory_id])
   @@index([company_id])
 }
 
@@ -121,6 +127,8 @@ model Property {
   agency_id           String?
   type_id             String
   center_id           String?
+  category_id         String?
+  subcategory_id      String?
   title               String
   registration_number String?           @db.VarChar(50)
   bedrooms            Int
@@ -144,6 +152,8 @@ model Property {
   owner               Owner             @relation(fields: [owner_id], references: [id])
   type                PropertyType      @relation(fields: [type_id], references: [id])
   center              Center?           @relation(fields: [center_id], references: [id])
+  category            Category?         @relation(fields: [category_id], references: [id])
+  subcategory         Subcategory?      @relation(fields: [subcategory_id], references: [id])
   addresses           PropertyAddress[]
   iptus               PropertyIptu[]
   values              PropertyValue[]
@@ -152,6 +162,8 @@ model Property {
   @@index([owner_id])
   @@index([agency_id])
   @@index([center_id])
+  @@index([category_id])
+  @@index([subcategory_id])
   @@index([company_id])
 }
 
@@ -531,6 +543,8 @@ model Category {
   subcategories     Subcategory[]
   transactions      Transaction[]
   plannings         Planning[]
+  properties        Property[]
+  commission_agencies Agency[]
   company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([company_id])
@@ -549,6 +563,8 @@ model Subcategory {
   category          Category          @relation(fields: [category_id], references: [id])
   transactions      Transaction[]
   plannings         Planning[]
+  properties        Property[]
+  commission_agencies Agency[]
   company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([category_id])
