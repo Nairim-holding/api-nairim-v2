@@ -13,6 +13,38 @@ export class PlanningController {
     }
   }
 
+  static async createStrict(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { company_id } = (req as any).user;
+      const data = await PlanningService.createPlanningStrict(req.body, company_id);
+      res.status(201).json(ApiResponse.success(data, 'Planejamento criado com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Esta combinação já está cadastrada') {
+        return res.status(409).json(ApiResponse.error(error.message));
+      }
+      next(error);
+    }
+  }
+
+  static async updateStrict(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { company_id } = (req as any).user;
+      const id = String(req.params.id || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+
+      const data = await PlanningService.updatePlanningStrict(id, req.body, company_id);
+      res.status(200).json(ApiResponse.success(data, 'Planejamento atualizado com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Esta combinação já está cadastrada') {
+        return res.status(409).json(ApiResponse.error(error.message));
+      }
+      if (error.message === 'Planning not found') {
+        return res.status(404).json(ApiResponse.error('Planejamento não encontrado'));
+      }
+      next(error);
+    }
+  }
+
   static async list(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await PlanningService.getPlannings();

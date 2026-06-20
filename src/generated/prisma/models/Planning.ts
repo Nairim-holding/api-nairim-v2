@@ -307,7 +307,6 @@ export type PlanningOrderByWithRelationInput = {
 
 export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  company_id_category_id_subcategory_id?: Prisma.PlanningCompany_idCategory_idSubcategory_idCompoundUniqueInput
   AND?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
   OR?: Prisma.PlanningWhereInput[]
   NOT?: Prisma.PlanningWhereInput | Prisma.PlanningWhereInput[]
@@ -326,7 +325,7 @@ export type PlanningWhereUniqueInput = Prisma.AtLeast<{
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   monthly_values?: Prisma.PlanningMonthListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
-}, "id" | "company_id_category_id_subcategory_id">
+}, "id">
 
 export type PlanningOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -480,12 +479,6 @@ export type PlanningListRelationFilter = {
 
 export type PlanningOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type PlanningCompany_idCategory_idSubcategory_idCompoundUniqueInput = {
-  company_id: string
-  category_id: string
-  subcategory_id: string
 }
 
 export type PlanningCountOrderByAggregateInput = {

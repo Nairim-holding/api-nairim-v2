@@ -799,7 +799,9 @@ model Planning {
   monthly_values PlanningMonth[]
   company        Company        @relation(fields: [company_id], references: [id])
 
-  @@unique([company_id, category_id, subcategory_id])
+  // Sem @@unique aqui de propósito: a base de produção já tem combinações
+  // duplicadas de (company_id, category_id, subcategory_id) que não podem ser
+  // tocadas. A unicidade é garantida em código — ver PlanningService.assertUniqueCombination.
   @@index([category_id])
   @@index([subcategory_id])
   @@index([company_id])

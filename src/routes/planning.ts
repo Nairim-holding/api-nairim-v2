@@ -11,6 +11,8 @@ router.get('/dashboard', validateDashboardQuery, PlanningController.dashboard);
 router.get('/', validatePlanningQuery, PlanningController.list);
 router.get('/:id', PlanningController.getById);
 router.post('/', validatePlanningUpsert, PlanningController.upsert);
+router.post('/create', validatePlanningUpsert, PlanningController.createStrict);
+router.put('/:id', validatePlanningUpsert, PlanningController.updateStrict);
 router.delete('/:id', PlanningController.remove);
 
 export default router;

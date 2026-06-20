@@ -15,6 +15,146 @@ interface UpsertPlanningInput {
 }
 
 export class PlanningService {
+  /**
+   * Garante que não existe outro Planning ativo com a mesma combinação de
+   * company_id + category_id + subcategory_id. Substitui a constraint
+   * @@unique removida do schema (a base de produção já tem duplicados
+   * legados que não podem ser tocados — ver comentário no schema.prisma).
+   *
+   * excludeId: ao validar uma atualização, passe o id do próprio registro
+   * para que ele não conte como duplicado de si mesmo.
+   */
+  private static async assertUniqueCombination(
+    companyId: string,
+    categoryId: string,
+    subcategoryId: string | null,
+    excludeId?: string,
+  ): Promise<void> {
+    const duplicate = await prisma.planning.findFirst({
+      where: {
+        company_id: companyId,
+        category_id: categoryId,
+        subcategory_id: subcategoryId,
+        deleted_at: null,
+        ...(excludeId ? { id: { not: excludeId } } : {}),
+      },
+      select: { id: true },
+    });
+
+    if (duplicate) {
+      throw new Error('Esta combinação já está cadastrada');
+    }
+  }
+
+  /**
+   * Criação estrita: ao contrário de upsertPlanning (que atualiza o registro
+   * existente quando a combinação já está cadastrada), este método é usado
+   * quando a intenção é sempre criar um registro novo — bloqueia com erro
+   * amigável se a combinação já existir.
+   */
+  static async createPlanningStrict(data: UpsertPlanningInput, company_id: string) {
+    await this.assertUniqueCombination(company_id, data.category_id, data.subcategory_id ?? null);
+
+    const { min, max } = await this.calculateMinMaxFromTransactionHistory(
+      data.category_id,
+      data.subcategory_id ?? null,
+    );
+
+    const planningData = {
+      category_id: data.category_id,
+      subcategory_id: data.subcategory_id ?? null,
+      type: data.type,
+      default_amount: data.default_amount != null ? Number(data.default_amount) : null,
+      min_recommended: min,
+      max_recommended: max,
+      is_active: true,
+      company_id,
+    };
+
+    const sentMonths = new Map(
+      (data.monthly_values ?? []).map((mv) => [Number(mv.month), Number(mv.amount)]),
+    );
+    const monthlyValuesData = data.type === 'FIXED'
+      ? []
+      : Array.from({ length: 12 }, (_, i) => ({
+          month: i + 1,
+          amount: sentMonths.get(i + 1) ?? 0,
+        }));
+
+    const planning = await prisma.$transaction(async (tx) => {
+      const created = await tx.planning.create({ data: planningData });
+
+      await tx.planningMonth.createMany({
+        data: monthlyValuesData.map((mv) => ({
+          planning_id: created.id,
+          ...mv,
+        })),
+      });
+
+      return created;
+    });
+
+    return await prisma.planning.findUnique({
+      where: { id: planning.id },
+      include: { monthly_values: { orderBy: { month: 'asc' } } },
+    });
+  }
+
+  /**
+   * Atualização estrita por id: valida a combinação excluindo o próprio
+   * registro, para permitir salvar o mesmo planning sem disparar erro de
+   * duplicado contra si mesmo.
+   */
+  static async updatePlanningStrict(id: string, data: UpsertPlanningInput, company_id: string) {
+    const existing = await prisma.planning.findFirst({ where: { id, company_id, deleted_at: null } });
+    if (!existing) throw new Error('Planning not found');
+
+    await this.assertUniqueCombination(company_id, data.category_id, data.subcategory_id ?? null, id);
+
+    const { min, max } = await this.calculateMinMaxFromTransactionHistory(
+      data.category_id,
+      data.subcategory_id ?? null,
+    );
+
+    const planningData = {
+      category_id: data.category_id,
+      subcategory_id: data.subcategory_id ?? null,
+      type: data.type,
+      default_amount: data.default_amount != null ? Number(data.default_amount) : null,
+      min_recommended: min,
+      max_recommended: max,
+    };
+
+    const sentMonths = new Map(
+      (data.monthly_values ?? []).map((mv) => [Number(mv.month), Number(mv.amount)]),
+    );
+    const monthlyValuesData = data.type === 'FIXED'
+      ? []
+      : Array.from({ length: 12 }, (_, i) => ({
+          month: i + 1,
+          amount: sentMonths.get(i + 1) ?? 0,
+        }));
+
+    const planning = await prisma.$transaction(async (tx) => {
+      const updated = await tx.planning.update({ where: { id }, data: planningData });
+
+      await tx.planningMonth.deleteMany({ where: { planning_id: id } });
+      await tx.planningMonth.createMany({
+        data: monthlyValuesData.map((mv) => ({
+          planning_id: updated.id,
+          ...mv,
+        })),
+      });
+
+      return updated;
+    });
+
+    return await prisma.planning.findUnique({
+      where: { id: planning.id },
+      include: { monthly_values: { orderBy: { month: 'asc' } } },
+    });
+  }
+
   private static async calculateMinMaxFromTransactionHistory(
     categoryId: string,
     subcategoryId: string | null,
