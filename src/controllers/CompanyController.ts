@@ -245,7 +245,7 @@ export class CompanyController {
         company_id: target.company.id,
       };
 
-      const token = jwt.sign(payload, env.JWT_SECRET as string, { expiresIn: '2h' });
+      const token = jwt.sign(payload, env.JWT_SECRET as string, { expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] });
 
       return res.json(ApiResponse.success({
         token,

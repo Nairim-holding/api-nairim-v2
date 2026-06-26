@@ -15,7 +15,11 @@ export const env = {
   DATABASE_URL: required("DATABASE_URL"),
 
   JWT_SECRET: required("JWT_SECRET"),
-  
+
+  // Duração do token de sessão. Mínimo recomendado de 12h para não interromper
+  // usuários em uso ativo (sessões mais curtas exigem refresh em background).
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? "12h",
+
   BASE_URL: process.env.BASE_URL ?? "http://localhost:5000",
 
   // MinIO (CDN self-hosted, S3 compatível)

@@ -15,7 +15,8 @@
     "db:backup": "tsx scripts/backup.ts",
     "db:migrate-prod": "psql $DATABASE_URL -f scripts/migrate-production.sql && npx prisma generate",
     "db:migrate": "prisma db push --accept-data-loss && tsx prisma/seed-default-company.ts && prisma generate",
-    "db:create-test-user": "tsx scripts/create-test-user.ts"
+    "db:create-test-user": "tsx scripts/create-test-user.ts",
+    "db:backfill-rent-descriptions": "tsx scripts/backfill-lease-rent-descriptions.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

@@ -21,6 +21,7 @@ import { createDateLocal, parseLocalDate } from '../utils/date-utils';
 interface ScheduleItem {
   category_id: string;
   subcategory_id?: string | null;
+  center_id?: string | null;
   amount: number;
   date: Date;
   installment_number: number;
@@ -89,6 +90,7 @@ export class LeaseFinanceService {
     lease: any,
     categoryId: string,
     subcategoryId: string | null,
+    centerId: string | null,
   ): ScheduleItem[] {
     const year = lease.iptu_year || new Date().getUTCFullYear();
     const taxDay = lease.tax_due_day || 10;
@@ -152,6 +154,7 @@ export class LeaseFinanceService {
     return items.map((it, idx) => ({
       category_id: categoryId,
       subcategory_id: subcategoryId,
+      center_id: centerId,
       amount: it.amount,
       date: it.date,
       installment_number: idx + 1,
@@ -171,8 +174,9 @@ export class LeaseFinanceService {
     const lease = await prisma.lease.findUnique({
       where: { id: leaseId },
       include: {
-        property: { select: { center_id: true, category_id: true, subcategory_id: true } },
+        property: { select: { center_id: true, debit_center_id: true, category_id: true, subcategory_id: true } },
         agency: { select: { commission_category_id: true, commission_subcategory_id: true } },
+        tenant: { select: { name: true } },
       },
     });
     if (!lease || lease.deleted_at) return { generated: 0 };
@@ -202,11 +206,15 @@ export class LeaseFinanceService {
       ? (lease.agency.commission_subcategory_id ?? null)
       : propSubcategoryId;
 
-    // 2. Fornecedor-espelho da imobiliária + centro do imóvel
+    // 2. Fornecedor-espelho da imobiliária + centros de custo do imóvel.
+    // Crédito → receitas (aluguel, IPTU). Débito → despesas (comissão).
+    // Se o centro de débito não estiver definido, cai no de crédito para não
+    // quebrar imóveis cadastrados antes deste campo.
     const supplierId = lease.agency_id
       ? await this.resolveAgencySupplier(lease.agency_id, company_id)
       : null;
-    const centerId = lease.property?.center_id ?? null;
+    const creditCenterId = lease.property?.center_id ?? null;
+    const debitCenterId = lease.property?.debit_center_id ?? creditCenterId;
 
     // 3. Schedule desejado
     // Regra: o primeiro lançamento de aluguel/comissão é gerado 1 mês APÓS a
@@ -216,22 +224,25 @@ export class LeaseFinanceService {
     const months = this.monthsBetween(lease.start_date, lease.end_date).slice(1);
     const rentAmount = Number(lease.rent_amount);
     const commissionAmount = lease.commission_amount ? Number(lease.commission_amount) : 0;
+    const tenantName = lease.tenant?.name ?? 'Inquilino';
 
     months.forEach((m, idx) => {
       const date = this.dueDate(m.year, m.month, lease.rent_due_day);
       items.push({
         category_id: propCategoryId,
         subcategory_id: propSubcategoryId,
+        center_id: creditCenterId,
         amount: rentAmount,
         date,
         installment_number: idx + 1,
         total: months.length,
-        description: `Aluguel ${idx + 1}/${months.length} - Contrato ${lease.contract_number}`,
+        description: `Aluguel do imóvel ${idx + 1}/${months.length} – ${tenantName} – Contrato ${lease.contract_number}`,
       });
       if (commissionAmount > 0) {
         items.push({
           category_id: commissionCategoryId,
           subcategory_id: commissionSubcategoryId,
+          center_id: debitCenterId,
           amount: commissionAmount,
           date,
           installment_number: idx + 1,
@@ -241,7 +252,7 @@ export class LeaseFinanceService {
       }
     });
 
-    items.push(...this.buildIptuItems(lease, propCategoryId, propSubcategoryId));
+    items.push(...this.buildIptuItems(lease, propCategoryId, propSubcategoryId, creditCenterId));
 
     // 4. Idempotência: separa existentes PENDING (regerar) de COMPLETED (preservar).
     // Como aluguel/comissão/IPTU agora usam a MESMA categoria do imóvel, a chave
@@ -284,7 +295,7 @@ export class LeaseFinanceService {
           subcategory_id: it.subcategory_id ?? null,
           financial_institution_id: lease.financial_institution_id,
           supplier_id: supplierId,
-          center_id: centerId,
+          center_id: it.center_id ?? null,
           lease_id: leaseId,
           installment_number: it.installment_number,
           total_installments: it.total,

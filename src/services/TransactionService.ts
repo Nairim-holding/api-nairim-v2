@@ -13,6 +13,16 @@ export class TransactionService {
     return direction.toLowerCase() === 'desc' ? 'desc' : 'asc';
   }
 
+  // supplier usa legal_name, não name como as demais relações
+  private static readonly RELATION_SORT_FIELDS: Record<string, string> = {
+    category_id: 'category.name',
+    subcategory_id: 'subcategory.name',
+    financial_institution_id: 'financial_institution.name',
+    card_id: 'card.name',
+    center_id: 'center.name',
+    supplier_id: 'supplier.legal_name',
+  };
+
   private static safeGetProperty(obj: any, path: string): any {
     return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
   }
@@ -75,24 +85,24 @@ export class TransactionService {
       if (filters) {
         const andFilters: any[] = [];
         Object.entries(filters).forEach(([key, value]) => {
-           if (!value) return;
-           if (key === 'status') andFilters.push({ status: value });
-           if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'].includes(key)) {
-             andFilters.push({ [key]: String(value) });
-           }
-           // Filtra diretamente pelo subcategory_id da transação
-           if (key === 'subcategory_id') {
-              andFilters.push({ subcategory_id: String(value) });
+           if (!value || (Array.isArray(value) && value.length === 0)) return;
+           const values = Array.isArray(value) ? value : [value];
+
+           if (key === 'status') andFilters.push({ status: { in: values.map(String) } });
+           if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id', 'subcategory_id'].includes(key)) {
+             andFilters.push({ [key]: { in: values.map(String) } });
            }
            if (key === 'type') {
              andFilters.push({ category: { type: value } });
            }
            if (key === 'description') {
-             andFilters.push({ description: { contains: String(value), mode: 'insensitive' } });
+             andFilters.push({ OR: values.map((v) => ({ description: { contains: String(v), mode: 'insensitive' } })) });
            }
            if (key === 'amount') {
-             const numericValue = Number(String(value).replace(/[^\d.-]/g, ''));
-             if (!isNaN(numericValue)) andFilters.push({ amount: numericValue });
+             const numericValues = values
+               .map((v) => Number(String(v).replace(/[^\d.-]/g, '')))
+               .filter((n) => !isNaN(n));
+             if (numericValues.length > 0) andFilters.push({ amount: { in: numericValues } });
            }
            if (key === 'event_date' || key === 'effective_date') {
              const dateCond = this.buildDateCondition(value);
@@ -158,61 +168,71 @@ export class TransactionService {
 
       return {
         filters: [
-          { 
-            field: 'category_id', 
-            type: 'select', 
-            label: 'Categoria', 
-            values: categories.map(c => ({ value: c.id, label: `${c.name} (${c.type === 'INCOME' ? 'Receita' : 'Despesa'})` })) 
+          {
+            field: 'category_id',
+            type: 'select',
+            label: 'Categoria',
+            multiple: true,
+            values: categories.map(c => ({ value: c.id, label: `${c.name} (${c.type === 'INCOME' ? 'Receita' : 'Despesa'})` }))
           },
-          { 
-            field: 'subcategory_id', 
-            type: 'select', 
-            label: 'Subcategoria', 
-            values: subcategories.map(s => ({ value: s.id, label: s.name, category_id: s.category_id })) 
+          {
+            field: 'subcategory_id',
+            type: 'select',
+            label: 'Subcategoria',
+            multiple: true,
+            dependsOn: { field: 'category_id', matchKey: 'category_id' },
+            values: subcategories.map(s => ({ value: s.id, label: s.name, category_id: s.category_id }))
           },
-          { 
-            field: 'financial_institution_id', 
-            type: 'select', 
-            label: 'Instituição Financeira', 
-            values: institutions.map(i => ({ value: i.id, label: i.name })) 
+          {
+            field: 'financial_institution_id',
+            type: 'select',
+            label: 'Instituição Financeira',
+            multiple: true,
+            values: institutions.map(i => ({ value: i.id, label: i.name }))
           },
-          { 
-            field: 'card_id', 
-            type: 'select', 
-            label: 'Cartão', 
-            values: cards.map(c => ({ value: c.id, label: c.name })) 
+          {
+            field: 'card_id',
+            type: 'select',
+            label: 'Cartão',
+            multiple: true,
+            values: cards.map(c => ({ value: c.id, label: c.name }))
           },
-          { 
-            field: 'center_id', 
-            type: 'select', 
-            label: 'Centro', 
-            values: centers.map(c => ({ value: c.id, label: `${c.name}` })) 
+          {
+            field: 'center_id',
+            type: 'select',
+            label: 'Centro',
+            multiple: true,
+            values: centers.map(c => ({ value: c.id, label: `${c.name}` }))
           },
-          { 
-            field: 'supplier_id', 
-            type: 'select', 
-            label: 'Fornecedor', 
-            values: suppliers.map(s => ({ value: s.id, label: s.legal_name })) 
+          {
+            field: 'supplier_id',
+            type: 'select',
+            label: 'Fornecedor',
+            multiple: true,
+            values: suppliers.map(s => ({ value: s.id, label: s.legal_name }))
           },
-          { 
-            field: 'description', 
-            type: 'select', 
-            label: 'Descrição', 
+          {
+            field: 'description',
+            type: 'select',
+            label: 'Descrição',
+            multiple: true,
             values: uniqueDescriptions.map(d => ({ label: d, value: d })),
-            searchable: true 
+            searchable: true
           },
-          { 
-            field: 'amount', 
-            type: 'select', 
+          {
+            field: 'amount',
+            type: 'select',
             label: 'Valor',
+            multiple: true,
             values: amountOptions,
-            searchable: true 
+            searchable: true
           },
-          { 
-            field: 'status', 
-            type: 'select', 
-            label: 'Status', 
-            values: statusOptions 
+          {
+            field: 'status',
+            type: 'select',
+            label: 'Status',
+            multiple: true,
+            values: statusOptions
           }
         ],
         operators: {
@@ -241,23 +261,25 @@ export class TransactionService {
       if (!includeInactive) where.deleted_at = null;
 
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== '') {
-          if (key === 'status') where.status = value;
-          if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'].includes(key)) {
-            where[key] = String(value);
-          }
-          if (key === 'subcategory_id') {
-            where.subcategory_id = String(value);
+        if (value !== undefined && value !== '' && !(Array.isArray(value) && value.length === 0)) {
+          // Filtros de seleção aceitam 1 ou N valores (condição IN em ambos os casos).
+          const values = Array.isArray(value) ? value : [value];
+
+          if (key === 'status') where.status = { in: values.map(String) };
+          if (['category_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id', 'subcategory_id'].includes(key)) {
+            where[key] = { in: values.map(String) };
           }
           if (key === 'type') {
-            where.category = { type: value }; 
+            where.category = { type: value };
           }
           if (key === 'description') {
-            where.description = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+            where.OR = values.map((v) => ({ description: { contains: String(v), mode: 'insensitive' as Prisma.QueryMode } }));
           }
           if (key === 'amount') {
-            const numericValue = Number(String(value).replace(/[^\d.-]/g, ''));
-            if (!isNaN(numericValue)) where.amount = numericValue;
+            const numericValues = values
+              .map((v) => Number(String(v).replace(/[^\d.-]/g, '')))
+              .filter((n) => !isNaN(n));
+            if (numericValues.length > 0) where.amount = { in: numericValues };
           }
           if (key === 'event_date' || key === 'effective_date') {
             where[key] = this.buildDateCondition(value);
@@ -293,7 +315,7 @@ export class TransactionService {
           const direction = this.normalizeSortDirection(sortEntries[0][1]);
           
           filtered = filtered.sort((a, b) => {
-             const realField = field.endsWith('_id') ? field.replace('_id', '') + '.name' : field;
+             const realField = this.RELATION_SORT_FIELDS[field] ?? field;
              
              let valA = this.safeGetProperty(a, realField);
              let valB = this.safeGetProperty(b, realField);
@@ -321,19 +343,9 @@ export class TransactionService {
           
           if (['event_date', 'effective_date', 'amount', 'status', 'description', 'created_at'].includes(field)) {
             orderBy.push({ [field]: dir });
-          } 
-          else if (field === 'category_id') {
-            orderBy.push({ category: { name: dir } });
-          } else if (field === 'subcategory_id') {
-            orderBy.push({ subcategory: { name: dir } });
-          } else if (field === 'financial_institution_id') {
-            orderBy.push({ financial_institution: { name: dir } });
-          } else if (field === 'card_id') {
-            orderBy.push({ card: { name: dir } });
-          } else if (field === 'center_id') {
-            orderBy.push({ center: { name: dir } });
-          } else if (field === 'supplier_id') {
-            orderBy.push({ supplier: { legal_name: dir } });
+          } else if (this.RELATION_SORT_FIELDS[field]) {
+            const [relation, relationField] = this.RELATION_SORT_FIELDS[field].split('.');
+            orderBy.push({ [relation]: { [relationField]: dir } });
           }
         });
         
@@ -722,7 +734,7 @@ export class TransactionService {
               total_installments: numOccurrences,
               amount: amount,
               description: data.description
-                ? `${data.description} - ${occurrenceNumber}/${numOccurrences}`
+                ? `${data.description} - Recorrente ${occurrenceNumber}/${numOccurrences}`
                 : `Gasto Recorrente ${occurrenceNumber}/${numOccurrences}`,
               event_date: parseLocalDate(startDate),
               effective_date: parseLocalDate(occurrenceDates[index]),

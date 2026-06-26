@@ -127,6 +127,7 @@ model Property {
   agency_id           String?
   type_id             String
   center_id           String?
+  debit_center_id     String?
   category_id         String?
   subcategory_id      String?
   title               String
@@ -151,7 +152,8 @@ model Property {
   agency              Agency?           @relation(fields: [agency_id], references: [id])
   owner               Owner             @relation(fields: [owner_id], references: [id])
   type                PropertyType      @relation(fields: [type_id], references: [id])
-  center              Center?           @relation(fields: [center_id], references: [id])
+  center              Center?           @relation("PropertyCreditCenter", fields: [center_id], references: [id])
+  debit_center        Center?           @relation("PropertyDebitCenter", fields: [debit_center_id], references: [id])
   category            Category?         @relation(fields: [category_id], references: [id])
   subcategory         Subcategory?      @relation(fields: [subcategory_id], references: [id])
   addresses           PropertyAddress[]
@@ -162,6 +164,7 @@ model Property {
   @@index([owner_id])
   @@index([agency_id])
   @@index([center_id])
+  @@index([debit_center_id])
   @@index([category_id])
   @@index([subcategory_id])
   @@index([company_id])
@@ -603,7 +606,8 @@ model Center {
   deleted_at        DateTime?
   recurring_configs RecurringConfig[]
   transactions      Transaction[]
-  properties        Property[]
+  properties        Property[]       @relation("PropertyCreditCenter")
+  debit_properties  Property[]       @relation("PropertyDebitCenter")
   company           Company          @relation(fields: [company_id], references: [id])
 
   @@index([company_id])

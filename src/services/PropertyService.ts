@@ -186,6 +186,12 @@ export class PropertyService {
                 name: true
               }
             },
+            debit_center: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
             documents: {
               where: { deleted_at: null },
             },
@@ -563,6 +569,7 @@ export class PropertyService {
           },
           agency: true,
           center: true,
+          debit_center: true,
           category: true,
           subcategory: true,
           leases: {
@@ -652,6 +659,7 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
           }
@@ -939,6 +947,7 @@ export class PropertyService {
           type_id: data.type_id,
           agency_id: data.agency_id || null,
           center_id: data.center_id || null,
+          debit_center_id: data.debit_center_id || null,
           category_id: data.category_id || null,
           subcategory_id: data.subcategory_id || null,
         },
@@ -1021,6 +1030,7 @@ export class PropertyService {
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
         center: true,
+        debit_center: true,
         category: true,
         subcategory: true,
       },
@@ -1073,6 +1083,7 @@ export class PropertyService {
           type_id: data.type_id,
           agency_id: data.agency_id || null,
           center_id: data.center_id || null,
+          debit_center_id: data.debit_center_id || null,
           category_id: data.category_id || null,
           subcategory_id: data.subcategory_id || null,
         },
@@ -1175,6 +1186,7 @@ export class PropertyService {
         iptus: { orderBy: { year: 'desc' } },
         agency: true,
         center: true,
+        debit_center: true,
         category: true,
         subcategory: true,
       },
@@ -1217,6 +1229,7 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
           }
@@ -1628,6 +1641,7 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
           }
@@ -1748,7 +1762,8 @@ export class PropertyService {
             orderBy: { year: 'desc' }
           },
           agency: true,
-          center: true
+          center: true,
+          debit_center: true
         }
       });
 
@@ -1849,6 +1864,7 @@ export class PropertyService {
             type_id: data.type_id,
             agency_id: data.agency_id || null,
             center_id: data.center_id || null,
+            debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
           }
@@ -2023,7 +2039,8 @@ export class PropertyService {
             orderBy: { year: 'desc' }
           },
           agency: true,
-          center: true
+          center: true,
+          debit_center: true
         }
       });
 

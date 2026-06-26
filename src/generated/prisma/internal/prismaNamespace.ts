@@ -2923,6 +2923,7 @@ export const PropertyScalarFieldEnum = {
   agency_id: 'agency_id',
   type_id: 'type_id',
   center_id: 'center_id',
+  debit_center_id: 'debit_center_id',
   category_id: 'category_id',
   subcategory_id: 'subcategory_id',
   title: 'title',

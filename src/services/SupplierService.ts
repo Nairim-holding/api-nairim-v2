@@ -402,30 +402,55 @@ export class SupplierService {
       });
       if (existing) return existing;
 
-      const lastSupplier = await prisma.supplier.findFirst({
-        where: { company_id, deleted_at: null },
-        orderBy: { internal_code: 'desc' },
+      // internal_code é String e mistura formatos (sequenciais "1","2",... e
+      // espelhos de imobiliária "AG-xxxxxxxx"), então ORDER BY no banco é
+      // lexicográfico, não numérico ("9" > "171", "AG-..." > qualquer dígito).
+      // Por isso o máximo precisa ser calculado em memória, considerando
+      // apenas códigos puramente numéricos.
+      const existingCodes = await prisma.supplier.findMany({
+        where: { company_id, deleted_at: null, internal_code: { not: null } },
         select: { internal_code: true }
       });
 
-      let nextInternalCode = '1';
-      if (lastSupplier?.internal_code) {
-        const lastCode = parseInt(lastSupplier.internal_code.replace(/\D/g, ''));
-        if (!isNaN(lastCode)) nextInternalCode = String(lastCode + 1);
+      let maxCode = 0;
+      for (const s of existingCodes) {
+        if (s.internal_code && /^\d+$/.test(s.internal_code)) {
+          const n = parseInt(s.internal_code, 10);
+          if (n > maxCode) maxCode = n;
+        }
       }
 
-      const newSupplier = await prisma.supplier.create({
-        data: {
-          legal_name: legalName,
-          internal_code: nextInternalCode,
-          created_via: 'quick_create',
-          is_active: true,
-          company: { connect: { id: company_id } },
+      // Retry em caso de corrida (duas criações concorrentes calculando o
+      // mesmo próximo código) — a constraint @@unique([company_id, internal_code])
+      // rejeitaria a segunda; tentamos novamente com o próximo número.
+      const MAX_ATTEMPTS = 5;
+      let attempt = 0;
+      let lastError: any = null;
+
+      while (attempt < MAX_ATTEMPTS) {
+        const candidateCode = String(maxCode + 1 + attempt);
+        try {
+          return await prisma.supplier.create({
+            data: {
+              legal_name: legalName,
+              internal_code: candidateCode,
+              created_via: 'quick_create',
+              is_active: true,
+              company: { connect: { id: company_id } },
+            }
+          });
+        } catch (error: any) {
+          lastError = error;
+          if (error.code === 'P2002') {
+            attempt++;
+            continue;
+          }
+          throw error;
         }
-      });
-      
-      return newSupplier;
-      
+      }
+
+      throw lastError;
+
     } catch (error: any) {
       throw new Error(`Falha ao criar fornecedor rápido: ${error.message}`);
     }

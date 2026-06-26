@@ -43,7 +43,7 @@ export class AuthService {
         company_id: user.company_id
       };
 
-      const token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
+      const token = jwt.sign(payload, secretKey, { expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] });
 
       console.log(`✅ Login successful for user: ${user.email}`);
 
@@ -58,7 +58,7 @@ export class AuthService {
       return {
         user: { ...userWithoutPassword, company_slug: company?.slug ?? '' },
         token,
-        expiresIn: '2h'
+        expiresIn: env.JWT_EXPIRES_IN
       };
 
     } catch (error: any) {
@@ -100,15 +100,29 @@ export class AuthService {
     }
   }
 
+  // Tolerância para tokens expirados há pouco tempo: o refresh em background do
+  // front pode atrasar (aba inativa, notebook suspenso) e chegar logo após o exp.
+  private static readonly REFRESH_GRACE_PERIOD_MS = 5 * 60 * 1000;
+
   static async refreshToken(oldToken: string) {
     try {
       console.log(`🔄 Refreshing token...`);
-      
+
       const secretKey = env.JWT_SECRET as string;
       if (!secretKey) throw new Error('JWT_SECRET_KEY não configurada');
 
-      const decoded: any = jwt.verify(oldToken, secretKey);
-      
+      let decoded: any;
+      try {
+        decoded = jwt.verify(oldToken, secretKey);
+      } catch (error: any) {
+        if (error.name !== 'TokenExpiredError') throw error;
+
+        decoded = jwt.verify(oldToken, secretKey, { ignoreExpiration: true });
+        if (Date.now() - decoded.exp * 1000 > this.REFRESH_GRACE_PERIOD_MS) {
+          throw new Error('Token expirado, faça login novamente');
+        }
+      }
+
       const payload = {
         id: decoded.id,
         name: decoded.name,
@@ -117,23 +131,24 @@ export class AuthService {
         company_id: decoded.company_id
       };
 
-      // ✅ MUDANÇA AQUI: Alterado de '8h' para '2h'
-      const newToken = jwt.sign(payload, secretKey, { expiresIn: '2h' });
+      const newToken = jwt.sign(payload, secretKey, { expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] });
 
       console.log(`✅ Token refreshed for user: ${decoded.email}`);
-      
+
       return {
         token: newToken,
-        expiresIn: '2h' // ✅ MUDANÇA AQUI
+        expiresIn: env.JWT_EXPIRES_IN
       };
 
     } catch (error: any) {
       console.error('❌ Error in AuthService.refreshToken:', error);
-      
-      if (error.name === 'TokenExpiredError') {
+
+      if (error.message === 'Token expirado, faça login novamente') throw error;
+
+      if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
         throw new Error('Token expirado, faça login novamente');
       }
-      
+
       throw new Error('Erro ao renovar token');
     }
   }

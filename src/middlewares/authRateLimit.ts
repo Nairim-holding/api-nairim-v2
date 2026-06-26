@@ -13,7 +13,7 @@ interface FailedAttempt {
 const failedAttempts = new Map<string, FailedAttempt>();
 
 // Constants - hardcoded as requested
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 5;
 const BLOCK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 const CLEANUP_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
 

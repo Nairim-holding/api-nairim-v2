@@ -16,6 +16,17 @@ export class TransactionController {
       const filters: Record<string, any> = {};
 
       Object.entries(req.query || {}).forEach(([key, value]) => {
+        // Filtros multi-seleção chegam como chave repetida (ex: category_id=a&category_id=b),
+        // que o Express já agrega em um array.
+        if (Array.isArray(value)) {
+          if (['limit', 'page', 'search', 'includeInactive'].includes(key)) return;
+          const values = value.filter((v): v is string => typeof v === 'string' && v.trim() !== '');
+          if (values.length === 0) return;
+          const filterMatch = key.match(/^filter\[(.+)\]$/);
+          filters[filterMatch ? filterMatch[1] : key] = values;
+          return;
+        }
+
         if (typeof value === 'string') {
           const sortMatch = key.match(/^sort\[(.+)\]$/);
           if (sortMatch) {
@@ -26,7 +37,7 @@ export class TransactionController {
             if (filterMatch) {
               filters[filterMatch[1]] = value;
             } else {
-              try { filters[key] = JSON.parse(value); } 
+              try { filters[key] = JSON.parse(value); }
               catch { filters[key] = value; }
             }
           }
