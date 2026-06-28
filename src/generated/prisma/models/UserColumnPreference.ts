@@ -49,6 +49,7 @@ export type UserColumnPreferenceCountAggregateOutputType = {
   resource: number
   column_order: number
   column_widths: number
+  visible_columns: number
   created_at: number
   updated_at: number
   _all: number
@@ -80,6 +81,7 @@ export type UserColumnPreferenceCountAggregateInputType = {
   resource?: true
   column_order?: true
   column_widths?: true
+  visible_columns?: true
   created_at?: true
   updated_at?: true
   _all?: true
@@ -164,6 +166,7 @@ export type UserColumnPreferenceGroupByOutputType = {
   resource: string
   column_order: runtime.JsonValue
   column_widths: runtime.JsonValue
+  visible_columns: runtime.JsonValue
   created_at: Date
   updated_at: Date
   _count: UserColumnPreferenceCountAggregateOutputType | null
@@ -196,6 +199,7 @@ export type UserColumnPreferenceWhereInput = {
   resource?: Prisma.StringFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonFilter<"UserColumnPreference">
   column_widths?: Prisma.JsonFilter<"UserColumnPreference">
+  visible_columns?: Prisma.JsonFilter<"UserColumnPreference">
   created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -209,6 +213,7 @@ export type UserColumnPreferenceOrderByWithRelationInput = {
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
   column_widths?: Prisma.SortOrder
+  visible_columns?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -226,6 +231,7 @@ export type UserColumnPreferenceWhereUniqueInput = Prisma.AtLeast<{
   resource?: Prisma.StringFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonFilter<"UserColumnPreference">
   column_widths?: Prisma.JsonFilter<"UserColumnPreference">
+  visible_columns?: Prisma.JsonFilter<"UserColumnPreference">
   created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -239,6 +245,7 @@ export type UserColumnPreferenceOrderByWithAggregationInput = {
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
   column_widths?: Prisma.SortOrder
+  visible_columns?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.UserColumnPreferenceCountOrderByAggregateInput
@@ -256,6 +263,7 @@ export type UserColumnPreferenceScalarWhereWithAggregatesInput = {
   resource?: Prisma.StringWithAggregatesFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonWithAggregatesFilter<"UserColumnPreference">
   column_widths?: Prisma.JsonWithAggregatesFilter<"UserColumnPreference">
+  visible_columns?: Prisma.JsonWithAggregatesFilter<"UserColumnPreference">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"UserColumnPreference"> | Date | string
 }
@@ -265,6 +273,7 @@ export type UserColumnPreferenceCreateInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutColumnPreferencesInput
@@ -278,6 +287,7 @@ export type UserColumnPreferenceUncheckedCreateInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -287,6 +297,7 @@ export type UserColumnPreferenceUpdateInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutColumnPreferencesNestedInput
@@ -300,6 +311,7 @@ export type UserColumnPreferenceUncheckedUpdateInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -311,6 +323,7 @@ export type UserColumnPreferenceCreateManyInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -320,6 +333,7 @@ export type UserColumnPreferenceUpdateManyMutationInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -331,6 +345,7 @@ export type UserColumnPreferenceUncheckedUpdateManyInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -357,6 +372,7 @@ export type UserColumnPreferenceCountOrderByAggregateInput = {
   resource?: Prisma.SortOrder
   column_order?: Prisma.SortOrder
   column_widths?: Prisma.SortOrder
+  visible_columns?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
 }
@@ -468,6 +484,7 @@ export type UserColumnPreferenceCreateWithoutCompanyInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
   user: Prisma.UserCreateNestedOneWithoutColumnPreferencesInput
@@ -479,6 +496,7 @@ export type UserColumnPreferenceUncheckedCreateWithoutCompanyInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -519,6 +537,7 @@ export type UserColumnPreferenceScalarWhereInput = {
   resource?: Prisma.StringFilter<"UserColumnPreference"> | string
   column_order?: Prisma.JsonFilter<"UserColumnPreference">
   column_widths?: Prisma.JsonFilter<"UserColumnPreference">
+  visible_columns?: Prisma.JsonFilter<"UserColumnPreference">
   created_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"UserColumnPreference"> | Date | string
 }
@@ -528,6 +547,7 @@ export type UserColumnPreferenceCreateWithoutUserInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutUser_column_preferencesInput
@@ -539,6 +559,7 @@ export type UserColumnPreferenceUncheckedCreateWithoutUserInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -575,6 +596,7 @@ export type UserColumnPreferenceCreateManyCompanyInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -584,6 +606,7 @@ export type UserColumnPreferenceUpdateWithoutCompanyInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutColumnPreferencesNestedInput
@@ -595,6 +618,7 @@ export type UserColumnPreferenceUncheckedUpdateWithoutCompanyInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -605,6 +629,7 @@ export type UserColumnPreferenceUncheckedUpdateManyWithoutCompanyInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -615,6 +640,7 @@ export type UserColumnPreferenceCreateManyUserInput = {
   resource: string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -624,6 +650,7 @@ export type UserColumnPreferenceUpdateWithoutUserInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutUser_column_preferencesNestedInput
@@ -635,6 +662,7 @@ export type UserColumnPreferenceUncheckedUpdateWithoutUserInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -645,6 +673,7 @@ export type UserColumnPreferenceUncheckedUpdateManyWithoutUserInput = {
   resource?: Prisma.StringFieldUpdateOperationsInput | string
   column_order?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   column_widths?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  visible_columns?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -658,6 +687,7 @@ export type UserColumnPreferenceSelect<ExtArgs extends runtime.Types.Extensions.
   resource?: boolean
   column_order?: boolean
   column_widths?: boolean
+  visible_columns?: boolean
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -671,6 +701,7 @@ export type UserColumnPreferenceSelectCreateManyAndReturn<ExtArgs extends runtim
   resource?: boolean
   column_order?: boolean
   column_widths?: boolean
+  visible_columns?: boolean
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -684,6 +715,7 @@ export type UserColumnPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtim
   resource?: boolean
   column_order?: boolean
   column_widths?: boolean
+  visible_columns?: boolean
   created_at?: boolean
   updated_at?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -697,11 +729,12 @@ export type UserColumnPreferenceSelectScalar = {
   resource?: boolean
   column_order?: boolean
   column_widths?: boolean
+  visible_columns?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type UserColumnPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "user_id" | "resource" | "column_order" | "column_widths" | "created_at" | "updated_at", ExtArgs["result"]["userColumnPreference"]>
+export type UserColumnPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "user_id" | "resource" | "column_order" | "column_widths" | "visible_columns" | "created_at" | "updated_at", ExtArgs["result"]["userColumnPreference"]>
 export type UserColumnPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -728,6 +761,7 @@ export type $UserColumnPreferencePayload<ExtArgs extends runtime.Types.Extension
     resource: string
     column_order: runtime.JsonValue
     column_widths: runtime.JsonValue
+    visible_columns: runtime.JsonValue
     created_at: Date
     updated_at: Date
   }, ExtArgs["result"]["userColumnPreference"]>
@@ -1161,6 +1195,7 @@ export interface UserColumnPreferenceFieldRefs {
   readonly resource: Prisma.FieldRef<"UserColumnPreference", 'String'>
   readonly column_order: Prisma.FieldRef<"UserColumnPreference", 'Json'>
   readonly column_widths: Prisma.FieldRef<"UserColumnPreference", 'Json'>
+  readonly visible_columns: Prisma.FieldRef<"UserColumnPreference", 'Json'>
   readonly created_at: Prisma.FieldRef<"UserColumnPreference", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"UserColumnPreference", 'DateTime'>
 }

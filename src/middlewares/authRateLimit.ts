@@ -96,18 +96,46 @@ export const authRateLimitMiddleware = (req: Request, res: Response, next: NextF
 export const getAuthRateLimitStatus = (email: string, ip: string) => {
   const key = `${email.toLowerCase()}:${ip}`;
   const attempt = failedAttempts.get(key);
-  
+
   if (!attempt) {
     return { attempts: 0, blocked: false, remainingTime: null };
   }
 
   const now = Date.now();
   const isBlocked = attempt.blockedUntil && attempt.blockedUntil > now;
-  
+
   return {
     attempts: attempt.count,
     blocked: isBlocked,
     remainingTime: isBlocked ? Math.ceil((attempt.blockedUntil! - now) / 1000) : null,
     maxAttempts: MAX_ATTEMPTS
+  };
+};
+
+// Export function to get login attempt status for error response
+export const getLoginAttemptStatus = (email: string, ip: string) => {
+  const key = `${email.toLowerCase().trim()}:${ip}`;
+  const attempt = failedAttempts.get(key);
+  const now = Date.now();
+
+  if (!attempt) {
+    return {
+      failedAttempts: 0,
+      remainingAttempts: MAX_ATTEMPTS,
+      isBlocked: false,
+      blockedUntilSeconds: null,
+      blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60)
+    };
+  }
+
+  const isBlocked = attempt.blockedUntil && attempt.blockedUntil > now;
+  const blockedUntilSeconds = isBlocked ? Math.ceil((attempt.blockedUntil! - now) / 1000) : null;
+
+  return {
+    failedAttempts: attempt.count,
+    remainingAttempts: Math.max(0, MAX_ATTEMPTS - attempt.count),
+    isBlocked,
+    blockedUntilSeconds,
+    blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60)
   };
 };

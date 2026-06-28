@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { ApiResponse } from "../utils/api-response";
 import { AuthValidator } from "../lib/validators/auth";
+import { getLoginAttemptStatus } from "../middlewares/authRateLimit";
 
 export class AuthController {
   static async login(req: Request, res: Response) {
@@ -31,16 +32,24 @@ export class AuthController {
 
     } catch (error: any) {
       console.error('❌ Error in AuthController.login:', error);
-      
+
       // Track failed attempt
       if ((req as any).trackFailedLogin) {
         (req as any).trackFailedLogin();
       }
-      
+
       if (error.message === 'Credenciais inválidas') {
-        return res.status(401).json(
-          ApiResponse.error('Email ou senha incorretos')
-        );
+        const email = req.body.email?.toLowerCase().trim() || '';
+        const ip = req.ip || req.connection.remoteAddress || 'unknown';
+        const attemptStatus = getLoginAttemptStatus(email, ip);
+
+        const response: any = {
+          success: false,
+          message: 'Email ou senha incorretos',
+          data: attemptStatus
+        };
+
+        return res.status(401).json(response);
       }
 
       return res.status(500).json(

@@ -12,6 +12,7 @@ export interface SaveColumnPreferencesInput {
   resource: string;
   columnOrder: string[];
   columnWidths: Record<string, number>;
+  visibleColumns?: string[];
 }
 
 export interface GetColumnPreferencesParams {
@@ -24,6 +25,7 @@ export interface ColumnPreferencesResponse {
   resource: string;
   columnOrder: string[];
   columnWidths: Record<string, number>;
+  visibleColumns?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -31,4 +33,5 @@ export interface ColumnPreferencesResponse {
 export interface ColumnPreferencesErrorResponse {
   columnOrder: string[];
   columnWidths: Record<string, number>;
+  visibleColumns?: string[];
 }

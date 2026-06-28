@@ -252,6 +252,7 @@ export const UserColumnPreferenceScalarFieldEnum = {
   resource: 'resource',
   column_order: 'column_order',
   column_widths: 'column_widths',
+  visible_columns: 'visible_columns',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const

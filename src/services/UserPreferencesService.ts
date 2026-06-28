@@ -31,6 +31,7 @@ export class UserPreferencesService {
         resource: preferences.resource,
         columnOrder: (preferences.column_order as string[]) || [],
         columnWidths: (preferences.column_widths as Record<string, number>) || {},
+        visibleColumns: (preferences.visible_columns as string[]) || [],
         created_at: preferences.created_at.toISOString(),
         updated_at: preferences.updated_at.toISOString()
       };
@@ -69,6 +70,7 @@ export class UserPreferencesService {
           data: {
             column_order: input.columnOrder,
             column_widths: input.columnWidths,
+            visible_columns: input.visibleColumns,
             updated_at: new Date()
           }
         });
@@ -82,6 +84,7 @@ export class UserPreferencesService {
             resource: input.resource,
             column_order: input.columnOrder,
             column_widths: input.columnWidths,
+            visible_columns: input.visibleColumns,
             company_id,
           }
         });
@@ -95,6 +98,7 @@ export class UserPreferencesService {
         resource: preferences.resource,
         columnOrder: (preferences.column_order as string[]) || [],
         columnWidths: (preferences.column_widths as Record<string, number>) || {},
+        visibleColumns: (preferences.visible_columns as string[]) || [],
         created_at: preferences.created_at.toISOString(),
         updated_at: preferences.updated_at.toISOString()
       };

@@ -21,7 +21,8 @@ export class UserPreferencesController {
           message: 'Preferências não encontradas para este recurso',
           data: {
             columnOrder: [],
-            columnWidths: {}
+            columnWidths: {},
+            visibleColumns: []
           }
         });
       }
@@ -46,7 +47,8 @@ export class UserPreferencesController {
       const preferences = await UserPreferencesService.saveColumnPreferences(userId, {
         resource: req.body.resource,
         columnOrder: req.body.columnOrder,
-        columnWidths: req.body.columnWidths
+        columnWidths: req.body.columnWidths,
+        visibleColumns: req.body.visibleColumns
       }, company_id);
 
       res.status(200).json(
