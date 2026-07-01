@@ -89,10 +89,17 @@ async function main() {
   console.log('Cleaning database...');
 
   // Ordem de deleção respeitando todas as foreign keys
+  // 0. Dependências de Company
+  await prisma.companyBranding.deleteMany();
+
+  // 0.5. Company (tudo depende)
+  await prisma.company.deleteMany();
+
   // 1. Transações (dependem de tudo)
   await prisma.transaction.deleteMany();
   await prisma.recurringConfig.deleteMany();
   await prisma.invoice.deleteMany();
+  await prisma.planning.deleteMany();
 
   // 2. Contatos (referencia Agency, Owner, Supplier, Tenant)
   await prisma.contact.deleteMany();
@@ -143,9 +150,25 @@ async function main() {
   const startDate = new Date();
   startDate.setFullYear(startDate.getFullYear() - 2);
 
+  console.log('Creating company...');
+  const company = await prisma.company.create({
+    data: {
+      name: 'Nairim Imobiliário',
+      slug: 'nairim-imobiliario'
+    }
+  });
+
   console.log('Creating 10,000+ users...');
   await prisma.user.create({
-    data: { name: 'Admin Nairim', email: 'admin@nairim.com', password: passwordHash, birth_date: new Date('1990-01-01'), gender: Gender.OTHER, role: Role.ADMIN }
+    data: {
+      name: 'Admin Nairim',
+      email: 'admin@nairim.com',
+      password: passwordHash,
+      birth_date: new Date('1990-01-01'),
+      gender: Gender.OTHER,
+      role: Role.ADMIN,
+      company: { connect: { id: company.id } }
+    }
   });
 
   const usersToCreate = [];
@@ -156,7 +179,8 @@ async function main() {
       password: passwordHash,
       birth_date: getRandomDate(new Date('1960-01-01'), new Date('2005-12-31')),
       gender: getRandomElement([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
-      role: Math.random() > 0.9 ? Role.ADMIN : Role.DEFAULT
+      role: Math.random() > 0.9 ? Role.ADMIN : Role.DEFAULT,
+      company_id: company.id
     });
   }
 
@@ -412,7 +436,9 @@ async function main() {
     prisma.category.create({ data: { name: 'Condomínio', type: 'EXPENSE', is_active: true } }),
     prisma.category.create({ data: { name: 'IPTU', type: 'EXPENSE', is_active: true } }),
     prisma.category.create({ data: { name: 'Manutenção', type: 'EXPENSE', is_active: true } }),
-    prisma.category.create({ data: { name: 'Pagamento de Cartão', type: 'EXPENSE', is_active: true, is_system: true } })
+    prisma.category.create({ data: { name: 'Pagamento de Cartão', type: 'EXPENSE', is_active: true, is_system: true } }),
+    prisma.category.create({ data: { name: 'Transferência entre Contas – Entrada', type: 'INCOME', is_active: true, is_system: true } }),
+    prisma.category.create({ data: { name: 'Transferência entre Contas – Saída', type: 'EXPENSE', is_active: true, is_system: true } })
   ]);
 
   console.log('Creating centers...');
@@ -428,6 +454,42 @@ async function main() {
     prisma.card.create({ data: { name: 'Amex Gold', brand: 'American Express', limit: 15000, closing_day: 3, due_day: 12, is_active: true } })
   ]);
 
+  console.log('Creating 500+ transactions for financial testing...');
+  const transactionsToCreate = [];
+  const now = new Date();
+
+  // Transações dos últimos 3 meses
+  for (let i = 0; i < 500; i++) {
+    const daysAgo = getRandomInt(0, 90);
+    const eventDate = new Date(now);
+    eventDate.setDate(eventDate.getDate() - daysAgo);
+
+    const isIncome = Math.random() > 0.4;
+    const category = isIncome ? categories[0] : getRandomElement([categories[1], categories[2], categories[3]]);
+    const status = Math.random() > 0.3 ? 'COMPLETED' : 'PENDING';
+    const amount = isIncome ? getRandomInt(1000, 15000) : getRandomInt(100, 5000);
+    const institution = getRandomElement(institutions);
+
+    transactionsToCreate.push({
+      event_date: eventDate,
+      effective_date: new Date(eventDate),
+      description: isIncome ? `Aluguel - Imóvel ${i}` : `Despesa ${i}`,
+      amount,
+      status,
+      category_id: category.id,
+      financial_institution_id: institution.id,
+      card_id: Math.random() > 0.6 ? getRandomElement(cards).id : null,
+      center_id: getRandomElement(centers).id,
+      company_id: company.id
+    });
+  }
+
+  const createdTransactions = await createInBatches(
+    (items) => Promise.all(items.map(item => prisma.transaction.create({ data: item }))),
+    transactionsToCreate,
+    100
+  );
+
   console.log('✅ Database seeded successfully with 10K+ records!');
   console.log(`\nSummary:`);
   console.log(` - Users: ${createdUsers.length + 1}`);
@@ -440,7 +502,8 @@ async function main() {
   console.log(` - Financial Institutions: ${institutions.length}`);
   console.log(` - Categories: ${categories.length}`);
   console.log(` - Centers: ${centers.length}`);
-  console.log(` - Credit Cards: ${cards.length}\n`);
+  console.log(` - Credit Cards: ${cards.length}`);
+  console.log(` - Transactions: ${createdTransactions.length}\n`);
 }
 
 main()

@@ -7,6 +7,9 @@ const router = Router();
 router.get('/', TransactionController.getTransactions);
 router.get('/filters', TransactionController.getFilters);
 
+// Rota para transferência entre contas (cria o par origem + espelho)
+router.post('/transfer', TransactionController.createTransfer);
+
 // Rotas para lançamentos parcelados
 router.post('/installments', TransactionController.createInstallments);
 

@@ -375,12 +375,91 @@ export class TransactionService {
         _sum: { amount: true }
       });
 
+      // Saldos por tipo (Receita/Despesa). Lê category.type via relação.
+      const sumByType = async (scope: any, type: 'INCOME' | 'EXPENSE'): Promise<number> => {
+        const result = await prisma.transaction.aggregate({
+          where: { ...scope, category: { ...(scope.category ?? {}), type } },
+          _sum: { amount: true }
+        });
+        return Number(result._sum.amount ?? 0);
+      };
+
+      // Soma por tipo × status para o painel de Resumo. EXCLUI transferências
+      // (is_transfer): suas pernas usam categorias internas de sistema e não
+      // representam receita/despesa reais. Preserva eventual filtro de status já
+      // aplicado pelo usuário (intersecção via AND), em vez de sobrescrevê-lo.
+      const sumByTypeStatus = async (
+        scope: any,
+        type: 'INCOME' | 'EXPENSE',
+        status: 'PENDING' | 'COMPLETED'
+      ): Promise<number> => {
+        const { status: scopeStatus, ...rest } = scope;
+        const result = await prisma.transaction.aggregate({
+          where: {
+            ...rest,
+            category: { ...(rest.category ?? {}), type },
+            NOT: { is_transfer: true },
+            AND: [
+              ...(scopeStatus ? [{ status: scopeStatus }] : []),
+              { status },
+            ],
+          },
+          _sum: { amount: true }
+        });
+        return Number(result._sum.amount ?? 0);
+      };
+
+      // Saldo acumulado: ignora o início do período (mantém apenas o teto de data)
+      // e preserva os demais filtros (instituição, etc.), somando desde o início.
+      const accumulatedWhere: any = { ...where };
+      for (const dateField of ['effective_date', 'event_date']) {
+        const cond = accumulatedWhere[dateField];
+        if (cond && typeof cond === 'object' && 'lte' in cond) {
+          accumulatedWhere[dateField] = { lte: cond.lte };
+        }
+      }
+
+      const [
+        periodIncome,
+        periodExpense,
+        accumulatedIncome,
+        accumulatedExpense,
+        receitasPrevisto,
+        receitasRecebido,
+        despesasPrevisto,
+        despesasPago,
+      ] = await Promise.all([
+        sumByType(where, 'INCOME'),
+        sumByType(where, 'EXPENSE'),
+        sumByType(accumulatedWhere, 'INCOME'),
+        sumByType(accumulatedWhere, 'EXPENSE'),
+        sumByTypeStatus(where, 'INCOME', 'PENDING'),
+        sumByTypeStatus(where, 'INCOME', 'COMPLETED'),
+        sumByTypeStatus(where, 'EXPENSE', 'PENDING'),
+        sumByTypeStatus(where, 'EXPENSE', 'COMPLETED'),
+      ]);
+
+      const totals = {
+        periodIncome,
+        periodExpense,
+        periodBalance: periodIncome - periodExpense,
+        accumulatedIncome,
+        accumulatedExpense,
+        accumulatedBalance: accumulatedIncome - accumulatedExpense,
+        // Tipo × status (sem transferências) — usado pelo painel de Resumo.
+        receitasPrevisto,
+        receitasRecebido,
+        despesasPrevisto,
+        despesasPago,
+      };
+
       return {
         data: mappedTransactions,
         count: total,
         totalPages: Math.ceil(total / take),
         currentPage: page,
-        summary: aggregations
+        summary: aggregations,
+        totals
       };
 
     } catch (error: any) {
@@ -463,7 +542,7 @@ export class TransactionService {
         return val !== undefined ? val : undefined;
       };
 
-      return await prisma.transaction.update({
+      const updated = await prisma.transaction.update({
         where: { id },
         data: {
           event_date: data.event_date ? parseLocalDate(data.event_date) : undefined,
@@ -480,6 +559,27 @@ export class TransactionService {
         },
         include: { category: true, financial_institution: true, supplier: true }
       });
+
+      // Cascata do par de transferência: espelha os campos financeiramente
+      // relevantes (valor, datas, status) na outra perna. Categoria, instituição
+      // e descrição são específicas de cada perna e por isso não são espelhadas.
+      if (existing.is_transfer && existing.transfer_group_id) {
+        await prisma.transaction.updateMany({
+          where: {
+            transfer_group_id: existing.transfer_group_id,
+            id: { not: id },
+            deleted_at: null
+          },
+          data: {
+            amount: data.amount !== undefined ? Number(data.amount) : undefined,
+            event_date: data.event_date ? parseLocalDate(data.event_date) : undefined,
+            effective_date: data.effective_date ? parseLocalDate(data.effective_date) : undefined,
+            status: data.status
+          }
+        });
+      }
+
+      return updated;
     } catch (error: any) { throw error; }
   }
 
@@ -488,10 +588,20 @@ export class TransactionService {
       const transaction = await prisma.transaction.findUnique({ where: { id, deleted_at: null } });
       if (!transaction) throw new Error('Transaction not found or already deleted');
 
-      await prisma.transaction.update({
-        where: { id },
-        data: { deleted_at: new Date() }
-      });
+      const now = new Date();
+
+      // Cascata do par de transferência: excluir uma perna remove ambas.
+      if (transaction.is_transfer && transaction.transfer_group_id) {
+        await prisma.transaction.updateMany({
+          where: { transfer_group_id: transaction.transfer_group_id, deleted_at: null },
+          data: { deleted_at: now }
+        });
+      } else {
+        await prisma.transaction.update({
+          where: { id },
+          data: { deleted_at: now }
+        });
+      }
 
       return transaction;
     } catch (error: any) { throw error; }

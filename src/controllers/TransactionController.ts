@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { TransactionService } from '../services/TransactionService';
+import { TransferService } from '../services/TransferService';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { TransactionValidator } from '../lib/validators/transaction';
@@ -88,6 +89,16 @@ export class TransactionController {
       const { company_id } = (req as any).user;
       const data = await TransactionService.createTransaction(req.body, company_id);
       res.status(201).json(ApiResponse.success(data, 'Lançamento criado com sucesso'));
+    } catch (error: any) {
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  static async createTransfer(req: Request, res: Response) {
+    try {
+      const { company_id } = (req as any).user;
+      const data = await TransferService.createTransfer(req.body, company_id);
+      res.status(201).json(ApiResponse.success(data, 'Transferência criada com sucesso'));
     } catch (error: any) {
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }

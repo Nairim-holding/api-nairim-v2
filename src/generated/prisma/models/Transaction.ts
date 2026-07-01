@@ -68,6 +68,8 @@ export type TransactionMinAggregateOutputType = {
   total_installments: number | null
   invoice_id: string | null
   lease_id: string | null
+  transfer_group_id: string | null
+  is_transfer: boolean | null
 }
 
 export type TransactionMaxAggregateOutputType = {
@@ -98,6 +100,8 @@ export type TransactionMaxAggregateOutputType = {
   total_installments: number | null
   invoice_id: string | null
   lease_id: string | null
+  transfer_group_id: string | null
+  is_transfer: boolean | null
 }
 
 export type TransactionCountAggregateOutputType = {
@@ -128,6 +132,8 @@ export type TransactionCountAggregateOutputType = {
   total_installments: number
   invoice_id: number
   lease_id: number
+  transfer_group_id: number
+  is_transfer: number
   _all: number
 }
 
@@ -174,6 +180,8 @@ export type TransactionMinAggregateInputType = {
   total_installments?: true
   invoice_id?: true
   lease_id?: true
+  transfer_group_id?: true
+  is_transfer?: true
 }
 
 export type TransactionMaxAggregateInputType = {
@@ -204,6 +212,8 @@ export type TransactionMaxAggregateInputType = {
   total_installments?: true
   invoice_id?: true
   lease_id?: true
+  transfer_group_id?: true
+  is_transfer?: true
 }
 
 export type TransactionCountAggregateInputType = {
@@ -234,6 +244,8 @@ export type TransactionCountAggregateInputType = {
   total_installments?: true
   invoice_id?: true
   lease_id?: true
+  transfer_group_id?: true
+  is_transfer?: true
   _all?: true
 }
 
@@ -351,6 +363,8 @@ export type TransactionGroupByOutputType = {
   total_installments: number | null
   invoice_id: string | null
   lease_id: string | null
+  transfer_group_id: string | null
+  is_transfer: boolean
   _count: TransactionCountAggregateOutputType | null
   _avg: TransactionAvgAggregateOutputType | null
   _sum: TransactionSumAggregateOutputType | null
@@ -404,6 +418,8 @@ export type TransactionWhereInput = {
   total_installments?: Prisma.IntNullableFilter<"Transaction"> | number | null
   invoice_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   lease_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  transfer_group_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  is_transfer?: Prisma.BoolFilter<"Transaction"> | boolean
   card?: Prisma.XOR<Prisma.CardNullableScalarRelationFilter, Prisma.CardWhereInput> | null
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   center?: Prisma.XOR<Prisma.CenterNullableScalarRelationFilter, Prisma.CenterWhereInput> | null
@@ -446,6 +462,8 @@ export type TransactionOrderByWithRelationInput = {
   total_installments?: Prisma.SortOrderInput | Prisma.SortOrder
   invoice_id?: Prisma.SortOrderInput | Prisma.SortOrder
   lease_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  transfer_group_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_transfer?: Prisma.SortOrder
   card?: Prisma.CardOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
   center?: Prisma.CenterOrderByWithRelationInput
@@ -491,6 +509,8 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   total_installments?: Prisma.IntNullableFilter<"Transaction"> | number | null
   invoice_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   lease_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  transfer_group_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  is_transfer?: Prisma.BoolFilter<"Transaction"> | boolean
   card?: Prisma.XOR<Prisma.CardNullableScalarRelationFilter, Prisma.CardWhereInput> | null
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   center?: Prisma.XOR<Prisma.CenterNullableScalarRelationFilter, Prisma.CenterWhereInput> | null
@@ -533,6 +553,8 @@ export type TransactionOrderByWithAggregationInput = {
   total_installments?: Prisma.SortOrderInput | Prisma.SortOrder
   invoice_id?: Prisma.SortOrderInput | Prisma.SortOrder
   lease_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  transfer_group_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_transfer?: Prisma.SortOrder
   _count?: Prisma.TransactionCountOrderByAggregateInput
   _avg?: Prisma.TransactionAvgOrderByAggregateInput
   _max?: Prisma.TransactionMaxOrderByAggregateInput
@@ -571,6 +593,8 @@ export type TransactionScalarWhereWithAggregatesInput = {
   total_installments?: Prisma.IntNullableWithAggregatesFilter<"Transaction"> | number | null
   invoice_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   lease_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  transfer_group_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  is_transfer?: Prisma.BoolWithAggregatesFilter<"Transaction"> | boolean
 }
 
 export type TransactionCreateInput = {
@@ -590,6 +614,8 @@ export type TransactionCreateInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -632,6 +658,8 @@ export type TransactionUncheckedCreateInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -652,6 +680,8 @@ export type TransactionUpdateInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -694,6 +724,8 @@ export type TransactionUncheckedUpdateInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -725,6 +757,8 @@ export type TransactionCreateManyInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateManyMutationInput = {
@@ -744,6 +778,8 @@ export type TransactionUpdateManyMutationInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionUncheckedUpdateManyInput = {
@@ -774,6 +810,8 @@ export type TransactionUncheckedUpdateManyInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionListRelationFilter = {
@@ -819,6 +857,8 @@ export type TransactionCountOrderByAggregateInput = {
   total_installments?: Prisma.SortOrder
   invoice_id?: Prisma.SortOrder
   lease_id?: Prisma.SortOrder
+  transfer_group_id?: Prisma.SortOrder
+  is_transfer?: Prisma.SortOrder
 }
 
 export type TransactionAvgOrderByAggregateInput = {
@@ -856,6 +896,8 @@ export type TransactionMaxOrderByAggregateInput = {
   total_installments?: Prisma.SortOrder
   invoice_id?: Prisma.SortOrder
   lease_id?: Prisma.SortOrder
+  transfer_group_id?: Prisma.SortOrder
+  is_transfer?: Prisma.SortOrder
 }
 
 export type TransactionMinOrderByAggregateInput = {
@@ -886,6 +928,8 @@ export type TransactionMinOrderByAggregateInput = {
   total_installments?: Prisma.SortOrder
   invoice_id?: Prisma.SortOrder
   lease_id?: Prisma.SortOrder
+  transfer_group_id?: Prisma.SortOrder
+  is_transfer?: Prisma.SortOrder
 }
 
 export type TransactionSumOrderByAggregateInput = {
@@ -1402,6 +1446,8 @@ export type TransactionCreateWithoutCompanyInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -1442,6 +1488,8 @@ export type TransactionUncheckedCreateWithoutCompanyInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1502,6 +1550,8 @@ export type TransactionScalarWhereInput = {
   total_installments?: Prisma.IntNullableFilter<"Transaction"> | number | null
   invoice_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   lease_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  transfer_group_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  is_transfer?: Prisma.BoolFilter<"Transaction"> | boolean
 }
 
 export type TransactionCreateWithoutLeaseInput = {
@@ -1521,6 +1571,8 @@ export type TransactionCreateWithoutLeaseInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -1561,6 +1613,8 @@ export type TransactionUncheckedCreateWithoutLeaseInput = {
   recurring_group_id?: string | null
   total_installments?: number | null
   invoice_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1607,6 +1661,8 @@ export type TransactionCreateWithoutFinancial_institutionInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -1647,6 +1703,8 @@ export type TransactionUncheckedCreateWithoutFinancial_institutionInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1693,6 +1751,8 @@ export type TransactionCreateWithoutCategoryInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutTransactionsInput
@@ -1733,6 +1793,8 @@ export type TransactionUncheckedCreateWithoutCategoryInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1779,6 +1841,8 @@ export type TransactionCreateWithoutSubcategoryInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -1819,6 +1883,8 @@ export type TransactionUncheckedCreateWithoutSubcategoryInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1865,6 +1931,8 @@ export type TransactionCreateWithoutCardInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutTransactionsInput
@@ -1905,6 +1973,8 @@ export type TransactionUncheckedCreateWithoutCardInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -1951,6 +2021,8 @@ export type TransactionCreateWithoutCenterInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutTransactionsInput
@@ -1991,6 +2063,8 @@ export type TransactionUncheckedCreateWithoutCenterInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -2037,6 +2111,8 @@ export type TransactionCreateWithoutSupplierInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -2077,6 +2153,8 @@ export type TransactionUncheckedCreateWithoutSupplierInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -2123,6 +2201,8 @@ export type TransactionCreateWithoutChild_transactionsInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -2164,6 +2244,8 @@ export type TransactionUncheckedCreateWithoutChild_transactionsInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionCreateOrConnectWithoutChild_transactionsInput = {
@@ -2188,6 +2270,8 @@ export type TransactionCreateWithoutParent_transactionInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -2228,6 +2312,8 @@ export type TransactionUncheckedCreateWithoutParent_transactionInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -2269,6 +2355,8 @@ export type TransactionUpdateWithoutChild_transactionsInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -2310,6 +2398,8 @@ export type TransactionUncheckedUpdateWithoutChild_transactionsInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionUpsertWithWhereUniqueWithoutParent_transactionInput = {
@@ -2345,6 +2435,8 @@ export type TransactionCreateWithoutInvoiceInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -2385,6 +2477,8 @@ export type TransactionUncheckedCreateWithoutInvoiceInput = {
   recurring_group_id?: string | null
   total_installments?: number | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -2431,6 +2525,8 @@ export type TransactionCreateWithoutRecurring_configInput = {
   payment_mode?: $Enums.PaymentMode | null
   recurring_frequency?: $Enums.RecurringFrequency | null
   total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
@@ -2471,6 +2567,8 @@ export type TransactionUncheckedCreateWithoutRecurring_configInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
 }
 
@@ -2527,6 +2625,8 @@ export type TransactionCreateManyCompanyInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutCompanyInput = {
@@ -2546,6 +2646,8 @@ export type TransactionUpdateWithoutCompanyInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -2586,6 +2688,8 @@ export type TransactionUncheckedUpdateWithoutCompanyInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -2616,6 +2720,8 @@ export type TransactionUncheckedUpdateManyWithoutCompanyInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyLeaseInput = {
@@ -2645,6 +2751,8 @@ export type TransactionCreateManyLeaseInput = {
   recurring_group_id?: string | null
   total_installments?: number | null
   invoice_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutLeaseInput = {
@@ -2664,6 +2772,8 @@ export type TransactionUpdateWithoutLeaseInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -2704,6 +2814,8 @@ export type TransactionUncheckedUpdateWithoutLeaseInput = {
   recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -2734,6 +2846,8 @@ export type TransactionUncheckedUpdateManyWithoutLeaseInput = {
   recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyFinancial_institutionInput = {
@@ -2763,6 +2877,8 @@ export type TransactionCreateManyFinancial_institutionInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutFinancial_institutionInput = {
@@ -2782,6 +2898,8 @@ export type TransactionUpdateWithoutFinancial_institutionInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -2822,6 +2940,8 @@ export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -2852,6 +2972,8 @@ export type TransactionUncheckedUpdateManyWithoutFinancial_institutionInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyCategoryInput = {
@@ -2881,6 +3003,8 @@ export type TransactionCreateManyCategoryInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutCategoryInput = {
@@ -2900,6 +3024,8 @@ export type TransactionUpdateWithoutCategoryInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput
@@ -2940,6 +3066,8 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -2970,6 +3098,8 @@ export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManySubcategoryInput = {
@@ -2999,6 +3129,8 @@ export type TransactionCreateManySubcategoryInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutSubcategoryInput = {
@@ -3018,6 +3150,8 @@ export type TransactionUpdateWithoutSubcategoryInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -3058,6 +3192,8 @@ export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3088,6 +3224,8 @@ export type TransactionUncheckedUpdateManyWithoutSubcategoryInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyCardInput = {
@@ -3117,6 +3255,8 @@ export type TransactionCreateManyCardInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutCardInput = {
@@ -3136,6 +3276,8 @@ export type TransactionUpdateWithoutCardInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput
@@ -3176,6 +3318,8 @@ export type TransactionUncheckedUpdateWithoutCardInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3206,6 +3350,8 @@ export type TransactionUncheckedUpdateManyWithoutCardInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyCenterInput = {
@@ -3235,6 +3381,8 @@ export type TransactionCreateManyCenterInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutCenterInput = {
@@ -3254,6 +3402,8 @@ export type TransactionUpdateWithoutCenterInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput
@@ -3294,6 +3444,8 @@ export type TransactionUncheckedUpdateWithoutCenterInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3324,6 +3476,8 @@ export type TransactionUncheckedUpdateManyWithoutCenterInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManySupplierInput = {
@@ -3353,6 +3507,8 @@ export type TransactionCreateManySupplierInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutSupplierInput = {
@@ -3372,6 +3528,8 @@ export type TransactionUpdateWithoutSupplierInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -3412,6 +3570,8 @@ export type TransactionUncheckedUpdateWithoutSupplierInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3442,6 +3602,8 @@ export type TransactionUncheckedUpdateManyWithoutSupplierInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyParent_transactionInput = {
@@ -3471,6 +3633,8 @@ export type TransactionCreateManyParent_transactionInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutParent_transactionInput = {
@@ -3490,6 +3654,8 @@ export type TransactionUpdateWithoutParent_transactionInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -3530,6 +3696,8 @@ export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3560,6 +3728,8 @@ export type TransactionUncheckedUpdateManyWithoutParent_transactionInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyInvoiceInput = {
@@ -3589,6 +3759,8 @@ export type TransactionCreateManyInvoiceInput = {
   recurring_group_id?: string | null
   total_installments?: number | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutInvoiceInput = {
@@ -3608,6 +3780,8 @@ export type TransactionUpdateWithoutInvoiceInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -3648,6 +3822,8 @@ export type TransactionUncheckedUpdateWithoutInvoiceInput = {
   recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3678,6 +3854,8 @@ export type TransactionUncheckedUpdateManyWithoutInvoiceInput = {
   recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TransactionCreateManyRecurring_configInput = {
@@ -3707,6 +3885,8 @@ export type TransactionCreateManyRecurring_configInput = {
   total_installments?: number | null
   invoice_id?: string | null
   lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
 }
 
 export type TransactionUpdateWithoutRecurring_configInput = {
@@ -3726,6 +3906,8 @@ export type TransactionUpdateWithoutRecurring_configInput = {
   payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
   recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
@@ -3766,6 +3948,8 @@ export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
 }
 
@@ -3796,6 +3980,8 @@ export type TransactionUncheckedUpdateManyWithoutRecurring_configInput = {
   total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -3857,6 +4043,8 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   total_installments?: boolean
   invoice_id?: boolean
   lease_id?: boolean
+  transfer_group_id?: boolean
+  is_transfer?: boolean
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   center?: boolean | Prisma.Transaction$centerArgs<ExtArgs>
@@ -3900,6 +4088,8 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   total_installments?: boolean
   invoice_id?: boolean
   lease_id?: boolean
+  transfer_group_id?: boolean
+  is_transfer?: boolean
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   center?: boolean | Prisma.Transaction$centerArgs<ExtArgs>
@@ -3941,6 +4131,8 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   total_installments?: boolean
   invoice_id?: boolean
   lease_id?: boolean
+  transfer_group_id?: boolean
+  is_transfer?: boolean
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   center?: boolean | Prisma.Transaction$centerArgs<ExtArgs>
@@ -3982,9 +4174,11 @@ export type TransactionSelectScalar = {
   total_installments?: boolean
   invoice_id?: boolean
   lease_id?: boolean
+  transfer_group_id?: boolean
+  is_transfer?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "event_date" | "effective_date" | "purchase_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id" | "lease_id", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "event_date" | "effective_date" | "purchase_date" | "description" | "amount" | "status" | "category_id" | "subcategory_id" | "financial_institution_id" | "card_id" | "center_id" | "created_at" | "updated_at" | "deleted_at" | "supplier_id" | "installment_number" | "is_recurring" | "occurrence_number" | "parent_transaction_id" | "payment_mode" | "recurring_frequency" | "recurring_group_id" | "total_installments" | "invoice_id" | "lease_id" | "transfer_group_id" | "is_transfer", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.Transaction$cardArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -4071,6 +4265,8 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     total_installments: number | null
     invoice_id: string | null
     lease_id: string | null
+    transfer_group_id: string | null
+    is_transfer: boolean
   }, ExtArgs["result"]["transaction"]>
   composites: {}
 }
@@ -4533,6 +4729,8 @@ export interface TransactionFieldRefs {
   readonly total_installments: Prisma.FieldRef<"Transaction", 'Int'>
   readonly invoice_id: Prisma.FieldRef<"Transaction", 'String'>
   readonly lease_id: Prisma.FieldRef<"Transaction", 'String'>
+  readonly transfer_group_id: Prisma.FieldRef<"Transaction", 'String'>
+  readonly is_transfer: Prisma.FieldRef<"Transaction", 'Boolean'>
 }
     
 

@@ -643,7 +643,9 @@ export const TransactionScalarFieldEnum = {
   recurring_group_id: 'recurring_group_id',
   total_installments: 'total_installments',
   invoice_id: 'invoice_id',
-  lease_id: 'lease_id'
+  lease_id: 'lease_id',
+  transfer_group_id: 'transfer_group_id',
+  is_transfer: 'is_transfer'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]

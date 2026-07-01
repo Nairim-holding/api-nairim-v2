@@ -24,6 +24,11 @@ export class CategoryService {
 
   static async getCategories(params: any = {}, company_id: string) {
     try {
+      // Garante que as categorias internas de transferência existam e fiquem
+      // selecionáveis no lançamento (idempotente).
+      const { TransferService } = await import('./TransferService');
+      await TransferService.ensureTransferCategories(company_id);
+
       const { limit = 30, page = 1, search = '', filters = {}, sortOptions = {}, includeInactive = false } = params;
       const take = Math.max(1, Math.min(limit, 100));
       const skip = (Math.max(1, page) - 1) * take;

@@ -689,6 +689,8 @@ model Transaction {
   total_installments       Int?
   invoice_id               String?
   lease_id                 String?
+  transfer_group_id        String?
+  is_transfer              Boolean              @default(false)
   card                     Card?                @relation(fields: [card_id], references: [id])
   category                 Category             @relation(fields: [category_id], references: [id])
   center                   Center?              @relation(fields: [center_id], references: [id])
@@ -713,6 +715,7 @@ model Transaction {
   @@index([payment_mode])
   @@index([invoice_id])
   @@index([lease_id])
+  @@index([transfer_group_id])
   @@index([company_id])
 }
 
