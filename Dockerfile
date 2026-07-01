@@ -31,4 +31,4 @@ COPY --from=builder /app/src/generated/prisma ./src/generated/prisma
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
+CMD ["sh", "-c", "npx prisma migrate resolve --applied 00000000000000_init 2>/dev/null || true && npx prisma migrate deploy && npm run start"]
