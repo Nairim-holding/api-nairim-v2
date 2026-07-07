@@ -74,9 +74,11 @@ export class TransferService {
   static async createTransfer(data: any, company_id: string) {
     const originInstitutionId = data.financial_institution_id;
     const destinationInstitutionId = data.destination_institution_id;
+    const destinationCenterId = data.destination_center_id;
 
     if (!originInstitutionId) throw new Error('Instituição de origem é obrigatória.');
     if (!destinationInstitutionId) throw new Error('Instituição de destino é obrigatória.');
+    if (!destinationCenterId) throw new Error('Centro de Receita de destino é obrigatório.');
     if (String(originInstitutionId) === String(destinationInstitutionId)) {
       throw new Error('A conta de destino deve ser diferente da conta de origem.');
     }
@@ -116,6 +118,8 @@ export class TransferService {
     const baseDescription = String(data.description ?? '').trim();
     const parseFK = (val: any) => (val === '' || val === 'null' || !val ? null : val);
     const centerId = parseFK(data.center_id);
+    const mirrorCenterId = parseFK(destinationCenterId);
+    const supplierId = parseFK(data.supplier_id);
 
     const mirrorDescription = baseDescription
       ? `${baseDescription} – Origem conta ${originInst.name}`
@@ -133,11 +137,12 @@ export class TransferService {
           category_id: data.category_id,
           financial_institution_id: originInstitutionId,
           center_id: centerId,
+          supplier_id: supplierId,
           is_transfer: true,
           transfer_group_id: transferGroupId,
           company_id,
         },
-        include: { category: true, financial_institution: true },
+        include: { category: true, financial_institution: true, supplier: true },
       }),
       // Perna espelho gerada automaticamente na conta de destino.
       prisma.transaction.create({
@@ -149,12 +154,13 @@ export class TransferService {
           status,
           category_id: mirrorCategoryId,
           financial_institution_id: destinationInstitutionId,
-          center_id: centerId,
+          center_id: mirrorCenterId,
+          supplier_id: supplierId,
           is_transfer: true,
           transfer_group_id: transferGroupId,
           company_id,
         },
-        include: { category: true, financial_institution: true },
+        include: { category: true, financial_institution: true, supplier: true },
       }),
     ]);
 
