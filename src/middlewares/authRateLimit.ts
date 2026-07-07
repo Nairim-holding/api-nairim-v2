@@ -124,18 +124,22 @@ export const getLoginAttemptStatus = (email: string, ip: string) => {
       remainingAttempts: MAX_ATTEMPTS,
       isBlocked: false,
       blockedUntilSeconds: null,
-      blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60)
+      blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60),
+      shouldWarnAboutBlockage: false
     };
   }
 
   const isBlocked = attempt.blockedUntil && attempt.blockedUntil > now;
   const blockedUntilSeconds = isBlocked ? Math.ceil((attempt.blockedUntil! - now) / 1000) : null;
+  const remainingAttempts = Math.max(0, MAX_ATTEMPTS - attempt.count);
+  const shouldWarnAboutBlockage = !isBlocked && remainingAttempts <= 2 && remainingAttempts > 0;
 
   return {
     failedAttempts: attempt.count,
-    remainingAttempts: Math.max(0, MAX_ATTEMPTS - attempt.count),
+    remainingAttempts,
     isBlocked,
     blockedUntilSeconds,
-    blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60)
+    blockDurationMinutes: Math.floor(BLOCK_DURATION_MS / 1000 / 60),
+    shouldWarnAboutBlockage
   };
 };
