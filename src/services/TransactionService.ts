@@ -44,6 +44,19 @@ export class TransactionService {
     return {};
   }
 
+  private static buildAmountRangeCondition(value: any): any {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value) && ('min' in value || 'max' in value)) {
+      const cond: any = {};
+      const min = Number(String(value.min).replace(/[^\d.-]/g, ''));
+      const max = Number(String(value.max).replace(/[^\d.-]/g, ''));
+      if (value.min !== undefined && value.min !== null && value.min !== '' && !isNaN(min)) cond.gte = min;
+      if (value.max !== undefined && value.max !== null && value.max !== '' && !isNaN(max)) cond.lte = max;
+      return cond;
+    }
+    const numericValue = Number(String(value).replace(/[^\d.-]/g, ''));
+    return isNaN(numericValue) ? {} : { equals: numericValue };
+  }
+
   private static filterTransactionsBySearch(transactions: any[], searchTerm: string): any[] {
     if (!searchTerm.trim()) return transactions;
     const normalizedSearchTerm = this.normalizeText(searchTerm);
@@ -99,10 +112,8 @@ export class TransactionService {
              andFilters.push({ OR: values.map((v) => ({ description: { contains: String(v), mode: 'insensitive' } })) });
            }
            if (key === 'amount') {
-             const numericValues = values
-               .map((v) => Number(String(v).replace(/[^\d.-]/g, '')))
-               .filter((n) => !isNaN(n));
-             if (numericValues.length > 0) andFilters.push({ amount: { in: numericValues } });
+             const amountCond = this.buildAmountRangeCondition(value);
+             if (Object.keys(amountCond).length > 0) andFilters.push({ amount: amountCond });
            }
            if (key === 'event_date' || key === 'effective_date') {
              const dateCond = this.buildDateCondition(value);
@@ -153,18 +164,11 @@ export class TransactionService {
       ]);
 
       const uniqueDescriptions = Array.from(new Set(transactions.map(t => t.description).filter(Boolean))).sort();
-      
-      const uniqueAmounts = Array.from(new Set(transactions.map(t => Number(t.amount)).filter(val => !isNaN(val)))).sort((a, b) => a - b);
-      const amountOptions = uniqueAmounts.map(amount => ({
-        label: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(amount),
-        value: amount
-      }));
 
-      const existingStatuses = Array.from(new Set(transactions.map(t => t.status).filter(Boolean)));
-      const statusOptions = existingStatuses.map(s => ({
-        value: s,
-        label: s === 'COMPLETED' ? 'Concluído' : 'Pendente'
-      }));
+      const statusOptions = [
+        { value: 'PENDING', label: 'Pendente' },
+        { value: 'COMPLETED', label: 'Concluído' }
+      ];
 
       return {
         filters: [
@@ -221,11 +225,9 @@ export class TransactionService {
           },
           {
             field: 'amount',
-            type: 'select',
+            type: 'number',
             label: 'Valor',
-            multiple: true,
-            values: amountOptions,
-            searchable: true
+            numberRange: true
           },
           {
             field: 'status',
@@ -276,10 +278,8 @@ export class TransactionService {
             where.OR = values.map((v) => ({ description: { contains: String(v), mode: 'insensitive' as Prisma.QueryMode } }));
           }
           if (key === 'amount') {
-            const numericValues = values
-              .map((v) => Number(String(v).replace(/[^\d.-]/g, '')))
-              .filter((n) => !isNaN(n));
-            if (numericValues.length > 0) where.amount = { in: numericValues };
+            const amountCond = this.buildAmountRangeCondition(value);
+            if (Object.keys(amountCond).length > 0) where.amount = amountCond;
           }
           if (key === 'event_date' || key === 'effective_date') {
             where[key] = this.buildDateCondition(value);
@@ -418,6 +418,9 @@ export class TransactionService {
           accumulatedWhere[dateField] = { lte: cond.lte };
         }
       }
+      // Saldo acumulado considera somente lançamentos Concluídos (nunca Pendentes),
+      // independentemente de filtro de status aplicado pelo usuário.
+      accumulatedWhere.status = 'COMPLETED';
 
       const [
         periodIncome,
@@ -465,6 +468,123 @@ export class TransactionService {
     } catch (error: any) {
       throw new Error(`Falha ao buscar lançamentos: ${error.message}`);
     }
+  }
+
+  static async getMonthlyIncomeExpenseSummary(year: number) {
+    const startDate = new Date(Date.UTC(year, 0, 1));
+    const endDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        deleted_at: null,
+        NOT: { is_transfer: true },
+        event_date: { gte: startDate, lte: endDate },
+      },
+      select: {
+        event_date: true,
+        amount: true,
+        category: { select: { type: true } },
+      },
+    });
+
+    const months = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, income: 0, expense: 0 }));
+
+    for (const transaction of transactions) {
+      const monthIndex = transaction.event_date.getUTCMonth();
+      const amount = Number(transaction.amount);
+
+      if (transaction.category.type === 'INCOME') months[monthIndex].income += amount;
+      else if (transaction.category.type === 'EXPENSE') months[monthIndex].expense += amount;
+    }
+
+    return { year, months };
+  }
+
+  static async getAvailableYears() {
+    const transactions = await prisma.transaction.findMany({
+      where: { deleted_at: null, NOT: { is_transfer: true } },
+      select: { event_date: true },
+    });
+
+    const years = Array.from(new Set(transactions.map((t) => t.event_date.getUTCFullYear())));
+    years.sort((a, b) => b - a);
+
+    return { years };
+  }
+
+  static async getExpenseByCategory(startDate: Date, endDate: Date) {
+    const baseWhere = {
+      deleted_at: null,
+      NOT: { is_transfer: true },
+      event_date: { gte: startDate, lte: endDate },
+    };
+
+    const [incomeResult, categoryGroups] = await Promise.all([
+      prisma.transaction.aggregate({
+        where: { ...baseWhere, category: { type: 'INCOME' } },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.groupBy({
+        by: ['category_id'],
+        where: { ...baseWhere, category: { type: 'EXPENSE' } },
+        _sum: { amount: true },
+      }),
+    ]);
+
+    const totalIncome = Number(incomeResult._sum.amount ?? 0);
+
+    const categoryIds = categoryGroups.map((g) => g.category_id);
+    const categoryNames = categoryIds.length > 0
+      ? await prisma.category.findMany({ where: { id: { in: categoryIds } }, select: { id: true, name: true } })
+      : [];
+    const nameById = new Map(categoryNames.map((c) => [c.id, c.name]));
+
+    const categories = categoryGroups
+      .map((g) => ({
+        categoryId: g.category_id,
+        name: nameById.get(g.category_id) ?? 'Sem categoria',
+        value: Number(g._sum.amount ?? 0),
+      }))
+      .sort((a, b) => b.value - a.value);
+
+    return { totalIncome, categories };
+  }
+
+  static async getSubcategoryBreakdown(categoryId: string, startDate: Date, endDate: Date) {
+    const category = await prisma.category.findFirst({
+      where: { id: categoryId, deleted_at: null },
+      select: { id: true, name: true },
+    });
+    if (!category) throw new Error('Categoria não encontrada');
+
+    const subcategoryGroups = await prisma.transaction.groupBy({
+      by: ['subcategory_id'],
+      where: {
+        deleted_at: null,
+        NOT: { is_transfer: true },
+        category_id: categoryId,
+        event_date: { gte: startDate, lte: endDate },
+      },
+      _sum: { amount: true },
+    });
+
+    const subcategoryIds = subcategoryGroups.map((g) => g.subcategory_id).filter((id): id is string => id !== null);
+    const subcategoryNames = subcategoryIds.length > 0
+      ? await prisma.subcategory.findMany({ where: { id: { in: subcategoryIds } }, select: { id: true, name: true } })
+      : [];
+    const nameById = new Map(subcategoryNames.map((s) => [s.id, s.name]));
+
+    const subcategories = subcategoryGroups
+      .map((g) => ({
+        subcategoryId: g.subcategory_id,
+        name: g.subcategory_id ? (nameById.get(g.subcategory_id) ?? 'Sem subcategoria') : 'Sem subcategoria',
+        value: Number(g._sum.amount ?? 0),
+      }))
+      .sort((a, b) => b.value - a.value);
+
+    const total = subcategories.reduce((sum, s) => sum + s.value, 0);
+
+    return { categoryId: category.id, categoryName: category.name, total, subcategories };
   }
 
   static async getTransactionById(id: string) {

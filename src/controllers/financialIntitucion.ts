@@ -39,6 +39,16 @@ export class FinancialInstitutionController {
     }
   }
 
+  static async getBalanceSummary(req: Request, res: Response) {
+    try {
+      const data = await FinancialInstitutionService.getBalanceSummary();
+      res.status(200).json(ApiResponse.success(data, 'Saldo por conta recuperado com sucesso'));
+    } catch (error: any) {
+      console.error('Erro ao buscar saldo por conta:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar saldo por conta'));
+    }
+  }
+
   static async getInstitutionById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');

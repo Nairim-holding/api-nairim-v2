@@ -35,3 +35,25 @@ export interface ColumnPreferencesErrorResponse {
   columnWidths: Record<string, number>;
   visibleColumns?: string[];
 }
+
+export interface DashboardLayoutItem {
+  i: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface SaveDashboardLayoutInput {
+  resource: string;
+  layout: DashboardLayoutItem[];
+}
+
+export interface DashboardLayoutResponse {
+  id: string;
+  user_id: string;
+  resource: string;
+  layout: DashboardLayoutItem[];
+  created_at: string;
+  updated_at: string;
+}

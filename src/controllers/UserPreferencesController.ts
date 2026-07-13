@@ -59,4 +59,54 @@ export class UserPreferencesController {
       res.status(500).json(ApiResponse.error('Erro ao salvar preferências'));
     }
   }
+
+  static async getDashboardLayout(req: AuthRequest, res: Response) {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json(ApiResponse.error('Usuário não autenticado'));
+      }
+
+      const resource = String(req.query.resource);
+
+      const layout = await UserPreferencesService.getDashboardLayout(userId, resource);
+
+      if (!layout) {
+        return res.status(404).json({
+          success: false,
+          message: 'Layout não encontrado para este recurso',
+          data: { layout: [] }
+        });
+      }
+
+      res.status(200).json(
+        ApiResponse.success(layout, 'Layout recuperado com sucesso')
+      );
+    } catch (error: any) {
+      console.error('Erro ao buscar layout do dashboard:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
+    }
+  }
+
+  static async saveDashboardLayout(req: AuthRequest, res: Response) {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json(ApiResponse.error('Usuário não autenticado'));
+      }
+
+      const company_id = (req as any).user?.company_id ?? '';
+      const layout = await UserPreferencesService.saveDashboardLayout(userId, {
+        resource: req.body.resource,
+        layout: req.body.layout
+      }, company_id);
+
+      res.status(200).json(
+        ApiResponse.success(layout, 'Layout salvo com sucesso')
+      );
+    } catch (error: any) {
+      console.error('Erro ao salvar layout do dashboard:', error);
+      res.status(500).json(ApiResponse.error('Erro ao salvar layout'));
+    }
+  }
 }

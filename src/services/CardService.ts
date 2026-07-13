@@ -245,6 +245,37 @@ export class CardService {
     }
   }
 
+  static async getCardUsageSummary(startDate: Date, endDate: Date) {
+    const cards = await prisma.card.findMany({
+      where: { deleted_at: null, is_active: true },
+      select: { id: true, name: true, limit: true },
+      orderBy: { name: 'asc' },
+    });
+
+    const usageGroups = await prisma.transaction.groupBy({
+      by: ['card_id'],
+      where: {
+        deleted_at: null,
+        NOT: { is_transfer: true },
+        card_id: { not: null },
+        event_date: { gte: startDate, lte: endDate },
+        category: { type: 'EXPENSE' },
+      },
+      _sum: { amount: true },
+    });
+
+    const consumedByCardId = new Map(
+      usageGroups.map((g) => [g.card_id as string, Number(g._sum.amount ?? 0)])
+    );
+
+    return cards.map((card) => ({
+      cardId: card.id,
+      name: card.name,
+      limit: Number(card.limit ?? 0),
+      consumed: consumedByCardId.get(card.id) ?? 0,
+    }));
+  }
+
   static async getCardFilters() {
     try {
       const existingCards = await prisma.card.findMany({

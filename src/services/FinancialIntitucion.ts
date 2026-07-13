@@ -204,6 +204,48 @@ export class FinancialInstitutionService {
     }
   }
 
+  static async getBalanceSummary() {
+    const now = new Date();
+
+    const institutions = await prisma.financialInstitution.findMany({
+      where: { deleted_at: null, is_active: true },
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
+    });
+
+    const [incomeGroups, expenseGroups] = await Promise.all([
+      prisma.transaction.groupBy({
+        by: ['financial_institution_id'],
+        where: {
+          deleted_at: null,
+          status: 'COMPLETED',
+          effective_date: { lte: now },
+          category: { type: 'INCOME' },
+        },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.groupBy({
+        by: ['financial_institution_id'],
+        where: {
+          deleted_at: null,
+          status: 'COMPLETED',
+          effective_date: { lte: now },
+          category: { type: 'EXPENSE' },
+        },
+        _sum: { amount: true },
+      }),
+    ]);
+
+    const incomeByInstitution = new Map(incomeGroups.map((g) => [g.financial_institution_id, Number(g._sum.amount ?? 0)]));
+    const expenseByInstitution = new Map(expenseGroups.map((g) => [g.financial_institution_id, Number(g._sum.amount ?? 0)]));
+
+    return institutions.map((institution) => ({
+      institutionId: institution.id,
+      name: institution.name,
+      balance: (incomeByInstitution.get(institution.id) ?? 0) - (expenseByInstitution.get(institution.id) ?? 0),
+    }));
+  }
+
   static async getInstitutionFilters() {
     try {
       const where: any = { deleted_at: null };

@@ -1,5 +1,11 @@
 import prisma from '../lib/prisma';
-import { SaveColumnPreferencesInput, ColumnPreferencesResponse } from '../types/user-preferences';
+import {
+  SaveColumnPreferencesInput,
+  ColumnPreferencesResponse,
+  SaveDashboardLayoutInput,
+  DashboardLayoutResponse,
+  DashboardLayoutItem
+} from '../types/user-preferences';
 
 export class UserPreferencesService {
   static async getColumnPreferences(
@@ -106,5 +112,68 @@ export class UserPreferencesService {
       console.error(`❌ Error saving column preferences: ${error.message}`);
       throw error;
     }
+  }
+
+  static async getDashboardLayout(
+    userId: string,
+    resource: string
+  ): Promise<DashboardLayoutResponse | null> {
+    const layout = await prisma.userDashboardLayout.findUnique({
+      where: {
+        user_id_resource: {
+          user_id: userId,
+          resource
+        }
+      }
+    });
+
+    if (!layout) return null;
+
+    return {
+      id: layout.id,
+      user_id: layout.user_id,
+      resource: layout.resource,
+      layout: (layout.layout as unknown as DashboardLayoutItem[]) || [],
+      created_at: layout.created_at.toISOString(),
+      updated_at: layout.updated_at.toISOString()
+    };
+  }
+
+  static async saveDashboardLayout(
+    userId: string,
+    input: SaveDashboardLayoutInput,
+    company_id: string
+  ): Promise<DashboardLayoutResponse> {
+    const existing = await prisma.userDashboardLayout.findUnique({
+      where: {
+        user_id_resource: {
+          user_id: userId,
+          resource: input.resource
+        }
+      }
+    });
+
+    const layout = existing
+      ? await prisma.userDashboardLayout.update({
+          where: { id: existing.id },
+          data: { layout: input.layout as any, updated_at: new Date() }
+        })
+      : await prisma.userDashboardLayout.create({
+          data: {
+            user_id: userId,
+            resource: input.resource,
+            layout: input.layout as any,
+            company_id
+          }
+        });
+
+    return {
+      id: layout.id,
+      user_id: layout.user_id,
+      resource: layout.resource,
+      layout: (layout.layout as unknown as DashboardLayoutItem[]) || [],
+      created_at: layout.created_at.toISOString(),
+      updated_at: layout.updated_at.toISOString()
+    };
   }
 }

@@ -222,6 +222,30 @@ export const validateGetColumnPreferences = (req: Request, res: Response, next: 
   next();
 };
 
+export const validateSaveDashboardLayout = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserPreferencesValidator.validateSaveDashboardLayout(req.body);
+  if (!validation.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validação falhou',
+      errors: validation.errors
+    });
+  }
+  next();
+};
+
+export const validateGetDashboardLayout = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserPreferencesValidator.validateGetDashboardLayout(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validação falhou',
+      errors: validation.errors
+    });
+  }
+  next();
+};
+
 // Validações de IPTU Property
 export const validateGetIptuProperties = (req: Request, res: Response, next: NextFunction) => {
   const validation = IptuPropertyValidator.validateQueryParams(req.query);

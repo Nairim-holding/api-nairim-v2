@@ -40,6 +40,24 @@ export class CardController {
     }
   }
 
+  static async getUsageSummary(req: Request, res: Response) {
+    try {
+      const { startDate, endDate } = req.query;
+      if (!startDate || !endDate) {
+        return res.status(400).json(ApiResponse.error('startDate e endDate são obrigatórios'));
+      }
+
+      const data = await CardService.getCardUsageSummary(
+        new Date(startDate as string),
+        new Date(endDate as string)
+      );
+      res.status(200).json(ApiResponse.success(data, 'Uso dos cartões recuperado com sucesso'));
+    } catch (error: any) {
+      console.error('Erro ao buscar uso dos cartões:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar uso dos cartões'));
+    }
+  }
+
   static async getCardById(req: Request, res: Response) {
     try {
       const id = String(req.params?.id || '');

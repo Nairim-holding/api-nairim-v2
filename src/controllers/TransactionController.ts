@@ -69,6 +69,67 @@ export class TransactionController {
     }
   }
 
+  static async getMonthlySummary(req: Request, res: Response) {
+    try {
+      const year = ValidationUtil.parseNumberParam(req.query?.year, new Date().getFullYear());
+      const data = await TransactionService.getMonthlyIncomeExpenseSummary(year);
+      res.status(200).json(ApiResponse.success(data, 'Resumo mensal recuperado com sucesso'));
+    } catch (error: any) {
+      console.error('Error getting monthly transaction summary:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar resumo mensal'));
+    }
+  }
+
+  static async getAvailableYears(req: Request, res: Response) {
+    try {
+      const data = await TransactionService.getAvailableYears();
+      res.status(200).json(ApiResponse.success(data, 'Anos disponíveis recuperados com sucesso'));
+    } catch (error: any) {
+      console.error('Error getting available transaction years:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar anos disponíveis'));
+    }
+  }
+
+  static async getExpenseByCategory(req: Request, res: Response) {
+    try {
+      const { startDate, endDate } = req.query;
+      if (!startDate || !endDate) {
+        return res.status(400).json(ApiResponse.error('startDate e endDate são obrigatórios'));
+      }
+
+      const data = await TransactionService.getExpenseByCategory(
+        new Date(startDate as string),
+        new Date(endDate as string)
+      );
+      res.status(200).json(ApiResponse.success(data, 'Despesas por categoria recuperadas com sucesso'));
+    } catch (error: any) {
+      console.error('Error getting expense by category:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar despesas por categoria'));
+    }
+  }
+
+  static async getSubcategoryBreakdown(req: Request, res: Response) {
+    try {
+      const { categoryId, startDate, endDate } = req.query;
+      if (!categoryId || !startDate || !endDate) {
+        return res.status(400).json(ApiResponse.error('categoryId, startDate e endDate são obrigatórios'));
+      }
+
+      const data = await TransactionService.getSubcategoryBreakdown(
+        String(categoryId),
+        new Date(startDate as string),
+        new Date(endDate as string)
+      );
+      res.status(200).json(ApiResponse.success(data, 'Detalhamento por subcategoria recuperado com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Categoria não encontrada') {
+        return res.status(404).json(ApiResponse.error(error.message));
+      }
+      console.error('Error getting subcategory breakdown:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar detalhamento por subcategoria'));
+    }
+  }
+
   static async getFilters(req: Request, res: Response) {
     try {
       const filtersData = await TransactionService.getTransactionFilters(req.query);

@@ -58,6 +58,7 @@ export const ModelName = {
   PropertyIptu: 'PropertyIptu',
   User: 'User',
   UserColumnPreference: 'UserColumnPreference',
+  UserDashboardLayout: 'UserDashboardLayout',
   Document: 'Document',
   Owner: 'Owner',
   Tenant: 'Tenant',
@@ -258,6 +259,19 @@ export const UserColumnPreferenceScalarFieldEnum = {
 } as const
 
 export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceScalarFieldEnum)[keyof typeof UserColumnPreferenceScalarFieldEnum]
+
+
+export const UserDashboardLayoutScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  user_id: 'user_id',
+  resource: 'resource',
+  layout: 'layout',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserDashboardLayoutScalarFieldEnum = (typeof UserDashboardLayoutScalarFieldEnum)[keyof typeof UserDashboardLayoutScalarFieldEnum]
 
 
 export const DocumentScalarFieldEnum = {

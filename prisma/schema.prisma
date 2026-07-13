@@ -39,6 +39,7 @@ model Company {
   documents               Document[]
   favorites               Favorite[]
   user_column_preferences UserColumnPreference[]
+  user_dashboard_layouts  UserDashboardLayout[]
 }
 
 model CompanyBranding {
@@ -208,6 +209,7 @@ model User {
   documents         Document[]
   favorites         Favorite[]
   columnPreferences UserColumnPreference[]
+  dashboardLayouts  UserDashboardLayout[]
   company           Company               @relation(fields: [company_id], references: [id])
 
   @@unique([company_id, email])
@@ -226,6 +228,23 @@ model UserColumnPreference {
   updated_at       DateTime @updatedAt
   user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   company          Company @relation(fields: [company_id], references: [id])
+
+  @@unique([user_id, resource])
+  @@index([user_id])
+  @@index([resource])
+  @@index([company_id])
+}
+
+model UserDashboardLayout {
+  id         String   @id @default(uuid())
+  company_id String
+  user_id    String
+  resource   String   @db.VarChar(100)
+  layout     Json     @default("[]")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  company    Company  @relation(fields: [company_id], references: [id])
 
   @@unique([user_id, resource])
   @@index([user_id])

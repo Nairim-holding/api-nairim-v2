@@ -6,6 +6,10 @@ const router = Router();
 // Rotas básicas de transações
 router.get('/', TransactionController.getTransactions);
 router.get('/filters', TransactionController.getFilters);
+router.get('/monthly-summary', TransactionController.getMonthlySummary);
+router.get('/available-years', TransactionController.getAvailableYears);
+router.get('/expense-by-category', TransactionController.getExpenseByCategory);
+router.get('/subcategory-breakdown', TransactionController.getSubcategoryBreakdown);
 
 // Rota para transferência entre contas (cria o par origem + espelho)
 router.post('/transfer', TransactionController.createTransfer);

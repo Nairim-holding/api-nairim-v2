@@ -75,6 +75,11 @@ export type User = Prisma.UserModel
  */
 export type UserColumnPreference = Prisma.UserColumnPreferenceModel
 /**
+ * Model UserDashboardLayout
+ * 
+ */
+export type UserDashboardLayout = Prisma.UserDashboardLayoutModel
+/**
  * Model Document
  * 
  */

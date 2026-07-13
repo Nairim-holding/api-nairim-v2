@@ -233,6 +233,7 @@ export type UserWhereInput = {
   documents?: Prisma.DocumentListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   columnPreferences?: Prisma.UserColumnPreferenceListRelationFilter
+  dashboardLayouts?: Prisma.UserDashboardLayoutListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
@@ -251,6 +252,7 @@ export type UserOrderByWithRelationInput = {
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   columnPreferences?: Prisma.UserColumnPreferenceOrderByRelationAggregateInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
 
@@ -273,6 +275,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   documents?: Prisma.DocumentListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   columnPreferences?: Prisma.UserColumnPreferenceListRelationFilter
+  dashboardLayouts?: Prisma.UserDashboardLayoutListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id" | "company_id_email">
 
@@ -324,6 +327,7 @@ export type UserCreateInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
 
@@ -342,6 +346,7 @@ export type UserUncheckedCreateInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -358,6 +363,7 @@ export type UserUpdateInput = {
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -376,6 +382,7 @@ export type UserUncheckedUpdateInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -550,6 +557,20 @@ export type UserUpdateOneRequiredWithoutColumnPreferencesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutColumnPreferencesInput, Prisma.UserUpdateWithoutColumnPreferencesInput>, Prisma.UserUncheckedUpdateWithoutColumnPreferencesInput>
 }
 
+export type UserCreateNestedOneWithoutDashboardLayoutsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDashboardLayoutsInput, Prisma.UserUncheckedCreateWithoutDashboardLayoutsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDashboardLayoutsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDashboardLayoutsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDashboardLayoutsInput, Prisma.UserUncheckedCreateWithoutDashboardLayoutsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDashboardLayoutsInput
+  upsert?: Prisma.UserUpsertWithoutDashboardLayoutsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDashboardLayoutsInput, Prisma.UserUpdateWithoutDashboardLayoutsInput>, Prisma.UserUncheckedUpdateWithoutDashboardLayoutsInput>
+}
+
 export type UserCreateNestedOneWithoutDocumentsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutDocumentsInput, Prisma.UserUncheckedCreateWithoutDocumentsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocumentsInput
@@ -594,6 +615,7 @@ export type UserCreateWithoutCompanyInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCompanyInput = {
@@ -610,6 +632,7 @@ export type UserUncheckedCreateWithoutCompanyInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCompanyInput = {
@@ -668,6 +691,7 @@ export type UserCreateWithoutColumnPreferencesInput = {
   deleted_at?: Date | string | null
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
 
@@ -685,6 +709,7 @@ export type UserUncheckedCreateWithoutColumnPreferencesInput = {
   deleted_at?: Date | string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutColumnPreferencesInput = {
@@ -716,6 +741,7 @@ export type UserUpdateWithoutColumnPreferencesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -733,6 +759,91 @@ export type UserUncheckedUpdateWithoutColumnPreferencesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDashboardLayoutsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+}
+
+export type UserUncheckedCreateWithoutDashboardLayoutsInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDashboardLayoutsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDashboardLayoutsInput, Prisma.UserUncheckedCreateWithoutDashboardLayoutsInput>
+}
+
+export type UserUpsertWithoutDashboardLayoutsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDashboardLayoutsInput, Prisma.UserUncheckedUpdateWithoutDashboardLayoutsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDashboardLayoutsInput, Prisma.UserUncheckedCreateWithoutDashboardLayoutsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDashboardLayoutsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDashboardLayoutsInput, Prisma.UserUncheckedUpdateWithoutDashboardLayoutsInput>
+}
+
+export type UserUpdateWithoutDashboardLayoutsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDashboardLayoutsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -748,6 +859,7 @@ export type UserCreateWithoutDocumentsInput = {
   deleted_at?: Date | string | null
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
 
@@ -765,6 +877,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   deleted_at?: Date | string | null
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -796,6 +909,7 @@ export type UserUpdateWithoutDocumentsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -813,6 +927,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFavoritesInput = {
@@ -828,6 +943,7 @@ export type UserCreateWithoutFavoritesInput = {
   deleted_at?: Date | string | null
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
 }
 
@@ -845,6 +961,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
   deleted_at?: Date | string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -876,6 +993,7 @@ export type UserUpdateWithoutFavoritesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -893,6 +1011,7 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyCompanyInput = {
@@ -922,6 +1041,7 @@ export type UserUpdateWithoutCompanyInput = {
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyInput = {
@@ -938,6 +1058,7 @@ export type UserUncheckedUpdateWithoutCompanyInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCompanyInput = {
@@ -962,12 +1083,14 @@ export type UserCountOutputType = {
   documents: number
   favorites: number
   columnPreferences: number
+  dashboardLayouts: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | UserCountOutputTypeCountDocumentsArgs
   favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
   columnPreferences?: boolean | UserCountOutputTypeCountColumnPreferencesArgs
+  dashboardLayouts?: boolean | UserCountOutputTypeCountDashboardLayoutsArgs
 }
 
 /**
@@ -1001,6 +1124,13 @@ export type UserCountOutputTypeCountColumnPreferencesArgs<ExtArgs extends runtim
   where?: Prisma.UserColumnPreferenceWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDashboardLayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserDashboardLayoutWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1017,6 +1147,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   columnPreferences?: boolean | Prisma.User$columnPreferencesArgs<ExtArgs>
+  dashboardLayouts?: boolean | Prisma.User$dashboardLayoutsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -1070,6 +1201,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   columnPreferences?: boolean | Prisma.User$columnPreferencesArgs<ExtArgs>
+  dashboardLayouts?: boolean | Prisma.User$dashboardLayoutsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1086,6 +1218,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     columnPreferences: Prisma.$UserColumnPreferencePayload<ExtArgs>[]
+    dashboardLayouts: Prisma.$UserDashboardLayoutPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1497,6 +1630,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   documents<T extends Prisma.User$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.User$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   columnPreferences<T extends Prisma.User$columnPreferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$columnPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserColumnPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dashboardLayouts<T extends Prisma.User$dashboardLayoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dashboardLayoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDashboardLayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2003,6 +2137,30 @@ export type User$columnPreferencesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.UserColumnPreferenceScalarFieldEnum | Prisma.UserColumnPreferenceScalarFieldEnum[]
+}
+
+/**
+ * User.dashboardLayouts
+ */
+export type User$dashboardLayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserDashboardLayout
+   */
+  select?: Prisma.UserDashboardLayoutSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserDashboardLayout
+   */
+  omit?: Prisma.UserDashboardLayoutOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDashboardLayoutInclude<ExtArgs> | null
+  where?: Prisma.UserDashboardLayoutWhereInput
+  orderBy?: Prisma.UserDashboardLayoutOrderByWithRelationInput | Prisma.UserDashboardLayoutOrderByWithRelationInput[]
+  cursor?: Prisma.UserDashboardLayoutWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserDashboardLayoutScalarFieldEnum | Prisma.UserDashboardLayoutScalarFieldEnum[]
 }
 
 /**

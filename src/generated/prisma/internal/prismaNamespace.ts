@@ -391,6 +391,7 @@ export const ModelName = {
   PropertyIptu: 'PropertyIptu',
   User: 'User',
   UserColumnPreference: 'UserColumnPreference',
+  UserDashboardLayout: 'UserDashboardLayout',
   Document: 'Document',
   Owner: 'Owner',
   Tenant: 'Tenant',
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "company" | "companyBranding" | "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
+    modelProps: "company" | "companyBranding" | "agency" | "property" | "propertyIptu" | "user" | "userColumnPreference" | "userDashboardLayout" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -950,6 +951,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserColumnPreferenceCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserColumnPreferenceCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserDashboardLayout: {
+      payload: Prisma.$UserDashboardLayoutPayload<ExtArgs>
+      fields: Prisma.UserDashboardLayoutFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserDashboardLayoutFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserDashboardLayoutFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        findFirst: {
+          args: Prisma.UserDashboardLayoutFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserDashboardLayoutFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        findMany: {
+          args: Prisma.UserDashboardLayoutFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>[]
+        }
+        create: {
+          args: Prisma.UserDashboardLayoutCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        createMany: {
+          args: Prisma.UserDashboardLayoutCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserDashboardLayoutCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>[]
+        }
+        delete: {
+          args: Prisma.UserDashboardLayoutDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        update: {
+          args: Prisma.UserDashboardLayoutUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserDashboardLayoutDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserDashboardLayoutUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserDashboardLayoutUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserDashboardLayoutUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDashboardLayoutPayload>
+        }
+        aggregate: {
+          args: Prisma.UserDashboardLayoutAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserDashboardLayout>
+        }
+        groupBy: {
+          args: Prisma.UserDashboardLayoutGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserDashboardLayoutGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserDashboardLayoutCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserDashboardLayoutCountAggregateOutputType> | number
         }
       }
     }
@@ -3001,6 +3076,19 @@ export const UserColumnPreferenceScalarFieldEnum = {
 export type UserColumnPreferenceScalarFieldEnum = (typeof UserColumnPreferenceScalarFieldEnum)[keyof typeof UserColumnPreferenceScalarFieldEnum]
 
 
+export const UserDashboardLayoutScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  user_id: 'user_id',
+  resource: 'resource',
+  layout: 'layout',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserDashboardLayoutScalarFieldEnum = (typeof UserDashboardLayoutScalarFieldEnum)[keyof typeof UserDashboardLayoutScalarFieldEnum]
+
+
 export const DocumentScalarFieldEnum = {
   id: 'id',
   company_id: 'company_id',
@@ -3867,6 +3955,7 @@ export type GlobalOmitConfig = {
   propertyIptu?: Prisma.PropertyIptuOmit
   user?: Prisma.UserOmit
   userColumnPreference?: Prisma.UserColumnPreferenceOmit
+  userDashboardLayout?: Prisma.UserDashboardLayoutOmit
   document?: Prisma.DocumentOmit
   owner?: Prisma.OwnerOmit
   tenant?: Prisma.TenantOmit
