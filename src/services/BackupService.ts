@@ -254,11 +254,25 @@ export class BackupService {
       if (Array.isArray(data.recurringConfigs) && data.recurringConfigs.length > 0) {
         await tx.recurringConfig.createMany({ data: data.recurringConfigs as any });
       }
-      if (Array.isArray(data.transactions) && data.transactions.length > 0) {
-        await tx.transaction.createMany({ data: data.transactions as any });
-      }
+      // Faturas ANTES das transações: Transaction.invoice_id referencia Invoice.
       if (Array.isArray(data.invoices) && data.invoices.length > 0) {
         await tx.invoice.createMany({ data: data.invoices as any });
+      }
+      if (Array.isArray(data.transactions) && data.transactions.length > 0) {
+        // Transaction tem auto-referência (parent_transaction_id → Transaction).
+        // Como o createMany checa a FK linha a linha, um filho antes do pai
+        // quebraria. Inserimos todas sem o pai e religamos num 2º passo.
+        const txs = data.transactions as any[];
+        const withoutParent = txs.map((t) => ({ ...t, parent_transaction_id: null }));
+        await tx.transaction.createMany({ data: withoutParent });
+
+        const children = txs.filter((t) => t.parent_transaction_id);
+        for (const child of children) {
+          await tx.transaction.update({
+            where: { id: child.id },
+            data: { parent_transaction_id: child.parent_transaction_id },
+          });
+        }
       }
 
       // Documentos e preferências (últimas, relações leves)
