@@ -159,19 +159,49 @@ export class BackupService {
         await tx.propertyType.createMany({ data: data.propertyType as any });
       }
       if (Array.isArray(data.financialInstitution) && data.financialInstitution.length > 0) {
-        await tx.financialInstitution.createMany({ data: data.financialInstitution as any });
+        for (const inst of data.financialInstitution) {
+          await tx.financialInstitution.upsert({
+            where: { id: inst.id },
+            update: inst as any,
+            create: inst as any,
+          });
+        }
       }
       if (Array.isArray(data.category) && data.category.length > 0) {
-        await tx.category.createMany({ data: data.category as any });
+        for (const cat of data.category) {
+          await tx.category.upsert({
+            where: { id: cat.id },
+            update: cat as any,
+            create: cat as any,
+          });
+        }
       }
       if (Array.isArray(data.subcategory) && data.subcategory.length > 0) {
-        await tx.subcategory.createMany({ data: data.subcategory as any });
+        for (const subcat of data.subcategory) {
+          await tx.subcategory.upsert({
+            where: { id: subcat.id },
+            update: subcat as any,
+            create: subcat as any,
+          });
+        }
       }
       if (Array.isArray(data.center) && data.center.length > 0) {
-        await tx.center.createMany({ data: data.center as any });
+        for (const center of data.center) {
+          await tx.center.upsert({
+            where: { id: center.id },
+            update: center as any,
+            create: center as any,
+          });
+        }
       }
       if (Array.isArray(data.card) && data.card.length > 0) {
-        await tx.card.createMany({ data: data.card as any });
+        for (const card of data.card) {
+          await tx.card.upsert({
+            where: { id: card.id },
+            update: card as any,
+            create: card as any,
+          });
+        }
       }
 
       // Pais de relacionamentos (antes dos filhos)
@@ -188,7 +218,13 @@ export class BackupService {
         await tx.tenant.createMany({ data: data.tenants as any });
       }
       if (Array.isArray(data.suppliers) && data.suppliers.length > 0) {
-        await tx.supplier.createMany({ data: data.suppliers as any });
+        for (const supplier of data.suppliers) {
+          await tx.supplier.upsert({
+            where: { id: supplier.id },
+            update: supplier as any,
+            create: supplier as any,
+          });
+        }
       }
       if (Array.isArray(data.properties) && data.properties.length > 0) {
         await tx.property.createMany({ data: data.properties as any });
