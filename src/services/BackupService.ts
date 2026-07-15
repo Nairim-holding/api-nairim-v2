@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import prisma from '../lib/prisma';
 
 /**
@@ -9,12 +11,13 @@ import prisma from '../lib/prisma';
  * por relação (endereços, contatos, valores, IPTU, meses de planejamento). As
  * mídias em si (arquivos no MinIO) NÃO entram — o backup preserva apenas as URLs
  * já gravadas em `Document.file_path`.
- *
- * Fase atual: EXPORT (backup + download). O RESTORE virá em fase separada.
  */
 
 /** Versão do formato do arquivo de backup. Incrementar em mudanças incompatíveis. */
 export const BACKUP_FORMAT_VERSION = 1;
+
+/** Diretório onde os backups automáticos (pré-restore) são gravados no servidor. */
+const AUTO_BACKUP_DIR = path.join(process.cwd(), 'backup');
 
 const idsOf = (arr: any[]): string[] => arr.map((x) => x.id);
 
@@ -73,12 +76,16 @@ export class BackupService {
     }
 
     // ────────────────────────────────────────────────────────────────
-    // Auto-backup antes de destruir: exporta o estado atual
+    // Auto-backup antes de destruir: exporta o estado atual e GRAVA em disco
+    // (pasta `backup/` na raiz do servidor) para poder reverter se preciso.
     // ────────────────────────────────────────────────────────────────
     const currentBackup = await this.exportCompany(company_id);
     const autoBackupName = `backup-nairim-${company.slug}-auto-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
-    // Nota: em produção, seria interessante salvar em blob storage ou arquivo local
-    console.log(`Auto-backup criado: ${autoBackupName}`, { counts: currentBackup.meta.counts });
+
+    fs.mkdirSync(AUTO_BACKUP_DIR, { recursive: true });
+    const autoBackupPath = path.join(AUTO_BACKUP_DIR, autoBackupName);
+    fs.writeFileSync(autoBackupPath, JSON.stringify(currentBackup), 'utf-8');
+    console.log(`Auto-backup gravado em: ${autoBackupPath}`, { counts: currentBackup.meta.counts });
 
     // ────────────────────────────────────────────────────────────────
     // Deleta os dados da empresa de forma FK-safe (filhos antes de pais)
@@ -297,6 +304,40 @@ export class BackupService {
         autoBackupName,
       };
     });
+  }
+
+  /**
+   * Lista os backups automáticos (pré-restore) gravados em disco para uma
+   * empresa (filtrando pelo slug no nome do arquivo). Ordena do mais recente
+   * para o mais antigo.
+   */
+  static listAutoBackups(company_slug: string) {
+    if (!fs.existsSync(AUTO_BACKUP_DIR)) return [];
+
+    const prefix = `backup-nairim-${company_slug}-auto-`;
+    return fs
+      .readdirSync(AUTO_BACKUP_DIR)
+      .filter((name) => name.startsWith(prefix) && name.endsWith('.json'))
+      .map((name) => {
+        const stat = fs.statSync(path.join(AUTO_BACKUP_DIR, name));
+        return { name, size: stat.size, createdAt: stat.mtime.toISOString() };
+      })
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  }
+
+  /**
+   * Devolve o caminho absoluto de um backup automático, validando que o nome
+   * pertence à empresa (evita path traversal e acesso a outras empresas).
+   */
+  static resolveAutoBackupPath(company_slug: string, filename: string): string | null {
+    // Segurança: sem separadores de caminho e com o prefixo da empresa.
+    const safe = path.basename(filename);
+    if (safe !== filename) return null;
+    if (!safe.startsWith(`backup-nairim-${company_slug}-auto-`) || !safe.endsWith('.json')) {
+      return null;
+    }
+    const full = path.join(AUTO_BACKUP_DIR, safe);
+    return fs.existsSync(full) ? full : null;
   }
 
   /**

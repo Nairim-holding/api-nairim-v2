@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ApiResponse } from '../utils/api-response';
 import { BackupService } from '../services/BackupService';
+import prisma from '../lib/prisma';
 
 export class BackupController {
   /**
@@ -111,6 +112,57 @@ export class BackupController {
 
       // Erro genérico
       res.status(500).json(ApiResponse.error('Erro ao restaurar dados da empresa'));
+    }
+  }
+
+  /**
+   * Lista os backups automáticos (pré-restore) gravados no servidor para a
+   * empresa atual. Cada restore gera um deles antes de substituir os dados.
+   */
+  static async listAutoBackups(req: Request, res: Response) {
+    try {
+      const { company_id } = (req as any).user;
+      if (!company_id) {
+        return res.status(400).json(ApiResponse.error('Empresa não identificada na sessão'));
+      }
+
+      const company = await prisma.company.findUnique({ where: { id: company_id } });
+      if (!company) return res.status(404).json(ApiResponse.error('Empresa não encontrada'));
+
+      const backups = BackupService.listAutoBackups(company.slug);
+      return res.status(200).json(ApiResponse.success(backups, 'Backups automáticos listados'));
+    } catch (error: any) {
+      console.error('Erro ao listar backups automáticos:', error);
+      res.status(500).json(ApiResponse.error('Erro ao listar backups automáticos'));
+    }
+  }
+
+  /**
+   * Baixa um backup automático específico (pelo nome do arquivo). Valida que o
+   * arquivo pertence à empresa antes de servir (evita path traversal).
+   */
+  static async downloadAutoBackup(req: Request, res: Response) {
+    try {
+      const { company_id } = (req as any).user;
+      if (!company_id) {
+        return res.status(400).json(ApiResponse.error('Empresa não identificada na sessão'));
+      }
+
+      const company = await prisma.company.findUnique({ where: { id: company_id } });
+      if (!company) return res.status(404).json(ApiResponse.error('Empresa não encontrada'));
+
+      const filename = String(req.params.filename);
+      const fullPath = BackupService.resolveAutoBackupPath(company.slug, filename);
+      if (!fullPath) {
+        return res.status(404).json(ApiResponse.error('Backup automático não encontrado'));
+      }
+
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.download(fullPath, filename);
+    } catch (error: any) {
+      console.error('Erro ao baixar backup automático:', error);
+      res.status(500).json(ApiResponse.error('Erro ao baixar backup automático'));
     }
   }
 }

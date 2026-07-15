@@ -24,4 +24,8 @@ router.get('/export', requireAdmin, BackupController.exportBackup);
 // Restore: recebe arquivo + confirmação, restaura os dados
 router.post('/restore', requireAdmin, uploadBackup.single('file'), BackupController.restoreBackup);
 
+// Backups automáticos (gerados antes de cada restore): listar e baixar
+router.get('/auto', requireAdmin, BackupController.listAutoBackups);
+router.get('/auto/:filename', requireAdmin, BackupController.downloadAutoBackup);
+
 export default router;
