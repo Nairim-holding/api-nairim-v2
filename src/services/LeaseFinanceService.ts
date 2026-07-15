@@ -181,6 +181,11 @@ export class LeaseFinanceService {
     });
     if (!lease || lease.deleted_at) return { generated: 0 };
 
+    // Locação cancelada não regenera lançamentos: os futuros foram excluídos no
+    // fluxo de cancelamento e não devem voltar. (Ao restaurar a locação, o status
+    // deixa de ser CANCELED e o sync volta a gerar normalmente.)
+    if (lease.status === 'CANCELED') return { generated: 0 };
+
     if (!lease.financial_institution_id) {
       return {
         generated: 0,
@@ -261,7 +266,9 @@ export class LeaseFinanceService {
       `${String(desc ?? '').split(' ')[0]}::${inst ?? 0}`;
 
     const existing = await prisma.transaction.findMany({
-      where: { lease_id: leaseId, deleted_at: null },
+      // Encargos de cancelamento (is_cancellation_charge) NÃO fazem parte do
+      // schedule gerado — nunca são apagados nem duplicados pelo sync.
+      where: { lease_id: leaseId, deleted_at: null, is_cancellation_charge: false },
       select: { id: true, status: true, description: true, installment_number: true },
     });
     const completedKeys = new Set(

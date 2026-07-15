@@ -6,6 +6,7 @@ import {
   LeaseWithRelations
 } from '../types/lease';
 import { LeaseFinanceService } from './LeaseFinanceService';
+import { parseLocalDate } from '../utils/date-utils';
 
 export class LeaseService {
   static readonly FIELD_MAPPING: Record<string, { 
@@ -405,7 +406,11 @@ export class LeaseService {
               commission_subcategory: true,
             }
           },
-          financial_institution: true
+          financial_institution: true,
+          documents: {
+            where: { deleted_at: null },
+            orderBy: { created_at: 'asc' },
+          }
         }
       }) as any;
 
@@ -415,6 +420,135 @@ export class LeaseService {
     } catch (error: any) {
       throw error;
     }
+  }
+
+  /**
+   * Lista os lançamentos gerados da locação com data de efetivação entre a data
+   * do cancelamento e o término do contrato (inclusive). Não inclui encargos de
+   * cancelamento nem já excluídos. Usado para o usuário confirmar quais excluir.
+   */
+  static async getCancellationPreview(id: string, date: string) {
+    const lease = await prisma.lease.findFirst({ where: { id, deleted_at: null } });
+    if (!lease) throw new Error('Lease not found');
+
+    const from = parseLocalDate(date);
+    const to = lease.end_date;
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        lease_id: id,
+        deleted_at: null,
+        is_cancellation_charge: false,
+        effective_date: { gte: from, lte: to },
+      },
+      orderBy: { effective_date: 'asc' },
+      include: { category: true, center: true },
+    });
+
+    return {
+      lease: {
+        id: lease.id,
+        contract_number: lease.contract_number,
+        start_date: lease.start_date,
+        end_date: lease.end_date,
+      },
+      from,
+      to,
+      transactions,
+    };
+  }
+
+  /**
+   * Efetiva o cancelamento da locação:
+   *  - soft-delete dos lançamentos confirmados pelo usuário (escopados à locação);
+   *  - opcionalmente cria 1 lançamento de encargo (is_cancellation_charge);
+   *  - marca a locação como CANCELED (+ canceled_at, motivo);
+   *  - libera o imóvel se não houver outra locação ativa.
+   * Não chama o sync (locação CANCELED não regenera).
+   */
+  static async cancelLease(id: string, data: any, company_id: string) {
+    return prisma.$transaction(async (tx) => {
+      const existing = await tx.lease.findFirst({ where: { id, company_id, deleted_at: null } });
+      if (!existing) throw new Error('Lease not found');
+
+      const canceledAt = data.date ? new Date(data.date) : new Date();
+
+      // 1. Soft-delete dos lançamentos confirmados (restritos a esta locação/empresa).
+      const ids: string[] = Array.isArray(data.transactionIds)
+        ? data.transactionIds.map(String)
+        : [];
+      let deletedCount = 0;
+      if (ids.length > 0) {
+        const result = await tx.transaction.updateMany({
+          where: { id: { in: ids }, lease_id: id, company_id, deleted_at: null },
+          data: { deleted_at: new Date() },
+        });
+        deletedCount = result.count;
+      }
+
+      // 2. Encargo opcional (custas/juros/multas) → 1 lançamento de receita.
+      let charge = null;
+      const chargeInput = data.charge;
+      if (chargeInput && Number(chargeInput.amount) > 0) {
+        if (!chargeInput.category_id) throw new Error('Categoria do encargo é obrigatória.');
+        if (!chargeInput.financial_institution_id) throw new Error('Conta do encargo é obrigatória.');
+
+        const parseFK = (val: any) => (val === '' || val === 'null' || !val ? null : val);
+        const chargeDate = parseLocalDate(chargeInput.date || data.date);
+        charge = await tx.transaction.create({
+          data: {
+            event_date: chargeDate,
+            effective_date: chargeDate,
+            description: chargeInput.description || `Encargo de cancelamento - Contrato ${existing.contract_number}`,
+            amount: Number(chargeInput.amount),
+            status: chargeInput.status || 'PENDING',
+            category_id: chargeInput.category_id,
+            subcategory_id: parseFK(chargeInput.subcategory_id),
+            financial_institution_id: chargeInput.financial_institution_id,
+            center_id: parseFK(chargeInput.center_id),
+            supplier_id: parseFK(chargeInput.supplier_id),
+            lease_id: id,
+            is_cancellation_charge: true,
+            company_id,
+          },
+        });
+      }
+
+      // 3. Marca a locação como cancelada.
+      const updated = await tx.lease.update({
+        where: { id },
+        data: {
+          status: 'CANCELED',
+          canceled_at: canceledAt,
+          cancellation_justification: data.reason ?? existing.cancellation_justification,
+          cancellation_penalty: charge ? Number(charge.amount) : existing.cancellation_penalty,
+        },
+      });
+
+      // 4. Libera o imóvel se não houver outra locação ativa.
+      const propertyValue = await tx.propertyValue.findFirst({
+        where: { property_id: existing.property_id, deleted_at: null },
+        orderBy: { created_at: 'desc' },
+      });
+      if (propertyValue && propertyValue.status === 'OCCUPIED') {
+        const activeLeases = await tx.lease.count({
+          where: {
+            property_id: existing.property_id,
+            NOT: { id },
+            deleted_at: null,
+            status: { not: 'CANCELED' },
+          },
+        });
+        if (activeLeases === 0) {
+          await tx.propertyValue.update({
+            where: { id: propertyValue.id },
+            data: { status: 'AVAILABLE' },
+          });
+        }
+      }
+
+      return { lease: updated, deleted: deletedCount, charge };
+    });
   }
 
   static async createLease(data: any) {

@@ -16,9 +16,10 @@ export const env = {
 
   JWT_SECRET: required("JWT_SECRET"),
 
-  // Duração do token de sessão. Mínimo recomendado de 12h para não interromper
-  // usuários em uso ativo (sessões mais curtas exigem refresh em background).
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? "12h",
+  // Expiração ABSOLUTA do token de sessão. Após esse tempo, exige novo login
+  // mesmo em uso ativo. A expiração por inatividade e o encerramento ao fechar
+  // o navegador são tratados no frontend (cookie de sessão + idle timeout).
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? "8h",
 
   BASE_URL: process.env.BASE_URL ?? "http://localhost:5000",
 

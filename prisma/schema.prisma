@@ -255,7 +255,8 @@ model UserDashboardLayout {
 model Document {
   id          String       @id @default(uuid())
   company_id  String
-  property_id String
+  property_id String?
+  lease_id    String?
   created_by  String?
   file_path   String
   file_type   String
@@ -266,10 +267,12 @@ model Document {
   deleted_at  DateTime?
   is_featured Boolean      @default(false)
   user        User?        @relation(fields: [created_by], references: [id])
-  property    Property     @relation(fields: [property_id], references: [id])
+  property    Property?    @relation(fields: [property_id], references: [id])
+  lease       Lease?       @relation(fields: [lease_id], references: [id])
   company     Company     @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
+  @@index([lease_id])
   @@index([company_id])
 }
 
@@ -378,6 +381,7 @@ model Lease {
   agency                          Agency?               @relation(fields: [agency_id], references: [id])
   financial_institution           FinancialInstitution? @relation(fields: [financial_institution_id], references: [id])
   transactions                    Transaction[]
+  documents                       Document[]
   company                         Company          @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
@@ -710,6 +714,7 @@ model Transaction {
   lease_id                 String?
   transfer_group_id        String?
   is_transfer              Boolean              @default(false)
+  is_cancellation_charge   Boolean              @default(false)
   card                     Card?                @relation(fields: [card_id], references: [id])
   category                 Category             @relation(fields: [category_id], references: [id])
   center                   Center?              @relation(fields: [center_id], references: [id])
@@ -871,6 +876,7 @@ enum DocumentType {
   OTHER
   PROPERTY_RECORD
   IMAGE
+  LEASE_CONTRACT
 }
 
 enum LeaseStatus {

@@ -40,7 +40,8 @@ export const DocumentType = {
   REGISTRATION: 'REGISTRATION',
   OTHER: 'OTHER',
   PROPERTY_RECORD: 'PROPERTY_RECORD',
-  IMAGE: 'IMAGE'
+  IMAGE: 'IMAGE',
+  LEASE_CONTRACT: 'LEASE_CONTRACT'
 } as const
 
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]

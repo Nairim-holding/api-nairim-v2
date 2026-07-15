@@ -121,6 +121,75 @@ export class DocumentService {
     }
   }
 
+  /**
+   * Anexa documentos (ex.: contrato de locação) a uma Locação. Reaproveita o
+   * mesmo mecanismo de storage de Imóveis (UploadServiceFactory) e a mesma
+   * tabela `Document`, apenas vinculando via `lease_id` em vez de `property_id`.
+   */
+  static async uploadLeaseDocuments(leaseId: string, userId: string, files: Record<string, Express.Multer.File[]>, company_id: string) {
+    const lease = await prisma.lease.findFirst({
+      where: { id: leaseId, company_id, deleted_at: null }
+    });
+    if (!lease) {
+      throw new Error('Lease not found');
+    }
+
+    const uploadService = UploadServiceFactory.create();
+    const savedDocuments = [];
+
+    for (const [key, fileArray] of Object.entries(files)) {
+      for (const file of fileArray) {
+        let fileUrl: string;
+
+        if (uploadService) {
+          fileUrl = await uploadService.uploadFile(file, 'leases/documents');
+        } else {
+          const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+          const relativePath = path.relative(path.join(__dirname, '../../uploads'), file.path);
+          fileUrl = `${baseUrl}/uploads/${relativePath.replace(/\\/g, '/')}`;
+        }
+
+        const document = await prisma.document.create({
+          data: {
+            lease_id: leaseId,
+            company_id,
+            file_path: fileUrl,
+            file_type: file.mimetype,
+            description: this.getLeaseDescription(key),
+            type: 'LEASE_CONTRACT',
+            created_by: userId?.trim() || null,
+          }
+        });
+
+        savedDocuments.push(document);
+      }
+    }
+
+    return savedDocuments;
+  }
+
+  /**
+   * Remoção (soft-delete) de documentos de uma Locação e do arquivo no storage.
+   * Restringe por `lease_id` + `company_id` para não afetar documentos de outra
+   * locação/empresa.
+   */
+  static async removeLeaseDocuments(leaseId: string, documentIds: string[], company_id: string) {
+    if (!documentIds || documentIds.length === 0) return;
+
+    const documents = await prisma.document.findMany({
+      where: { id: { in: documentIds }, lease_id: leaseId, company_id, deleted_at: null }
+    });
+
+    for (const document of documents) {
+      await this.deleteDocumentFile(document.file_path);
+    }
+
+    await prisma.document.updateMany({
+      where: { id: { in: documents.map(d => d.id) } },
+      data: { deleted_at: new Date() }
+    });
+  }
+
   static async setFeaturedDocument(propertyId: string, documentId: string) {
     try {
       const result = await prisma.$transaction(async (tx) => {
@@ -204,6 +273,15 @@ export class DocumentService {
         return 'Property Title Deed';
       default:
         return 'Property Document';
+    }
+  }
+
+  private static getLeaseDescription(key: string): string {
+    switch (key) {
+      case 'arquivosLocacao':
+        return 'Lease Contract';
+      default:
+        return 'Lease Document';
     }
   }
 

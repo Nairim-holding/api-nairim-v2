@@ -4,6 +4,7 @@ import { ValidationUtil } from '../utils/validation';
 import { GetLeasesParams } from '../types/lease';
 import { LeaseValidator } from '@/lib/validators/lease';
 import { LeaseService } from '@/services/LeaseService';
+import { DocumentService } from '@/services/DocumentService';
 
 export class LeaseController {
   static async getLeases(req: Request, res: Response) {
@@ -241,6 +242,94 @@ export class LeaseController {
       }
 
       res.status(500).json(ApiResponse.error('Erro ao restaurar locação'));
+    }
+  }
+
+  /**
+   * Anexa/remove documentos (ex.: contrato) de uma locação. Multipart:
+   * arquivos novos no campo `arquivosLocacao` + `removedDocuments` (JSON de ids)
+   * + `userId`. Retorna a lista atualizada de documentos da locação.
+   */
+  static async updateLeaseDocuments(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const userId = String(req.body?.userId || '');
+      const { company_id } = (req as any).user;
+      const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+
+      let removedDocuments: string[] = [];
+      if (req.body?.removedDocuments) {
+        try {
+          const parsed = JSON.parse(req.body.removedDocuments);
+          if (Array.isArray(parsed)) removedDocuments = parsed.map(String);
+        } catch {
+          removedDocuments = [];
+        }
+      }
+
+      await DocumentService.removeLeaseDocuments(id, removedDocuments, company_id);
+      await DocumentService.uploadLeaseDocuments(id, userId, files || {}, company_id);
+
+      const lease = await LeaseService.getLeaseById(id);
+
+      res.status(200).json(
+        ApiResponse.success(lease, 'Arquivos da locação atualizados com sucesso')
+      );
+    } catch (error: any) {
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
+      }
+      console.error('Erro ao atualizar arquivos da locação:', error);
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar arquivos da locação: ${error.message}`));
+    }
+  }
+
+  /**
+   * Prévia dos lançamentos a excluir no cancelamento: da data informada até o
+   * término do contrato. Não exclui nada — apenas lista para confirmação.
+   */
+  static async getCancellationPreview(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      const date = String(req.query?.date || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      if (!date) return res.status(400).json(ApiResponse.error('A data do cancelamento é obrigatória'));
+
+      const result = await LeaseService.getCancellationPreview(id, date);
+      res.status(200).json(ApiResponse.success(result, 'Prévia de cancelamento recuperada com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
+      }
+      console.error('Erro ao recuperar prévia de cancelamento:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
+    }
+  }
+
+  /**
+   * Efetiva o cancelamento: exclui (soft) os lançamentos confirmados, marca a
+   * locação como CANCELED, libera o imóvel e opcionalmente lança os encargos.
+   */
+  static async cancelLease(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      if (!req.body?.date) return res.status(400).json(ApiResponse.error('A data do cancelamento é obrigatória'));
+
+      const { company_id } = (req as any).user;
+      const result = await LeaseService.cancelLease(id, req.body, company_id);
+
+      res.status(200).json(ApiResponse.success(result, 'Locação cancelada com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Lease not found' || error.message === 'Locação não encontrada') {
+        return res.status(404).json(ApiResponse.error('Locação não encontrada'));
+      }
+      console.error('Erro ao cancelar locação:', error);
+      res.status(400).json(ApiResponse.error(`Erro ao cancelar locação: ${error.message}`));
     }
   }
 

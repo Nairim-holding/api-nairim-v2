@@ -3093,6 +3093,7 @@ export const DocumentScalarFieldEnum = {
   id: 'id',
   company_id: 'company_id',
   property_id: 'property_id',
+  lease_id: 'lease_id',
   created_by: 'created_by',
   file_path: 'file_path',
   file_type: 'file_type',
@@ -3474,7 +3475,8 @@ export const TransactionScalarFieldEnum = {
   invoice_id: 'invoice_id',
   lease_id: 'lease_id',
   transfer_group_id: 'transfer_group_id',
-  is_transfer: 'is_transfer'
+  is_transfer: 'is_transfer',
+  is_cancellation_charge: 'is_cancellation_charge'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
