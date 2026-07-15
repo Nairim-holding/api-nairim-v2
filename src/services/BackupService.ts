@@ -36,9 +36,15 @@ export class BackupService {
     const company = await prisma.company.findUnique({ where: { id: company_id } });
     if (!company) throw new Error('Company not found');
 
-    // Validar confirmação (usuário deve digitar o nome da empresa)
-    if (confirmationName !== company.name) {
-      throw new Error(`Confirmação inválida. Digite "${company.name}" para prosseguir.`);
+    // Validar confirmação (usuário deve digitar o nome OU slug da empresa, case-insensitive)
+    const isValidConfirmation =
+      confirmationName.toLowerCase() === company.name.toLowerCase() ||
+      confirmationName.toLowerCase() === company.slug.toLowerCase();
+
+    if (!isValidConfirmation) {
+      throw new Error(
+        `Confirmação inválida. Digite exatamente "${company.name}" ou "${company.slug}" para prosseguir.`
+      );
     }
 
     // Validar formato e integridade do backup
