@@ -123,10 +123,11 @@ export class BackupService {
       // Imóveis (podem ter locações, valores, etc.)
       await tx.property.deleteMany({ where: { company_id } });
 
-      // Pessoas (inquilinos, proprietários, imobiliárias)
+      // Pessoas (inquilinos, proprietários, imobiliárias, fornecedores)
       await tx.tenant.deleteMany({ where: { company_id } });
       await tx.owner.deleteMany({ where: { company_id } });
       await tx.agency.deleteMany({ where: { company_id } });
+      await tx.supplier.deleteMany({ where: { company_id } });
 
       // Usuários (cuidado: podem ter muitas relações)
       // NOTA: Por segurança, NÃO deletamos usuários na restauração de backup
@@ -154,59 +155,38 @@ export class BackupService {
         await tx.companyBranding.createMany({ data: data.companyBranding as any });
       }
 
-      // Referências (antes de usá-las em outros registros)
-      if (Array.isArray(data.propertyType) && data.propertyType.length > 0) {
-        await tx.propertyType.createMany({ data: data.propertyType as any });
+      // Referências (antes de usá-las em outros registros).
+      // ATENÇÃO: as chaves seguem os nomes usados no export (plural).
+      if (Array.isArray(data.propertyTypes) && data.propertyTypes.length > 0) {
+        await tx.propertyType.createMany({ data: data.propertyTypes as any });
       }
-      if (Array.isArray(data.financialInstitution) && data.financialInstitution.length > 0) {
-        for (const inst of data.financialInstitution) {
-          await tx.financialInstitution.upsert({
-            where: { id: inst.id },
-            update: inst as any,
-            create: inst as any,
-          });
-        }
+      if (Array.isArray(data.financialInstitutions) && data.financialInstitutions.length > 0) {
+        await tx.financialInstitution.createMany({ data: data.financialInstitutions as any });
       }
-      if (Array.isArray(data.category) && data.category.length > 0) {
-        for (const cat of data.category) {
-          await tx.category.upsert({
-            where: { id: cat.id },
-            update: cat as any,
-            create: cat as any,
-          });
-        }
+      if (Array.isArray(data.categories) && data.categories.length > 0) {
+        await tx.category.createMany({ data: data.categories as any });
       }
-      if (Array.isArray(data.subcategory) && data.subcategory.length > 0) {
-        for (const subcat of data.subcategory) {
-          await tx.subcategory.upsert({
-            where: { id: subcat.id },
-            update: subcat as any,
-            create: subcat as any,
-          });
-        }
+      if (Array.isArray(data.subcategories) && data.subcategories.length > 0) {
+        await tx.subcategory.createMany({ data: data.subcategories as any });
       }
-      if (Array.isArray(data.center) && data.center.length > 0) {
-        for (const center of data.center) {
-          await tx.center.upsert({
-            where: { id: center.id },
-            update: center as any,
-            create: center as any,
-          });
-        }
+      if (Array.isArray(data.centers) && data.centers.length > 0) {
+        await tx.center.createMany({ data: data.centers as any });
       }
-      if (Array.isArray(data.card) && data.card.length > 0) {
-        for (const card of data.card) {
-          await tx.card.upsert({
-            where: { id: card.id },
-            update: card as any,
-            create: card as any,
-          });
-        }
+      if (Array.isArray(data.cards) && data.cards.length > 0) {
+        await tx.card.createMany({ data: data.cards as any });
       }
 
-      // Pais de relacionamentos (antes dos filhos)
+      // Pais de relacionamentos (antes dos filhos).
+      // Endereços são uma tabela compartilhada (não são deletados por empresa),
+      // então usamos upsert para evitar conflito de id.
       if (Array.isArray(data.addresses) && data.addresses.length > 0) {
-        await tx.address.createMany({ data: data.addresses as any });
+        for (const address of data.addresses) {
+          await tx.address.upsert({
+            where: { id: address.id },
+            update: address as any,
+            create: address as any,
+          });
+        }
       }
       if (Array.isArray(data.agencies) && data.agencies.length > 0) {
         await tx.agency.createMany({ data: data.agencies as any });
@@ -218,13 +198,7 @@ export class BackupService {
         await tx.tenant.createMany({ data: data.tenants as any });
       }
       if (Array.isArray(data.suppliers) && data.suppliers.length > 0) {
-        for (const supplier of data.suppliers) {
-          await tx.supplier.upsert({
-            where: { id: supplier.id },
-            update: supplier as any,
-            create: supplier as any,
-          });
-        }
+        await tx.supplier.createMany({ data: data.suppliers as any });
       }
       if (Array.isArray(data.properties) && data.properties.length > 0) {
         await tx.property.createMany({ data: data.properties as any });
@@ -271,8 +245,8 @@ export class BackupService {
       if (Array.isArray(data.leases) && data.leases.length > 0) {
         await tx.lease.createMany({ data: data.leases as any });
       }
-      if (Array.isArray(data.planning) && data.planning.length > 0) {
-        await tx.planning.createMany({ data: data.planning as any });
+      if (Array.isArray(data.plannings) && data.plannings.length > 0) {
+        await tx.planning.createMany({ data: data.plannings as any });
       }
       if (Array.isArray(data.planningMonths) && data.planningMonths.length > 0) {
         await tx.planningMonth.createMany({ data: data.planningMonths as any });
