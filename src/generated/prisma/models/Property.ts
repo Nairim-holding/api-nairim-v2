@@ -58,6 +58,8 @@ export type PropertyMinAggregateOutputType = {
   debit_center_id: string | null
   category_id: string | null
   subcategory_id: string | null
+  iptu_refund_category_id: string | null
+  iptu_refund_subcategory_id: string | null
   title: string | null
   registration_number: string | null
   bedrooms: number | null
@@ -86,6 +88,8 @@ export type PropertyMaxAggregateOutputType = {
   debit_center_id: string | null
   category_id: string | null
   subcategory_id: string | null
+  iptu_refund_category_id: string | null
+  iptu_refund_subcategory_id: string | null
   title: string | null
   registration_number: string | null
   bedrooms: number | null
@@ -114,6 +118,8 @@ export type PropertyCountAggregateOutputType = {
   debit_center_id: number
   category_id: number
   subcategory_id: number
+  iptu_refund_category_id: number
+  iptu_refund_subcategory_id: number
   title: number
   registration_number: number
   bedrooms: number
@@ -166,6 +172,8 @@ export type PropertyMinAggregateInputType = {
   debit_center_id?: true
   category_id?: true
   subcategory_id?: true
+  iptu_refund_category_id?: true
+  iptu_refund_subcategory_id?: true
   title?: true
   registration_number?: true
   bedrooms?: true
@@ -194,6 +202,8 @@ export type PropertyMaxAggregateInputType = {
   debit_center_id?: true
   category_id?: true
   subcategory_id?: true
+  iptu_refund_category_id?: true
+  iptu_refund_subcategory_id?: true
   title?: true
   registration_number?: true
   bedrooms?: true
@@ -222,6 +232,8 @@ export type PropertyCountAggregateInputType = {
   debit_center_id?: true
   category_id?: true
   subcategory_id?: true
+  iptu_refund_category_id?: true
+  iptu_refund_subcategory_id?: true
   title?: true
   registration_number?: true
   bedrooms?: true
@@ -337,6 +349,8 @@ export type PropertyGroupByOutputType = {
   debit_center_id: string | null
   category_id: string | null
   subcategory_id: string | null
+  iptu_refund_category_id: string | null
+  iptu_refund_subcategory_id: string | null
   title: string
   registration_number: string | null
   bedrooms: number
@@ -388,6 +402,8 @@ export type PropertyWhereInput = {
   debit_center_id?: Prisma.StringNullableFilter<"Property"> | string | null
   category_id?: Prisma.StringNullableFilter<"Property"> | string | null
   subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_category_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
   title?: Prisma.StringFilter<"Property"> | string
   registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
@@ -414,6 +430,8 @@ export type PropertyWhereInput = {
   debit_center?: Prisma.XOR<Prisma.CenterNullableScalarRelationFilter, Prisma.CenterWhereInput> | null
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
+  iptu_refund_category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  iptu_refund_subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   addresses?: Prisma.PropertyAddressListRelationFilter
   iptus?: Prisma.PropertyIptuListRelationFilter
   values?: Prisma.PropertyValueListRelationFilter
@@ -430,6 +448,8 @@ export type PropertyOrderByWithRelationInput = {
   debit_center_id?: Prisma.SortOrderInput | Prisma.SortOrder
   category_id?: Prisma.SortOrderInput | Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  iptu_refund_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  iptu_refund_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   registration_number?: Prisma.SortOrderInput | Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
@@ -456,6 +476,8 @@ export type PropertyOrderByWithRelationInput = {
   debit_center?: Prisma.CenterOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
   subcategory?: Prisma.SubcategoryOrderByWithRelationInput
+  iptu_refund_category?: Prisma.CategoryOrderByWithRelationInput
+  iptu_refund_subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   addresses?: Prisma.PropertyAddressOrderByRelationAggregateInput
   iptus?: Prisma.PropertyIptuOrderByRelationAggregateInput
   values?: Prisma.PropertyValueOrderByRelationAggregateInput
@@ -475,6 +497,8 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   debit_center_id?: Prisma.StringNullableFilter<"Property"> | string | null
   category_id?: Prisma.StringNullableFilter<"Property"> | string | null
   subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_category_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
   title?: Prisma.StringFilter<"Property"> | string
   registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
@@ -501,6 +525,8 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   debit_center?: Prisma.XOR<Prisma.CenterNullableScalarRelationFilter, Prisma.CenterWhereInput> | null
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
+  iptu_refund_category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  iptu_refund_subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   addresses?: Prisma.PropertyAddressListRelationFilter
   iptus?: Prisma.PropertyIptuListRelationFilter
   values?: Prisma.PropertyValueListRelationFilter
@@ -517,6 +543,8 @@ export type PropertyOrderByWithAggregationInput = {
   debit_center_id?: Prisma.SortOrderInput | Prisma.SortOrder
   category_id?: Prisma.SortOrderInput | Prisma.SortOrder
   subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  iptu_refund_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  iptu_refund_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   registration_number?: Prisma.SortOrderInput | Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
@@ -553,6 +581,8 @@ export type PropertyScalarWhereWithAggregatesInput = {
   debit_center_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   category_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
+  iptu_refund_category_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
+  iptu_refund_subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"Property"> | string
   registration_number?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   bedrooms?: Prisma.IntWithAggregatesFilter<"Property"> | number
@@ -599,6 +629,8 @@ export type PropertyCreateInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -615,6 +647,8 @@ export type PropertyUncheckedCreateInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -667,6 +701,8 @@ export type PropertyUpdateInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -683,6 +719,8 @@ export type PropertyUncheckedUpdateInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -717,6 +755,8 @@ export type PropertyCreateManyInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -765,6 +805,8 @@ export type PropertyUncheckedUpdateManyInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -803,6 +845,8 @@ export type PropertyCountOrderByAggregateInput = {
   debit_center_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
+  iptu_refund_category_id?: Prisma.SortOrder
+  iptu_refund_subcategory_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
@@ -842,6 +886,8 @@ export type PropertyMaxOrderByAggregateInput = {
   debit_center_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
+  iptu_refund_category_id?: Prisma.SortOrder
+  iptu_refund_subcategory_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
@@ -870,6 +916,8 @@ export type PropertyMinOrderByAggregateInput = {
   debit_center_id?: Prisma.SortOrder
   category_id?: Prisma.SortOrder
   subcategory_id?: Prisma.SortOrder
+  iptu_refund_category_id?: Prisma.SortOrder
+  iptu_refund_subcategory_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   registration_number?: Prisma.SortOrder
   bedrooms?: Prisma.SortOrder
@@ -1194,10 +1242,24 @@ export type PropertyCreateNestedManyWithoutCategoryInput = {
   connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
 }
 
+export type PropertyCreateNestedManyWithoutIptu_refund_categoryInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput> | Prisma.PropertyCreateWithoutIptu_refund_categoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_categoryInputEnvelope
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+}
+
 export type PropertyUncheckedCreateNestedManyWithoutCategoryInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutCategoryInput, Prisma.PropertyUncheckedCreateWithoutCategoryInput> | Prisma.PropertyCreateWithoutCategoryInput[] | Prisma.PropertyUncheckedCreateWithoutCategoryInput[]
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutCategoryInput | Prisma.PropertyCreateOrConnectWithoutCategoryInput[]
   createMany?: Prisma.PropertyCreateManyCategoryInputEnvelope
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+}
+
+export type PropertyUncheckedCreateNestedManyWithoutIptu_refund_categoryInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput> | Prisma.PropertyCreateWithoutIptu_refund_categoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_categoryInputEnvelope
   connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
 }
 
@@ -1215,6 +1277,20 @@ export type PropertyUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
 }
 
+export type PropertyUpdateManyWithoutIptu_refund_categoryNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput> | Prisma.PropertyCreateWithoutIptu_refund_categoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput[]
+  upsert?: Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_categoryInput | Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_categoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_categoryInputEnvelope
+  set?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  disconnect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  delete?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  update?: Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_categoryInput | Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_categoryInput[]
+  updateMany?: Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_categoryInput | Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_categoryInput[]
+  deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
+}
+
 export type PropertyUncheckedUpdateManyWithoutCategoryNestedInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutCategoryInput, Prisma.PropertyUncheckedCreateWithoutCategoryInput> | Prisma.PropertyCreateWithoutCategoryInput[] | Prisma.PropertyUncheckedCreateWithoutCategoryInput[]
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutCategoryInput | Prisma.PropertyCreateOrConnectWithoutCategoryInput[]
@@ -1229,6 +1305,20 @@ export type PropertyUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
 }
 
+export type PropertyUncheckedUpdateManyWithoutIptu_refund_categoryNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput> | Prisma.PropertyCreateWithoutIptu_refund_categoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_categoryInput[]
+  upsert?: Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_categoryInput | Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_categoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_categoryInputEnvelope
+  set?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  disconnect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  delete?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  update?: Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_categoryInput | Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_categoryInput[]
+  updateMany?: Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_categoryInput | Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_categoryInput[]
+  deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
+}
+
 export type PropertyCreateNestedManyWithoutSubcategoryInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutSubcategoryInput, Prisma.PropertyUncheckedCreateWithoutSubcategoryInput> | Prisma.PropertyCreateWithoutSubcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutSubcategoryInput[]
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutSubcategoryInput | Prisma.PropertyCreateOrConnectWithoutSubcategoryInput[]
@@ -1236,10 +1326,24 @@ export type PropertyCreateNestedManyWithoutSubcategoryInput = {
   connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
 }
 
+export type PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput> | Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_subcategoryInputEnvelope
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+}
+
 export type PropertyUncheckedCreateNestedManyWithoutSubcategoryInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutSubcategoryInput, Prisma.PropertyUncheckedCreateWithoutSubcategoryInput> | Prisma.PropertyCreateWithoutSubcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutSubcategoryInput[]
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutSubcategoryInput | Prisma.PropertyCreateOrConnectWithoutSubcategoryInput[]
   createMany?: Prisma.PropertyCreateManySubcategoryInputEnvelope
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+}
+
+export type PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput> | Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_subcategoryInputEnvelope
   connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
 }
 
@@ -1257,6 +1361,20 @@ export type PropertyUpdateManyWithoutSubcategoryNestedInput = {
   deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
 }
 
+export type PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput> | Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput[]
+  upsert?: Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_subcategoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_subcategoryInputEnvelope
+  set?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  disconnect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  delete?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  update?: Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_subcategoryInput[]
+  updateMany?: Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_subcategoryInput[]
+  deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
+}
+
 export type PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutSubcategoryInput, Prisma.PropertyUncheckedCreateWithoutSubcategoryInput> | Prisma.PropertyCreateWithoutSubcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutSubcategoryInput[]
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutSubcategoryInput | Prisma.PropertyCreateOrConnectWithoutSubcategoryInput[]
@@ -1268,6 +1386,20 @@ export type PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput = {
   connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
   update?: Prisma.PropertyUpdateWithWhereUniqueWithoutSubcategoryInput | Prisma.PropertyUpdateWithWhereUniqueWithoutSubcategoryInput[]
   updateMany?: Prisma.PropertyUpdateManyWithWhereWithoutSubcategoryInput | Prisma.PropertyUpdateManyWithWhereWithoutSubcategoryInput[]
+  deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
+}
+
+export type PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput> | Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput[] | Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput[]
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput | Prisma.PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput[]
+  upsert?: Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpsertWithWhereUniqueWithoutIptu_refund_subcategoryInput[]
+  createMany?: Prisma.PropertyCreateManyIptu_refund_subcategoryInputEnvelope
+  set?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  disconnect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  delete?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  connect?: Prisma.PropertyWhereUniqueInput | Prisma.PropertyWhereUniqueInput[]
+  update?: Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpdateWithWhereUniqueWithoutIptu_refund_subcategoryInput[]
+  updateMany?: Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_subcategoryInput | Prisma.PropertyUpdateManyWithWhereWithoutIptu_refund_subcategoryInput[]
   deleteMany?: Prisma.PropertyScalarWhereInput | Prisma.PropertyScalarWhereInput[]
 }
 
@@ -1383,6 +1515,8 @@ export type PropertyCreateWithoutCompanyInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -1397,6 +1531,8 @@ export type PropertyUncheckedCreateWithoutCompanyInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -1460,6 +1596,8 @@ export type PropertyScalarWhereInput = {
   debit_center_id?: Prisma.StringNullableFilter<"Property"> | string | null
   category_id?: Prisma.StringNullableFilter<"Property"> | string | null
   subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_category_id?: Prisma.StringNullableFilter<"Property"> | string | null
+  iptu_refund_subcategory_id?: Prisma.StringNullableFilter<"Property"> | string | null
   title?: Prisma.StringFilter<"Property"> | string
   registration_number?: Prisma.StringNullableFilter<"Property"> | string | null
   bedrooms?: Prisma.IntFilter<"Property"> | number
@@ -1505,6 +1643,8 @@ export type PropertyCreateWithoutAgencyInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -1520,6 +1660,8 @@ export type PropertyUncheckedCreateWithoutAgencyInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -1598,6 +1740,8 @@ export type PropertyCreateWithoutIptusInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
   company: Prisma.CompanyCreateNestedOneWithoutPropertiesInput
@@ -1613,6 +1757,8 @@ export type PropertyUncheckedCreateWithoutIptusInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -1680,6 +1826,8 @@ export type PropertyUpdateWithoutIptusInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutPropertiesNestedInput
@@ -1695,6 +1843,8 @@ export type PropertyUncheckedUpdateWithoutIptusInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1745,6 +1895,8 @@ export type PropertyCreateWithoutDocumentsInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -1761,6 +1913,8 @@ export type PropertyUncheckedCreateWithoutDocumentsInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -1827,6 +1981,8 @@ export type PropertyUpdateWithoutDocumentsInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -1843,6 +1999,8 @@ export type PropertyUncheckedUpdateWithoutDocumentsInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1893,6 +2051,8 @@ export type PropertyCreateWithoutOwnerInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -1908,6 +2068,8 @@ export type PropertyUncheckedCreateWithoutOwnerInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -1985,6 +2147,8 @@ export type PropertyCreateWithoutLeasesInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2001,6 +2165,8 @@ export type PropertyUncheckedCreateWithoutLeasesInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2067,6 +2233,8 @@ export type PropertyUpdateWithoutLeasesInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -2083,6 +2251,8 @@ export type PropertyUncheckedUpdateWithoutLeasesInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2134,6 +2304,8 @@ export type PropertyCreateWithoutValuesInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   company: Prisma.CompanyCreateNestedOneWithoutPropertiesInput
@@ -2149,6 +2321,8 @@ export type PropertyUncheckedCreateWithoutValuesInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2216,6 +2390,8 @@ export type PropertyUpdateWithoutValuesInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutPropertiesNestedInput
@@ -2231,6 +2407,8 @@ export type PropertyUncheckedUpdateWithoutValuesInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2281,6 +2459,8 @@ export type PropertyCreateWithoutTypeInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2296,6 +2476,8 @@ export type PropertyUncheckedCreateWithoutTypeInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2373,6 +2555,8 @@ export type PropertyCreateWithoutFavoritesInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2389,6 +2573,8 @@ export type PropertyUncheckedCreateWithoutFavoritesInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2455,6 +2641,8 @@ export type PropertyUpdateWithoutFavoritesInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -2471,6 +2659,8 @@ export type PropertyUncheckedUpdateWithoutFavoritesInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2522,6 +2712,8 @@ export type PropertyCreateWithoutAddressesInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
   company: Prisma.CompanyCreateNestedOneWithoutPropertiesInput
@@ -2537,6 +2729,8 @@ export type PropertyUncheckedCreateWithoutAddressesInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2604,6 +2798,8 @@ export type PropertyUpdateWithoutAddressesInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutPropertiesNestedInput
@@ -2619,6 +2815,8 @@ export type PropertyUncheckedUpdateWithoutAddressesInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2669,6 +2867,8 @@ export type PropertyCreateWithoutCategoryInput = {
   center?: Prisma.CenterCreateNestedOneWithoutPropertiesInput
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2684,6 +2884,8 @@ export type PropertyUncheckedCreateWithoutCategoryInput = {
   center_id?: string | null
   debit_center_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2718,6 +2920,86 @@ export type PropertyCreateManyCategoryInputEnvelope = {
   skipDuplicates?: boolean
 }
 
+export type PropertyCreateWithoutIptu_refund_categoryInput = {
+  id?: string
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentCreateNestedManyWithoutPropertyInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPropertyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPropertyInput
+  agency?: Prisma.AgencyCreateNestedOneWithoutPropertiesInput
+  owner: Prisma.OwnerCreateNestedOneWithoutPropertiesInput
+  type: Prisma.PropertyTypeCreateNestedOneWithoutPropertiesInput
+  center?: Prisma.CenterCreateNestedOneWithoutPropertiesInput
+  debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
+  iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
+  values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
+  company: Prisma.CompanyCreateNestedOneWithoutPropertiesInput
+}
+
+export type PropertyUncheckedCreateWithoutIptu_refund_categoryInput = {
+  id?: string
+  company_id: string
+  owner_id: string
+  agency_id?: string | null
+  type_id: string
+  center_id?: string | null
+  debit_center_id?: string | null
+  category_id?: string | null
+  subcategory_id?: string | null
+  iptu_refund_subcategory_id?: string | null
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutPropertyInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPropertyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPropertyInput
+  addresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutPropertyInput
+  iptus?: Prisma.PropertyIptuUncheckedCreateNestedManyWithoutPropertyInput
+  values?: Prisma.PropertyValueUncheckedCreateNestedManyWithoutPropertyInput
+}
+
+export type PropertyCreateOrConnectWithoutIptu_refund_categoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput>
+}
+
+export type PropertyCreateManyIptu_refund_categoryInputEnvelope = {
+  data: Prisma.PropertyCreateManyIptu_refund_categoryInput | Prisma.PropertyCreateManyIptu_refund_categoryInput[]
+  skipDuplicates?: boolean
+}
+
 export type PropertyUpsertWithWhereUniqueWithoutCategoryInput = {
   where: Prisma.PropertyWhereUniqueInput
   update: Prisma.XOR<Prisma.PropertyUpdateWithoutCategoryInput, Prisma.PropertyUncheckedUpdateWithoutCategoryInput>
@@ -2732,6 +3014,22 @@ export type PropertyUpdateWithWhereUniqueWithoutCategoryInput = {
 export type PropertyUpdateManyWithWhereWithoutCategoryInput = {
   where: Prisma.PropertyScalarWhereInput
   data: Prisma.XOR<Prisma.PropertyUpdateManyMutationInput, Prisma.PropertyUncheckedUpdateManyWithoutCategoryInput>
+}
+
+export type PropertyUpsertWithWhereUniqueWithoutIptu_refund_categoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyUpdateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedUpdateWithoutIptu_refund_categoryInput>
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_categoryInput>
+}
+
+export type PropertyUpdateWithWhereUniqueWithoutIptu_refund_categoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyUpdateWithoutIptu_refund_categoryInput, Prisma.PropertyUncheckedUpdateWithoutIptu_refund_categoryInput>
+}
+
+export type PropertyUpdateManyWithWhereWithoutIptu_refund_categoryInput = {
+  where: Prisma.PropertyScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyUpdateManyMutationInput, Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_categoryInput>
 }
 
 export type PropertyCreateWithoutSubcategoryInput = {
@@ -2761,6 +3059,8 @@ export type PropertyCreateWithoutSubcategoryInput = {
   center?: Prisma.CenterCreateNestedOneWithoutPropertiesInput
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2776,6 +3076,8 @@ export type PropertyUncheckedCreateWithoutSubcategoryInput = {
   center_id?: string | null
   debit_center_id?: string | null
   category_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2810,6 +3112,86 @@ export type PropertyCreateManySubcategoryInputEnvelope = {
   skipDuplicates?: boolean
 }
 
+export type PropertyCreateWithoutIptu_refund_subcategoryInput = {
+  id?: string
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentCreateNestedManyWithoutPropertyInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutPropertyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPropertyInput
+  agency?: Prisma.AgencyCreateNestedOneWithoutPropertiesInput
+  owner: Prisma.OwnerCreateNestedOneWithoutPropertiesInput
+  type: Prisma.PropertyTypeCreateNestedOneWithoutPropertiesInput
+  center?: Prisma.CenterCreateNestedOneWithoutPropertiesInput
+  debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
+  iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
+  values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
+  company: Prisma.CompanyCreateNestedOneWithoutPropertiesInput
+}
+
+export type PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput = {
+  id?: string
+  company_id: string
+  owner_id: string
+  agency_id?: string | null
+  type_id: string
+  center_id?: string | null
+  debit_center_id?: string | null
+  category_id?: string | null
+  subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutPropertyInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutPropertyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPropertyInput
+  addresses?: Prisma.PropertyAddressUncheckedCreateNestedManyWithoutPropertyInput
+  iptus?: Prisma.PropertyIptuUncheckedCreateNestedManyWithoutPropertyInput
+  values?: Prisma.PropertyValueUncheckedCreateNestedManyWithoutPropertyInput
+}
+
+export type PropertyCreateOrConnectWithoutIptu_refund_subcategoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput>
+}
+
+export type PropertyCreateManyIptu_refund_subcategoryInputEnvelope = {
+  data: Prisma.PropertyCreateManyIptu_refund_subcategoryInput | Prisma.PropertyCreateManyIptu_refund_subcategoryInput[]
+  skipDuplicates?: boolean
+}
+
 export type PropertyUpsertWithWhereUniqueWithoutSubcategoryInput = {
   where: Prisma.PropertyWhereUniqueInput
   update: Prisma.XOR<Prisma.PropertyUpdateWithoutSubcategoryInput, Prisma.PropertyUncheckedUpdateWithoutSubcategoryInput>
@@ -2824,6 +3206,22 @@ export type PropertyUpdateWithWhereUniqueWithoutSubcategoryInput = {
 export type PropertyUpdateManyWithWhereWithoutSubcategoryInput = {
   where: Prisma.PropertyScalarWhereInput
   data: Prisma.XOR<Prisma.PropertyUpdateManyMutationInput, Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryInput>
+}
+
+export type PropertyUpsertWithWhereUniqueWithoutIptu_refund_subcategoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyUpdateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedUpdateWithoutIptu_refund_subcategoryInput>
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedCreateWithoutIptu_refund_subcategoryInput>
+}
+
+export type PropertyUpdateWithWhereUniqueWithoutIptu_refund_subcategoryInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyUpdateWithoutIptu_refund_subcategoryInput, Prisma.PropertyUncheckedUpdateWithoutIptu_refund_subcategoryInput>
+}
+
+export type PropertyUpdateManyWithWhereWithoutIptu_refund_subcategoryInput = {
+  where: Prisma.PropertyScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyUpdateManyMutationInput, Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryInput>
 }
 
 export type PropertyCreateWithoutCenterInput = {
@@ -2853,6 +3251,8 @@ export type PropertyCreateWithoutCenterInput = {
   debit_center?: Prisma.CenterCreateNestedOneWithoutDebit_propertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2868,6 +3268,8 @@ export type PropertyUncheckedCreateWithoutCenterInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -2929,6 +3331,8 @@ export type PropertyCreateWithoutDebit_centerInput = {
   center?: Prisma.CenterCreateNestedOneWithoutPropertiesInput
   category?: Prisma.CategoryCreateNestedOneWithoutPropertiesInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutPropertiesInput
+  iptu_refund_category?: Prisma.CategoryCreateNestedOneWithoutIptu_refund_propertiesInput
+  iptu_refund_subcategory?: Prisma.SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput
   addresses?: Prisma.PropertyAddressCreateNestedManyWithoutPropertyInput
   iptus?: Prisma.PropertyIptuCreateNestedManyWithoutPropertyInput
   values?: Prisma.PropertyValueCreateNestedManyWithoutPropertyInput
@@ -2944,6 +3348,8 @@ export type PropertyUncheckedCreateWithoutDebit_centerInput = {
   center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3019,6 +3425,8 @@ export type PropertyCreateManyCompanyInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3065,6 +3473,8 @@ export type PropertyUpdateWithoutCompanyInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3079,6 +3489,8 @@ export type PropertyUncheckedUpdateWithoutCompanyInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3112,6 +3524,8 @@ export type PropertyUncheckedUpdateManyWithoutCompanyInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3139,6 +3553,8 @@ export type PropertyCreateManyAgencyInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3184,6 +3600,8 @@ export type PropertyUpdateWithoutAgencyInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3199,6 +3617,8 @@ export type PropertyUncheckedUpdateWithoutAgencyInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3232,6 +3652,8 @@ export type PropertyUncheckedUpdateManyWithoutAgencyInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3259,6 +3681,8 @@ export type PropertyCreateManyOwnerInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3304,6 +3728,8 @@ export type PropertyUpdateWithoutOwnerInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3319,6 +3745,8 @@ export type PropertyUncheckedUpdateWithoutOwnerInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3352,6 +3780,8 @@ export type PropertyUncheckedUpdateManyWithoutOwnerInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3379,6 +3809,8 @@ export type PropertyCreateManyTypeInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3424,6 +3856,8 @@ export type PropertyUpdateWithoutTypeInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3439,6 +3873,8 @@ export type PropertyUncheckedUpdateWithoutTypeInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3472,6 +3908,8 @@ export type PropertyUncheckedUpdateManyWithoutTypeInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3499,6 +3937,37 @@ export type PropertyCreateManyCategoryInput = {
   center_id?: string | null
   debit_center_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type PropertyCreateManyIptu_refund_categoryInput = {
+  id?: string
+  company_id: string
+  owner_id: string
+  agency_id?: string | null
+  type_id: string
+  center_id?: string | null
+  debit_center_id?: string | null
+  category_id?: string | null
+  subcategory_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3544,6 +4013,8 @@ export type PropertyUpdateWithoutCategoryInput = {
   center?: Prisma.CenterUpdateOneWithoutPropertiesNestedInput
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3559,6 +4030,8 @@ export type PropertyUncheckedUpdateWithoutCategoryInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3592,6 +4065,107 @@ export type PropertyUncheckedUpdateManyWithoutCategoryInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PropertyUpdateWithoutIptu_refund_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUpdateManyWithoutPropertyNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPropertyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPropertyNestedInput
+  agency?: Prisma.AgencyUpdateOneWithoutPropertiesNestedInput
+  owner?: Prisma.OwnerUpdateOneRequiredWithoutPropertiesNestedInput
+  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutPropertiesNestedInput
+  center?: Prisma.CenterUpdateOneWithoutPropertiesNestedInput
+  debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
+  iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
+  values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPropertiesNestedInput
+}
+
+export type PropertyUncheckedUpdateWithoutIptu_refund_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_id?: Prisma.StringFieldUpdateOperationsInput | string
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type_id?: Prisma.StringFieldUpdateOperationsInput | string
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutPropertyNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPropertyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPropertyNestedInput
+  addresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutPropertyNestedInput
+  iptus?: Prisma.PropertyIptuUncheckedUpdateManyWithoutPropertyNestedInput
+  values?: Prisma.PropertyValueUncheckedUpdateManyWithoutPropertyNestedInput
+}
+
+export type PropertyUncheckedUpdateManyWithoutIptu_refund_categoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_id?: Prisma.StringFieldUpdateOperationsInput | string
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type_id?: Prisma.StringFieldUpdateOperationsInput | string
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3619,6 +4193,37 @@ export type PropertyCreateManySubcategoryInput = {
   center_id?: string | null
   debit_center_id?: string | null
   category_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
+  title: string
+  registration_number?: string | null
+  bedrooms: number
+  bathrooms: number
+  half_bathrooms: number
+  garage_spaces: number
+  area_total: number
+  area_built: number
+  frontage: number
+  furnished: boolean
+  floor_number?: number | null
+  tax_registration: string
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+}
+
+export type PropertyCreateManyIptu_refund_subcategoryInput = {
+  id?: string
+  company_id: string
+  owner_id: string
+  agency_id?: string | null
+  type_id: string
+  center_id?: string | null
+  debit_center_id?: string | null
+  category_id?: string | null
+  subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3664,6 +4269,8 @@ export type PropertyUpdateWithoutSubcategoryInput = {
   center?: Prisma.CenterUpdateOneWithoutPropertiesNestedInput
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3679,6 +4286,8 @@ export type PropertyUncheckedUpdateWithoutSubcategoryInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3712,6 +4321,107 @@ export type PropertyUncheckedUpdateManyWithoutSubcategoryInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PropertyUpdateWithoutIptu_refund_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUpdateManyWithoutPropertyNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutPropertyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPropertyNestedInput
+  agency?: Prisma.AgencyUpdateOneWithoutPropertiesNestedInput
+  owner?: Prisma.OwnerUpdateOneRequiredWithoutPropertiesNestedInput
+  type?: Prisma.PropertyTypeUpdateOneRequiredWithoutPropertiesNestedInput
+  center?: Prisma.CenterUpdateOneWithoutPropertiesNestedInput
+  debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
+  iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
+  values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutPropertiesNestedInput
+}
+
+export type PropertyUncheckedUpdateWithoutIptu_refund_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_id?: Prisma.StringFieldUpdateOperationsInput | string
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type_id?: Prisma.StringFieldUpdateOperationsInput | string
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  half_bathrooms?: Prisma.IntFieldUpdateOperationsInput | number
+  garage_spaces?: Prisma.IntFieldUpdateOperationsInput | number
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_built?: Prisma.FloatFieldUpdateOperationsInput | number
+  frontage?: Prisma.FloatFieldUpdateOperationsInput | number
+  furnished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  floor_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  tax_registration?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutPropertyNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutPropertyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPropertyNestedInput
+  addresses?: Prisma.PropertyAddressUncheckedUpdateManyWithoutPropertyNestedInput
+  iptus?: Prisma.PropertyIptuUncheckedUpdateManyWithoutPropertyNestedInput
+  values?: Prisma.PropertyValueUncheckedUpdateManyWithoutPropertyNestedInput
+}
+
+export type PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  owner_id?: Prisma.StringFieldUpdateOperationsInput | string
+  agency_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type_id?: Prisma.StringFieldUpdateOperationsInput | string
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3739,6 +4449,8 @@ export type PropertyCreateManyCenterInput = {
   debit_center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3766,6 +4478,8 @@ export type PropertyCreateManyDebit_centerInput = {
   center_id?: string | null
   category_id?: string | null
   subcategory_id?: string | null
+  iptu_refund_category_id?: string | null
+  iptu_refund_subcategory_id?: string | null
   title: string
   registration_number?: string | null
   bedrooms: number
@@ -3811,6 +4525,8 @@ export type PropertyUpdateWithoutCenterInput = {
   debit_center?: Prisma.CenterUpdateOneWithoutDebit_propertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3826,6 +4542,8 @@ export type PropertyUncheckedUpdateWithoutCenterInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3859,6 +4577,8 @@ export type PropertyUncheckedUpdateManyWithoutCenterInput = {
   debit_center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3904,6 +4624,8 @@ export type PropertyUpdateWithoutDebit_centerInput = {
   center?: Prisma.CenterUpdateOneWithoutPropertiesNestedInput
   category?: Prisma.CategoryUpdateOneWithoutPropertiesNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutPropertiesNestedInput
+  iptu_refund_category?: Prisma.CategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
+  iptu_refund_subcategory?: Prisma.SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput
   addresses?: Prisma.PropertyAddressUpdateManyWithoutPropertyNestedInput
   iptus?: Prisma.PropertyIptuUpdateManyWithoutPropertyNestedInput
   values?: Prisma.PropertyValueUpdateManyWithoutPropertyNestedInput
@@ -3919,6 +4641,8 @@ export type PropertyUncheckedUpdateWithoutDebit_centerInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3952,6 +4676,8 @@ export type PropertyUncheckedUpdateManyWithoutDebit_centerInput = {
   center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  iptu_refund_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   registration_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bedrooms?: Prisma.IntFieldUpdateOperationsInput | number
@@ -4056,6 +4782,8 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   debit_center_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
+  iptu_refund_category_id?: boolean
+  iptu_refund_subcategory_id?: boolean
   title?: boolean
   registration_number?: boolean
   bedrooms?: boolean
@@ -4082,6 +4810,8 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   addresses?: boolean | Prisma.Property$addressesArgs<ExtArgs>
   iptus?: boolean | Prisma.Property$iptusArgs<ExtArgs>
   values?: boolean | Prisma.Property$valuesArgs<ExtArgs>
@@ -4099,6 +4829,8 @@ export type PropertySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   debit_center_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
+  iptu_refund_category_id?: boolean
+  iptu_refund_subcategory_id?: boolean
   title?: boolean
   registration_number?: boolean
   bedrooms?: boolean
@@ -4122,6 +4854,8 @@ export type PropertySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["property"]>
 
@@ -4135,6 +4869,8 @@ export type PropertySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   debit_center_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
+  iptu_refund_category_id?: boolean
+  iptu_refund_subcategory_id?: boolean
   title?: boolean
   registration_number?: boolean
   bedrooms?: boolean
@@ -4158,6 +4894,8 @@ export type PropertySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["property"]>
 
@@ -4171,6 +4909,8 @@ export type PropertySelectScalar = {
   debit_center_id?: boolean
   category_id?: boolean
   subcategory_id?: boolean
+  iptu_refund_category_id?: boolean
+  iptu_refund_subcategory_id?: boolean
   title?: boolean
   registration_number?: boolean
   bedrooms?: boolean
@@ -4189,7 +4929,7 @@ export type PropertySelectScalar = {
   deleted_at?: boolean
 }
 
-export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "owner_id" | "agency_id" | "type_id" | "center_id" | "debit_center_id" | "category_id" | "subcategory_id" | "title" | "registration_number" | "bedrooms" | "bathrooms" | "half_bathrooms" | "garage_spaces" | "area_total" | "area_built" | "frontage" | "furnished" | "floor_number" | "tax_registration" | "notes" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["property"]>
+export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "owner_id" | "agency_id" | "type_id" | "center_id" | "debit_center_id" | "category_id" | "subcategory_id" | "iptu_refund_category_id" | "iptu_refund_subcategory_id" | "title" | "registration_number" | "bedrooms" | "bathrooms" | "half_bathrooms" | "garage_spaces" | "area_total" | "area_built" | "frontage" | "furnished" | "floor_number" | "tax_registration" | "notes" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["property"]>
 export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Property$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.Property$favoritesArgs<ExtArgs>
@@ -4201,6 +4941,8 @@ export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   addresses?: boolean | Prisma.Property$addressesArgs<ExtArgs>
   iptus?: boolean | Prisma.Property$iptusArgs<ExtArgs>
   values?: boolean | Prisma.Property$valuesArgs<ExtArgs>
@@ -4215,6 +4957,8 @@ export type PropertyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type PropertyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4225,6 +4969,8 @@ export type PropertyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   debit_center?: boolean | Prisma.Property$debit_centerArgs<ExtArgs>
   category?: boolean | Prisma.Property$categoryArgs<ExtArgs>
   subcategory?: boolean | Prisma.Property$subcategoryArgs<ExtArgs>
+  iptu_refund_category?: boolean | Prisma.Property$iptu_refund_categoryArgs<ExtArgs>
+  iptu_refund_subcategory?: boolean | Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
@@ -4241,6 +4987,8 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     debit_center: Prisma.$CenterPayload<ExtArgs> | null
     category: Prisma.$CategoryPayload<ExtArgs> | null
     subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
+    iptu_refund_category: Prisma.$CategoryPayload<ExtArgs> | null
+    iptu_refund_subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     addresses: Prisma.$PropertyAddressPayload<ExtArgs>[]
     iptus: Prisma.$PropertyIptuPayload<ExtArgs>[]
     values: Prisma.$PropertyValuePayload<ExtArgs>[]
@@ -4256,6 +5004,8 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     debit_center_id: string | null
     category_id: string | null
     subcategory_id: string | null
+    iptu_refund_category_id: string | null
+    iptu_refund_subcategory_id: string | null
     title: string
     registration_number: string | null
     bedrooms: number
@@ -4676,6 +5426,8 @@ export interface Prisma__PropertyClient<T, Null = never, ExtArgs extends runtime
   debit_center<T extends Prisma.Property$debit_centerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$debit_centerArgs<ExtArgs>>): Prisma.Prisma__CenterClient<runtime.Types.Result.GetResult<Prisma.$CenterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   category<T extends Prisma.Property$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   subcategory<T extends Prisma.Property$subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  iptu_refund_category<T extends Prisma.Property$iptu_refund_categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$iptu_refund_categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  iptu_refund_subcategory<T extends Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$iptu_refund_subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   addresses<T extends Prisma.Property$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyAddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   iptus<T extends Prisma.Property$iptusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$iptusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyIptuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   values<T extends Prisma.Property$valuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$valuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4718,6 +5470,8 @@ export interface PropertyFieldRefs {
   readonly debit_center_id: Prisma.FieldRef<"Property", 'String'>
   readonly category_id: Prisma.FieldRef<"Property", 'String'>
   readonly subcategory_id: Prisma.FieldRef<"Property", 'String'>
+  readonly iptu_refund_category_id: Prisma.FieldRef<"Property", 'String'>
+  readonly iptu_refund_subcategory_id: Prisma.FieldRef<"Property", 'String'>
   readonly title: Prisma.FieldRef<"Property", 'String'>
   readonly registration_number: Prisma.FieldRef<"Property", 'String'>
   readonly bedrooms: Prisma.FieldRef<"Property", 'Int'>
@@ -5281,6 +6035,44 @@ export type Property$categoryArgs<ExtArgs extends runtime.Types.Extensions.Inter
  * Property.subcategory
  */
 export type Property$subcategoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subcategory
+   */
+  select?: Prisma.SubcategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subcategory
+   */
+  omit?: Prisma.SubcategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubcategoryInclude<ExtArgs> | null
+  where?: Prisma.SubcategoryWhereInput
+}
+
+/**
+ * Property.iptu_refund_category
+ */
+export type Property$iptu_refund_categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * Property.iptu_refund_subcategory
+ */
+export type Property$iptu_refund_subcategoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Subcategory
    */

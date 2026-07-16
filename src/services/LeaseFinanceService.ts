@@ -159,7 +159,7 @@ export class LeaseFinanceService {
       date: it.date,
       installment_number: idx + 1,
       total: items.length,
-      description: `IPTU ${idx + 1}/${items.length} - Contrato ${lease.contract_number}`,
+      description: `Restituição IPTU ${idx + 1}/${items.length} - Contrato ${lease.contract_number}`,
     }));
   }
 
@@ -174,7 +174,7 @@ export class LeaseFinanceService {
     const lease = await prisma.lease.findUnique({
       where: { id: leaseId },
       include: {
-        property: { select: { center_id: true, debit_center_id: true, category_id: true, subcategory_id: true } },
+        property: { select: { center_id: true, debit_center_id: true, category_id: true, subcategory_id: true, iptu_refund_category_id: true, iptu_refund_subcategory_id: true } },
         agency: { select: { commission_category_id: true, commission_subcategory_id: true } },
         tenant: { select: { name: true } },
       },
@@ -257,11 +257,22 @@ export class LeaseFinanceService {
       }
     });
 
-    items.push(...this.buildIptuItems(lease, propCategoryId, propSubcategoryId, creditCenterId));
+    // IPTU (Restituição): usa a categoria/subcategoria PRÓPRIA de restituição do
+    // imóvel. Campos opcionais — se a categoria de restituição não estiver definida,
+    // cai na categoria/subcategoria do imóvel (comportamento antigo) para não quebrar
+    // a geração.
+    const iptuCategoryId = lease.property?.iptu_refund_category_id ?? propCategoryId;
+    const iptuSubcategoryId = lease.property?.iptu_refund_category_id
+      ? (lease.property.iptu_refund_subcategory_id ?? null)
+      : propSubcategoryId;
+    items.push(...this.buildIptuItems(lease, iptuCategoryId, iptuSubcategoryId, creditCenterId));
 
     // 4. Idempotência: separa existentes PENDING (regerar) de COMPLETED (preservar).
-    // Como aluguel/comissão/IPTU agora usam a MESMA categoria do imóvel, a chave
-    // diferencia pelo tipo via 1ª palavra da descrição (Aluguel/Comissão/IPTU).
+    // A chave diferencia pelo tipo via 1ª palavra da descrição
+    // (Aluguel/Comissão/Restituição). ATENÇÃO: lançamentos de IPTU gerados ANTES
+    // desta mudança têm descrição "IPTU ..." (1ª palavra "IPTU") e não casam com os
+    // novos "Restituição ...". Use o script de migração para renomeá-los e evitar
+    // duplicidade no próximo sync.
     const keyOf = (desc: string | null, inst: number | null) =>
       `${String(desc ?? '').split(' ')[0]}::${inst ?? 0}`;
 

@@ -131,6 +131,8 @@ model Property {
   debit_center_id     String?
   category_id         String?
   subcategory_id      String?
+  iptu_refund_category_id    String?
+  iptu_refund_subcategory_id String?
   title               String
   registration_number String?           @db.VarChar(50)
   bedrooms            Int
@@ -155,8 +157,10 @@ model Property {
   type                PropertyType      @relation(fields: [type_id], references: [id])
   center              Center?           @relation("PropertyCreditCenter", fields: [center_id], references: [id])
   debit_center        Center?           @relation("PropertyDebitCenter", fields: [debit_center_id], references: [id])
-  category            Category?         @relation(fields: [category_id], references: [id])
-  subcategory         Subcategory?      @relation(fields: [subcategory_id], references: [id])
+  category            Category?         @relation("PropertyCategory", fields: [category_id], references: [id])
+  subcategory         Subcategory?      @relation("PropertySubcategory", fields: [subcategory_id], references: [id])
+  iptu_refund_category    Category?     @relation("PropertyIptuRefundCategory", fields: [iptu_refund_category_id], references: [id])
+  iptu_refund_subcategory Subcategory?  @relation("PropertyIptuRefundSubcategory", fields: [iptu_refund_subcategory_id], references: [id])
   addresses           PropertyAddress[]
   iptus               PropertyIptu[]
   values              PropertyValue[]
@@ -168,6 +172,8 @@ model Property {
   @@index([debit_center_id])
   @@index([category_id])
   @@index([subcategory_id])
+  @@index([iptu_refund_category_id])
+  @@index([iptu_refund_subcategory_id])
   @@index([company_id])
 }
 
@@ -570,7 +576,8 @@ model Category {
   subcategories     Subcategory[]
   transactions      Transaction[]
   plannings         Planning[]
-  properties        Property[]
+  properties        Property[]        @relation("PropertyCategory")
+  iptu_refund_properties Property[]   @relation("PropertyIptuRefundCategory")
   commission_agencies Agency[]
   company           Company          @relation(fields: [company_id], references: [id])
 
@@ -590,7 +597,8 @@ model Subcategory {
   category          Category          @relation(fields: [category_id], references: [id])
   transactions      Transaction[]
   plannings         Planning[]
-  properties        Property[]
+  properties        Property[]        @relation("PropertySubcategory")
+  iptu_refund_properties Property[]   @relation("PropertyIptuRefundSubcategory")
   commission_agencies Agency[]
   company           Company          @relation(fields: [company_id], references: [id])
 

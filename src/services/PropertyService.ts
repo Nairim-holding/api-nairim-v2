@@ -662,6 +662,8 @@ export class PropertyService {
             debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
+            iptu_refund_category_id: data.iptu_refund_category_id || null,
+            iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
           }
         });
 
@@ -950,6 +952,8 @@ export class PropertyService {
           debit_center_id: data.debit_center_id || null,
           category_id: data.category_id || null,
           subcategory_id: data.subcategory_id || null,
+          iptu_refund_category_id: data.iptu_refund_category_id || null,
+          iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
         },
       });
 
@@ -1086,6 +1090,8 @@ export class PropertyService {
           debit_center_id: data.debit_center_id || null,
           category_id: data.category_id || null,
           subcategory_id: data.subcategory_id || null,
+          iptu_refund_category_id: data.iptu_refund_category_id || null,
+          iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
         },
       });
 
@@ -1232,6 +1238,8 @@ export class PropertyService {
             debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
+            iptu_refund_category_id: data.iptu_refund_category_id || null,
+            iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
           }
         });
 
@@ -1644,6 +1652,8 @@ export class PropertyService {
             debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
+            iptu_refund_category_id: data.iptu_refund_category_id || null,
+            iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
           }
         });
 
@@ -1867,6 +1877,8 @@ export class PropertyService {
             debit_center_id: data.debit_center_id || null,
             category_id: data.category_id || null,
             subcategory_id: data.subcategory_id || null,
+            iptu_refund_category_id: data.iptu_refund_category_id || null,
+            iptu_refund_subcategory_id: data.iptu_refund_subcategory_id || null,
           }
         });
 

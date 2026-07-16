@@ -3001,6 +3001,8 @@ export const PropertyScalarFieldEnum = {
   debit_center_id: 'debit_center_id',
   category_id: 'category_id',
   subcategory_id: 'subcategory_id',
+  iptu_refund_category_id: 'iptu_refund_category_id',
+  iptu_refund_subcategory_id: 'iptu_refund_subcategory_id',
   title: 'title',
   registration_number: 'registration_number',
   bedrooms: 'bedrooms',

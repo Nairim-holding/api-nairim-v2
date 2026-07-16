@@ -211,6 +211,7 @@ export type SubcategoryWhereInput = {
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  iptu_refund_properties?: Prisma.PropertyListRelationFilter
   commission_agencies?: Prisma.AgencyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
@@ -229,6 +230,7 @@ export type SubcategoryOrderByWithRelationInput = {
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   plannings?: Prisma.PlanningOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
+  iptu_refund_properties?: Prisma.PropertyOrderByRelationAggregateInput
   commission_agencies?: Prisma.AgencyOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
@@ -250,6 +252,7 @@ export type SubcategoryWhereUniqueInput = Prisma.AtLeast<{
   transactions?: Prisma.TransactionListRelationFilter
   plannings?: Prisma.PlanningListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
+  iptu_refund_properties?: Prisma.PropertyListRelationFilter
   commission_agencies?: Prisma.AgencyListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
@@ -294,6 +297,7 @@ export type SubcategoryCreateInput = {
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -311,6 +315,7 @@ export type SubcategoryUncheckedCreateInput = {
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -326,6 +331,7 @@ export type SubcategoryUpdateInput = {
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -343,6 +349,7 @@ export type SubcategoryUncheckedUpdateInput = {
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -489,6 +496,12 @@ export type SubcategoryCreateNestedOneWithoutPropertiesInput = {
   connect?: Prisma.SubcategoryWhereUniqueInput
 }
 
+export type SubcategoryCreateNestedOneWithoutIptu_refund_propertiesInput = {
+  create?: Prisma.XOR<Prisma.SubcategoryCreateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedCreateWithoutIptu_refund_propertiesInput>
+  connectOrCreate?: Prisma.SubcategoryCreateOrConnectWithoutIptu_refund_propertiesInput
+  connect?: Prisma.SubcategoryWhereUniqueInput
+}
+
 export type SubcategoryUpdateOneWithoutPropertiesNestedInput = {
   create?: Prisma.XOR<Prisma.SubcategoryCreateWithoutPropertiesInput, Prisma.SubcategoryUncheckedCreateWithoutPropertiesInput>
   connectOrCreate?: Prisma.SubcategoryCreateOrConnectWithoutPropertiesInput
@@ -497,6 +510,16 @@ export type SubcategoryUpdateOneWithoutPropertiesNestedInput = {
   delete?: Prisma.SubcategoryWhereInput | boolean
   connect?: Prisma.SubcategoryWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubcategoryUpdateToOneWithWhereWithoutPropertiesInput, Prisma.SubcategoryUpdateWithoutPropertiesInput>, Prisma.SubcategoryUncheckedUpdateWithoutPropertiesInput>
+}
+
+export type SubcategoryUpdateOneWithoutIptu_refund_propertiesNestedInput = {
+  create?: Prisma.XOR<Prisma.SubcategoryCreateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedCreateWithoutIptu_refund_propertiesInput>
+  connectOrCreate?: Prisma.SubcategoryCreateOrConnectWithoutIptu_refund_propertiesInput
+  upsert?: Prisma.SubcategoryUpsertWithoutIptu_refund_propertiesInput
+  disconnect?: Prisma.SubcategoryWhereInput | boolean
+  delete?: Prisma.SubcategoryWhereInput | boolean
+  connect?: Prisma.SubcategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubcategoryUpdateToOneWithWhereWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUpdateWithoutIptu_refund_propertiesInput>, Prisma.SubcategoryUncheckedUpdateWithoutIptu_refund_propertiesInput>
 }
 
 export type SubcategoryCreateNestedManyWithoutCategoryInput = {
@@ -601,6 +624,7 @@ export type SubcategoryCreateWithoutCompanyInput = {
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -616,6 +640,7 @@ export type SubcategoryUncheckedCreateWithoutCompanyInput = {
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -671,6 +696,7 @@ export type SubcategoryCreateWithoutCommission_agenciesInput = {
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
 
@@ -687,6 +713,7 @@ export type SubcategoryUncheckedCreateWithoutCommission_agenciesInput = {
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
 }
 
 export type SubcategoryCreateOrConnectWithoutCommission_agenciesInput = {
@@ -717,6 +744,7 @@ export type SubcategoryUpdateWithoutCommission_agenciesInput = {
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
 
@@ -733,6 +761,7 @@ export type SubcategoryUncheckedUpdateWithoutCommission_agenciesInput = {
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
 }
 
 export type SubcategoryCreateWithoutPropertiesInput = {
@@ -746,6 +775,7 @@ export type SubcategoryCreateWithoutPropertiesInput = {
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -762,12 +792,50 @@ export type SubcategoryUncheckedCreateWithoutPropertiesInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
 export type SubcategoryCreateOrConnectWithoutPropertiesInput = {
   where: Prisma.SubcategoryWhereUniqueInput
   create: Prisma.XOR<Prisma.SubcategoryCreateWithoutPropertiesInput, Prisma.SubcategoryUncheckedCreateWithoutPropertiesInput>
+}
+
+export type SubcategoryCreateWithoutIptu_refund_propertiesInput = {
+  id?: string
+  name: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutSubcategoryInput
+  category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
+  company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
+}
+
+export type SubcategoryUncheckedCreateWithoutIptu_refund_propertiesInput = {
+  id?: string
+  company_id: string
+  category_id: string
+  name: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
+}
+
+export type SubcategoryCreateOrConnectWithoutIptu_refund_propertiesInput = {
+  where: Prisma.SubcategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubcategoryCreateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedCreateWithoutIptu_refund_propertiesInput>
 }
 
 export type SubcategoryUpsertWithoutPropertiesInput = {
@@ -792,6 +860,7 @@ export type SubcategoryUpdateWithoutPropertiesInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -808,6 +877,50 @@ export type SubcategoryUncheckedUpdateWithoutPropertiesInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
+  commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
+}
+
+export type SubcategoryUpsertWithoutIptu_refund_propertiesInput = {
+  update: Prisma.XOR<Prisma.SubcategoryUpdateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedUpdateWithoutIptu_refund_propertiesInput>
+  create: Prisma.XOR<Prisma.SubcategoryCreateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedCreateWithoutIptu_refund_propertiesInput>
+  where?: Prisma.SubcategoryWhereInput
+}
+
+export type SubcategoryUpdateToOneWithWhereWithoutIptu_refund_propertiesInput = {
+  where?: Prisma.SubcategoryWhereInput
+  data: Prisma.XOR<Prisma.SubcategoryUpdateWithoutIptu_refund_propertiesInput, Prisma.SubcategoryUncheckedUpdateWithoutIptu_refund_propertiesInput>
+}
+
+export type SubcategoryUpdateWithoutIptu_refund_propertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutSubcategoryNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
+}
+
+export type SubcategoryUncheckedUpdateWithoutIptu_refund_propertiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -822,6 +935,7 @@ export type SubcategoryCreateWithoutCategoryInput = {
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -838,6 +952,7 @@ export type SubcategoryUncheckedCreateWithoutCategoryInput = {
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -878,6 +993,7 @@ export type SubcategoryCreateWithoutTransactionsInput = {
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -894,6 +1010,7 @@ export type SubcategoryUncheckedCreateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -924,6 +1041,7 @@ export type SubcategoryUpdateWithoutTransactionsInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -940,6 +1058,7 @@ export type SubcategoryUncheckedUpdateWithoutTransactionsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -954,6 +1073,7 @@ export type SubcategoryCreateWithoutRecurring_configsInput = {
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -970,6 +1090,7 @@ export type SubcategoryUncheckedCreateWithoutRecurring_configsInput = {
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -1000,6 +1121,7 @@ export type SubcategoryUpdateWithoutRecurring_configsInput = {
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -1016,6 +1138,7 @@ export type SubcategoryUncheckedUpdateWithoutRecurring_configsInput = {
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -1030,6 +1153,7 @@ export type SubcategoryCreateWithoutPlanningsInput = {
   category: Prisma.CategoryCreateNestedOneWithoutSubcategoriesInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyCreateNestedManyWithoutCommission_subcategoryInput
   company: Prisma.CompanyCreateNestedOneWithoutSubcategoriesInput
 }
@@ -1046,6 +1170,7 @@ export type SubcategoryUncheckedCreateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutSubcategoryInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutSubcategoryInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutSubcategoryInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutIptu_refund_subcategoryInput
   commission_agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCommission_subcategoryInput
 }
 
@@ -1076,6 +1201,7 @@ export type SubcategoryUpdateWithoutPlanningsInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutSubcategoriesNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -1092,6 +1218,7 @@ export type SubcategoryUncheckedUpdateWithoutPlanningsInput = {
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutSubcategoryNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -1117,6 +1244,7 @@ export type SubcategoryUpdateWithoutCompanyInput = {
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -1132,6 +1260,7 @@ export type SubcategoryUncheckedUpdateWithoutCompanyInput = {
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -1166,6 +1295,7 @@ export type SubcategoryUpdateWithoutCategoryInput = {
   transactions?: Prisma.TransactionUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUpdateManyWithoutCommission_subcategoryNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutSubcategoriesNestedInput
 }
@@ -1182,6 +1312,7 @@ export type SubcategoryUncheckedUpdateWithoutCategoryInput = {
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutSubcategoryNestedInput
   plannings?: Prisma.PlanningUncheckedUpdateManyWithoutSubcategoryNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutSubcategoryNestedInput
+  iptu_refund_properties?: Prisma.PropertyUncheckedUpdateManyWithoutIptu_refund_subcategoryNestedInput
   commission_agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCommission_subcategoryNestedInput
 }
 
@@ -1205,6 +1336,7 @@ export type SubcategoryCountOutputType = {
   transactions: number
   plannings: number
   properties: number
+  iptu_refund_properties: number
   commission_agencies: number
 }
 
@@ -1213,6 +1345,7 @@ export type SubcategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   transactions?: boolean | SubcategoryCountOutputTypeCountTransactionsArgs
   plannings?: boolean | SubcategoryCountOutputTypeCountPlanningsArgs
   properties?: boolean | SubcategoryCountOutputTypeCountPropertiesArgs
+  iptu_refund_properties?: boolean | SubcategoryCountOutputTypeCountIptu_refund_propertiesArgs
   commission_agencies?: boolean | SubcategoryCountOutputTypeCountCommission_agenciesArgs
 }
 
@@ -1257,6 +1390,13 @@ export type SubcategoryCountOutputTypeCountPropertiesArgs<ExtArgs extends runtim
 /**
  * SubcategoryCountOutputType without action
  */
+export type SubcategoryCountOutputTypeCountIptu_refund_propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyWhereInput
+}
+
+/**
+ * SubcategoryCountOutputType without action
+ */
 export type SubcategoryCountOutputTypeCountCommission_agenciesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AgencyWhereInput
 }
@@ -1276,6 +1416,7 @@ export type SubcategorySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   transactions?: boolean | Prisma.Subcategory$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Subcategory$planningsArgs<ExtArgs>
   properties?: boolean | Prisma.Subcategory$propertiesArgs<ExtArgs>
+  iptu_refund_properties?: boolean | Prisma.Subcategory$iptu_refund_propertiesArgs<ExtArgs>
   commission_agencies?: boolean | Prisma.Subcategory$commission_agenciesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubcategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -1325,6 +1466,7 @@ export type SubcategoryInclude<ExtArgs extends runtime.Types.Extensions.Internal
   transactions?: boolean | Prisma.Subcategory$transactionsArgs<ExtArgs>
   plannings?: boolean | Prisma.Subcategory$planningsArgs<ExtArgs>
   properties?: boolean | Prisma.Subcategory$propertiesArgs<ExtArgs>
+  iptu_refund_properties?: boolean | Prisma.Subcategory$iptu_refund_propertiesArgs<ExtArgs>
   commission_agencies?: boolean | Prisma.Subcategory$commission_agenciesArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubcategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -1346,6 +1488,7 @@ export type $SubcategoryPayload<ExtArgs extends runtime.Types.Extensions.Interna
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
     plannings: Prisma.$PlanningPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
+    iptu_refund_properties: Prisma.$PropertyPayload<ExtArgs>[]
     commission_agencies: Prisma.$AgencyPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
   }
@@ -1757,6 +1900,7 @@ export interface Prisma__SubcategoryClient<T, Null = never, ExtArgs extends runt
   transactions<T extends Prisma.Subcategory$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   plannings<T extends Prisma.Subcategory$planningsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$planningsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Subcategory$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  iptu_refund_properties<T extends Prisma.Subcategory$iptu_refund_propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$iptu_refund_propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   commission_agencies<T extends Prisma.Subcategory$commission_agenciesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subcategory$commission_agenciesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2267,6 +2411,30 @@ export type Subcategory$planningsArgs<ExtArgs extends runtime.Types.Extensions.I
  * Subcategory.properties
  */
 export type Subcategory$propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Property
+   */
+  select?: Prisma.PropertySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Property
+   */
+  omit?: Prisma.PropertyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyInclude<ExtArgs> | null
+  where?: Prisma.PropertyWhereInput
+  orderBy?: Prisma.PropertyOrderByWithRelationInput | Prisma.PropertyOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyScalarFieldEnum | Prisma.PropertyScalarFieldEnum[]
+}
+
+/**
+ * Subcategory.iptu_refund_properties
+ */
+export type Subcategory$iptu_refund_propertiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Property
    */
