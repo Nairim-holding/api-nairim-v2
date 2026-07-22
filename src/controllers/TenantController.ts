@@ -83,6 +83,18 @@ export class TenantController {
     }
   }
 
+  static async getNextInternalCode(req: Request, res: Response) {
+    try {
+      const nextCode = await TenantService.getNextInternalCode();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.status(200).json(
+        ApiResponse.success({ next_internal_code: nextCode }, 'Próximo código interno calculado com sucesso')
+      );
+    } catch (error: any) {
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
+    }
+  }
+
   static async createTenant(req: Request, res: Response) {
     try {
       const validation = TenantValidator.validateCreate(req.body);

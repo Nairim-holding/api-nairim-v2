@@ -102,6 +102,7 @@ export class LeaseValidator {
     if (!data.owner_id?.trim()) errors.push('ID do proprietário é obrigatório');
     if (!data.tenant_id?.trim()) errors.push('ID do inquilino é obrigatório');
     if (!data.contract_number?.trim()) errors.push('Número do contrato é obrigatório');
+    if (!data.financial_institution_id?.trim()) errors.push('Instituição Financeira é obrigatória');
     if (!data.start_date) errors.push('Data de início é obrigatória');
     if (!data.end_date) errors.push('Data de término é obrigatória');
     if (data.rent_amount === undefined || data.rent_amount === null)
@@ -129,6 +130,12 @@ export class LeaseValidator {
   static validateUpdate(data: any): { isValid: boolean; errors: string[]; warnings: string[] } {
     const errors: string[] = [];
     const warnings: string[] = [];
+
+    // Update parcial: só rejeita se o campo veio explicitamente vazio/null
+    // (remover a instituição de uma locação não é permitido).
+    if (data.financial_institution_id !== undefined && !String(data.financial_institution_id ?? '').trim()) {
+      errors.push('Instituição Financeira é obrigatória');
+    }
 
     if (data.start_date && data.end_date) {
       const startDate = new Date(data.start_date);

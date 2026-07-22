@@ -146,9 +146,10 @@ export class TransactionService {
           where: { deleted_at: null }, 
           select: { id: true, name: true, category_id: true }, orderBy: { name: 'asc' } 
         }),
-        prisma.financialInstitution.findMany({ 
-          where: { deleted_at: null }, 
-          select: { id: true, name: true }, orderBy: { name: 'asc' } 
+        prisma.financialInstitution.findMany({
+          // Só instituições ativas aparecem como opção de filtro
+          where: { deleted_at: null, is_active: true },
+          select: { id: true, name: true }, orderBy: { name: 'asc' }
         }),
         prisma.card.findMany({ 
           where: { deleted_at: null }, 

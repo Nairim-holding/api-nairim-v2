@@ -1,8 +1,9 @@
 import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
-import { 
-  GetTenantsParams, 
-  PaginatedTenantResponse, 
+import { getCurrentCompanyId } from '../lib/tenantContext';
+import {
+  GetTenantsParams,
+  PaginatedTenantResponse,
   TenantWithRelations
 } from '../types/tenant';
 
@@ -311,12 +312,46 @@ export class TenantService {
     }
   }
 
+  /**
+   * Próximo código interno disponível no escopo da empresa atual.
+   * Usa MAX numérico dos códigos existentes (inclui soft-deleted para nunca
+   * reciclar código — a constraint @@unique([company_id, internal_code]) não
+   * filtra deleted_at). Códigos não numéricos são ignorados no cálculo.
+   *
+   * internal_code é String no schema; ordenar no banco seria lexicográfico
+   * ("9" > "12"), por isso o MAX é calculado numericamente aqui.
+   */
+  static async getNextInternalCode(): Promise<string> {
+    const companyId = getCurrentCompanyId();
+
+    const tenants = await prisma.tenant.findMany({
+      // Extension já injeta company_id quando há contexto; explícito por segurança.
+      where: companyId ? { company_id: companyId } : {},
+      select: { internal_code: true }
+    });
+
+    const max = tenants.reduce((acc, t) => {
+      const code = String(t.internal_code ?? '').trim();
+      if (!/^\d+$/.test(code)) return acc;
+      const n = parseInt(code, 10);
+      return n > acc ? n : acc;
+    }, 0);
+
+    return String(max + 1);
+  }
+
   static async createTenant(data: any) {
     try {
       return await prisma.$transaction(async (tx) => {
         if (data.internal_code) {
           const existingInternalCode = await tx.tenant.findFirst({
-            where: { internal_code: data.internal_code, deleted_at: null }
+            // Escopo por empresa alinhado à constraint @@unique([company_id, internal_code]).
+            // O extension já injeta company_id quando há contexto; explícito aqui por segurança.
+            where: {
+              internal_code: data.internal_code,
+              deleted_at: null,
+              ...(getCurrentCompanyId() ? { company_id: getCurrentCompanyId() } : {})
+            }
           });
           if (existingInternalCode) throw new Error('Internal code already registered');
         }
@@ -382,6 +417,12 @@ export class TenantService {
         return newTenant;
       });
     } catch (error: any) {
+      // Constraint @@unique([company_id, internal_code]) inclui soft-deleted;
+      // a validação acima filtra deleted_at, então um código de tenant excluído
+      // passa na validação mas estoura P2002 no create. Normaliza a mensagem.
+      if (error?.code === 'P2002' && String(error?.meta?.target ?? '').includes('internal_code')) {
+        throw new Error('Internal code already registered');
+      }
       throw error;
     }
   }
@@ -394,7 +435,13 @@ export class TenantService {
 
         if (data.internal_code !== undefined && data.internal_code !== existing.internal_code) {
           const internalCodeExists = await tx.tenant.findFirst({
-            where: { internal_code: data.internal_code, NOT: { id }, deleted_at: null }
+            // Escopo por empresa alinhado à constraint @@unique([company_id, internal_code])
+            where: {
+              internal_code: data.internal_code,
+              NOT: { id },
+              deleted_at: null,
+              company_id: existing.company_id
+            }
           });
           if (internalCodeExists) throw new Error('Internal code already registered for another tenant');
         }
@@ -477,6 +524,9 @@ export class TenantService {
         return await this.getTenantById(id);
       });
     } catch (error: any) {
+      if (error?.code === 'P2002' && String(error?.meta?.target ?? '').includes('internal_code')) {
+        throw new Error('Internal code already registered for another tenant');
+      }
       throw error;
     }
   }

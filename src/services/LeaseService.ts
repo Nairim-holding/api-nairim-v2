@@ -439,7 +439,12 @@ export class LeaseService {
         lease_id: id,
         deleted_at: null,
         is_cancellation_charge: false,
-        effective_date: { gte: from, lte: to },
+        // event_date OU effective_date no período: lançamentos com data de
+        // efetivação editada manualmente não escapam do preview.
+        OR: [
+          { effective_date: { gte: from, lte: to } },
+          { event_date: { gte: from, lte: to } },
+        ],
       },
       orderBy: { effective_date: 'asc' },
       include: { category: true, center: true },
@@ -485,6 +490,28 @@ export class LeaseService {
         });
         deletedCount = result.count;
       }
+
+      // 1b. Rede de segurança: exclui qualquer PENDING remanescente da locação
+      // no período [data do cancelamento, fim do contrato], mesmo que não tenha
+      // vindo na lista do frontend (preview incompleto, datas editadas, etc.).
+      // COMPLETED fora da lista é preservado — respeita a escolha do usuário no
+      // preview. Encargos de cancelamento nunca são tocados.
+      const cancelFrom = parseLocalDate(data.date ?? new Date());
+      const safetyNet = await tx.transaction.updateMany({
+        where: {
+          lease_id: id,
+          company_id,
+          deleted_at: null,
+          is_cancellation_charge: false,
+          status: { not: 'COMPLETED' },
+          OR: [
+            { effective_date: { gte: cancelFrom, lte: existing.end_date } },
+            { event_date: { gte: cancelFrom, lte: existing.end_date } },
+          ],
+        },
+        data: { deleted_at: new Date() },
+      });
+      deletedCount += safetyNet.count;
 
       // 2. Encargo opcional (custas/juros/multas) → 1 lançamento de receita.
       let charge = null;

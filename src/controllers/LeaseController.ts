@@ -284,7 +284,17 @@ export class LeaseController {
         return res.status(404).json(ApiResponse.error('Locação não encontrada'));
       }
       console.error('Erro ao atualizar arquivos da locação:', error);
-      res.status(400).json(ApiResponse.error(`Erro ao atualizar arquivos da locação: ${error.message}`));
+
+      // ECONNREFUSED no MinIO chega como AggregateError com message vazia —
+      // sem este tratamento o usuário via um erro em branco.
+      if (error?.code === 'ECONNREFUSED' || error?.name === 'AggregateError') {
+        return res.status(502).json(
+          ApiResponse.error('Serviço de armazenamento de arquivos indisponível. Verifique se o MinIO está no ar e tente novamente.')
+        );
+      }
+
+      const detail = String(error?.message ?? '').trim() || error?.name || 'erro desconhecido';
+      res.status(400).json(ApiResponse.error(`Erro ao atualizar arquivos da locação: ${detail}`));
     }
   }
 

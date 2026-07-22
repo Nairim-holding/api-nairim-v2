@@ -11,6 +11,7 @@ const router = Router();
 router.get('/', validateGetTenants, TenantController.getTenants);
 router.get('/filters', TenantController.getTenantFilters);
 router.get('/suggestions/contacts', TenantController.getContactSuggestions);
+router.get('/next-internal-code', TenantController.getNextInternalCode);
 router.get('/:id', TenantController.getTenantById);
 router.post('/', validateCreateTenant, TenantController.createTenant);
 router.put('/:id', validateUpdateTenant, TenantController.updateTenant);
