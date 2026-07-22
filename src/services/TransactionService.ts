@@ -2,6 +2,7 @@ import { ApiResponse } from '../utils/api-response';
 import prisma from '@/lib/prisma';
 import { Prisma } from '@/generated/prisma/client';
 import { parseLocalDate, displayDate } from '../utils/date-utils';
+import { randomUUID } from 'node:crypto';
 
 export class TransactionService {
   private static normalizeText(text: string): string {
@@ -699,6 +700,37 @@ export class TransactionService {
         });
       }
 
+      // Propagação de reajuste de valor para as parcelas/ocorrências SEGUINTES
+      // da mesma série. Só dispara quando o valor mudou e o cliente pediu
+      // (`propagate_to_following`). Parcelas já concluídas (COMPLETED) são
+      // preservadas. Funciona igual para débito e crédito (o sinal vem no amount).
+      const newAmount = data.amount !== undefined ? Number(data.amount) : undefined;
+      const amountChanged = newAmount !== undefined && Number(existing.amount) !== newAmount;
+
+      if (data.propagate_to_following === true && amountChanged) {
+        if (existing.installment_group_id && existing.installment_number != null) {
+          await prisma.transaction.updateMany({
+            where: {
+              installment_group_id: existing.installment_group_id,
+              installment_number: { gt: existing.installment_number },
+              status: 'PENDING',
+              deleted_at: null
+            },
+            data: { amount: newAmount }
+          });
+        } else if (existing.recurring_group_id && existing.occurrence_number != null) {
+          await prisma.transaction.updateMany({
+            where: {
+              recurring_group_id: existing.recurring_group_id,
+              occurrence_number: { gt: existing.occurrence_number },
+              status: 'PENDING',
+              deleted_at: null
+            },
+            data: { amount: newAmount }
+          });
+        }
+      }
+
       return updated;
     } catch (error: any) { throw error; }
   }
@@ -794,6 +826,10 @@ export class TransactionService {
       const transactionType = data.transaction_type || 'EXPENSE';
       const label = transactionType === 'INCOME' ? 'Receita' : 'Parcela';
 
+      // Chave de série compartilhada por todas as parcelas — permite propagar
+      // reajuste de valor para as parcelas seguintes ao editar uma delas.
+      const installmentGroupId = randomUUID();
+
       // Import dinâmico para evitar dependência circular
       const { InvoiceService } = await import('./InvoiceService');
 
@@ -847,6 +883,7 @@ export class TransactionService {
               data: {
                 installment_number: installmentNumber,
                 total_installments: numInstallments,
+                installment_group_id: installmentGroupId,
                 amount: installmentAmount,
                 description: data.description
                   ? `${data.description} - ${label} ${installmentNumber}/${numInstallments}`

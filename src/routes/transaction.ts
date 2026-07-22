@@ -21,6 +21,11 @@ router.post('/installments', TransactionController.createInstallments);
 router.post('/recurring', TransactionController.createRecurring);
 router.post('/recurring/generate-next', TransactionController.generateNextRecurring);
 
+// Recorrência infinita (modelo único config-based): cria config + gera 5 anos
+router.post('/recurrence', TransactionController.createRecurrence);
+// Serviço de manutenção: estende as recorrências ativas (acionável por cron)
+router.post('/recurrence/maintain', TransactionController.maintainRecurrences);
+
 // Rotas para gerenciamento de grupos
 router.get('/:id/related', TransactionController.getRelatedTransactions);
 router.delete('/group/:group_id', TransactionController.deleteTransactionGroup);

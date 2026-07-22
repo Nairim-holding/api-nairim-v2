@@ -92,8 +92,11 @@ export type PaymentMode = (typeof PaymentMode)[keyof typeof PaymentMode]
 
 export const RecurringFrequency = {
   WEEKLY: 'WEEKLY',
+  BIWEEKLY: 'BIWEEKLY',
   MONTHLY: 'MONTHLY',
+  BIMONTHLY: 'BIMONTHLY',
   QUARTERLY: 'QUARTERLY',
+  SEMIANNUAL: 'SEMIANNUAL',
   YEARLY: 'YEARLY'
 } as const
 

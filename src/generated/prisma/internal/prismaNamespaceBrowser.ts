@@ -658,6 +658,7 @@ export const TransactionScalarFieldEnum = {
   payment_mode: 'payment_mode',
   recurring_frequency: 'recurring_frequency',
   recurring_group_id: 'recurring_group_id',
+  installment_group_id: 'installment_group_id',
   total_installments: 'total_installments',
   invoice_id: 'invoice_id',
   lease_id: 'lease_id',

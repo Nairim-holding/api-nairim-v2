@@ -717,6 +717,7 @@ model Transaction {
   payment_mode             PaymentMode?
   recurring_frequency      RecurringFrequency?
   recurring_group_id       String?
+  installment_group_id     String?
   total_installments       Int?
   invoice_id               String?
   lease_id                 String?
@@ -744,8 +745,10 @@ model Transaction {
   @@index([supplier_id])
   @@index([parent_transaction_id])
   @@index([recurring_group_id])
+  @@index([installment_group_id])
   @@index([payment_mode])
   @@index([invoice_id])
+  @@unique([recurring_group_id, occurrence_number])
   @@index([lease_id])
   @@index([transfer_group_id])
   @@index([company_id])
@@ -917,8 +920,11 @@ enum PaymentMode {
 
 enum RecurringFrequency {
   WEEKLY
+  BIWEEKLY
   MONTHLY
+  BIMONTHLY
   QUARTERLY
+  SEMIANNUAL
   YEARLY
 }
 

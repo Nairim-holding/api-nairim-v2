@@ -18,7 +18,8 @@
     "db:create-test-user": "tsx scripts/create-test-user.ts",
     "db:seed-financeiro-mock": "tsx prisma/seed-financeiro-mock.ts",
     "db:seed-portfolio-mock": "tsx prisma/seed-portfolio-mock.ts",
-    "db:backfill-rent-descriptions": "tsx scripts/backfill-lease-rent-descriptions.ts"
+    "db:backfill-rent-descriptions": "tsx scripts/backfill-lease-rent-descriptions.ts",
+    "generate-recurring": "tsx scripts/generate-recurring.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -38,6 +39,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
+    "node-cron": "^4.6.0",
     "pino": "^10.1.1",
     "pino-http": "^11.0.0",
     "sharp": "^0.34.5",
@@ -50,6 +52,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^25.0.6",
+    "@types/node-cron": "^3.0.11",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",

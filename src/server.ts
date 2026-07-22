@@ -1,6 +1,7 @@
 import { app } from './app';
 import prisma from './lib/prisma';
 import logger from './lib/logger';
+import { startRecurringScheduler } from './lib/recurringScheduler';
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
@@ -31,6 +32,10 @@ async function startServer() {
     server.headersTimeout = 0;
 
     logger.info('⏱️  Server timeouts disabled (unlimited) for large file uploads');
+
+    // Agendador embutido: mantém sempre ~5 anos de lançamentos recorrentes à
+    // frente, sem intervenção manual. Idempotente.
+    startRecurringScheduler();
 
   } catch (error) {
     logger.error('❌ Failed to start server:', error);

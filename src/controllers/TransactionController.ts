@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { TransactionService } from '../services/TransactionService';
 import { TransferService } from '../services/TransferService';
+import { RecurringService } from '../services/RecurringService';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { TransactionValidator } from '../lib/validators/transaction';
@@ -259,6 +260,31 @@ export class TransactionController {
       res.status(200).json(ApiResponse.success(data, `${data.generated} ocorrências geradas com sucesso`));
     } catch (error: any) {
       console.error('Error generating next recurring:', error);
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  // Cria uma recorrência infinita (config + geração de 5 anos). Modelo único
+  // consolidado — vale para despesa e receita.
+  static async createRecurrence(req: Request, res: Response) {
+    try {
+      const { company_id } = (req as any).user;
+      const result = await RecurringService.createRecurring(req.body, company_id);
+      res.status(201).json(ApiResponse.success(result.data, result.message));
+    } catch (error: any) {
+      console.error('Error creating recurrence:', error);
+      res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
+    }
+  }
+
+  // Serviço de manutenção: estende todas as recorrências ativas para manter
+  // sempre ~5 anos à frente. Idempotente. Acionável por cron/script.
+  static async maintainRecurrences(_req: Request, res: Response) {
+    try {
+      const result = await RecurringService.extendActiveRecurrences();
+      res.status(200).json(ApiResponse.success(result, `${result.totalGenerated} lançamentos gerados em ${result.configs} recorrências`));
+    } catch (error: any) {
+      console.error('Error maintaining recurrences:', error);
       res.status(400).json(ApiResponse.error(`Erro: ${error.message}`));
     }
   }
