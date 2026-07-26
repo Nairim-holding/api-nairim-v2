@@ -20,8 +20,18 @@ export type AgencyModel = runtime.Types.Result.DefaultSelection<Prisma.$AgencyPa
 
 export type AggregateAgency = {
   _count: AgencyCountAggregateOutputType | null
+  _avg: AgencyAvgAggregateOutputType | null
+  _sum: AgencySumAggregateOutputType | null
   _min: AgencyMinAggregateOutputType | null
   _max: AgencyMaxAggregateOutputType | null
+}
+
+export type AgencyAvgAggregateOutputType = {
+  commission_percentage: runtime.Decimal | null
+}
+
+export type AgencySumAggregateOutputType = {
+  commission_percentage: runtime.Decimal | null
 }
 
 export type AgencyMinAggregateOutputType = {
@@ -35,6 +45,7 @@ export type AgencyMinAggregateOutputType = {
   license_number: string | null
   commission_category_id: string | null
   commission_subcategory_id: string | null
+  commission_percentage: runtime.Decimal | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -51,6 +62,7 @@ export type AgencyMaxAggregateOutputType = {
   license_number: string | null
   commission_category_id: string | null
   commission_subcategory_id: string | null
+  commission_percentage: runtime.Decimal | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -67,12 +79,21 @@ export type AgencyCountAggregateOutputType = {
   license_number: number
   commission_category_id: number
   commission_subcategory_id: number
+  commission_percentage: number
   created_at: number
   updated_at: number
   deleted_at: number
   _all: number
 }
 
+
+export type AgencyAvgAggregateInputType = {
+  commission_percentage?: true
+}
+
+export type AgencySumAggregateInputType = {
+  commission_percentage?: true
+}
 
 export type AgencyMinAggregateInputType = {
   id?: true
@@ -85,6 +106,7 @@ export type AgencyMinAggregateInputType = {
   license_number?: true
   commission_category_id?: true
   commission_subcategory_id?: true
+  commission_percentage?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -101,6 +123,7 @@ export type AgencyMaxAggregateInputType = {
   license_number?: true
   commission_category_id?: true
   commission_subcategory_id?: true
+  commission_percentage?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -117,6 +140,7 @@ export type AgencyCountAggregateInputType = {
   license_number?: true
   commission_category_id?: true
   commission_subcategory_id?: true
+  commission_percentage?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -161,6 +185,18 @@ export type AgencyAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: AgencyAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: AgencySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: AgencyMinAggregateInputType
@@ -191,6 +227,8 @@ export type AgencyGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: AgencyCountAggregateInputType | true
+  _avg?: AgencyAvgAggregateInputType
+  _sum?: AgencySumAggregateInputType
   _min?: AgencyMinAggregateInputType
   _max?: AgencyMaxAggregateInputType
 }
@@ -206,10 +244,13 @@ export type AgencyGroupByOutputType = {
   license_number: string | null
   commission_category_id: string | null
   commission_subcategory_id: string | null
+  commission_percentage: runtime.Decimal | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
   _count: AgencyCountAggregateOutputType | null
+  _avg: AgencyAvgAggregateOutputType | null
+  _sum: AgencySumAggregateOutputType | null
   _min: AgencyMinAggregateOutputType | null
   _max: AgencyMaxAggregateOutputType | null
 }
@@ -243,6 +284,7 @@ export type AgencyWhereInput = {
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_percentage?: Prisma.DecimalNullableFilter<"Agency"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -267,6 +309,7 @@ export type AgencyOrderByWithRelationInput = {
   license_number?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_percentage?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -294,6 +337,7 @@ export type AgencyWhereUniqueInput = Prisma.AtLeast<{
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_percentage?: Prisma.DecimalNullableFilter<"Agency"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -318,12 +362,15 @@ export type AgencyOrderByWithAggregationInput = {
   license_number?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_category_id?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_subcategory_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  commission_percentage?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AgencyCountOrderByAggregateInput
+  _avg?: Prisma.AgencyAvgOrderByAggregateInput
   _max?: Prisma.AgencyMaxOrderByAggregateInput
   _min?: Prisma.AgencyMinOrderByAggregateInput
+  _sum?: Prisma.AgencySumOrderByAggregateInput
 }
 
 export type AgencyScalarWhereWithAggregatesInput = {
@@ -340,6 +387,7 @@ export type AgencyScalarWhereWithAggregatesInput = {
   license_number?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
   commission_category_id?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
   commission_subcategory_id?: Prisma.StringNullableWithAggregatesFilter<"Agency"> | string | null
+  commission_percentage?: Prisma.DecimalNullableWithAggregatesFilter<"Agency"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Agency"> | Date | string | null
@@ -353,6 +401,7 @@ export type AgencyCreateInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -377,6 +426,7 @@ export type AgencyUncheckedCreateInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -395,6 +445,7 @@ export type AgencyUpdateInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -419,6 +470,7 @@ export type AgencyUncheckedUpdateInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -440,6 +492,7 @@ export type AgencyCreateManyInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -453,6 +506,7 @@ export type AgencyUpdateManyMutationInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -469,6 +523,7 @@ export type AgencyUncheckedUpdateManyInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -495,9 +550,14 @@ export type AgencyCountOrderByAggregateInput = {
   license_number?: Prisma.SortOrder
   commission_category_id?: Prisma.SortOrder
   commission_subcategory_id?: Prisma.SortOrder
+  commission_percentage?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+}
+
+export type AgencyAvgOrderByAggregateInput = {
+  commission_percentage?: Prisma.SortOrder
 }
 
 export type AgencyMaxOrderByAggregateInput = {
@@ -511,6 +571,7 @@ export type AgencyMaxOrderByAggregateInput = {
   license_number?: Prisma.SortOrder
   commission_category_id?: Prisma.SortOrder
   commission_subcategory_id?: Prisma.SortOrder
+  commission_percentage?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -527,9 +588,14 @@ export type AgencyMinOrderByAggregateInput = {
   license_number?: Prisma.SortOrder
   commission_category_id?: Prisma.SortOrder
   commission_subcategory_id?: Prisma.SortOrder
+  commission_percentage?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+}
+
+export type AgencySumOrderByAggregateInput = {
+  commission_percentage?: Prisma.SortOrder
 }
 
 export type AgencyNullableScalarRelationFilter = {
@@ -582,6 +648,14 @@ export type AgencyUncheckedUpdateManyWithoutCompanyNestedInput = {
   update?: Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput | Prisma.AgencyUpdateWithWhereUniqueWithoutCompanyInput[]
   updateMany?: Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput | Prisma.AgencyUpdateManyWithWhereWithoutCompanyInput[]
   deleteMany?: Prisma.AgencyScalarWhereInput | Prisma.AgencyScalarWhereInput[]
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type AgencyCreateNestedOneWithoutPropertiesInput = {
@@ -754,6 +828,7 @@ export type AgencyCreateWithoutCompanyInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -776,6 +851,7 @@ export type AgencyUncheckedCreateWithoutCompanyInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -826,6 +902,7 @@ export type AgencyScalarWhereInput = {
   license_number?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_category_id?: Prisma.StringNullableFilter<"Agency"> | string | null
   commission_subcategory_id?: Prisma.StringNullableFilter<"Agency"> | string | null
+  commission_percentage?: Prisma.DecimalNullableFilter<"Agency"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Agency"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Agency"> | Date | string | null
@@ -839,6 +916,7 @@ export type AgencyCreateWithoutPropertiesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -862,6 +940,7 @@ export type AgencyUncheckedCreateWithoutPropertiesInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -895,6 +974,7 @@ export type AgencyUpdateWithoutPropertiesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -918,6 +998,7 @@ export type AgencyUncheckedUpdateWithoutPropertiesInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -935,6 +1016,7 @@ export type AgencyCreateWithoutLeasesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -958,6 +1040,7 @@ export type AgencyUncheckedCreateWithoutLeasesInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -991,6 +1074,7 @@ export type AgencyUpdateWithoutLeasesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1014,6 +1098,7 @@ export type AgencyUncheckedUpdateWithoutLeasesInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1031,6 +1116,7 @@ export type AgencyCreateWithoutContactsInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1054,6 +1140,7 @@ export type AgencyUncheckedCreateWithoutContactsInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1087,6 +1174,7 @@ export type AgencyUpdateWithoutContactsInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1110,6 +1198,7 @@ export type AgencyUncheckedUpdateWithoutContactsInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1127,6 +1216,7 @@ export type AgencyCreateWithoutAddressesInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1150,6 +1240,7 @@ export type AgencyUncheckedCreateWithoutAddressesInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1183,6 +1274,7 @@ export type AgencyUpdateWithoutAddressesInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1206,6 +1298,7 @@ export type AgencyUncheckedUpdateWithoutAddressesInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1223,6 +1316,7 @@ export type AgencyCreateWithoutCommission_categoryInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1245,6 +1339,7 @@ export type AgencyUncheckedCreateWithoutCommission_categoryInput = {
   municipal_registration?: string | null
   license_number?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1289,6 +1384,7 @@ export type AgencyCreateWithoutCommission_subcategoryInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1311,6 +1407,7 @@ export type AgencyUncheckedCreateWithoutCommission_subcategoryInput = {
   municipal_registration?: string | null
   license_number?: string | null
   commission_category_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1355,6 +1452,7 @@ export type AgencyCreateWithoutSuppliersInput = {
   state_registration?: string | null
   municipal_registration?: string | null
   license_number?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1378,6 +1476,7 @@ export type AgencyUncheckedCreateWithoutSuppliersInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1411,6 +1510,7 @@ export type AgencyUpdateWithoutSuppliersInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1434,6 +1534,7 @@ export type AgencyUncheckedUpdateWithoutSuppliersInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1453,6 +1554,7 @@ export type AgencyCreateManyCompanyInput = {
   license_number?: string | null
   commission_category_id?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1466,6 +1568,7 @@ export type AgencyUpdateWithoutCompanyInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1488,6 +1591,7 @@ export type AgencyUncheckedUpdateWithoutCompanyInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1508,6 +1612,7 @@ export type AgencyUncheckedUpdateManyWithoutCompanyInput = {
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1523,6 +1628,7 @@ export type AgencyCreateManyCommission_categoryInput = {
   municipal_registration?: string | null
   license_number?: string | null
   commission_subcategory_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1536,6 +1642,7 @@ export type AgencyUpdateWithoutCommission_categoryInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1558,6 +1665,7 @@ export type AgencyUncheckedUpdateWithoutCommission_categoryInput = {
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1578,6 +1686,7 @@ export type AgencyUncheckedUpdateManyWithoutCommission_categoryInput = {
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1593,6 +1702,7 @@ export type AgencyCreateManyCommission_subcategoryInput = {
   municipal_registration?: string | null
   license_number?: string | null
   commission_category_id?: string | null
+  commission_percentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1606,6 +1716,7 @@ export type AgencyUpdateWithoutCommission_subcategoryInput = {
   state_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1628,6 +1739,7 @@ export type AgencyUncheckedUpdateWithoutCommission_subcategoryInput = {
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1648,6 +1760,7 @@ export type AgencyUncheckedUpdateManyWithoutCommission_subcategoryInput = {
   municipal_registration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   license_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commission_category_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commission_percentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1731,6 +1844,7 @@ export type AgencySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   license_number?: boolean
   commission_category_id?: boolean
   commission_subcategory_id?: boolean
+  commission_percentage?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1756,6 +1870,7 @@ export type AgencySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   license_number?: boolean
   commission_category_id?: boolean
   commission_subcategory_id?: boolean
+  commission_percentage?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1775,6 +1890,7 @@ export type AgencySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   license_number?: boolean
   commission_category_id?: boolean
   commission_subcategory_id?: boolean
+  commission_percentage?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1794,12 +1910,13 @@ export type AgencySelectScalar = {
   license_number?: boolean
   commission_category_id?: boolean
   commission_subcategory_id?: boolean
+  commission_percentage?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "commission_category_id" | "commission_subcategory_id" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
+export type AgencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "trade_name" | "legal_name" | "cnpj" | "state_registration" | "municipal_registration" | "license_number" | "commission_category_id" | "commission_subcategory_id" | "commission_percentage" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["agency"]>
 export type AgencyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   addresses?: boolean | Prisma.Agency$addressesArgs<ExtArgs>
   contacts?: boolean | Prisma.Agency$contactsArgs<ExtArgs>
@@ -1845,6 +1962,7 @@ export type $AgencyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     license_number: string | null
     commission_category_id: string | null
     commission_subcategory_id: string | null
+    commission_percentage: runtime.Decimal | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
@@ -2289,6 +2407,7 @@ export interface AgencyFieldRefs {
   readonly license_number: Prisma.FieldRef<"Agency", 'String'>
   readonly commission_category_id: Prisma.FieldRef<"Agency", 'String'>
   readonly commission_subcategory_id: Prisma.FieldRef<"Agency", 'String'>
+  readonly commission_percentage: Prisma.FieldRef<"Agency", 'Decimal'>
   readonly created_at: Prisma.FieldRef<"Agency", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Agency", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Agency", 'DateTime'>

@@ -2983,6 +2983,7 @@ export const AgencyScalarFieldEnum = {
   license_number: 'license_number',
   commission_category_id: 'commission_category_id',
   commission_subcategory_id: 'commission_subcategory_id',
+  commission_percentage: 'commission_percentage',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -3169,6 +3170,7 @@ export const LeaseScalarFieldEnum = {
   property_tax: 'property_tax',
   extra_charges: 'extra_charges',
   commission_amount: 'commission_amount',
+  agency_commission: 'agency_commission',
   rent_due_day: 'rent_due_day',
   tax_due_day: 'tax_due_day',
   condo_due_day: 'condo_due_day',
@@ -3664,6 +3666,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -3688,20 +3704,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 

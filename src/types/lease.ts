@@ -1,6 +1,6 @@
 export type LeaseStatus = 'EXPIRED' | 'EXPIRING' | 'ACTIVE' | 'CANCELED';
 
-export type PaymentCondition = 'IN_FULL_15_DISCOUNT' | 'SECOND_INSTALLMENT_10_DISCOUNT' | 'INSTALLMENTS_12X';
+export type PaymentCondition = 'IN_FULL_15_DISCOUNT' | 'SECOND_INSTALLMENT_10_DISCOUNT' | 'INSTALLMENTS';
 
 export interface Insurance {
   company?: string;
@@ -28,6 +28,7 @@ export interface Lease {
   condo_fee?: number | null;
   property_tax?: number | null;
   extra_charges?: number | null;
+  agency_commission?: number | null;
   commission_amount?: number | null;
   rent_due_day: number;
   tax_due_day?: number | null;
@@ -82,6 +83,7 @@ export interface CreateLeaseInput {
   condo_fee?: number;
   property_tax?: number;
   extra_charges?: number;
+  agency_commission?: number;
   commission_amount?: number;
   rent_due_day: number;
   tax_due_day?: number;

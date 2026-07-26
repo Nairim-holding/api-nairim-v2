@@ -18,6 +18,10 @@ export class AgencyValidator {
       });
     }
 
+    if (data.commission_percentage !== undefined && data.commission_percentage !== null && data.commission_percentage !== '' && !this.validateCommissionPercentage(data.commission_percentage)) {
+      errors.push('Comissão imobiliária deve ser um percentual entre 0 e 100');
+    }
+
     return { isValid: errors.length === 0, errors };
   }
 
@@ -34,6 +38,10 @@ export class AgencyValidator {
           errors.push(`Contato ${index + 1}: Email inválido`);
         }
       });
+    }
+
+    if (data.commission_percentage !== undefined && data.commission_percentage !== null && data.commission_percentage !== '' && !this.validateCommissionPercentage(data.commission_percentage)) {
+      errors.push('Comissão imobiliária deve ser um percentual entre 0 e 100');
     }
 
     return { isValid: errors.length === 0, errors };
@@ -67,5 +75,10 @@ export class AgencyValidator {
   private static validateCNPJ(cnpj: string): boolean {
     const cleanCNPJ = cnpj.replace(/[^\d]/g, '');
     return cleanCNPJ.length === 14;
+  }
+
+  private static validateCommissionPercentage(value: any): boolean {
+    const num = Number(value);
+    return !isNaN(num) && num >= 0 && num <= 100;
   }
 }

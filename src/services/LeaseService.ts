@@ -8,6 +8,23 @@ import {
 import { LeaseFinanceService } from './LeaseFinanceService';
 import { parseLocalDate } from '../utils/date-utils';
 
+function hasValue(v: unknown): boolean {
+  return v !== undefined && v !== null && v !== '';
+}
+
+const LEASE_STATUS_LABELS: Record<string, string> = {
+  EXPIRED: 'Vencido',
+  EXPIRING: 'Vencendo',
+  ACTIVE: 'Em Dia',
+  CANCELED: 'Cancelado',
+};
+
+const PAYMENT_CONDITION_LABELS: Record<string, string> = {
+  IN_FULL_15_DISCOUNT: 'À vista (15% desc.)',
+  SECOND_INSTALLMENT_10_DISCOUNT: '2ª parcela (10% desc.)',
+  INSTALLMENTS: 'Parcelado (12x)',
+};
+
 export class LeaseService {
   static readonly FIELD_MAPPING: Record<string, { 
     type: 'direct' | 'property' | 'owner' | 'tenant' | 'type', 
@@ -149,7 +166,8 @@ export class LeaseService {
               }
             },
             owner: { select: { id: true, name: true } },
-            tenant: { select: { id: true, name: true } }
+            tenant: { select: { id: true, name: true } },
+            _count: { select: { documents: { where: { deleted_at: null } } } }
           }
         }) as unknown as LeaseWithRelations[];
 
@@ -191,7 +209,8 @@ export class LeaseService {
                 }
               },
               owner: { select: { id: true, name: true } },
-              tenant: { select: { id: true, name: true } }
+              tenant: { select: { id: true, name: true } },
+              _count: { select: { documents: { where: { deleted_at: null } } } }
             }
           }),
           prisma.lease.count({ where })
@@ -307,8 +326,17 @@ export class LeaseService {
     Object.entries(filters).forEach(([key, value]) => {
       if (value === undefined || value === null || value === '') return;
 
-      if (['contract_number', 'rent_due_day', 'tax_due_day', 'condo_due_day', 'status', 'payment_condition'].includes(key)) {
+      if (key === 'contract_number') {
         conditions[key] = { contains: String(value), mode: 'insensitive' as Prisma.QueryMode };
+      }
+      else if (key === 'status' || key === 'payment_condition') {
+        conditions[key] = value;
+      }
+      else if (['rent_due_day', 'tax_due_day', 'condo_due_day'].includes(key)) {
+        const intValue = parseInt(String(value));
+        if (!isNaN(intValue)) {
+          conditions[key] = intValue;
+        }
       }
       else if (['rent_amount', 'condo_fee', 'property_tax', 'property_tax_cash', 'property_tax_first_installment', 'property_tax_second_installment', 'extra_charges', 'commission_amount'].includes(key)) {
         const floatValue = parseFloat(String(value));
@@ -621,12 +649,13 @@ export class LeaseService {
             property_tax_second_installment: data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null,
             property_tax_second_installment_due_date: data.property_tax_second_installment_due_date ? new Date(data.property_tax_second_installment_due_date) : null,
             iptu_year: data.iptu_year ? parseInt(data.iptu_year) : null,
-            iptu_installments_count: data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null,
+            iptu_installments_count: hasValue(data.iptu_installments_count) ? parseInt(data.iptu_installments_count) : null,
             iptu_installments: data.iptu_installments && Array.isArray(data.iptu_installments) ? data.iptu_installments : null,
             iptu_installments_due_dates: data.iptu_installments_due_dates && Array.isArray(data.iptu_installments_due_dates) ? data.iptu_installments_due_dates : null,
 
             extra_charges: data.extra_charges ? Number(data.extra_charges) : null,
-            commission_amount: data.commission_amount ? Number(data.commission_amount) : null,
+            agency_commission: hasValue(data.agency_commission) ? Number(data.agency_commission) : null,
+            commission_amount: hasValue(data.commission_amount) ? Number(data.commission_amount) : null,
             insurance_company: data.insurance_company ? String(data.insurance_company).trim() : null,
             insurance_type: data.insurance_type ? String(data.insurance_type).trim() : null,
             insurance_policy: data.insurance_policy ? String(data.insurance_policy).trim() : null,
@@ -713,12 +742,13 @@ export class LeaseService {
             property_tax_second_installment: data.property_tax_second_installment !== undefined ? (data.property_tax_second_installment ? Number(data.property_tax_second_installment) : null) : existing.property_tax_second_installment,
             property_tax_second_installment_due_date: data.property_tax_second_installment_due_date !== undefined ? (data.property_tax_second_installment_due_date ? new Date(data.property_tax_second_installment_due_date) : null) : existing.property_tax_second_installment_due_date,
             iptu_year: data.iptu_year !== undefined ? (data.iptu_year ? parseInt(data.iptu_year) : null) : existing.iptu_year,
-            iptu_installments_count: data.iptu_installments_count !== undefined ? (data.iptu_installments_count ? parseInt(data.iptu_installments_count) : null) : existing.iptu_installments_count,
+            iptu_installments_count: data.iptu_installments_count !== undefined ? (hasValue(data.iptu_installments_count) ? parseInt(data.iptu_installments_count) : null) : existing.iptu_installments_count,
             iptu_installments: data.iptu_installments !== undefined ? (Array.isArray(data.iptu_installments) ? data.iptu_installments : null) : existing.iptu_installments,
             iptu_installments_due_dates: data.iptu_installments_due_dates !== undefined ? (Array.isArray(data.iptu_installments_due_dates) ? data.iptu_installments_due_dates : null) : existing.iptu_installments_due_dates,
 
             extra_charges: data.extra_charges !== undefined ? (data.extra_charges ? Number(data.extra_charges) : null) : existing.extra_charges,
-            commission_amount: data.commission_amount !== undefined ? (data.commission_amount ? Number(data.commission_amount) : null) : existing.commission_amount,
+            agency_commission: data.agency_commission !== undefined ? (hasValue(data.agency_commission) ? Number(data.agency_commission) : null) : existing.agency_commission,
+            commission_amount: data.commission_amount !== undefined ? (hasValue(data.commission_amount) ? Number(data.commission_amount) : null) : existing.commission_amount,
             insurance_company: data.insurance_company !== undefined ? (data.insurance_company ? String(data.insurance_company).trim() : null) : existing.insurance_company,
             insurance_type: data.insurance_type !== undefined ? (data.insurance_type ? String(data.insurance_type).trim() : null) : existing.insurance_type,
             insurance_policy: data.insurance_policy !== undefined ? (data.insurance_policy ? String(data.insurance_policy).trim() : null) : existing.insurance_policy,
@@ -956,7 +986,7 @@ export class LeaseService {
           } 
         }),
         prisma.property.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, title: true }, orderBy: { title: 'asc' }, distinct: ['title'] }),
-        prisma.propertyType.findMany({ where: { deleted_at: null, properties: { some: { deleted_at: null, leases: { some: where } } } }, select: { id: true, description: true }, orderBy: { description: 'asc' }, distinct: ['description'] }),
+        prisma.propertyType.findMany({ where: { deleted_at: null }, select: { id: true, description: true }, orderBy: { description: 'asc' }, distinct: ['description'] }),
         prisma.owner.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, name: true }, orderBy: { name: 'asc' }, distinct: ['name'] }),
         prisma.tenant.findMany({ where: { deleted_at: null, leases: { some: where } }, select: { id: true, name: true }, orderBy: { name: 'asc' }, distinct: ['name'] }),
         prisma.lease.aggregate({ where, _min: { created_at: true }, _max: { created_at: true } }),
@@ -965,6 +995,7 @@ export class LeaseService {
       const uniqueContractNumbers = [...new Set(leases.filter(l => l.contract_number).map(l => l.contract_number.trim()))].sort();
       const uniqueRentAmounts = [...new Set(leases.filter(l => l.rent_amount).map(l => l.rent_amount.toString()))].sort();
       const uniqueRentDueDays = [...new Set(leases.filter(l => l.rent_due_day).map(l => l.rent_due_day.toString()))].sort((a, b) => parseInt(a) - parseInt(b));
+      const uniqueTaxDueDays = [...new Set(leases.filter(l => l.tax_due_day).map(l => l.tax_due_day!.toString()))].sort((a, b) => parseInt(a) - parseInt(b));
       const uniquePropertyTitles = [...new Set(properties.filter(p => p.title).map(p => p.title.trim()))].sort();
       const uniquePropertyTypes = [...new Set(propertyTypes.filter(t => t.description).map(t => t.description.trim()))].sort();
       const uniqueOwnerNames = [...new Set(owners.filter(o => o.name).map(o => o.name.trim()))].sort();
@@ -972,8 +1003,8 @@ export class LeaseService {
 
       const filtersList = [
         { field: 'contract_number', type: 'string', label: 'Número do Contrato', values: uniqueContractNumbers, searchable: true, autocomplete: true },
-        { field: 'status', type: 'select', label: 'Status', values: ['EXPIRED', 'EXPIRING', 'ACTIVE', 'CANCELED'], searchable: false, autocomplete: false },
-        { field: 'payment_condition', type: 'select', label: 'Condição de Pagamento', values: ['IN_FULL_15_DISCOUNT', 'SECOND_INSTALLMENT_10_DISCOUNT', 'INSTALLMENTS'], searchable: false, autocomplete: false },
+        { field: 'status', type: 'select', label: 'Status', options: Object.entries(LEASE_STATUS_LABELS).map(([value, label]) => ({ value, label })), searchable: false, autocomplete: false },
+        { field: 'payment_condition', type: 'select', label: 'Condição de Pagamento', options: Object.entries(PAYMENT_CONDITION_LABELS).map(([value, label]) => ({ value, label })), searchable: false, autocomplete: false },
         { field: 'start_date', type: 'date', label: 'Data de Início', dateRange: true },
         { field: 'end_date', type: 'date', label: 'Data de Término', dateRange: true },
         { field: 'rent_amount', type: 'number', label: 'Valor do Aluguel', values: uniqueRentAmounts, searchable: true },
@@ -982,7 +1013,7 @@ export class LeaseService {
         { field: 'extra_charges', type: 'number', label: 'Taxas Extras', searchable: true },
         { field: 'commission_amount', type: 'number', label: 'Comissão', searchable: true },
         { field: 'rent_due_day', type: 'number', label: 'Dia de Vencimento do Aluguel', values: uniqueRentDueDays, searchable: true },
-        { field: 'tax_due_day', type: 'number', label: 'Dia de Vencimento do IPTU', searchable: true },
+        { field: 'tax_due_day', type: 'number', label: 'Dia de Vencimento do IPTU', values: uniqueTaxDueDays, searchable: true },
         { field: 'condo_due_day', type: 'number', label: 'Dia de Vencimento do Condomínio', searchable: true },
         { field: 'property_title', type: 'string', label: 'Propriedade', values: uniquePropertyTitles, searchable: true, autocomplete: true },
         { field: 'type_description', type: 'string', label: 'Tipo de Propriedade', values: uniquePropertyTypes, searchable: true, autocomplete: true },

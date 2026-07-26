@@ -32,6 +32,7 @@ export type LeaseAvgAggregateOutputType = {
   property_tax: runtime.Decimal | null
   extra_charges: runtime.Decimal | null
   commission_amount: runtime.Decimal | null
+  agency_commission: runtime.Decimal | null
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
@@ -50,6 +51,7 @@ export type LeaseSumAggregateOutputType = {
   property_tax: runtime.Decimal | null
   extra_charges: runtime.Decimal | null
   commission_amount: runtime.Decimal | null
+  agency_commission: runtime.Decimal | null
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
@@ -79,6 +81,7 @@ export type LeaseMinAggregateOutputType = {
   property_tax: runtime.Decimal | null
   extra_charges: runtime.Decimal | null
   commission_amount: runtime.Decimal | null
+  agency_commission: runtime.Decimal | null
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
@@ -121,6 +124,7 @@ export type LeaseMaxAggregateOutputType = {
   property_tax: runtime.Decimal | null
   extra_charges: runtime.Decimal | null
   commission_amount: runtime.Decimal | null
+  agency_commission: runtime.Decimal | null
   rent_due_day: number | null
   tax_due_day: number | null
   condo_due_day: number | null
@@ -163,6 +167,7 @@ export type LeaseCountAggregateOutputType = {
   property_tax: number
   extra_charges: number
   commission_amount: number
+  agency_commission: number
   rent_due_day: number
   tax_due_day: number
   condo_due_day: number
@@ -199,6 +204,7 @@ export type LeaseAvgAggregateInputType = {
   property_tax?: true
   extra_charges?: true
   commission_amount?: true
+  agency_commission?: true
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
@@ -217,6 +223,7 @@ export type LeaseSumAggregateInputType = {
   property_tax?: true
   extra_charges?: true
   commission_amount?: true
+  agency_commission?: true
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
@@ -246,6 +253,7 @@ export type LeaseMinAggregateInputType = {
   property_tax?: true
   extra_charges?: true
   commission_amount?: true
+  agency_commission?: true
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
@@ -288,6 +296,7 @@ export type LeaseMaxAggregateInputType = {
   property_tax?: true
   extra_charges?: true
   commission_amount?: true
+  agency_commission?: true
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
@@ -330,6 +339,7 @@ export type LeaseCountAggregateInputType = {
   property_tax?: true
   extra_charges?: true
   commission_amount?: true
+  agency_commission?: true
   rent_due_day?: true
   tax_due_day?: true
   condo_due_day?: true
@@ -462,6 +472,7 @@ export type LeaseGroupByOutputType = {
   property_tax: runtime.Decimal | null
   extra_charges: runtime.Decimal | null
   commission_amount: runtime.Decimal | null
+  agency_commission: runtime.Decimal | null
   rent_due_day: number
   tax_due_day: number | null
   condo_due_day: number | null
@@ -530,6 +541,7 @@ export type LeaseWhereInput = {
   property_tax?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
@@ -584,6 +596,7 @@ export type LeaseOrderByWithRelationInput = {
   property_tax?: Prisma.SortOrderInput | Prisma.SortOrder
   extra_charges?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_amount?: Prisma.SortOrderInput | Prisma.SortOrder
+  agency_commission?: Prisma.SortOrderInput | Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -641,6 +654,7 @@ export type LeaseWhereUniqueInput = Prisma.AtLeast<{
   property_tax?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
@@ -695,6 +709,7 @@ export type LeaseOrderByWithAggregationInput = {
   property_tax?: Prisma.SortOrderInput | Prisma.SortOrder
   extra_charges?: Prisma.SortOrderInput | Prisma.SortOrder
   commission_amount?: Prisma.SortOrderInput | Prisma.SortOrder
+  agency_commission?: Prisma.SortOrderInput | Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
   condo_due_day?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -748,6 +763,7 @@ export type LeaseScalarWhereWithAggregatesInput = {
   property_tax?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.DecimalNullableWithAggregatesFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntWithAggregatesFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableWithAggregatesFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableWithAggregatesFilter<"Lease"> | number | null
@@ -786,6 +802,7 @@ export type LeaseCreateInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -840,6 +857,7 @@ export type LeaseUncheckedCreateInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -880,6 +898,7 @@ export type LeaseUpdateInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -934,6 +953,7 @@ export type LeaseUncheckedUpdateInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -981,6 +1001,7 @@ export type LeaseCreateManyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1019,6 +1040,7 @@ export type LeaseUpdateManyMutationInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1064,6 +1086,7 @@ export type LeaseUncheckedUpdateManyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1124,6 +1147,7 @@ export type LeaseCountOrderByAggregateInput = {
   property_tax?: Prisma.SortOrder
   extra_charges?: Prisma.SortOrder
   commission_amount?: Prisma.SortOrder
+  agency_commission?: Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
@@ -1158,6 +1182,7 @@ export type LeaseAvgOrderByAggregateInput = {
   property_tax?: Prisma.SortOrder
   extra_charges?: Prisma.SortOrder
   commission_amount?: Prisma.SortOrder
+  agency_commission?: Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
@@ -1187,6 +1212,7 @@ export type LeaseMaxOrderByAggregateInput = {
   property_tax?: Prisma.SortOrder
   extra_charges?: Prisma.SortOrder
   commission_amount?: Prisma.SortOrder
+  agency_commission?: Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
@@ -1229,6 +1255,7 @@ export type LeaseMinOrderByAggregateInput = {
   property_tax?: Prisma.SortOrder
   extra_charges?: Prisma.SortOrder
   commission_amount?: Prisma.SortOrder
+  agency_commission?: Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
@@ -1260,6 +1287,7 @@ export type LeaseSumOrderByAggregateInput = {
   property_tax?: Prisma.SortOrder
   extra_charges?: Prisma.SortOrder
   commission_amount?: Prisma.SortOrder
+  agency_commission?: Prisma.SortOrder
   rent_due_day?: Prisma.SortOrder
   tax_due_day?: Prisma.SortOrder
   condo_due_day?: Prisma.SortOrder
@@ -1620,6 +1648,7 @@ export type LeaseCreateWithoutCompanyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1672,6 +1701,7 @@ export type LeaseUncheckedCreateWithoutCompanyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1748,6 +1778,7 @@ export type LeaseScalarWhereInput = {
   property_tax?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.DecimalNullableFilter<"Lease"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFilter<"Lease"> | number
   tax_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
   condo_due_day?: Prisma.IntNullableFilter<"Lease"> | number | null
@@ -1786,6 +1817,7 @@ export type LeaseCreateWithoutAgencyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1838,6 +1870,7 @@ export type LeaseUncheckedCreateWithoutAgencyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1904,6 +1937,7 @@ export type LeaseCreateWithoutPropertyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -1956,6 +1990,7 @@ export type LeaseUncheckedCreateWithoutPropertyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2022,6 +2057,7 @@ export type LeaseCreateWithoutDocumentsInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2075,6 +2111,7 @@ export type LeaseUncheckedCreateWithoutDocumentsInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2130,6 +2167,7 @@ export type LeaseUpdateWithoutDocumentsInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -2183,6 +2221,7 @@ export type LeaseUncheckedUpdateWithoutDocumentsInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -2222,6 +2261,7 @@ export type LeaseCreateWithoutOwnerInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2274,6 +2314,7 @@ export type LeaseUncheckedCreateWithoutOwnerInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2340,6 +2381,7 @@ export type LeaseCreateWithoutTenantInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2392,6 +2434,7 @@ export type LeaseUncheckedCreateWithoutTenantInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2458,6 +2501,7 @@ export type LeaseCreateWithoutTypeInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2510,6 +2554,7 @@ export type LeaseUncheckedCreateWithoutTypeInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2576,6 +2621,7 @@ export type LeaseCreateWithoutFinancial_institutionInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2628,6 +2674,7 @@ export type LeaseUncheckedCreateWithoutFinancial_institutionInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2694,6 +2741,7 @@ export type LeaseCreateWithoutTransactionsInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2747,6 +2795,7 @@ export type LeaseUncheckedCreateWithoutTransactionsInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2802,6 +2851,7 @@ export type LeaseUpdateWithoutTransactionsInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -2855,6 +2905,7 @@ export type LeaseUncheckedUpdateWithoutTransactionsInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -2900,6 +2951,7 @@ export type LeaseCreateManyCompanyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -2938,6 +2990,7 @@ export type LeaseUpdateWithoutCompanyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -2990,6 +3043,7 @@ export type LeaseUncheckedUpdateWithoutCompanyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3036,6 +3090,7 @@ export type LeaseUncheckedUpdateManyWithoutCompanyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3080,6 +3135,7 @@ export type LeaseCreateManyAgencyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -3118,6 +3174,7 @@ export type LeaseUpdateWithoutAgencyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3170,6 +3227,7 @@ export type LeaseUncheckedUpdateWithoutAgencyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3216,6 +3274,7 @@ export type LeaseUncheckedUpdateManyWithoutAgencyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3260,6 +3319,7 @@ export type LeaseCreateManyPropertyInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -3298,6 +3358,7 @@ export type LeaseUpdateWithoutPropertyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3350,6 +3411,7 @@ export type LeaseUncheckedUpdateWithoutPropertyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3396,6 +3458,7 @@ export type LeaseUncheckedUpdateManyWithoutPropertyInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3440,6 +3503,7 @@ export type LeaseCreateManyOwnerInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -3478,6 +3542,7 @@ export type LeaseUpdateWithoutOwnerInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3530,6 +3595,7 @@ export type LeaseUncheckedUpdateWithoutOwnerInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3576,6 +3642,7 @@ export type LeaseUncheckedUpdateManyWithoutOwnerInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3620,6 +3687,7 @@ export type LeaseCreateManyTenantInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -3658,6 +3726,7 @@ export type LeaseUpdateWithoutTenantInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3710,6 +3779,7 @@ export type LeaseUncheckedUpdateWithoutTenantInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3756,6 +3826,7 @@ export type LeaseUncheckedUpdateManyWithoutTenantInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3800,6 +3871,7 @@ export type LeaseCreateManyTypeInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -3838,6 +3910,7 @@ export type LeaseUpdateWithoutTypeInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3890,6 +3963,7 @@ export type LeaseUncheckedUpdateWithoutTypeInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3936,6 +4010,7 @@ export type LeaseUncheckedUpdateManyWithoutTypeInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -3980,6 +4055,7 @@ export type LeaseCreateManyFinancial_institutionInput = {
   property_tax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day: number
   tax_due_day?: number | null
   condo_due_day?: number | null
@@ -4018,6 +4094,7 @@ export type LeaseUpdateWithoutFinancial_institutionInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -4070,6 +4147,7 @@ export type LeaseUncheckedUpdateWithoutFinancial_institutionInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -4116,6 +4194,7 @@ export type LeaseUncheckedUpdateManyWithoutFinancial_institutionInput = {
   property_tax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   extra_charges?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commission_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  agency_commission?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   rent_due_day?: Prisma.IntFieldUpdateOperationsInput | number
   tax_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   condo_due_day?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -4201,6 +4280,7 @@ export type LeaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   property_tax?: boolean
   extra_charges?: boolean
   commission_amount?: boolean
+  agency_commission?: boolean
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
@@ -4256,6 +4336,7 @@ export type LeaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   property_tax?: boolean
   extra_charges?: boolean
   commission_amount?: boolean
+  agency_commission?: boolean
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
@@ -4308,6 +4389,7 @@ export type LeaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   property_tax?: boolean
   extra_charges?: boolean
   commission_amount?: boolean
+  agency_commission?: boolean
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
@@ -4360,6 +4442,7 @@ export type LeaseSelectScalar = {
   property_tax?: boolean
   extra_charges?: boolean
   commission_amount?: boolean
+  agency_commission?: boolean
   rent_due_day?: boolean
   tax_due_day?: boolean
   condo_due_day?: boolean
@@ -4388,7 +4471,7 @@ export type LeaseSelectScalar = {
   guarantors?: boolean
 }
 
-export type LeaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "property_id" | "type_id" | "owner_id" | "tenant_id" | "agency_id" | "financial_institution_id" | "contract_number" | "start_date" | "end_date" | "rent_amount" | "condo_fee" | "property_tax" | "extra_charges" | "commission_amount" | "rent_due_day" | "tax_due_day" | "condo_due_day" | "created_at" | "updated_at" | "deleted_at" | "canceled_at" | "cancellation_justification" | "cancellation_penalty" | "other_cancellation_amounts" | "status" | "payment_condition" | "property_tax_cash" | "property_tax_cash_due_date" | "property_tax_first_installment" | "property_tax_first_installment_due_date" | "property_tax_second_installment" | "property_tax_second_installment_due_date" | "iptu_year" | "iptu_installments" | "iptu_installments_due_dates" | "iptu_installments_count" | "insurance_company" | "insurance_type" | "insurance_policy" | "guarantors", ExtArgs["result"]["lease"]>
+export type LeaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "property_id" | "type_id" | "owner_id" | "tenant_id" | "agency_id" | "financial_institution_id" | "contract_number" | "start_date" | "end_date" | "rent_amount" | "condo_fee" | "property_tax" | "extra_charges" | "commission_amount" | "agency_commission" | "rent_due_day" | "tax_due_day" | "condo_due_day" | "created_at" | "updated_at" | "deleted_at" | "canceled_at" | "cancellation_justification" | "cancellation_penalty" | "other_cancellation_amounts" | "status" | "payment_condition" | "property_tax_cash" | "property_tax_cash_due_date" | "property_tax_first_installment" | "property_tax_first_installment_due_date" | "property_tax_second_installment" | "property_tax_second_installment_due_date" | "iptu_year" | "iptu_installments" | "iptu_installments_due_dates" | "iptu_installments_count" | "insurance_company" | "insurance_type" | "insurance_policy" | "guarantors", ExtArgs["result"]["lease"]>
 export type LeaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.OwnerDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
@@ -4450,6 +4533,7 @@ export type $LeasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     property_tax: runtime.Decimal | null
     extra_charges: runtime.Decimal | null
     commission_amount: runtime.Decimal | null
+    agency_commission: runtime.Decimal | null
     rent_due_day: number
     tax_due_day: number | null
     condo_due_day: number | null
@@ -4924,6 +5008,7 @@ export interface LeaseFieldRefs {
   readonly property_tax: Prisma.FieldRef<"Lease", 'Decimal'>
   readonly extra_charges: Prisma.FieldRef<"Lease", 'Decimal'>
   readonly commission_amount: Prisma.FieldRef<"Lease", 'Decimal'>
+  readonly agency_commission: Prisma.FieldRef<"Lease", 'Decimal'>
   readonly rent_due_day: Prisma.FieldRef<"Lease", 'Int'>
   readonly tax_due_day: Prisma.FieldRef<"Lease", 'Int'>
   readonly condo_due_day: Prisma.FieldRef<"Lease", 'Int'>

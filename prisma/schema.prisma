@@ -103,6 +103,7 @@ model Agency {
   license_number         String?         @db.VarChar(20)
   commission_category_id    String?
   commission_subcategory_id String?
+  commission_percentage     Decimal?        @db.Decimal(5, 2)
   created_at             DateTime        @default(now())
   updated_at             DateTime        @updatedAt
   deleted_at             DateTime?
@@ -354,6 +355,7 @@ model Lease {
   property_tax                    Decimal?          @db.Decimal(20, 2)
   extra_charges                   Decimal?          @db.Decimal(20, 2)
   commission_amount               Decimal?          @db.Decimal(20, 2)
+  agency_commission               Decimal?          @db.Decimal(5, 2)
   rent_due_day                    Int
   tax_due_day                     Int?
   condo_due_day                   Int?

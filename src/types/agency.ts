@@ -6,6 +6,7 @@ export interface Agency {
   state_registration?: string | null;
   municipal_registration?: string | null;
   license_number?: string | null;
+  commission_percentage?: number | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -17,6 +18,7 @@ export interface CreateAgencyInput {
   state_registration?: string;
   municipal_registration?: string;
   license_number?: string;
+  commission_percentage?: number;
   contacts?: {
     contact: string;
     phone: string;

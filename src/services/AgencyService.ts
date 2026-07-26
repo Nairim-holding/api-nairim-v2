@@ -1,6 +1,10 @@
 import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
 
+function hasValue(v: unknown): boolean {
+  return v !== undefined && v !== null && v !== '';
+}
+
 export class AgencyService {
   static readonly FIELD_MAPPING: Record<string, { 
     type: 'direct' | 'address' | 'contact', 
@@ -364,6 +368,7 @@ export class AgencyService {
             license_number: data.license_number,
             commission_category_id: data.commission_category_id || null,
             commission_subcategory_id: data.commission_subcategory_id || null,
+            commission_percentage: hasValue(data.commission_percentage) ? Number(data.commission_percentage) : null,
           }
         });
 
@@ -439,6 +444,7 @@ export class AgencyService {
             license_number: data.license_number,
             commission_category_id: data.commission_category_id || null,
             commission_subcategory_id: data.commission_subcategory_id || null,
+            commission_percentage: hasValue(data.commission_percentage) ? Number(data.commission_percentage) : null,
           }
         });
 
