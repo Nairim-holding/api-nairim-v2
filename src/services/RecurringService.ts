@@ -126,7 +126,9 @@ export class RecurringService {
         financial_institution_id: data.institution_id,
         card_id: parseFK(data.card_id),
         center_id: parseFK(data.center_id),
-        supplier_id: transactionType === 'EXPENSE' ? parseFK(data.supplier_id) : null,
+        // Contato vale para os dois tipos: despesa tem fornecedor, receita tem
+        // pagador. As ocorrências herdam este valor via `config.supplier_id`.
+        supplier_id: parseFK(data.supplier_id),
         start_date: startDate,
         end_date: null,
         is_active: true,

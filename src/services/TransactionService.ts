@@ -2,6 +2,12 @@ import { ApiResponse } from '../utils/api-response';
 import prisma from '@/lib/prisma';
 import { Prisma } from '@/generated/prisma/client';
 import { parseLocalDate, displayDate } from '../utils/date-utils';
+import {
+  buildPropagatedDescription,
+  parseSeriesDescription,
+  sanitizePropagateFields,
+  type PropagatableField,
+} from '../utils/seriesPropagation';
 import { randomUUID } from 'node:crypto';
 
 export class TransactionService {
@@ -701,39 +707,100 @@ export class TransactionService {
         });
       }
 
-      // Propagação de reajuste de valor para as parcelas/ocorrências SEGUINTES
-      // da mesma série. Só dispara quando o valor mudou e o cliente pediu
-      // (`propagate_to_following`). Parcelas já concluídas (COMPLETED) são
+      // Propagação para as parcelas/ocorrências SEGUINTES da mesma série. O
+      // cliente informa em `propagate_fields` o que foi alterado e confirmado
+      // no diálogo. Parcelas já concluídas (COMPLETED) e as anteriores são
       // preservadas. Funciona igual para débito e crédito (o sinal vem no amount).
-      const newAmount = data.amount !== undefined ? Number(data.amount) : undefined;
-      const amountChanged = newAmount !== undefined && Number(existing.amount) !== newAmount;
+      if (data.propagate_to_following === true) {
+        const requested = sanitizePropagateFields(data.propagate_fields);
 
-      if (data.propagate_to_following === true && amountChanged) {
-        if (existing.installment_group_id && existing.installment_number != null) {
-          await prisma.transaction.updateMany({
-            where: {
-              installment_group_id: existing.installment_group_id,
-              installment_number: { gt: existing.installment_number },
-              status: 'PENDING',
-              deleted_at: null
-            },
-            data: { amount: newAmount }
-          });
-        } else if (existing.recurring_group_id && existing.occurrence_number != null) {
-          await prisma.transaction.updateMany({
-            where: {
-              recurring_group_id: existing.recurring_group_id,
-              occurrence_number: { gt: existing.occurrence_number },
-              status: 'PENDING',
-              deleted_at: null
-            },
-            data: { amount: newAmount }
-          });
+        // Compatibilidade com o cliente antigo, que enviava só a flag e
+        // esperava a propagação exclusiva do valor.
+        const newAmount = data.amount !== undefined ? Number(data.amount) : undefined;
+        const amountChanged = newAmount !== undefined && Number(existing.amount) !== newAmount;
+        const fields: PropagatableField[] = requested.length > 0
+          ? requested
+          : (amountChanged ? ['amount'] : []);
+
+        if (fields.length > 0) {
+          await this.propagateToFollowing(existing, updated, fields);
         }
       }
 
       return updated;
     } catch (error: any) { throw error; }
+  }
+
+  /**
+   * Replica os campos confirmados no diálogo para os lançamentos SEGUINTES da
+   * série, usando como fonte a própria linha já gravada (`updated`) — assim é
+   * impossível divergir do que o usuário viu ao salvar.
+   *
+   * Alvos: posição maior que a da linha editada, `PENDING` e não deletados.
+   */
+  private static async propagateToFollowing(existing: any, updated: any, fields: PropagatableField[]) {
+    const isInstallment = !!existing.installment_group_id && existing.installment_number != null;
+    const isRecurring = !!existing.recurring_group_id && existing.occurrence_number != null;
+    if (!isInstallment && !isRecurring) return;
+
+    const where: any = isInstallment
+      ? {
+          installment_group_id: existing.installment_group_id,
+          installment_number: { gt: existing.installment_number },
+          status: 'PENDING',
+          deleted_at: null
+        }
+      : {
+          recurring_group_id: existing.recurring_group_id,
+          occurrence_number: { gt: existing.occurrence_number },
+          status: 'PENDING',
+          deleted_at: null
+        };
+
+    // A descrição carrega a numeração da parcela ("- Parcela 3/12"), que varia
+    // por linha, então fica fora do updateMany e é montada individualmente.
+    const propagatesDescription = fields.includes('description');
+    const uniform: any = {};
+    for (const field of fields) {
+      if (field === 'description') continue;
+      uniform[field] = updated[field];
+    }
+
+    await prisma.$transaction(async (tx) => {
+      if (Object.keys(uniform).length > 0) {
+        await tx.transaction.updateMany({ where, data: uniform });
+      }
+
+      if (propagatesDescription) {
+        const targets = await tx.transaction.findMany({
+          where,
+          select: { id: true, description: true }
+        });
+
+        for (const target of targets) {
+          const description = buildPropagatedDescription(updated.description, target.description);
+          if (description === target.description) continue;
+          await tx.transaction.update({ where: { id: target.id }, data: { description } });
+        }
+      }
+
+      // Recorrência infinita: as próximas ocorrências são geradas a partir da
+      // RecurringConfig, então sem atualizá-la os valores antigos voltariam.
+      if (isRecurring) {
+        const configData: any = { ...uniform };
+        if (propagatesDescription) {
+          configData.description = parseSeriesDescription(updated.description).base
+            || String(updated.description ?? '').trim();
+        }
+
+        if (Object.keys(configData).length > 0) {
+          await tx.recurringConfig.updateMany({
+            where: { id: existing.recurring_group_id, deleted_at: null },
+            data: configData
+          });
+        }
+      }
+    });
   }
 
   static async deleteTransaction(id: string) {
@@ -897,7 +964,9 @@ export class TransactionService {
                 financial_institution_id: data.institution_id,
                 card_id: cardId,
                 center_id: parseFK(data.center_id),
-                supplier_id: transactionType === 'EXPENSE' ? parseFK(data.supplier_id) : null,
+                // Contato vale para os dois tipos: despesa tem fornecedor,
+                // receita tem pagador.
+                supplier_id: parseFK(data.supplier_id),
                 invoice_id: invoiceId,
                 status: 'PENDING',
                 payment_mode: 'PARCELADO',

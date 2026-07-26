@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
-import type { 
+import { parseLocalDate } from '../utils/date-utils';
+import type {
   CreateInvoiceInput, 
   UpdateInvoiceStatusInput, 
   GetInvoiceParams,
@@ -139,7 +140,7 @@ export class InvoiceService {
 
   // Atualizar status da fatura (APENAS atualiza, sem criar lançamento)
   static async updateStatus(id: string, data: UpdateInvoiceStatusInput) {
-    const { status, effective_date, paid_amount } = data;
+    const { status, effective_date, paid_amount, institution_id } = data;
 
     const invoice = await prisma.invoice.findUnique({
       where: { id },
@@ -188,18 +189,6 @@ export class InvoiceService {
         frontendAmount,
         finalPaidAmount: updateData.paid_amount
       });
-      
-      // Atualizar todas as transações vinculadas para COMPLETED
-      await prisma.transaction.updateMany({
-        where: { 
-          invoice_id: id,
-          deleted_at: null
-        },
-        data: { 
-          status: 'COMPLETED'
-        }
-      });
-      console.log(`[DEBUG] Transações da fatura ${id} atualizadas para COMPLETED`);
     }
 
     // Se está sendo reaberta (COMPLETED -> PENDING)
@@ -208,24 +197,41 @@ export class InvoiceService {
       updateData.paid_amount = 0;
     }
 
-    const updatedInvoice = await prisma.invoice.update({
-      where: { id },
-      data: updateData,
-      include: {
-        card: {
-          select: {
-            id: true,
-            name: true,
-            brand: true,
-            limit: true,
-            closing_day: true,
-            due_day: true
+    // Os lançamentos que compõem a fatura recebem os mesmos dados informados na
+    // tela: status, Data de Efetivação e Instituição. Vale para os dois status —
+    // reabrir a fatura devolve os lançamentos a PENDING.
+    // `parseLocalDate` evita o deslocamento de um dia das colunas @db.Date.
+    const transactionData: any = { status };
+    if (effective_date) transactionData.effective_date = parseLocalDate(effective_date);
+    if (institution_id) transactionData.financial_institution_id = institution_id;
+
+    const transactionsWhere = { invoice_id: id, deleted_at: null };
+
+    // Fatura e lançamentos numa transação só: sem estado meio-aplicado se um lado falhar.
+    const [updatedTransactions, updatedInvoice] = await prisma.$transaction([
+      prisma.transaction.updateMany({
+        where: transactionsWhere,
+        data: transactionData
+      }),
+      prisma.invoice.update({
+        where: { id },
+        data: updateData,
+        include: {
+          card: {
+            select: {
+              id: true,
+              name: true,
+              brand: true,
+              limit: true,
+              closing_day: true,
+              due_day: true
+            }
           }
         }
-      }
-    });
+      })
+    ]);
 
-    return updatedInvoice;
+    return { ...updatedInvoice, updated_transactions: updatedTransactions.count };
   }
 
   // Criar transação de pagamento da fatura

@@ -151,6 +151,8 @@ export class LeaseFinanceService {
         break;
     }
 
+    const tenantName = lease.tenant?.name ?? 'Inquilino';
+
     return items.map((it, idx) => ({
       category_id: categoryId,
       subcategory_id: subcategoryId,
@@ -159,7 +161,7 @@ export class LeaseFinanceService {
       date: it.date,
       installment_number: idx + 1,
       total: items.length,
-      description: `Restituição IPTU ${idx + 1}/${items.length} - Contrato ${lease.contract_number}`,
+      description: `Restituição IPTU ${idx + 1}/${items.length} – ${tenantName} – Contrato ${lease.contract_number}`,
     }));
   }
 
@@ -252,7 +254,7 @@ export class LeaseFinanceService {
           date,
           installment_number: idx + 1,
           total: months.length,
-          description: `Comissão ${idx + 1}/${months.length} - Contrato ${lease.contract_number}`,
+          description: `Comissão ${idx + 1}/${months.length} – ${tenantName} – Contrato ${lease.contract_number}`,
         });
       }
     });

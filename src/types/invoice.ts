@@ -61,6 +61,8 @@ export interface UpdateInvoiceStatusInput {
   status: 'PENDING' | 'COMPLETED';
   effective_date?: string;
   paid_amount?: number;
+  /** Instituição a aplicar nos lançamentos que compõem a fatura. */
+  institution_id?: string;
 }
 
 export interface GetInvoiceParams {

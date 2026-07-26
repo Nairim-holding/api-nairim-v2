@@ -133,7 +133,7 @@ export class InvoiceController {
   static async updateStatus(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      let { status, effective_date, paid_amount } = req.body;
+      let { status, effective_date, paid_amount, institution_id } = req.body;
 
       // Validar status
       if (!status || !['PENDING', 'COMPLETED'].includes(status)) {
@@ -143,15 +143,33 @@ export class InvoiceController {
         });
       }
 
-      const invoice = await InvoiceService.updateStatus(String(id), {
+      // `parseLocalDate` cai silenciosamente para "hoje" em entrada inválida, o
+      // que gravaria a data errada em todos os lançamentos da fatura. Barramos aqui.
+      if (effective_date !== undefined && effective_date !== null && effective_date !== '') {
+        const isValidDate = /^\d{4}-\d{2}-\d{2}/.test(String(effective_date))
+          && !isNaN(new Date(String(effective_date)).getTime());
+
+        if (!isValidDate) {
+          return res.status(400).json({
+            success: false,
+            error: 'Data de Efetivação inválida. Use o formato YYYY-MM-DD'
+          });
+        }
+      }
+
+      const invoice: any = await InvoiceService.updateStatus(String(id), {
         status,
         effective_date,
-        paid_amount
+        paid_amount,
+        institution_id
       });
+
+      const updatedCount = invoice.updated_transactions ?? 0;
+      const plural = updatedCount === 1 ? 'lançamento atualizado' : 'lançamentos atualizados';
 
       return res.status(200).json({
         success: true,
-        message: `Status atualizado para ${status}`,
+        message: `Status atualizado para ${status} — ${updatedCount} ${plural}`,
         data: invoice
       });
 

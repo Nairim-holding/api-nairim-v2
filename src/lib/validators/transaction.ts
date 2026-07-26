@@ -30,6 +30,12 @@ export class TransactionValidator {
       errors.push('Status inválido. Deve ser PENDING ou COMPLETED');
     }
 
+    // Lista de campos a replicar nas parcelas/ocorrências seguintes da série.
+    // O serviço ainda aplica a whitelist; aqui só rejeitamos o formato errado.
+    if (data.propagate_fields !== undefined && !Array.isArray(data.propagate_fields)) {
+      errors.push('propagate_fields deve ser uma lista de campos');
+    }
+
     return { isValid: errors.length === 0, errors };
   }
 
