@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { BackupController } from '../controllers/BackupController';
 import { requireAdmin } from '../middlewares/auth';
+import { fixMulterEncoding } from '../utils/upload';
 
 const router = Router();
 
@@ -10,6 +11,7 @@ const uploadBackup = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
   fileFilter: (req, file, cb) => {
+    // Note: here file.originalname is not yet fixed, but typically backup files are .json and won't have issue with extension matching.
     if (file.mimetype === 'application/json' || file.originalname.endsWith('.json')) {
       cb(null, true);
     } else {
@@ -22,7 +24,7 @@ const uploadBackup = multer({
 router.get('/export', requireAdmin, BackupController.exportBackup);
 
 // Restore: recebe arquivo + confirmação, restaura os dados
-router.post('/restore', requireAdmin, uploadBackup.single('file'), BackupController.restoreBackup);
+router.post('/restore', requireAdmin, uploadBackup.single('file'), fixMulterEncoding, BackupController.restoreBackup);
 
 // Backups automáticos (gerados antes de cada restore): listar e baixar
 router.get('/auto', requireAdmin, BackupController.listAutoBackups);

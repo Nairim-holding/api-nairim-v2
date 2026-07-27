@@ -740,8 +740,6 @@ export class PropertyService {
     for (const [fieldName, docType] of Object.entries(fileTypes)) {
       if (files[fieldName]?.length > 0) {
         for (const file of files[fieldName]) {
-          // Correção de encoding: latin1 -> utf8
-          file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
           allFiles.push({ file, docType });
         }
       }

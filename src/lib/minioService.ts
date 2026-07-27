@@ -39,15 +39,18 @@ export class MinioService {
     return url.startsWith(prefix) ? url.slice(prefix.length) : null;
   }
 
-  /** Envia um buffer para o bucket sob a key informada e retorna a URL pública final. */
   static async uploadBuffer(buffer: Buffer, key: string, contentType: string, originalFilename?: string): Promise<string> {
+    const contentDisposition = originalFilename
+      ? `inline; filename="${originalFilename.normalize('NFD').replace(/[\u0300-\u036f]/g, '')}"; filename*=UTF-8''${encodeURIComponent(originalFilename)}`
+      : 'inline';
+
     await s3Client.send(
       new PutObjectCommand({
         Bucket: env.MINIO_BUCKET,
         Key: key,
         Body: buffer,
         ContentType: contentType,
-        ContentDisposition: originalFilename ? `inline; filename="${originalFilename}"` : 'inline',
+        ContentDisposition: contentDisposition,
       }),
     );
     return this.urlFromKey(key);
@@ -83,7 +86,7 @@ export class MinioService {
         Key: key,
         Body: body,
         ContentType: file.mimetype,
-        ContentDisposition: `inline; filename="${file.originalname}"`,
+        ContentDisposition: `inline; filename="${file.originalname.normalize('NFD').replace(/[\u0300-\u036f]/g, '')}"; filename*=UTF-8''${encodeURIComponent(file.originalname)}`,
       },
       queueSize: 4,
       partSize: 10 * 1024 * 1024,

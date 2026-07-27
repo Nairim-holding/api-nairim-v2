@@ -245,7 +245,17 @@ export class CardService {
     }
   }
 
-  static async getCardUsageSummary(startDate: Date, endDate: Date) {
+  static async getCardUsageSummary(startDateInput: Date, endDateInput: Date) {
+    const startDate = new Date(startDateInput);
+    if (!isNaN(startDate.getTime())) {
+      startDate.setHours(0, 0, 0, 0);
+    }
+
+    const endDate = new Date(endDateInput);
+    if (!isNaN(endDate.getTime())) {
+      endDate.setHours(23, 59, 59, 999);
+    }
+
     const cards = await prisma.card.findMany({
       where: { deleted_at: null, is_active: true },
       select: { id: true, name: true, limit: true },
@@ -258,7 +268,10 @@ export class CardService {
         deleted_at: null,
         NOT: { is_transfer: true },
         card_id: { not: null },
-        event_date: { gte: startDate, lte: endDate },
+        OR: [
+          { event_date: { gte: startDate, lte: endDate } },
+          { effective_date: { gte: startDate, lte: endDate } },
+        ],
         category: { type: 'EXPENSE' },
       },
       _sum: { amount: true },
