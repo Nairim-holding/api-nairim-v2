@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import { env } from '@/env';
 
@@ -25,6 +25,11 @@ export interface MinioUploadResult {
   url: string;
   key: string;
   contentType: string;
+}
+
+export interface MinioObjectInfo {
+  key: string;
+  size: number;
 }
 
 export class MinioService {
@@ -95,6 +100,38 @@ export class MinioService {
     await upload.done();
 
     return { url: this.urlFromKey(key), key, contentType: file.mimetype };
+  }
+
+  /**
+   * Lista todos os objetos do bucket (ou de um prefixo), com o tamanho de cada um.
+   *
+   * O ListObjectsV2 já devolve `Size` em bytes junto com a key, então o custo é de
+   * uma chamada por página de 1000 objetos — não é preciso um HEAD por arquivo.
+   * Usado apenas para leitura/estatística (StorageUsageService); não participa do
+   * fluxo de upload.
+   */
+  static async listAllObjects(prefix?: string): Promise<MinioObjectInfo[]> {
+    const objects: MinioObjectInfo[] = [];
+    let continuationToken: string | undefined;
+
+    do {
+      const page = await s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: env.MINIO_BUCKET,
+          Prefix: prefix,
+          ContinuationToken: continuationToken,
+        }),
+      );
+
+      for (const item of page.Contents ?? []) {
+        if (!item.Key) continue;
+        objects.push({ key: item.Key, size: item.Size ?? 0 });
+      }
+
+      continuationToken = page.IsTruncated ? page.NextContinuationToken : undefined;
+    } while (continuationToken);
+
+    return objects;
   }
 
   /** Remove um arquivo do bucket a partir da URL pública salva no banco. */

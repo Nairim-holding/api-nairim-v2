@@ -15,6 +15,28 @@ const BRANDING_FIELDS = [
   'bg_color_dark', 'card_color_dark', 'border_color_dark', 'text_color_dark',
 ] as const;
 
+/** Sentinela de entrada inválida — distinta de `null` (limpar) e `undefined` (não alterar). */
+const INVALID_QUOTA = Symbol('invalid-quota');
+const DB_QUOTA_ERROR =
+  'Limite de banco de dados inválido: informe um número inteiro de MB maior que zero, ou deixe em branco para usar o padrão.';
+
+/**
+ * Limite contratado de banco (Company.db_quota_mb), vindo do formulário.
+ *
+ *  - ausente        → undefined: não mexe no valor atual
+ *  - vazio ou null  → null: empresa volta ao padrão do ambiente (DEFAULT_DB_QUOTA_MB)
+ *  - número válido  → inteiro positivo em MB
+ */
+function parseDbQuota(value: unknown): number | null | undefined | typeof INVALID_QUOTA {
+  if (value === undefined) return undefined;
+  if (value === null || value === '') return null;
+
+  const parsed = typeof value === 'number' ? value : Number(String(value).trim().replace(',', '.'));
+  if (!Number.isFinite(parsed) || !Number.isInteger(parsed) || parsed <= 0) return INVALID_QUOTA;
+
+  return parsed;
+}
+
 function pickBrandingFields(body: Record<string, unknown>) {
   const data: Record<string, unknown> = {};
   for (const field of BRANDING_FIELDS) {
@@ -184,9 +206,16 @@ export class CompanyController {
     try {
       const { name, slug } = req.body;
       if (!name || !slug) return res.status(400).json(ApiResponse.error('name e slug são obrigatórios'));
+
+      const db_quota_mb = parseDbQuota(req.body.db_quota_mb);
+      if (db_quota_mb === INVALID_QUOTA) {
+        return res.status(400).json(ApiResponse.error(DB_QUOTA_ERROR));
+      }
+
       const company = await CompanyService.createCompany({
         name,
         slug: slug.toLowerCase().trim(),
+        db_quota_mb,
         ...pickBrandingFields(req.body),
       });
       return res.status(201).json(ApiResponse.success(company, 'Empresa criada com sucesso'));
@@ -200,10 +229,17 @@ export class CompanyController {
     try {
       const id = String(req.params.id);
       const { name, slug, is_active } = req.body;
+
+      const db_quota_mb = parseDbQuota(req.body.db_quota_mb);
+      if (db_quota_mb === INVALID_QUOTA) {
+        return res.status(400).json(ApiResponse.error(DB_QUOTA_ERROR));
+      }
+
       const updated = await CompanyService.updateCompany(id, {
         name,
         slug: slug ? slug.toLowerCase().trim() : undefined,
         is_active,
+        db_quota_mb,
         ...pickBrandingFields(req.body),
       });
       return res.json(ApiResponse.success(updated, 'Empresa atualizada com sucesso'));

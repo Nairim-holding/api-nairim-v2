@@ -22,7 +22,12 @@ const validateParams = (req: express.Request, res: express.Response, next: expre
 router.get("/financial", validateParams, DashboardController.getFinancial);
 router.get("/portfolio", validateParams, DashboardController.getPortfolio);
 router.get("/clients", validateParams, DashboardController.getClients);
+router.get("/tenant-tenure", validateParams, DashboardController.getTenantTenure);
 router.get("/map", validateParams, DashboardController.getMap);
+
+// Sem validateParams: consumo de armazenamento é um retrato do momento, não usa período.
+router.get("/storage", DashboardController.getStorage);
+router.get("/database", DashboardController.getDatabaseUsage);
 
 // Rota completa (opcional)
 router.get("/all", validateParams, DashboardController.getAll);

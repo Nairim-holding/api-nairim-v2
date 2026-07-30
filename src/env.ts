@@ -31,6 +31,10 @@ export const env = {
   MINIO_BUCKET: process.env.MINIO_BUCKET ?? "imagens",
   MINIO_REGION: process.env.MINIO_REGION ?? "us-east-1",
 
+  // Limite contratado de banco de dados usado quando a empresa não tem
+  // Company.db_quota_mb próprio definido.
+  DEFAULT_DB_QUOTA_MB: Number(process.env.DEFAULT_DB_QUOTA_MB ?? 10),
+
   // Rate limiting configuration
   RATE_LIMIT_WINDOW_MS: Number(process.env.RATE_LIMIT_WINDOW_MS ?? 5 * 60 * 1000), // 5 minutes
   RATE_LIMIT_MAX_REQUESTS: Number(process.env.RATE_LIMIT_MAX_REQUESTS ?? 10000), // 10,000 requests per window

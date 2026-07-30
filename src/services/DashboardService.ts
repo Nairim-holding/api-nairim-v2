@@ -4,13 +4,73 @@ import {
   PeriodComparison, 
   FinancialMetrics, 
   PortfolioMetrics, 
-  ClientsMetrics, 
+  ClientsMetrics,
   GeolocationResponse,
-  MetricResult
+  MetricResult,
+  TenantTenureBucketKey,
+  TenantTenureDistribution,
+  TenantTenureLease
 } from '../types/dashboard';
 
 const decimalToNumber = (v: Decimal | number | null | undefined) =>
   v == null ? 0 : v instanceof Decimal ? v.toNumber() : Number(v);
+
+/**
+ * Tempo de permanência em anos, por ANIVERSÁRIO DE CALENDÁRIO (não por divisão
+ * de dias). Dividir por 365,25 fazia contratos de 12 meses idênticos caírem em
+ * faixas diferentes conforme o ano fosse bissexto (366/365,25 = 1,002 → "1 a 2";
+ * 365/365,25 = 0,999 → "Até 1 ano"). Aqui, um contrato de 15/03/2025 a
+ * 15/03/2026 vale exatamente 1,0 ano, com ou sem 29 de fevereiro no meio.
+ *
+ * A parte fracionária é a proporção do ano-aniversário corrente já decorrida.
+ * Retorna negativo quando o fim é anterior ao início (dado inconsistente).
+ */
+export const tenureInYears = (start: Date, end: Date): number => {
+  if (end.getTime() < start.getTime()) return -1;
+
+  const anniversaryOf = (yearsToAdd: number) =>
+    new Date(Date.UTC(start.getUTCFullYear() + yearsToAdd, start.getUTCMonth(), start.getUTCDate()));
+
+  let fullYears = end.getUTCFullYear() - start.getUTCFullYear();
+  if (anniversaryOf(fullYears).getTime() > end.getTime()) fullYears -= 1;
+
+  const last = anniversaryOf(fullYears);
+  const next = anniversaryOf(fullYears + 1);
+  const span = next.getTime() - last.getTime();
+
+  return fullYears + (span > 0 ? (end.getTime() - last.getTime()) / span : 0);
+};
+
+/**
+ * Faixas de permanência: limite inferior FECHADO, superior ABERTO.
+ * Logo 3,5 anos → "De 3 anos até 4 anos"; exatamente 2,0 anos sobe para
+ * "De 2 anos até 3 anos". Como as faixas são contíguas e não se sobrepõem,
+ * toda locação com tempo >= 0 cai em exatamente uma.
+ */
+export const TENURE_BUCKETS: { key: TenantTenureBucketKey; label: string; shortLabel: string; min: number; max: number }[] = [
+  { key: 'UP_TO_1', label: 'Até 1 ano',            shortLabel: 'Até 1',   min: 0, max: 1 },
+  { key: 'Y1_TO_2', label: 'De 1 ano até 2 anos',  shortLabel: '1 a 2',   min: 1, max: 2 },
+  { key: 'Y2_TO_3', label: 'De 2 anos até 3 anos', shortLabel: '2 a 3',   min: 2, max: 3 },
+  { key: 'Y3_TO_4', label: 'De 3 anos até 4 anos', shortLabel: '3 a 4',   min: 3, max: 4 },
+  { key: 'Y4_TO_5', label: 'De 4 anos até 5 anos', shortLabel: '4 a 5',   min: 4, max: 5 },
+  { key: 'OVER_5',  label: 'Acima de 5 anos',      shortLabel: 'Acima 5', min: 5, max: Infinity },
+];
+
+/**
+ * Classifica um tempo de permanência (em anos) em uma das 6 faixas.
+ * Retorna `undefined` para tempo negativo (datas inconsistentes), que não
+ * pertence a nenhuma faixa.
+ */
+export const classifyTenureBucket = (years: number) =>
+  TENURE_BUCKETS.find(b => years >= b.min && years < b.max);
+
+/** Zera a hora em UTC: compara @db.Date com "hoje" sem erro de 1 dia por fuso. */
+const toUtcMidnight = (d: Date): Date => {
+  const date = new Date(d);
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+};
+
+const toIsoDate = (d: Date): string => d.toISOString().slice(0, 10);
 
 const REQUIRED_DOCUMENT_TYPES = [
   'TITLE_DEED',  
@@ -327,6 +387,102 @@ export class DashboardService {
         }))
       }))
     };
+  }
+
+  /**
+   * Distribuição das locações por tempo de permanência do inquilino no imóvel.
+   *
+   * Unidade de contagem: a LOCAÇÃO (contrato), não o inquilino — um inquilino com
+   * dois imóveis conta duas vezes e pode cair em faixas diferentes. É o que casa
+   * 1:1 com o grid detalhado (uma linha por locação) e garante
+   * `soma dos buckets === leases.length`.
+   *
+   * Fim efetivo da locação:
+   *  - CANCELED com `canceled_at` → `canceled_at` (fim real, não o previsto)
+   *  - `end_date` já passou       → `end_date`    (encerrada)
+   *  - caso contrário             → hoje          (em curso)
+   *
+   * O período recebido filtra QUEM aparece (locações vigentes no período, isto é,
+   * cujo intervalo intersecta [startDate, endDate]), mas não recorta o tempo:
+   * o tempo exibido é sempre a permanência total da locação.
+   */
+  static async getTenantTenureDistribution(startDate: Date, endDate: Date): Promise<TenantTenureDistribution> {
+    // Datas do banco são @db.Date (meia-noite UTC). Normalizar "hoje" para
+    // meia-noite UTC evita erro de 1 dia por causa do fuso do servidor.
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
+    const rangeStart = toUtcMidnight(startDate);
+    const rangeEnd = toUtcMidnight(endDate);
+
+    // `start_date <= rangeEnd` é a metade da interseção que dá para empurrar para o
+    // banco; a outra metade depende do fim efetivo (calculado abaixo, em JS).
+    const leases = await prisma.lease.findMany({
+      where: { deleted_at: null, start_date: { lte: rangeEnd } },
+      select: {
+        id: true,
+        contract_number: true,
+        start_date: true,
+        end_date: true,
+        canceled_at: true,
+        status: true,
+        tenant: { select: { name: true } },
+        property: { select: { title: true } },
+      },
+      orderBy: { start_date: 'asc' },
+    });
+
+    const rows: TenantTenureLease[] = [];
+
+    for (const lease of leases) {
+      const start = toUtcMidnight(lease.start_date);
+
+      let effectiveEnd: Date;
+      let situation: TenantTenureLease['situation'];
+
+      if (lease.status === 'CANCELED' && lease.canceled_at) {
+        effectiveEnd = toUtcMidnight(lease.canceled_at);
+        situation = 'Cancelada';
+      } else if (toUtcMidnight(lease.end_date) < today) {
+        effectiveEnd = toUtcMidnight(lease.end_date);
+        situation = lease.status === 'CANCELED' ? 'Cancelada' : 'Encerrada';
+      } else {
+        effectiveEnd = today;
+        situation = lease.status === 'CANCELED' ? 'Cancelada' : 'Em curso';
+      }
+
+      // Segunda metade da interseção com o período selecionado.
+      if (effectiveEnd < rangeStart) continue;
+
+      // Datas inconsistentes (fim antes do início) geram tempo negativo, que não
+      // pertence a nenhuma faixa — fora do gráfico em vez de poluir "Até 1 ano".
+      const years = tenureInYears(start, effectiveEnd);
+      if (years < 0) continue;
+
+      const bucket = classifyTenureBucket(years)!;
+
+      rows.push({
+        id: lease.id,
+        tenantName: lease.tenant?.name ?? '—',
+        propertyTitle: lease.property?.title ?? '—',
+        contractNumber: lease.contract_number,
+        startDate: toIsoDate(start),
+        endDate: toIsoDate(effectiveEnd),
+        situation,
+        years: +years.toFixed(2),
+        bucketKey: bucket.key,
+        bucketLabel: bucket.label,
+      });
+    }
+
+    const buckets = TENURE_BUCKETS.map(b => ({
+      key: b.key,
+      label: b.label,
+      shortLabel: b.shortLabel,
+      count: rows.filter(r => r.bucketKey === b.key).length,
+    }));
+
+    return { buckets, leases: rows, total: rows.length };
   }
 
   static async getGeolocation(startDate: Date, endDate: Date): Promise<GeolocationResponse> {

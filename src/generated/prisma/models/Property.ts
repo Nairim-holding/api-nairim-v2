@@ -1057,14 +1057,6 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type PropertyCreateNestedOneWithoutIptusInput = {
   create?: Prisma.XOR<Prisma.PropertyCreateWithoutIptusInput, Prisma.PropertyUncheckedCreateWithoutIptusInput>
   connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutIptusInput

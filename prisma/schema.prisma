@@ -18,6 +18,9 @@ model Company {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
+  /// Limite contratado de banco de dados, em MB. Nulo = usa DEFAULT_DB_QUOTA_MB do ambiente.
+  db_quota_mb Int?
+
   branding                CompanyBranding?
   users                   User[]
   properties              Property[]

@@ -181,11 +181,12 @@ export class CompanyService {
   static async createCompany(data: {
     name: string;
     slug: string;
+    db_quota_mb?: number | null;
   } & BrandingUpdateData) {
     const existing = await prisma.company.findUnique({ where: { slug: data.slug } });
     if (existing) throw new Error('Já existe uma empresa com este slug');
 
-    const { name, slug, ...branding } = data;
+    const { name, slug, db_quota_mb, ...branding } = data;
     const hasBranding = Object.values(branding).some(v => v !== undefined);
 
     return prisma.company.create({
@@ -193,6 +194,8 @@ export class CompanyService {
         name,
         slug,
         is_active: true,
+        // null é explícito: volta a empresa para o limite padrão do ambiente.
+        ...(db_quota_mb !== undefined ? { db_quota_mb } : {}),
         ...(hasBranding ? {
           branding: { create: { ...branding } },
         } : {}),
@@ -205,6 +208,7 @@ export class CompanyService {
     name?: string;
     slug?: string;
     is_active?: boolean;
+    db_quota_mb?: number | null;
   } & BrandingUpdateData) {
     const existing = await prisma.company.findUnique({ where: { id } });
     if (!existing) throw new Error('Empresa não encontrada');
@@ -214,7 +218,7 @@ export class CompanyService {
       if (slugExists) throw new Error('Já existe uma empresa com este slug');
     }
 
-    const { name, slug, is_active, ...branding } = data;
+    const { name, slug, is_active, db_quota_mb, ...branding } = data;
     const hasBranding = Object.values(branding).some(v => v !== undefined);
 
     const updated = await prisma.company.update({
@@ -223,6 +227,8 @@ export class CompanyService {
         ...(name !== undefined ? { name } : {}),
         ...(slug !== undefined ? { slug } : {}),
         ...(is_active !== undefined ? { is_active } : {}),
+        // null é explícito: volta a empresa para o limite padrão do ambiente.
+        ...(db_quota_mb !== undefined ? { db_quota_mb } : {}),
         ...(hasBranding ? {
           branding: {
             upsert: {
