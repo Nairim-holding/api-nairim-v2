@@ -1,6 +1,49 @@
 import { ValidationUtil } from '../../utils/validation';
 import { Gender, Role } from '../../types/user';
 
+/** Campos de telefone: só dígitos, com limite igual ao da coluna. */
+const PHONE_RULES: Array<{ field: string; label: string; max: number }> = [
+  { field: 'phone_country_code', label: 'DDI', max: 5 },
+  { field: 'phone_area_code', label: 'Área', max: 5 },
+  { field: 'phone', label: 'Telefone', max: 20 },
+  { field: 'phone_extension', label: 'Ramal', max: 10 },
+];
+
+/**
+ * Valida os campos de perfil adicionados na migração incremental.
+ * Todos são opcionais — só valida o que veio preenchido. A janela de
+ * horário permitido em si (dias + intervalos) é validada à parte, em
+ * `UserAccessScheduleValidator` — aqui só o flag booleano.
+ */
+function validateProfileFields(data: any): string[] {
+  const errors: string[] = [];
+
+  for (const rule of PHONE_RULES) {
+    const value = data[rule.field];
+    if (value === undefined || value === null || value === '') continue;
+
+    const raw = String(value).trim();
+    if (!/^\d+$/.test(raw)) {
+      errors.push(`${rule.label} deve conter apenas números`);
+    } else if (raw.length > rule.max) {
+      errors.push(`${rule.label} deve ter no máximo ${rule.max} dígitos`);
+    }
+  }
+
+  if (data.is_active !== undefined && typeof data.is_active !== 'boolean') {
+    errors.push('Ativo deve ser booleano');
+  }
+
+  if (
+    data.has_time_restriction !== undefined &&
+    typeof data.has_time_restriction !== 'boolean'
+  ) {
+    errors.push('Horário restrito deve ser booleano');
+  }
+
+  return errors;
+}
+
 export class UserValidator {
   static validateCreate(data: any): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
@@ -44,6 +87,8 @@ export class UserValidator {
       errors.push('Função inválida');
     }
 
+    errors.push(...validateProfileFields(data));
+
     return { isValid: errors.length === 0, errors };
   }
 
@@ -79,6 +124,8 @@ export class UserValidator {
     if (data.role && !Object.values(Role).includes(data.role)) {
       errors.push('Função inválida');
     }
+
+    errors.push(...validateProfileFields(data));
 
     return { isValid: errors.length === 0, errors };
   }

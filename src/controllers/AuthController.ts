@@ -19,7 +19,8 @@ export class AuthController {
       }
 
       // Autenticar usuário
-      const result = await AuthService.login(email, password);
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      const result = await AuthService.login(email, password, ip);
 
       // Reset failed attempts on successful login
       if ((req as any).resetFailedLogin) {
@@ -32,6 +33,12 @@ export class AuthController {
 
     } catch (error: any) {
       console.error('❌ Error in AuthController.login:', error);
+
+      // Fora do horário permitido, ou usuário inativo: a senha já bateu, então
+      // não é tentativa de credencial errada — não conta para o rate limit.
+      if (error.message === AuthService.TIME_RESTRICTION_ERROR || error.message === AuthService.INACTIVE_USER_ERROR) {
+        return res.status(403).json(ApiResponse.error(error.message));
+      }
 
       // Track failed attempt
       if ((req as any).trackFailedLogin) {

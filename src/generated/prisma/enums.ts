@@ -35,6 +35,17 @@ export const PropertyStatus = {
 export type PropertyStatus = (typeof PropertyStatus)[keyof typeof PropertyStatus]
 
 
+export const AuditAction = {
+  LOGIN: 'LOGIN',
+  LOGIN_FAILED: 'LOGIN_FAILED',
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE'
+} as const
+
+export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]
+
+
 export const DocumentType = {
   TITLE_DEED: 'TITLE_DEED',
   REGISTRATION: 'REGISTRATION',

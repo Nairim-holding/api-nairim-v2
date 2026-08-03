@@ -3,28 +3,112 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma';
 import { env } from '@/env';
+import { nowInSaoPaulo, timeColumnToMinutes } from '../utils/time';
+import type { AuditAction } from '@/generated/prisma/client';
+
+/** Grava LOGIN/LOGIN_FAILED sem tenant/audit context (login roda antes do
+ *  authenticateJWT, então nenhum dos dois AsyncLocalStorage está ativo aqui).
+ *  Best-effort: uma falha ao auditar nunca pode impedir o login. */
+async function recordLoginAudit(params: {
+  action: AuditAction;
+  ip: string;
+  companyId?: string | null;
+  userId?: string | null;
+  userName?: string | null;
+  userEmail: string;
+}) {
+  try {
+    await prisma.auditLog.create({
+      data: {
+        company_id: params.companyId ?? null,
+        user_id: params.userId ?? null,
+        user_name: params.userName ?? null,
+        user_email: params.userEmail,
+        action: params.action,
+        table_name: 'Auth',
+        ip: params.ip,
+      },
+    });
+  } catch (error) {
+    console.error('[audit] Falha ao gravar log de login:', error);
+  }
+}
 
 export class AuthService {
-  static async login(email: string, password: string) {
+  /** Mensagem distinta de "Credenciais inválidas": a senha já bateu, só o
+   *  horário está fora da janela permitida. O controller usa esta constante
+   *  para não tratar como tentativa de senha errada (rate limit / mensagem). */
+  static readonly TIME_RESTRICTION_ERROR =
+    'Fora do horário permitido para acesso. Consulte o administrador do sistema.';
+
+  /** Mesmo raciocínio do TIME_RESTRICTION_ERROR: a senha já bateu, o usuário
+   *  só está desativado. Não é "credenciais inválidas". */
+  static readonly INACTIVE_USER_ERROR =
+    'Usuário inativo. Consulte o administrador do sistema.';
+
+  static async login(email: string, password: string, ip: string = 'unknown') {
     try {
       console.log(`🔐 Attempting login for email: ${email}`);
-      
+
       const user = await prisma.user.findFirst({
         where: { email, deleted_at: null },
         select: {
-          id: true, name: true, email: true, password: true, role: true, company_id: true, created_at: true
+          id: true, name: true, email: true, password: true, role: true, company_id: true, created_at: true,
+          has_time_restriction: true, is_active: true,
         }
       });
 
       if (!user) {
         console.log('❌ User not found');
+        await recordLoginAudit({ action: 'LOGIN_FAILED', ip, userEmail: email });
         throw new Error('Credenciais inválidas');
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         console.log('❌ Invalid password');
+        await recordLoginAudit({
+          action: 'LOGIN_FAILED', ip, userEmail: email,
+          companyId: user.company_id, userId: user.id, userName: user.name,
+        });
         throw new Error('Credenciais inválidas');
+      }
+
+      // Checagem de situação: só depois da senha bater, mesmo raciocínio do
+      // horário abaixo — não vaza o status da conta a quem nem provou a senha.
+      if (!user.is_active) {
+        console.log('❌ Usuário inativo tentou logar');
+        await recordLoginAudit({
+          action: 'LOGIN_FAILED', ip, userEmail: email,
+          companyId: user.company_id, userId: user.id, userName: user.name,
+        });
+        throw new Error(AuthService.INACTIVE_USER_ERROR);
+      }
+
+      // Checagem de horário: só depois da senha bater, para não vazar a
+      // restrição a quem ainda nem provou conhecer a senha.
+      if (user.has_time_restriction) {
+        const { dayOfWeek, minutesOfDay } = nowInSaoPaulo();
+
+        const schedules = await prisma.userAccessSchedule.findMany({
+          where: { user_id: user.id, day_of_week: dayOfWeek },
+          select: { start_time: true, end_time: true },
+        });
+
+        const allowed = schedules.some((s) => {
+          const start = timeColumnToMinutes(s.start_time);
+          const end = timeColumnToMinutes(s.end_time);
+          return minutesOfDay >= start && minutesOfDay < end;
+        });
+
+        if (!allowed) {
+          console.log(`❌ Login fora da janela permitida (dia ${dayOfWeek}, ${minutesOfDay}min)`);
+          await recordLoginAudit({
+            action: 'LOGIN_FAILED', ip, userEmail: email,
+            companyId: user.company_id, userId: user.id, userName: user.name,
+          });
+          throw new Error(AuthService.TIME_RESTRICTION_ERROR);
+        }
       }
 
       const secretKey = env.JWT_SECRET as string;
@@ -46,6 +130,11 @@ export class AuthService {
       const token = jwt.sign(payload, secretKey, { expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] });
 
       console.log(`✅ Login successful for user: ${user.email}`);
+
+      await recordLoginAudit({
+        action: 'LOGIN', ip, userEmail: email,
+        companyId: user.company_id, userId: user.id, userName: user.name,
+      });
 
       // Busca o slug da empresa para o frontend redirecionar para /{slug}/dashboard
       const company = await prisma.company.findUnique({

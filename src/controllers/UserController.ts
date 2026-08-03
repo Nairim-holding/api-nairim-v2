@@ -4,6 +4,15 @@ import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { UserValidator } from '../lib/validators/user';
 import { AuthService } from '@/services/AuthService';
+import { BlobService } from '@/lib/blobService';
+import { UserAccessScheduleService } from '@/services/UserAccessScheduleService';
+import { UserAccessScheduleValidator } from '@/lib/validators/user-access-schedule';
+
+/** Id do usuário autenticado, para preencher a autoria do registro. */
+function currentUserId(req: Request): string | null {
+  const user = (req as any).user;
+  return user?.id ? String(user.id) : null;
+}
 
 export class UserController {
   static async getUsers(req: Request, res: Response) {
@@ -186,7 +195,10 @@ export class UserController {
       }
 
       const { company_id } = (req as any).user;
-      const user = await UserService.createUser(req.body, company_id);
+      const user = await UserService.createUser(
+        { ...req.body, created_by: currentUserId(req) },
+        company_id
+      );
 
       res.status(201).json(
         ApiResponse.success(user, `Usuário ${user.name} criado com sucesso`)
@@ -199,6 +211,122 @@ export class UserController {
       }
 
       res.status(400).json(ApiResponse.error(`Erro ao criar usuário: ${error.message}`));
+    }
+  }
+
+  /** Liga/desliga o usuário — botão da listagem. */
+  static async setActive(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const raw = req.body?.is_active;
+      if (typeof raw !== 'boolean') {
+        return res.status(400).json(ApiResponse.error('O campo "is_active" deve ser booleano'));
+      }
+
+      const user = await UserService.setActive(id, raw, currentUserId(req));
+
+      res.status(200).json(
+        ApiResponse.success(user, `Usuário ${user.name} ${raw ? 'ativado' : 'desativado'} com sucesso`)
+      );
+    } catch (error: any) {
+      console.error('Erro ao alterar situação do usuário:', error);
+
+      if (error.message === 'User not found') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
+      }
+
+      res.status(400).json(ApiResponse.error(`Erro ao alterar situação: ${error.message}`));
+    }
+  }
+
+  /** Upload da foto do usuário, mesmo caminho do branding da empresa. */
+  static async uploadPhoto(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const file = (req as any).file as Express.Multer.File | undefined;
+      if (!file) {
+        return res.status(400).json(ApiResponse.error('Nenhum arquivo enviado'));
+      }
+
+      if (!file.mimetype?.startsWith('image/')) {
+        return res.status(400).json(ApiResponse.error('A foto deve ser um arquivo de imagem'));
+      }
+
+      const uploaded = await BlobService.uploadFile(file, file.originalname, `users/${id}`);
+      const user = await UserService.setPhoto(id, uploaded.url, currentUserId(req));
+
+      res.status(200).json(
+        ApiResponse.success(user, 'Foto atualizada com sucesso')
+      );
+    } catch (error: any) {
+      console.error('Erro ao enviar foto do usuário:', error);
+
+      if (error.message === 'User not found') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
+      }
+
+      res.status(400).json(ApiResponse.error(`Erro ao enviar foto: ${error.message}`));
+    }
+  }
+
+  // ─── Agenda de acesso (Controle de horário) ────────────────────────────────
+
+  static async getSchedule(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const schedules = await UserAccessScheduleService.getSchedule(id);
+
+      res.status(200).json(
+        ApiResponse.success(schedules, 'Agenda de acesso recuperada com sucesso')
+      );
+    } catch (error: any) {
+      if (error.message === 'User not found') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
+      }
+      console.error('Erro ao buscar agenda de acesso:', error);
+      res.status(500).json(ApiResponse.error('Erro interno do servidor'));
+    }
+  }
+
+  static async setSchedule(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) {
+        return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+      }
+
+      const validation = UserAccessScheduleValidator.validate(req.body);
+      if (!validation.isValid) {
+        return res.status(400).json(
+          ApiResponse.error('Erro de validação', validation.errors)
+        );
+      }
+
+      const schedules = await UserAccessScheduleService.setSchedule(id, req.body.schedules);
+
+      res.status(200).json(
+        ApiResponse.success(schedules, 'Agenda de acesso salva com sucesso')
+      );
+    } catch (error: any) {
+      console.error('Erro ao salvar agenda de acesso:', error);
+
+      if (error.message === 'User not found') {
+        return res.status(404).json(ApiResponse.error('Usuário não encontrado'));
+      }
+
+      res.status(400).json(ApiResponse.error(`Erro ao salvar agenda de acesso: ${error.message}`));
     }
   }
 
@@ -223,7 +351,10 @@ export class UserController {
         );
       }
 
-      const user = await UserService.updateUser(id, req.body);
+      const user = await UserService.updateUser(id, {
+        ...req.body,
+        updated_by: currentUserId(req),
+      });
 
       res.status(200).json(
         ApiResponse.success(user, `Usuário ${user.name} atualizado com sucesso`)

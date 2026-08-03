@@ -1,15 +1,18 @@
 import { CenterController } from '@/controllers/CenterController';
+import { canView, canCreate, canEdit, canDelete } from '../middlewares/permission';
 import { Router } from 'express';
+
+const RESOURCE = 'financial-centers';
 
 const router = Router();
 
-router.get('/', CenterController.getCenters);
-router.get('/filters', CenterController.getFilters);
-router.post('/quick-create', CenterController.quickCreate);
-router.get('/:id', CenterController.getCenterById);
-router.post('/', CenterController.createCenter);
-router.put('/:id', CenterController.updateCenter);
-router.delete('/:id', CenterController.deleteCenter);
-router.patch('/:id/restore', CenterController.restoreCenter);
+router.get('/', canView(RESOURCE), CenterController.getCenters);
+router.get('/filters', canView(RESOURCE), CenterController.getFilters);
+router.post('/quick-create', canCreate(RESOURCE), CenterController.quickCreate);
+router.get('/:id', canView(RESOURCE), CenterController.getCenterById);
+router.post('/', canCreate(RESOURCE), CenterController.createCenter);
+router.put('/:id', canEdit(RESOURCE), CenterController.updateCenter);
+router.delete('/:id', canDelete(RESOURCE), CenterController.deleteCenter);
+router.patch('/:id/restore', canEdit(RESOURCE), CenterController.restoreCenter);
 
 export default router;

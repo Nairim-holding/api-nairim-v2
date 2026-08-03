@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Prisma } from '@/generated/prisma/client';
 import prisma from '../lib/prisma';
+import { UserGroupPermissionService } from './UserGroupPermissionService';
+import { timeToString } from '../utils/time';
 import {
   GetUsersParams,
   PaginatedResponse,
@@ -12,8 +14,30 @@ import {
 } from '../types/user';
 import { Gender, Role } from '@/generated/prisma/client';
 
+/** Colunas devolvidas na listagem. Nunca inclui `password`. */
+const USER_LIST_SELECT = {
+  id: true,
+  name: true,
+  email: true,
+  birth_date: true,
+  gender: true,
+  role: true,
+  is_active: true,
+  user_group_id: true,
+  group: { select: { id: true, description: true } },
+  created_at: true,
+  updated_at: true,
+} as const;
+
+/** Campo de texto vazio vindo do formulário vira NULL, não string vazia. */
+function emptyToNull(value: any): string | null {
+  if (value === undefined || value === null) return null;
+  const trimmed = String(value).trim();
+  return trimmed === '' ? null : trimmed;
+}
+
 export class UserService {
-  static readonly FIELD_MAPPING: Record<string, { 
+  static readonly FIELD_MAPPING: Record<string, {
     type: 'direct' | 'enum' | 'date',
     realField: string
   }> = {
@@ -24,7 +48,9 @@ export class UserService {
     'gender': { type: 'enum', realField: 'gender' },
     'role': { type: 'enum', realField: 'role' },
     'created_at': { type: 'date', realField: 'created_at' },
-    'updated_at': { type: 'date', realField: 'updated_at' }
+    'updated_at': { type: 'date', realField: 'updated_at' },
+    'is_active': { type: 'direct', realField: 'is_active' },
+    'user_group_id': { type: 'direct', realField: 'user_group_id' }
   };
 
   // Método para normalizar texto (remover acentos e caracteres especiais)
@@ -89,16 +115,7 @@ export class UserService {
         // Buscar TODOS os usuários para processamento em memória
         const allUsers = await prisma.user.findMany({
           where,
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            birth_date: true,
-            gender: true,
-            role: true,
-            created_at: true,
-            updated_at: true,
-          },
+          select: USER_LIST_SELECT,
         });
 
         // Aplicar filtro de busca em memória
@@ -134,16 +151,7 @@ export class UserService {
             skip,
             take,
             orderBy,
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              birth_date: true,
-              gender: true,
-              role: true,
-              created_at: true,
-              updated_at: true,
-            },
+            select: USER_LIST_SELECT,
           }),
           prisma.user.count({ where })
         ]);
@@ -231,8 +239,12 @@ export class UserService {
       console.log(`🔧 Processando ordenação direta: ${field} -> ${direction}`);
 
       // Campos diretos que o Prisma pode ordenar
-      if (['id', 'name', 'email', 'birth_date', 'gender', 'role', 'created_at', 'updated_at'].includes(field)) {
+      if (['id', 'name', 'email', 'birth_date', 'gender', 'role', 'created_at', 'updated_at', 'is_active'].includes(field)) {
         orderBy.push({ [field]: direction });
+      }
+      // Ordenação pela descrição do grupo (coluna aninhada da grid)
+      else if (field === 'group.description' || field === 'group') {
+        orderBy.push({ group: { description: direction } });
       }
     });
 
@@ -290,6 +302,14 @@ export class UserService {
       // Campos de enum
       else if (['gender', 'role'].includes(key)) {
         conditions[key] = { equals: String(value).toUpperCase() };
+      }
+      // Grupo de usuário: id exato
+      else if (key === 'user_group_id') {
+        conditions[key] = { equals: String(value) };
+      }
+      // Ativo: chega como string do querystring
+      else if (key === 'is_active') {
+        conditions[key] = { equals: value === true || value === 'true' };
       }
       // Campos de data
       else if (['birth_date', 'created_at', 'updated_at'].includes(key)) {
@@ -351,6 +371,24 @@ export class UserService {
           birth_date: true,
           gender: true,
           role: true,
+          user_group_id: true,
+          // Descrição do grupo para exibir na tela de visualização
+          group: { select: { id: true, description: true } },
+          // Campos de perfil
+          is_active: true,
+          photo_url: true,
+          phone_country_code: true,
+          phone_area_code: true,
+          phone: true,
+          phone_extension: true,
+          has_time_restriction: true,
+          access_schedules: {
+            select: { day_of_week: true, start_time: true, end_time: true },
+            orderBy: [{ day_of_week: 'asc' }, { start_time: 'asc' }],
+          },
+          // Auditoria
+          creator: { select: { id: true, name: true } },
+          updater: { select: { id: true, name: true } },
           created_at: true,
           updated_at: true,
           // Não retornar password
@@ -362,10 +400,71 @@ export class UserService {
       }
 
       console.log(`✅ Found user: ${user.name}`);
-      return user;
+
+      // Horários dos intervalos viram "HH:MM" para o formulário consumir direto
+      return {
+        ...user,
+        access_schedules: user.access_schedules.map((s) => ({
+          day_of_week: s.day_of_week,
+          start_time: timeToString(s.start_time),
+          end_time: timeToString(s.end_time),
+        })),
+      };
 
     } catch (error) {
       console.error(`❌ Error getting user ${id}:`, error);
+      throw error;
+    }
+  }
+
+  /** Liga/desliga o usuário — usado pelo botão da listagem. */
+  static async setActive(id: string, isActive: boolean, updatedBy?: string | null) {
+    try {
+      // findFirst é escopado por empresa pela extensão do Prisma
+      const existing = await prisma.user.findFirst({
+        where: { id, deleted_at: null },
+        select: { id: true },
+      });
+
+      if (!existing) {
+        throw new Error('User not found');
+      }
+
+      const user = await prisma.user.update({
+        where: { id },
+        data: { is_active: isActive, updated_by: updatedBy || null },
+        select: USER_LIST_SELECT,
+      });
+
+      console.log(`✅ User ${id} ${isActive ? 'ativado' : 'desativado'}`);
+      return user;
+
+    } catch (error) {
+      console.error(`❌ Error setting active on user ${id}:`, error);
+      throw error;
+    }
+  }
+
+  /** Grava a URL da foto após o upload. */
+  static async setPhoto(id: string, photoUrl: string, updatedBy?: string | null) {
+    try {
+      const existing = await prisma.user.findFirst({
+        where: { id, deleted_at: null },
+        select: { id: true },
+      });
+
+      if (!existing) {
+        throw new Error('User not found');
+      }
+
+      return await prisma.user.update({
+        where: { id },
+        data: { photo_url: photoUrl, updated_by: updatedBy || null },
+        select: USER_LIST_SELECT,
+      });
+
+    } catch (error) {
+      console.error(`❌ Error setting photo on user ${id}:`, error);
       throw error;
     }
   }
@@ -414,18 +513,24 @@ export class UserService {
           birth_date: new Date(data.birth_date),
           gender: data.gender,
           role: data.role || Role.DEFAULT,
-          company: { connect: { id: company_id } },
+          user_group_id: data.user_group_id || null,
+          // company_id escalar, não `company: { connect }`: misturar a forma de
+          // relação com FKs escalares joga o Prisma no modo "checked", que
+          // rejeita user_group_id/created_by/updated_by.
+          company_id,
+
+          // Campos de perfil (migração incremental) — todos opcionais
+          is_active: data.is_active ?? true,
+          photo_url: data.photo_url || null,
+          phone_country_code: emptyToNull(data.phone_country_code),
+          phone_area_code: emptyToNull(data.phone_area_code),
+          phone: emptyToNull(data.phone),
+          phone_extension: emptyToNull(data.phone_extension),
+          has_time_restriction: data.has_time_restriction ?? false,
+          created_by: data.created_by || null,
+          updated_by: data.created_by || null,
         },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          birth_date: true,
-          gender: true,
-          role: true,
-          created_at: true,
-          updated_at: true,
-        }
+        select: USER_LIST_SELECT,
       });
 
       console.log(`✅ User created: ${user.id}`);
@@ -475,7 +580,21 @@ export class UserService {
       if (data.birth_date !== undefined) updateData.birth_date = new Date(data.birth_date);
       if (data.gender !== undefined) updateData.gender = data.gender;
       if (data.role !== undefined) updateData.role = data.role;
-      
+      // String vazia no select do form significa "sem grupo"
+      if (data.user_group_id !== undefined) {
+        updateData.user_group_id = data.user_group_id || null;
+      }
+
+      // Campos de perfil (migração incremental)
+      if (data.is_active !== undefined) updateData.is_active = data.is_active;
+      if (data.photo_url !== undefined) updateData.photo_url = emptyToNull(data.photo_url);
+      if (data.phone_country_code !== undefined) updateData.phone_country_code = emptyToNull(data.phone_country_code);
+      if (data.phone_area_code !== undefined) updateData.phone_area_code = emptyToNull(data.phone_area_code);
+      if (data.phone !== undefined) updateData.phone = emptyToNull(data.phone);
+      if (data.phone_extension !== undefined) updateData.phone_extension = emptyToNull(data.phone_extension);
+      if (data.has_time_restriction !== undefined) updateData.has_time_restriction = data.has_time_restriction;
+      if (data.updated_by !== undefined) updateData.updated_by = data.updated_by || null;
+
       // Atualizar senha se fornecida
       if (data.password) {
         updateData.password = await bcrypt.hash(data.password, 10);
@@ -484,17 +603,13 @@ export class UserService {
       const updatedUser = await prisma.user.update({
         where: { id },
         data: updateData,
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          birth_date: true,
-          gender: true,
-          role: true,
-          created_at: true,
-          updated_at: true,
-        }
+        select: USER_LIST_SELECT,
       });
+
+      // Trocar o grupo muda as permissões efetivas: derruba o cache do guard
+      if (data.user_group_id !== undefined) {
+        UserGroupPermissionService.invalidateUser(id);
+      }
 
       console.log(`✅ User updated: ${updatedUser.id}`);
       return updatedUser;
@@ -607,6 +722,14 @@ export class UserService {
             else if (key === 'gender' || key === 'role') {
               where[key] = value;
             }
+            // Grupo de usuário: id exato
+            else if (key === 'user_group_id') {
+              where[key] = String(value);
+            }
+            // Ativo: chega como string do querystring
+            else if (key === 'is_active') {
+              where[key] = value === true || value === 'true';
+            }
             // Para datas (range ou string)
             else if (key === 'birth_date' || key === 'created_at' || key === 'updated_at') {
               // Se for objeto com from/to (date range)
@@ -655,7 +778,10 @@ export class UserService {
             role: true,
             birth_date: true,
             created_at: true,
-            updated_at: true
+            updated_at: true,
+            is_active: true,
+            user_group_id: true,
+            group: { select: { id: true, description: true } }
           },
           orderBy: { name: 'asc' }
         }),
@@ -704,6 +830,15 @@ export class UserService {
         }
       });
 
+      // Grupos presentes no conjunto filtrado, para o select do filtro
+      const uniqueGroups = Array.from(
+        new Map(
+          users
+            .filter(u => u.group)
+            .map(u => [u.group!.id, { value: u.group!.id, label: u.group!.description }])
+        ).values()
+      ).sort((a, b) => a.label.localeCompare(b.label, 'pt-BR'));
+
       // Construir filtros com opções contextuais
       const filtersList: FilterOption[] = [
         {
@@ -745,6 +880,26 @@ export class UserService {
           searchable: true,
           autocomplete: true
         },
+        {
+          field: 'user_group_id',
+          type: 'select',
+          label: 'Grupo usuário',
+          description: 'Grupo de usuário vinculado',
+          values: uniqueGroups.map(g => g.value),
+          options: uniqueGroups,
+          searchable: true,
+          autocomplete: true
+        } as any,
+        {
+          field: 'is_active',
+          type: 'boolean',
+          label: 'Ativo',
+          description: 'Situação do usuário',
+          options: [
+            { value: 'true', label: 'Sim' },
+            { value: 'false', label: 'Não' }
+          ]
+        } as any,
         {
           field: 'birth_date',
           type: 'date',

@@ -48,6 +48,33 @@ export type PropertyIptu = Prisma.PropertyIptuModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserAccessSchedule
+ * Um intervalo de acesso permitido, por dia da semana. `day_of_week` segue a
+ * convenção de `Date.getDay()`: 0=Domingo ... 6=Sábado. Várias linhas por dia
+ * cobrem intervalos não contíguos (ex.: 08–12 e 13–18, pulando o almoço).
+ */
+export type UserAccessSchedule = Prisma.UserAccessScheduleModel
+/**
+ * Model UserGroup
+ * Grupo de usuário. As regras de permissão são definidas no grupo e propagam
+ * para todos os usuários que pertencem a ele.
+ */
+export type UserGroup = Prisma.UserGroupModel
+/**
+ * Model UserGroupPermission
+ * Diretivas de acesso: o que um grupo pode fazer em cada recurso (item de menu).
+ * Uma linha por par grupo+recurso; `resource` é a chave natural do catálogo em
+ * `src/lib/menuResources.ts`.
+ */
+export type UserGroupPermission = Prisma.UserGroupPermissionModel
+/**
+ * Model AuditLog
+ * Trilha de auditoria: login, inclusão, alteração e exclusão em recursos de
+ * negócio. Gerada automaticamente (extensão do Prisma, ver src/lib/prisma.ts)
+ * para CRUD, e manualmente para login/login falho (AuthService).
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
  * Model UserColumnPreference
  * 
  */

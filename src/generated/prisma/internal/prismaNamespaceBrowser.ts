@@ -57,6 +57,10 @@ export const ModelName = {
   Property: 'Property',
   PropertyIptu: 'PropertyIptu',
   User: 'User',
+  UserAccessSchedule: 'UserAccessSchedule',
+  UserGroup: 'UserGroup',
+  UserGroupPermission: 'UserGroupPermission',
+  AuditLog: 'AuditLog',
   UserColumnPreference: 'UserColumnPreference',
   UserDashboardLayout: 'UserDashboardLayout',
   Document: 'Document',
@@ -244,10 +248,84 @@ export const UserScalarFieldEnum = {
   role: 'role',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  deleted_at: 'deleted_at'
+  deleted_at: 'deleted_at',
+  user_group_id: 'user_group_id',
+  is_active: 'is_active',
+  photo_url: 'photo_url',
+  phone_country_code: 'phone_country_code',
+  phone_area_code: 'phone_area_code',
+  phone: 'phone',
+  phone_extension: 'phone_extension',
+  has_time_restriction: 'has_time_restriction',
+  created_by: 'created_by',
+  updated_by: 'updated_by'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserAccessScheduleScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  user_id: 'user_id',
+  day_of_week: 'day_of_week',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserAccessScheduleScalarFieldEnum = (typeof UserAccessScheduleScalarFieldEnum)[keyof typeof UserAccessScheduleScalarFieldEnum]
+
+
+export const UserGroupScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  description: 'description',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  updated_by: 'updated_by',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type UserGroupScalarFieldEnum = (typeof UserGroupScalarFieldEnum)[keyof typeof UserGroupScalarFieldEnum]
+
+
+export const UserGroupPermissionScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  user_group_id: 'user_group_id',
+  resource: 'resource',
+  can_view: 'can_view',
+  can_create: 'can_create',
+  can_edit: 'can_edit',
+  can_delete: 'can_delete',
+  can_export: 'can_export',
+  can_custom_field: 'can_custom_field',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserGroupPermissionScalarFieldEnum = (typeof UserGroupPermissionScalarFieldEnum)[keyof typeof UserGroupPermissionScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  user_id: 'user_id',
+  user_name: 'user_name',
+  user_email: 'user_email',
+  action: 'action',
+  table_name: 'table_name',
+  record_id: 'record_id',
+  old_values: 'old_values',
+  new_values: 'new_values',
+  ip: 'ip',
+  created_at: 'created_at'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const UserColumnPreferenceScalarFieldEnum = {

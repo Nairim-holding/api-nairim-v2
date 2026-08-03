@@ -6,6 +6,7 @@ import { LeaseValidator } from '@/lib/validators/lease';
 import { OwnerValidator } from '@/lib/validators/owner';
 import { TenantValidator } from '@/lib/validators/tenant';
 import { PropertyTypeValidator } from '@/lib/validators/property-type';
+import { UserGroupValidator } from '@/lib/validators/user-group';
 import { PropertyValidator } from '@/lib/validators/property';
 import { UserPreferencesValidator } from '../lib/validators/user-preferences';
 import { IptuPropertyValidator } from '@/lib/validators/iptu-property';
@@ -154,6 +155,31 @@ export const validateUpdatePropertyType = (req: Request, res: Response, next: Ne
 
 export const validateGetPropertyTypes = (req: Request, res: Response, next: NextFunction) => {
   const validation = PropertyTypeValidator.validateQueryParams(req.query);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+  }
+  next();
+};
+
+// Validações de UserGroup
+export const validateCreateUserGroup = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserGroupValidator.validateCreate(req.body);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+  }
+  next();
+};
+
+export const validateUpdateUserGroup = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserGroupValidator.validateUpdate(req.body);
+  if (!validation.isValid) {
+    return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
+  }
+  next();
+};
+
+export const validateGetUserGroups = (req: Request, res: Response, next: NextFunction) => {
+  const validation = UserGroupValidator.validateQueryParams(req.query);
   if (!validation.isValid) {
     return res.status(400).json(ApiResponse.error('Validation error', validation.errors));
   }

@@ -36,6 +36,16 @@ export type UserMinAggregateOutputType = {
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  user_group_id: string | null
+  is_active: boolean | null
+  photo_url: string | null
+  phone_country_code: string | null
+  phone_area_code: string | null
+  phone: string | null
+  phone_extension: string | null
+  has_time_restriction: boolean | null
+  created_by: string | null
+  updated_by: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -50,6 +60,16 @@ export type UserMaxAggregateOutputType = {
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
+  user_group_id: string | null
+  is_active: boolean | null
+  photo_url: string | null
+  phone_country_code: string | null
+  phone_area_code: string | null
+  phone: string | null
+  phone_extension: string | null
+  has_time_restriction: boolean | null
+  created_by: string | null
+  updated_by: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -64,6 +84,16 @@ export type UserCountAggregateOutputType = {
   created_at: number
   updated_at: number
   deleted_at: number
+  user_group_id: number
+  is_active: number
+  photo_url: number
+  phone_country_code: number
+  phone_area_code: number
+  phone: number
+  phone_extension: number
+  has_time_restriction: number
+  created_by: number
+  updated_by: number
   _all: number
 }
 
@@ -80,6 +110,16 @@ export type UserMinAggregateInputType = {
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  user_group_id?: true
+  is_active?: true
+  photo_url?: true
+  phone_country_code?: true
+  phone_area_code?: true
+  phone?: true
+  phone_extension?: true
+  has_time_restriction?: true
+  created_by?: true
+  updated_by?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -94,6 +134,16 @@ export type UserMaxAggregateInputType = {
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  user_group_id?: true
+  is_active?: true
+  photo_url?: true
+  phone_country_code?: true
+  phone_area_code?: true
+  phone?: true
+  phone_extension?: true
+  has_time_restriction?: true
+  created_by?: true
+  updated_by?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -108,6 +158,16 @@ export type UserCountAggregateInputType = {
   created_at?: true
   updated_at?: true
   deleted_at?: true
+  user_group_id?: true
+  is_active?: true
+  photo_url?: true
+  phone_country_code?: true
+  phone_area_code?: true
+  phone?: true
+  phone_extension?: true
+  has_time_restriction?: true
+  created_by?: true
+  updated_by?: true
   _all?: true
 }
 
@@ -195,6 +255,16 @@ export type UserGroupByOutputType = {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+  user_group_id: string | null
+  is_active: boolean
+  photo_url: string | null
+  phone_country_code: string | null
+  phone_area_code: string | null
+  phone: string | null
+  phone_extension: string | null
+  has_time_restriction: boolean
+  created_by: string | null
+  updated_by: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -230,11 +300,30 @@ export type UserWhereInput = {
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  user_group_id?: Prisma.StringNullableFilter<"User"> | string | null
+  is_active?: Prisma.BoolFilter<"User"> | boolean
+  photo_url?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_country_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_area_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_extension?: Prisma.StringNullableFilter<"User"> | string | null
+  has_time_restriction?: Prisma.BoolFilter<"User"> | boolean
+  created_by?: Prisma.StringNullableFilter<"User"> | string | null
+  updated_by?: Prisma.StringNullableFilter<"User"> | string | null
   documents?: Prisma.DocumentListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   columnPreferences?: Prisma.UserColumnPreferenceListRelationFilter
   dashboardLayouts?: Prisma.UserDashboardLayoutListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+  group?: Prisma.XOR<Prisma.UserGroupNullableScalarRelationFilter, Prisma.UserGroupWhereInput> | null
+  access_schedules?: Prisma.UserAccessScheduleListRelationFilter
+  creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  updater?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  created_users?: Prisma.UserListRelationFilter
+  updated_users?: Prisma.UserListRelationFilter
+  created_user_groups?: Prisma.UserGroupListRelationFilter
+  updated_user_groups?: Prisma.UserGroupListRelationFilter
+  audit_logs?: Prisma.AuditLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -249,11 +338,30 @@ export type UserOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  user_group_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrder
+  photo_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_country_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_area_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_extension?: Prisma.SortOrderInput | Prisma.SortOrder
+  has_time_restriction?: Prisma.SortOrder
+  created_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   columnPreferences?: Prisma.UserColumnPreferenceOrderByRelationAggregateInput
   dashboardLayouts?: Prisma.UserDashboardLayoutOrderByRelationAggregateInput
   company?: Prisma.CompanyOrderByWithRelationInput
+  group?: Prisma.UserGroupOrderByWithRelationInput
+  access_schedules?: Prisma.UserAccessScheduleOrderByRelationAggregateInput
+  creator?: Prisma.UserOrderByWithRelationInput
+  updater?: Prisma.UserOrderByWithRelationInput
+  created_users?: Prisma.UserOrderByRelationAggregateInput
+  updated_users?: Prisma.UserOrderByRelationAggregateInput
+  created_user_groups?: Prisma.UserGroupOrderByRelationAggregateInput
+  updated_user_groups?: Prisma.UserGroupOrderByRelationAggregateInput
+  audit_logs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -272,11 +380,30 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  user_group_id?: Prisma.StringNullableFilter<"User"> | string | null
+  is_active?: Prisma.BoolFilter<"User"> | boolean
+  photo_url?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_country_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_area_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_extension?: Prisma.StringNullableFilter<"User"> | string | null
+  has_time_restriction?: Prisma.BoolFilter<"User"> | boolean
+  created_by?: Prisma.StringNullableFilter<"User"> | string | null
+  updated_by?: Prisma.StringNullableFilter<"User"> | string | null
   documents?: Prisma.DocumentListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   columnPreferences?: Prisma.UserColumnPreferenceListRelationFilter
   dashboardLayouts?: Prisma.UserDashboardLayoutListRelationFilter
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+  group?: Prisma.XOR<Prisma.UserGroupNullableScalarRelationFilter, Prisma.UserGroupWhereInput> | null
+  access_schedules?: Prisma.UserAccessScheduleListRelationFilter
+  creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  updater?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  created_users?: Prisma.UserListRelationFilter
+  updated_users?: Prisma.UserListRelationFilter
+  created_user_groups?: Prisma.UserGroupListRelationFilter
+  updated_user_groups?: Prisma.UserGroupListRelationFilter
+  audit_logs?: Prisma.AuditLogListRelationFilter
 }, "id" | "company_id_email">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,6 +418,16 @@ export type UserOrderByWithAggregationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  user_group_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrder
+  photo_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_country_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_area_code?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone_extension?: Prisma.SortOrderInput | Prisma.SortOrder
+  has_time_restriction?: Prisma.SortOrder
+  created_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -311,6 +448,16 @@ export type UserScalarWhereWithAggregatesInput = {
   created_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  user_group_id?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  is_active?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  photo_url?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone_country_code?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone_area_code?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone_extension?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  has_time_restriction?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  created_by?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  updated_by?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -324,11 +471,27 @@ export type UserCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -343,10 +506,26 @@ export type UserUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -360,11 +539,27 @@ export type UserUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -379,10 +574,26 @@ export type UserUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -397,6 +608,16 @@ export type UserCreateManyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -410,6 +631,13 @@ export type UserUpdateManyMutationInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -424,6 +652,16 @@ export type UserUncheckedUpdateManyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserListRelationFilter = {
@@ -434,6 +672,11 @@ export type UserListRelationFilter = {
 
 export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCompany_idEmailCompoundUniqueInput = {
@@ -453,6 +696,16 @@ export type UserCountOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  user_group_id?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
+  photo_url?: Prisma.SortOrder
+  phone_country_code?: Prisma.SortOrder
+  phone_area_code?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  phone_extension?: Prisma.SortOrder
+  has_time_restriction?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
+  updated_by?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -467,6 +720,16 @@ export type UserMaxOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  user_group_id?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
+  photo_url?: Prisma.SortOrder
+  phone_country_code?: Prisma.SortOrder
+  phone_area_code?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  phone_extension?: Prisma.SortOrder
+  has_time_restriction?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
+  updated_by?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -481,16 +744,21 @@ export type UserMinOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
+  user_group_id?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
+  photo_url?: Prisma.SortOrder
+  phone_country_code?: Prisma.SortOrder
+  phone_area_code?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  phone_extension?: Prisma.SortOrder
+  has_time_restriction?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
+  updated_by?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCreateNestedManyWithoutCompanyInput = {
@@ -535,12 +803,232 @@ export type UserUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type UserCreateNestedOneWithoutCreated_usersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreated_usersInput, Prisma.UserUncheckedCreateWithoutCreated_usersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreated_usersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutUpdated_usersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdated_usersInput, Prisma.UserUncheckedCreateWithoutUpdated_usersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdated_usersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput> | Prisma.UserCreateWithoutCreatorInput[] | Prisma.UserUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatorInput | Prisma.UserCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.UserCreateManyCreatorInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserCreateNestedManyWithoutUpdaterInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput> | Prisma.UserCreateWithoutUpdaterInput[] | Prisma.UserUncheckedCreateWithoutUpdaterInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdaterInput | Prisma.UserCreateOrConnectWithoutUpdaterInput[]
+  createMany?: Prisma.UserCreateManyUpdaterInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput> | Prisma.UserCreateWithoutCreatorInput[] | Prisma.UserUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatorInput | Prisma.UserCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.UserCreateManyCreatorInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutUpdaterInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput> | Prisma.UserCreateWithoutUpdaterInput[] | Prisma.UserUncheckedCreateWithoutUpdaterInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdaterInput | Prisma.UserCreateOrConnectWithoutUpdaterInput[]
+  createMany?: Prisma.UserCreateManyUpdaterInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
 export type EnumGenderFieldUpdateOperationsInput = {
   set?: $Enums.Gender
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type UserUpdateOneWithoutCreated_usersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreated_usersInput, Prisma.UserUncheckedCreateWithoutCreated_usersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreated_usersInput
+  upsert?: Prisma.UserUpsertWithoutCreated_usersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreated_usersInput, Prisma.UserUpdateWithoutCreated_usersInput>, Prisma.UserUncheckedUpdateWithoutCreated_usersInput>
+}
+
+export type UserUpdateOneWithoutUpdated_usersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdated_usersInput, Prisma.UserUncheckedCreateWithoutUpdated_usersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdated_usersInput
+  upsert?: Prisma.UserUpsertWithoutUpdated_usersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdated_usersInput, Prisma.UserUpdateWithoutUpdated_usersInput>, Prisma.UserUncheckedUpdateWithoutUpdated_usersInput>
+}
+
+export type UserUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput> | Prisma.UserCreateWithoutCreatorInput[] | Prisma.UserUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatorInput | Prisma.UserCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutCreatorInput | Prisma.UserUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.UserCreateManyCreatorInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutCreatorInput | Prisma.UserUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutCreatorInput | Prisma.UserUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUpdateManyWithoutUpdaterNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput> | Prisma.UserCreateWithoutUpdaterInput[] | Prisma.UserUncheckedCreateWithoutUpdaterInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdaterInput | Prisma.UserCreateOrConnectWithoutUpdaterInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutUpdaterInput | Prisma.UserUpsertWithWhereUniqueWithoutUpdaterInput[]
+  createMany?: Prisma.UserCreateManyUpdaterInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutUpdaterInput | Prisma.UserUpdateWithWhereUniqueWithoutUpdaterInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutUpdaterInput | Prisma.UserUpdateManyWithWhereWithoutUpdaterInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput> | Prisma.UserCreateWithoutCreatorInput[] | Prisma.UserUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatorInput | Prisma.UserCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutCreatorInput | Prisma.UserUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.UserCreateManyCreatorInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutCreatorInput | Prisma.UserUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutCreatorInput | Prisma.UserUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutUpdaterNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput> | Prisma.UserCreateWithoutUpdaterInput[] | Prisma.UserUncheckedCreateWithoutUpdaterInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdaterInput | Prisma.UserCreateOrConnectWithoutUpdaterInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutUpdaterInput | Prisma.UserUpsertWithWhereUniqueWithoutUpdaterInput[]
+  createMany?: Prisma.UserCreateManyUpdaterInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutUpdaterInput | Prisma.UserUpdateWithWhereUniqueWithoutUpdaterInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutUpdaterInput | Prisma.UserUpdateManyWithWhereWithoutUpdaterInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutAccess_schedulesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccess_schedulesInput, Prisma.UserUncheckedCreateWithoutAccess_schedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccess_schedulesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAccess_schedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccess_schedulesInput, Prisma.UserUncheckedCreateWithoutAccess_schedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccess_schedulesInput
+  upsert?: Prisma.UserUpsertWithoutAccess_schedulesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccess_schedulesInput, Prisma.UserUpdateWithoutAccess_schedulesInput>, Prisma.UserUncheckedUpdateWithoutAccess_schedulesInput>
+}
+
+export type UserCreateNestedOneWithoutCreated_user_groupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreated_user_groupsInput, Prisma.UserUncheckedCreateWithoutCreated_user_groupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreated_user_groupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutUpdated_user_groupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedCreateWithoutUpdated_user_groupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdated_user_groupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutGroupInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput> | Prisma.UserCreateWithoutGroupInput[] | Prisma.UserUncheckedCreateWithoutGroupInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupInput | Prisma.UserCreateOrConnectWithoutGroupInput[]
+  createMany?: Prisma.UserCreateManyGroupInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutGroupInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput> | Prisma.UserCreateWithoutGroupInput[] | Prisma.UserUncheckedCreateWithoutGroupInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupInput | Prisma.UserCreateOrConnectWithoutGroupInput[]
+  createMany?: Prisma.UserCreateManyGroupInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateOneWithoutCreated_user_groupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreated_user_groupsInput, Prisma.UserUncheckedCreateWithoutCreated_user_groupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreated_user_groupsInput
+  upsert?: Prisma.UserUpsertWithoutCreated_user_groupsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreated_user_groupsInput, Prisma.UserUpdateWithoutCreated_user_groupsInput>, Prisma.UserUncheckedUpdateWithoutCreated_user_groupsInput>
+}
+
+export type UserUpdateOneWithoutUpdated_user_groupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedCreateWithoutUpdated_user_groupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdated_user_groupsInput
+  upsert?: Prisma.UserUpsertWithoutUpdated_user_groupsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdated_user_groupsInput, Prisma.UserUpdateWithoutUpdated_user_groupsInput>, Prisma.UserUncheckedUpdateWithoutUpdated_user_groupsInput>
+}
+
+export type UserUpdateManyWithoutGroupNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput> | Prisma.UserCreateWithoutGroupInput[] | Prisma.UserUncheckedCreateWithoutGroupInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupInput | Prisma.UserCreateOrConnectWithoutGroupInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutGroupInput | Prisma.UserUpsertWithWhereUniqueWithoutGroupInput[]
+  createMany?: Prisma.UserCreateManyGroupInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutGroupInput | Prisma.UserUpdateWithWhereUniqueWithoutGroupInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutGroupInput | Prisma.UserUpdateManyWithWhereWithoutGroupInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutGroupNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput> | Prisma.UserCreateWithoutGroupInput[] | Prisma.UserUncheckedCreateWithoutGroupInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupInput | Prisma.UserCreateOrConnectWithoutGroupInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutGroupInput | Prisma.UserUpsertWithWhereUniqueWithoutGroupInput[]
+  createMany?: Prisma.UserCreateManyGroupInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutGroupInput | Prisma.UserUpdateWithWhereUniqueWithoutGroupInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutGroupInput | Prisma.UserUpdateManyWithWhereWithoutGroupInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutAudit_logsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAudit_logsInput, Prisma.UserUncheckedCreateWithoutAudit_logsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAudit_logsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAudit_logsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAudit_logsInput, Prisma.UserUncheckedCreateWithoutAudit_logsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAudit_logsInput
+  upsert?: Prisma.UserUpsertWithoutAudit_logsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAudit_logsInput, Prisma.UserUpdateWithoutAudit_logsInput>, Prisma.UserUncheckedUpdateWithoutAudit_logsInput>
 }
 
 export type UserCreateNestedOneWithoutColumnPreferencesInput = {
@@ -612,10 +1100,26 @@ export type UserCreateWithoutCompanyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCompanyInput = {
@@ -629,10 +1133,26 @@ export type UserUncheckedCreateWithoutCompanyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCompanyInput = {
@@ -676,6 +1196,1180 @@ export type UserScalarWhereInput = {
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  user_group_id?: Prisma.StringNullableFilter<"User"> | string | null
+  is_active?: Prisma.BoolFilter<"User"> | boolean
+  photo_url?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_country_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_area_code?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  phone_extension?: Prisma.StringNullableFilter<"User"> | string | null
+  has_time_restriction?: Prisma.BoolFilter<"User"> | boolean
+  created_by?: Prisma.StringNullableFilter<"User"> | string | null
+  updated_by?: Prisma.StringNullableFilter<"User"> | string | null
+}
+
+export type UserCreateWithoutCreated_usersInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCreated_usersInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCreated_usersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreated_usersInput, Prisma.UserUncheckedCreateWithoutCreated_usersInput>
+}
+
+export type UserCreateWithoutUpdated_usersInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUpdated_usersInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUpdated_usersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdated_usersInput, Prisma.UserUncheckedCreateWithoutUpdated_usersInput>
+}
+
+export type UserCreateWithoutCreatorInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatorInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatorInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput>
+}
+
+export type UserCreateManyCreatorInputEnvelope = {
+  data: Prisma.UserCreateManyCreatorInput | Prisma.UserCreateManyCreatorInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserCreateWithoutUpdaterInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUpdaterInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUpdaterInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput>
+}
+
+export type UserCreateManyUpdaterInputEnvelope = {
+  data: Prisma.UserCreateManyUpdaterInput | Prisma.UserCreateManyUpdaterInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithoutCreated_usersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreated_usersInput, Prisma.UserUncheckedUpdateWithoutCreated_usersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreated_usersInput, Prisma.UserUncheckedCreateWithoutCreated_usersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreated_usersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreated_usersInput, Prisma.UserUncheckedUpdateWithoutCreated_usersInput>
+}
+
+export type UserUpdateWithoutCreated_usersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreated_usersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutUpdated_usersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUpdated_usersInput, Prisma.UserUncheckedUpdateWithoutUpdated_usersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdated_usersInput, Prisma.UserUncheckedCreateWithoutUpdated_usersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUpdated_usersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUpdated_usersInput, Prisma.UserUncheckedUpdateWithoutUpdated_usersInput>
+}
+
+export type UserUpdateWithoutUpdated_usersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUpdated_usersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatorInput, Prisma.UserUncheckedUpdateWithoutCreatorInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatorInput, Prisma.UserUncheckedCreateWithoutCreatorInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatorInput, Prisma.UserUncheckedUpdateWithoutCreatorInput>
+}
+
+export type UserUpdateManyWithWhereWithoutCreatorInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutCreatorInput>
+}
+
+export type UserUpsertWithWhereUniqueWithoutUpdaterInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUpdaterInput, Prisma.UserUncheckedUpdateWithoutUpdaterInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdaterInput, Prisma.UserUncheckedCreateWithoutUpdaterInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutUpdaterInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUpdaterInput, Prisma.UserUncheckedUpdateWithoutUpdaterInput>
+}
+
+export type UserUpdateManyWithWhereWithoutUpdaterInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutUpdaterInput>
+}
+
+export type UserCreateWithoutAccess_schedulesInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAccess_schedulesInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAccess_schedulesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccess_schedulesInput, Prisma.UserUncheckedCreateWithoutAccess_schedulesInput>
+}
+
+export type UserUpsertWithoutAccess_schedulesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccess_schedulesInput, Prisma.UserUncheckedUpdateWithoutAccess_schedulesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccess_schedulesInput, Prisma.UserUncheckedCreateWithoutAccess_schedulesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccess_schedulesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccess_schedulesInput, Prisma.UserUncheckedUpdateWithoutAccess_schedulesInput>
+}
+
+export type UserUpdateWithoutAccess_schedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccess_schedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCreated_user_groupsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCreated_user_groupsInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCreated_user_groupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreated_user_groupsInput, Prisma.UserUncheckedCreateWithoutCreated_user_groupsInput>
+}
+
+export type UserCreateWithoutUpdated_user_groupsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUpdated_user_groupsInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUpdated_user_groupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedCreateWithoutUpdated_user_groupsInput>
+}
+
+export type UserCreateWithoutGroupInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutGroupInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutGroupInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput>
+}
+
+export type UserCreateManyGroupInputEnvelope = {
+  data: Prisma.UserCreateManyGroupInput | Prisma.UserCreateManyGroupInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithoutCreated_user_groupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreated_user_groupsInput, Prisma.UserUncheckedUpdateWithoutCreated_user_groupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreated_user_groupsInput, Prisma.UserUncheckedCreateWithoutCreated_user_groupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreated_user_groupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreated_user_groupsInput, Prisma.UserUncheckedUpdateWithoutCreated_user_groupsInput>
+}
+
+export type UserUpdateWithoutCreated_user_groupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreated_user_groupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutUpdated_user_groupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedUpdateWithoutUpdated_user_groupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedCreateWithoutUpdated_user_groupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUpdated_user_groupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUpdated_user_groupsInput, Prisma.UserUncheckedUpdateWithoutUpdated_user_groupsInput>
+}
+
+export type UserUpdateWithoutUpdated_user_groupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUpdated_user_groupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutGroupInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupInput, Prisma.UserUncheckedUpdateWithoutGroupInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupInput, Prisma.UserUncheckedCreateWithoutGroupInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutGroupInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupInput, Prisma.UserUncheckedUpdateWithoutGroupInput>
+}
+
+export type UserUpdateManyWithWhereWithoutGroupInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutGroupInput>
+}
+
+export type UserCreateWithoutAudit_logsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
+  company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+}
+
+export type UserUncheckedCreateWithoutAudit_logsInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+}
+
+export type UserCreateOrConnectWithoutAudit_logsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAudit_logsInput, Prisma.UserUncheckedCreateWithoutAudit_logsInput>
+}
+
+export type UserUpsertWithoutAudit_logsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAudit_logsInput, Prisma.UserUncheckedUpdateWithoutAudit_logsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAudit_logsInput, Prisma.UserUncheckedCreateWithoutAudit_logsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAudit_logsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAudit_logsInput, Prisma.UserUncheckedUpdateWithoutAudit_logsInput>
+}
+
+export type UserUpdateWithoutAudit_logsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAudit_logsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
 }
 
 export type UserCreateWithoutColumnPreferencesInput = {
@@ -689,10 +2383,26 @@ export type UserCreateWithoutColumnPreferencesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutColumnPreferencesInput = {
@@ -707,9 +2417,25 @@ export type UserUncheckedCreateWithoutColumnPreferencesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutColumnPreferencesInput = {
@@ -739,10 +2465,26 @@ export type UserUpdateWithoutColumnPreferencesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutColumnPreferencesInput = {
@@ -757,9 +2499,25 @@ export type UserUncheckedUpdateWithoutColumnPreferencesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDashboardLayoutsInput = {
@@ -773,10 +2531,26 @@ export type UserCreateWithoutDashboardLayoutsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDashboardLayoutsInput = {
@@ -791,9 +2565,25 @@ export type UserUncheckedCreateWithoutDashboardLayoutsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDashboardLayoutsInput = {
@@ -823,10 +2613,26 @@ export type UserUpdateWithoutDashboardLayoutsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDashboardLayoutsInput = {
@@ -841,9 +2647,25 @@ export type UserUncheckedUpdateWithoutDashboardLayoutsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -857,10 +2679,26 @@ export type UserCreateWithoutDocumentsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -875,9 +2713,25 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -907,10 +2761,26 @@ export type UserUpdateWithoutDocumentsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -925,9 +2795,25 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFavoritesInput = {
@@ -941,10 +2827,26 @@ export type UserCreateWithoutFavoritesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutUserInput
   company: Prisma.CompanyCreateNestedOneWithoutUsersInput
+  group?: Prisma.UserGroupCreateNestedOneWithoutMembersInput
+  access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutUserInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreated_usersInput
+  updater?: Prisma.UserCreateNestedOneWithoutUpdated_usersInput
+  created_users?: Prisma.UserCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoritesInput = {
@@ -959,9 +2861,25 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUserInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutUserInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutUserInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutUserInput
+  created_users?: Prisma.UserUncheckedCreateNestedManyWithoutCreatorInput
+  updated_users?: Prisma.UserUncheckedCreateNestedManyWithoutUpdaterInput
+  created_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCreatorInput
+  updated_user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUpdaterInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoritesInput = {
@@ -991,10 +2909,26 @@ export type UserUpdateWithoutFavoritesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoritesInput = {
@@ -1009,9 +2943,25 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyCompanyInput = {
@@ -1025,6 +2975,16 @@ export type UserCreateManyCompanyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
 }
 
 export type UserUpdateWithoutCompanyInput = {
@@ -1038,10 +2998,26 @@ export type UserUpdateWithoutCompanyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompanyInput = {
@@ -1055,10 +3031,26 @@ export type UserUncheckedUpdateWithoutCompanyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
   dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutCompanyInput = {
@@ -1072,6 +3064,352 @@ export type UserUncheckedUpdateManyWithoutCompanyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserCreateManyCreatorInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  updated_by?: string | null
+}
+
+export type UserCreateManyUpdaterInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  user_group_id?: string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+}
+
+export type UserUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserUpdateWithoutUpdaterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  group?: Prisma.UserGroupUpdateOneWithoutMembersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUpdaterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutUpdaterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type UserCreateManyGroupInput = {
+  id?: string
+  company_id: string
+  name: string
+  email: string
+  password: string
+  birth_date: Date | string
+  gender: $Enums.Gender
+  role?: $Enums.Role
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  is_active?: boolean
+  photo_url?: string | null
+  phone_country_code?: string | null
+  phone_area_code?: string | null
+  phone?: string | null
+  phone_extension?: string | null
+  has_time_restriction?: boolean
+  created_by?: string | null
+  updated_by?: string | null
+}
+
+export type UserUpdateWithoutGroupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUpdateManyWithoutUserNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutUsersNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutUserNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreated_usersNestedInput
+  updater?: Prisma.UserUpdateOneWithoutUpdated_usersNestedInput
+  created_users?: Prisma.UserUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUserNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  columnPreferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  dashboardLayouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutUserNestedInput
+  access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutUserNestedInput
+  created_users?: Prisma.UserUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_users?: Prisma.UserUncheckedUpdateManyWithoutUpdaterNestedInput
+  created_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCreatorNestedInput
+  updated_user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutUpdaterNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutGroupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  birth_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  photo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_country_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_area_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  has_time_restriction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1084,6 +3422,12 @@ export type UserCountOutputType = {
   favorites: number
   columnPreferences: number
   dashboardLayouts: number
+  access_schedules: number
+  created_users: number
+  updated_users: number
+  created_user_groups: number
+  updated_user_groups: number
+  audit_logs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1091,6 +3435,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
   columnPreferences?: boolean | UserCountOutputTypeCountColumnPreferencesArgs
   dashboardLayouts?: boolean | UserCountOutputTypeCountDashboardLayoutsArgs
+  access_schedules?: boolean | UserCountOutputTypeCountAccess_schedulesArgs
+  created_users?: boolean | UserCountOutputTypeCountCreated_usersArgs
+  updated_users?: boolean | UserCountOutputTypeCountUpdated_usersArgs
+  created_user_groups?: boolean | UserCountOutputTypeCountCreated_user_groupsArgs
+  updated_user_groups?: boolean | UserCountOutputTypeCountUpdated_user_groupsArgs
+  audit_logs?: boolean | UserCountOutputTypeCountAudit_logsArgs
 }
 
 /**
@@ -1131,6 +3481,48 @@ export type UserCountOutputTypeCountDashboardLayoutsArgs<ExtArgs extends runtime
   where?: Prisma.UserDashboardLayoutWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccess_schedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserAccessScheduleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreated_usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUpdated_usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreated_user_groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserGroupWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUpdated_user_groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserGroupWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAudit_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1144,11 +3536,30 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  user_group_id?: boolean
+  is_active?: boolean
+  photo_url?: boolean
+  phone_country_code?: boolean
+  phone_area_code?: boolean
+  phone?: boolean
+  phone_extension?: boolean
+  has_time_restriction?: boolean
+  created_by?: boolean
+  updated_by?: boolean
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   columnPreferences?: boolean | Prisma.User$columnPreferencesArgs<ExtArgs>
   dashboardLayouts?: boolean | Prisma.User$dashboardLayoutsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  access_schedules?: boolean | Prisma.User$access_schedulesArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
+  created_users?: boolean | Prisma.User$created_usersArgs<ExtArgs>
+  updated_users?: boolean | Prisma.User$updated_usersArgs<ExtArgs>
+  created_user_groups?: boolean | Prisma.User$created_user_groupsArgs<ExtArgs>
+  updated_user_groups?: boolean | Prisma.User$updated_user_groupsArgs<ExtArgs>
+  audit_logs?: boolean | Prisma.User$audit_logsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1164,7 +3575,20 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  user_group_id?: boolean
+  is_active?: boolean
+  photo_url?: boolean
+  phone_country_code?: boolean
+  phone_area_code?: boolean
+  phone?: boolean
+  phone_extension?: boolean
+  has_time_restriction?: boolean
+  created_by?: boolean
+  updated_by?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1179,7 +3603,20 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  user_group_id?: boolean
+  is_active?: boolean
+  photo_url?: boolean
+  phone_country_code?: boolean
+  phone_area_code?: boolean
+  phone?: boolean
+  phone_extension?: boolean
+  has_time_restriction?: boolean
+  created_by?: boolean
+  updated_by?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1194,22 +3631,47 @@ export type UserSelectScalar = {
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
+  user_group_id?: boolean
+  is_active?: boolean
+  photo_url?: boolean
+  phone_country_code?: boolean
+  phone_area_code?: boolean
+  phone?: boolean
+  phone_extension?: boolean
+  has_time_restriction?: boolean
+  created_by?: boolean
+  updated_by?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "email" | "password" | "birth_date" | "gender" | "role" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "email" | "password" | "birth_date" | "gender" | "role" | "created_at" | "updated_at" | "deleted_at" | "user_group_id" | "is_active" | "photo_url" | "phone_country_code" | "phone_area_code" | "phone" | "phone_extension" | "has_time_restriction" | "created_by" | "updated_by", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>
   columnPreferences?: boolean | Prisma.User$columnPreferencesArgs<ExtArgs>
   dashboardLayouts?: boolean | Prisma.User$dashboardLayoutsArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  access_schedules?: boolean | Prisma.User$access_schedulesArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
+  created_users?: boolean | Prisma.User$created_usersArgs<ExtArgs>
+  updated_users?: boolean | Prisma.User$updated_usersArgs<ExtArgs>
+  created_user_groups?: boolean | Prisma.User$created_user_groupsArgs<ExtArgs>
+  updated_user_groups?: boolean | Prisma.User$updated_user_groupsArgs<ExtArgs>
+  audit_logs?: boolean | Prisma.User$audit_logsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
 }
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  group?: boolean | Prisma.User$groupArgs<ExtArgs>
+  creator?: boolean | Prisma.User$creatorArgs<ExtArgs>
+  updater?: boolean | Prisma.User$updaterArgs<ExtArgs>
 }
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1220,6 +3682,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     columnPreferences: Prisma.$UserColumnPreferencePayload<ExtArgs>[]
     dashboardLayouts: Prisma.$UserDashboardLayoutPayload<ExtArgs>[]
     company: Prisma.$CompanyPayload<ExtArgs>
+    group: Prisma.$UserGroupPayload<ExtArgs> | null
+    access_schedules: Prisma.$UserAccessSchedulePayload<ExtArgs>[]
+    creator: Prisma.$UserPayload<ExtArgs> | null
+    updater: Prisma.$UserPayload<ExtArgs> | null
+    created_users: Prisma.$UserPayload<ExtArgs>[]
+    updated_users: Prisma.$UserPayload<ExtArgs>[]
+    created_user_groups: Prisma.$UserGroupPayload<ExtArgs>[]
+    updated_user_groups: Prisma.$UserGroupPayload<ExtArgs>[]
+    audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1233,6 +3704,27 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
+    user_group_id: string | null
+    /**
+     * Situação do usuário. Distinto de `deleted_at`: inativo continua existindo,
+     * excluído sai da listagem. Não bloqueia login (campo cadastral).
+     */
+    is_active: boolean
+    /**
+     * URL da foto, no mesmo esquema de armazenamento do branding da empresa.
+     */
+    photo_url: string | null
+    phone_country_code: string | null
+    phone_area_code: string | null
+    phone: string | null
+    phone_extension: string | null
+    /**
+     * Restrição de horário de acesso. Aplicada no login (AuthService) contra os
+     * intervalos em `access_schedules`, no fuso America/Sao_Paulo.
+     */
+    has_time_restriction: boolean
+    created_by: string | null
+    updated_by: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1632,6 +4124,15 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   columnPreferences<T extends Prisma.User$columnPreferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$columnPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserColumnPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dashboardLayouts<T extends Prisma.User$dashboardLayoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dashboardLayoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDashboardLayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  group<T extends Prisma.User$groupArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupArgs<ExtArgs>>): Prisma.Prisma__UserGroupClient<runtime.Types.Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  access_schedules<T extends Prisma.User$access_schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$access_schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAccessSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  creator<T extends Prisma.User$creatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$creatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  updater<T extends Prisma.User$updaterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updaterArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  created_users<T extends Prisma.User$created_usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$created_usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  updated_users<T extends Prisma.User$updated_usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updated_usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  created_user_groups<T extends Prisma.User$created_user_groupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$created_user_groupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  updated_user_groups<T extends Prisma.User$updated_user_groupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updated_user_groupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  audit_logs<T extends Prisma.User$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1672,6 +4173,16 @@ export interface UserFieldRefs {
   readonly created_at: Prisma.FieldRef<"User", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"User", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"User", 'DateTime'>
+  readonly user_group_id: Prisma.FieldRef<"User", 'String'>
+  readonly is_active: Prisma.FieldRef<"User", 'Boolean'>
+  readonly photo_url: Prisma.FieldRef<"User", 'String'>
+  readonly phone_country_code: Prisma.FieldRef<"User", 'String'>
+  readonly phone_area_code: Prisma.FieldRef<"User", 'String'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly phone_extension: Prisma.FieldRef<"User", 'String'>
+  readonly has_time_restriction: Prisma.FieldRef<"User", 'Boolean'>
+  readonly created_by: Prisma.FieldRef<"User", 'String'>
+  readonly updated_by: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -2161,6 +4672,207 @@ export type User$dashboardLayoutsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.UserDashboardLayoutScalarFieldEnum | Prisma.UserDashboardLayoutScalarFieldEnum[]
+}
+
+/**
+ * User.group
+ */
+export type User$groupArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserGroup
+   */
+  select?: Prisma.UserGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserGroup
+   */
+  omit?: Prisma.UserGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserGroupInclude<ExtArgs> | null
+  where?: Prisma.UserGroupWhereInput
+}
+
+/**
+ * User.access_schedules
+ */
+export type User$access_schedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserAccessSchedule
+   */
+  select?: Prisma.UserAccessScheduleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserAccessSchedule
+   */
+  omit?: Prisma.UserAccessScheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserAccessScheduleInclude<ExtArgs> | null
+  where?: Prisma.UserAccessScheduleWhereInput
+  orderBy?: Prisma.UserAccessScheduleOrderByWithRelationInput | Prisma.UserAccessScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.UserAccessScheduleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserAccessScheduleScalarFieldEnum | Prisma.UserAccessScheduleScalarFieldEnum[]
+}
+
+/**
+ * User.creator
+ */
+export type User$creatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * User.updater
+ */
+export type User$updaterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * User.created_users
+ */
+export type User$created_usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * User.updated_users
+ */
+export type User$updated_usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * User.created_user_groups
+ */
+export type User$created_user_groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserGroup
+   */
+  select?: Prisma.UserGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserGroup
+   */
+  omit?: Prisma.UserGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserGroupInclude<ExtArgs> | null
+  where?: Prisma.UserGroupWhereInput
+  orderBy?: Prisma.UserGroupOrderByWithRelationInput | Prisma.UserGroupOrderByWithRelationInput[]
+  cursor?: Prisma.UserGroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserGroupScalarFieldEnum | Prisma.UserGroupScalarFieldEnum[]
+}
+
+/**
+ * User.updated_user_groups
+ */
+export type User$updated_user_groupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserGroup
+   */
+  select?: Prisma.UserGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserGroup
+   */
+  omit?: Prisma.UserGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserGroupInclude<ExtArgs> | null
+  where?: Prisma.UserGroupWhereInput
+  orderBy?: Prisma.UserGroupOrderByWithRelationInput | Prisma.UserGroupOrderByWithRelationInput[]
+  cursor?: Prisma.UserGroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserGroupScalarFieldEnum | Prisma.UserGroupScalarFieldEnum[]
+}
+
+/**
+ * User.audit_logs
+ */
+export type User$audit_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
 }
 
 /**

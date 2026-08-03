@@ -1,17 +1,20 @@
 
 import { FinancialInstitutionController } from '@/controllers/financialIntitucion';
+import { canView, canCreate, canEdit, canDelete } from '../middlewares/permission';
 import { Router } from 'express';
+
+const RESOURCE = 'financial-institutions';
 
 const router = Router();
 
-router.get('/', FinancialInstitutionController.getInstitutions);
-router.get('/filters', FinancialInstitutionController.getFilters);
-router.get('/balance-summary', FinancialInstitutionController.getBalanceSummary);
-router.post('/quick-create', FinancialInstitutionController.quickCreate);
-router.get('/:id', FinancialInstitutionController.getInstitutionById);
-router.post('/', FinancialInstitutionController.createInstitution);
-router.put('/:id', FinancialInstitutionController.updateInstitution);
-router.delete('/:id', FinancialInstitutionController.deleteInstitution);
-router.patch('/:id/restore', FinancialInstitutionController.restoreInstitution);
+router.get('/', canView(RESOURCE), FinancialInstitutionController.getInstitutions);
+router.get('/filters', canView(RESOURCE), FinancialInstitutionController.getFilters);
+router.get('/balance-summary', canView(RESOURCE), FinancialInstitutionController.getBalanceSummary);
+router.post('/quick-create', canCreate(RESOURCE), FinancialInstitutionController.quickCreate);
+router.get('/:id', canView(RESOURCE), FinancialInstitutionController.getInstitutionById);
+router.post('/', canCreate(RESOURCE), FinancialInstitutionController.createInstitution);
+router.put('/:id', canEdit(RESOURCE), FinancialInstitutionController.updateInstitution);
+router.delete('/:id', canDelete(RESOURCE), FinancialInstitutionController.deleteInstitution);
+router.patch('/:id/restore', canEdit(RESOURCE), FinancialInstitutionController.restoreInstitution);
 
 export default router;

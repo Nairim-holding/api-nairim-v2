@@ -11,6 +11,9 @@ import dashboardRoutes from "./dashboard";
 import favoriteRoutes from "./favorite";
 import authRoutes from "./auth";
 import userPreferencesRoutes from "./user-preferences";
+import userGroupRoutes from "./user-group";
+import permissionsRoutes from "./permissions";
+import auditLogRoutes from "./audit-log";
 import FinancialInstitution from "./financial-intitucion";
 import FinancialCategory from "./category";
 import FinancialSubCategory from "./subcategory";
@@ -26,6 +29,7 @@ import companiesRoutes from "./companies";
 import publicRoutes from "./public";
 import { authenticateJWT } from '../middlewares/auth';
 import { requireTenant } from '../middlewares/tenant';
+import { captureAuditActor } from '../middlewares/auditActor';
 import { resolveCompanyBySlug } from '../middlewares/publicTenant';
 
 const router = Router();
@@ -36,11 +40,14 @@ router.use("/company", companyRoutes);
 router.use("/public/:companySlug", resolveCompanyBySlug, publicRoutes);
 
 // All routes below require a valid JWT with company_id
-router.use(authenticateJWT, requireTenant);
+router.use(authenticateJWT, requireTenant, captureAuditActor);
 
 router.use('/agencies', agencyRoutes);
 router.use('/users', userRoutes);
 router.use('/user-preferences', userPreferencesRoutes);
+router.use('/user-groups', userGroupRoutes);
+router.use('/permissions', permissionsRoutes);
+router.use('/audit-logs', auditLogRoutes);
 router.use('/leases', leaseRoutes);
 router.use('/owners', ownerRoutes);
 router.use('/tenants', tenantRoutes);
