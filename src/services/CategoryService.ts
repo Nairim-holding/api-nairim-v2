@@ -111,7 +111,14 @@ export class CategoryService {
   static async createCategory(data: any, company_id: string) {
     try {
       return await prisma.category.create({
-        data: { name: data.name, type: data.type, is_active: data.is_active ?? true, is_system: false, company: { connect: { id: company_id } } }
+        data: {
+          name: data.name,
+          type: data.type,
+          is_active: data.is_active ?? true,
+          is_system: false,
+          dfc_group: data.dfc_group ?? null,
+          company: { connect: { id: company_id } },
+        }
       });
     } catch (error: any) { throw error; }
   }
@@ -123,7 +130,12 @@ export class CategoryService {
       if (existing.is_system) throw new Error('Não é possível alterar categorias internas do sistema.');
       return await prisma.category.update({
         where: { id },
-        data: { name: data.name, type: data.type, is_active: data.is_active }
+        data: {
+          name: data.name,
+          type: data.type,
+          is_active: data.is_active,
+          ...(data.dfc_group !== undefined && { dfc_group: data.dfc_group }),
+        }
       });
     } catch (error: any) { throw error; }
   }

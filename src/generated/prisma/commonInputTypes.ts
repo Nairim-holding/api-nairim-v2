@@ -538,6 +538,13 @@ export type EnumTransactionTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
 }
 
+export type EnumDfcGroupNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.DfcGroup | Prisma.EnumDfcGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel> | $Enums.DfcGroup | null
+}
+
 export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.TransactionType | Prisma.EnumTransactionTypeFieldRefInput<$PrismaModel>
   in?: $Enums.TransactionType[] | Prisma.ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -546,6 +553,16 @@ export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel>
+}
+
+export type EnumDfcGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DfcGroup | Prisma.EnumDfcGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDfcGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.DfcGroup | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel>
 }
 
 export type EnumTransactionStatusFilter<$PrismaModel = never> = {
@@ -1094,6 +1111,13 @@ export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
 }
 
+export type NestedEnumDfcGroupNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.DfcGroup | Prisma.EnumDfcGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel> | $Enums.DfcGroup | null
+}
+
 export type NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.TransactionType | Prisma.EnumTransactionTypeFieldRefInput<$PrismaModel>
   in?: $Enums.TransactionType[] | Prisma.ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -1102,6 +1126,16 @@ export type NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTransactionTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumDfcGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DfcGroup | Prisma.EnumDfcGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DfcGroup[] | Prisma.ListEnumDfcGroupFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDfcGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.DfcGroup | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDfcGroupNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumTransactionStatusFilter<$PrismaModel = never> = {

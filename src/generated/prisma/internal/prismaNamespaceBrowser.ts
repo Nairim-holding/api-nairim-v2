@@ -624,6 +624,7 @@ export const CategoryScalarFieldEnum = {
   type: 'type',
   is_active: 'is_active',
   is_system: 'is_system',
+  dfc_group: 'dfc_group',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'

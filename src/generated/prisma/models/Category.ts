@@ -31,6 +31,7 @@ export type CategoryMinAggregateOutputType = {
   type: $Enums.TransactionType | null
   is_active: boolean | null
   is_system: boolean | null
+  dfc_group: $Enums.DfcGroup | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -43,6 +44,7 @@ export type CategoryMaxAggregateOutputType = {
   type: $Enums.TransactionType | null
   is_active: boolean | null
   is_system: boolean | null
+  dfc_group: $Enums.DfcGroup | null
   created_at: Date | null
   updated_at: Date | null
   deleted_at: Date | null
@@ -55,6 +57,7 @@ export type CategoryCountAggregateOutputType = {
   type: number
   is_active: number
   is_system: number
+  dfc_group: number
   created_at: number
   updated_at: number
   deleted_at: number
@@ -69,6 +72,7 @@ export type CategoryMinAggregateInputType = {
   type?: true
   is_active?: true
   is_system?: true
+  dfc_group?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -81,6 +85,7 @@ export type CategoryMaxAggregateInputType = {
   type?: true
   is_active?: true
   is_system?: true
+  dfc_group?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -93,6 +98,7 @@ export type CategoryCountAggregateInputType = {
   type?: true
   is_active?: true
   is_system?: true
+  dfc_group?: true
   created_at?: true
   updated_at?: true
   deleted_at?: true
@@ -178,6 +184,7 @@ export type CategoryGroupByOutputType = {
   type: $Enums.TransactionType
   is_active: boolean
   is_system: boolean
+  dfc_group: $Enums.DfcGroup | null
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
@@ -211,6 +218,7 @@ export type CategoryWhereInput = {
   type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolFilter<"Category"> | boolean
   is_system?: Prisma.BoolFilter<"Category"> | boolean
+  dfc_group?: Prisma.EnumDfcGroupNullableFilter<"Category"> | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
@@ -231,6 +239,7 @@ export type CategoryOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   is_system?: Prisma.SortOrder
+  dfc_group?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -254,6 +263,7 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolFilter<"Category"> | boolean
   is_system?: Prisma.BoolFilter<"Category"> | boolean
+  dfc_group?: Prisma.EnumDfcGroupNullableFilter<"Category"> | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
@@ -274,6 +284,7 @@ export type CategoryOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   is_system?: Prisma.SortOrder
+  dfc_group?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,6 +303,7 @@ export type CategoryScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumTransactionTypeWithAggregatesFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolWithAggregatesFilter<"Category"> | boolean
   is_system?: Prisma.BoolWithAggregatesFilter<"Category"> | boolean
+  dfc_group?: Prisma.EnumDfcGroupNullableWithAggregatesFilter<"Category"> | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Category"> | Date | string | null
@@ -303,6 +315,7 @@ export type CategoryCreateInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -323,6 +336,7 @@ export type CategoryUncheckedCreateInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -341,6 +355,7 @@ export type CategoryUpdateInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -361,6 +376,7 @@ export type CategoryUncheckedUpdateInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -380,6 +396,7 @@ export type CategoryCreateManyInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -391,6 +408,7 @@ export type CategoryUpdateManyMutationInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -403,6 +421,7 @@ export type CategoryUncheckedUpdateManyInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -430,6 +449,7 @@ export type CategoryCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   is_system?: Prisma.SortOrder
+  dfc_group?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -442,6 +462,7 @@ export type CategoryMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   is_system?: Prisma.SortOrder
+  dfc_group?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -454,6 +475,7 @@ export type CategoryMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   is_system?: Prisma.SortOrder
+  dfc_group?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrder
@@ -558,6 +580,10 @@ export type EnumTransactionTypeFieldUpdateOperationsInput = {
   set?: $Enums.TransactionType
 }
 
+export type NullableEnumDfcGroupFieldUpdateOperationsInput = {
+  set?: $Enums.DfcGroup | null
+}
+
 export type CategoryCreateNestedOneWithoutSubcategoriesInput = {
   create?: Prisma.XOR<Prisma.CategoryCreateWithoutSubcategoriesInput, Prisma.CategoryUncheckedCreateWithoutSubcategoriesInput>
   connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutSubcategoriesInput
@@ -620,6 +646,7 @@ export type CategoryCreateWithoutCompanyInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -638,6 +665,7 @@ export type CategoryUncheckedCreateWithoutCompanyInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -686,6 +714,7 @@ export type CategoryScalarWhereInput = {
   type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType
   is_active?: Prisma.BoolFilter<"Category"> | boolean
   is_system?: Prisma.BoolFilter<"Category"> | boolean
+  dfc_group?: Prisma.EnumDfcGroupNullableFilter<"Category"> | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Category"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null
@@ -697,6 +726,7 @@ export type CategoryCreateWithoutCommission_agenciesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -716,6 +746,7 @@ export type CategoryUncheckedCreateWithoutCommission_agenciesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -749,6 +780,7 @@ export type CategoryUpdateWithoutCommission_agenciesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -768,6 +800,7 @@ export type CategoryUncheckedUpdateWithoutCommission_agenciesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -785,6 +818,7 @@ export type CategoryCreateWithoutPropertiesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -804,6 +838,7 @@ export type CategoryUncheckedCreateWithoutPropertiesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -826,6 +861,7 @@ export type CategoryCreateWithoutIptu_refund_propertiesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -845,6 +881,7 @@ export type CategoryUncheckedCreateWithoutIptu_refund_propertiesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -878,6 +915,7 @@ export type CategoryUpdateWithoutPropertiesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -897,6 +935,7 @@ export type CategoryUncheckedUpdateWithoutPropertiesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -925,6 +964,7 @@ export type CategoryUpdateWithoutIptu_refund_propertiesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -944,6 +984,7 @@ export type CategoryUncheckedUpdateWithoutIptu_refund_propertiesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -961,6 +1002,7 @@ export type CategoryCreateWithoutSubcategoriesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -980,6 +1022,7 @@ export type CategoryUncheckedCreateWithoutSubcategoriesInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1013,6 +1056,7 @@ export type CategoryUpdateWithoutSubcategoriesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1032,6 +1076,7 @@ export type CategoryUncheckedUpdateWithoutSubcategoriesInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1049,6 +1094,7 @@ export type CategoryCreateWithoutTransactionsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1068,6 +1114,7 @@ export type CategoryUncheckedCreateWithoutTransactionsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1101,6 +1148,7 @@ export type CategoryUpdateWithoutTransactionsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1120,6 +1168,7 @@ export type CategoryUncheckedUpdateWithoutTransactionsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1137,6 +1186,7 @@ export type CategoryCreateWithoutRecurring_configsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1156,6 +1206,7 @@ export type CategoryUncheckedCreateWithoutRecurring_configsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1189,6 +1240,7 @@ export type CategoryUpdateWithoutRecurring_configsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1208,6 +1260,7 @@ export type CategoryUncheckedUpdateWithoutRecurring_configsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1225,6 +1278,7 @@ export type CategoryCreateWithoutPlanningsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1244,6 +1298,7 @@ export type CategoryUncheckedCreateWithoutPlanningsInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1277,6 +1332,7 @@ export type CategoryUpdateWithoutPlanningsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1296,6 +1352,7 @@ export type CategoryUncheckedUpdateWithoutPlanningsInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1313,6 +1370,7 @@ export type CategoryCreateManyCompanyInput = {
   type: $Enums.TransactionType
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: $Enums.DfcGroup | null
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
@@ -1324,6 +1382,7 @@ export type CategoryUpdateWithoutCompanyInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1342,6 +1401,7 @@ export type CategoryUncheckedUpdateWithoutCompanyInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1360,6 +1420,7 @@ export type CategoryUncheckedUpdateManyWithoutCompanyInput = {
   type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_system?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dfc_group?: Prisma.NullableEnumDfcGroupFieldUpdateOperationsInput | $Enums.DfcGroup | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1457,6 +1518,7 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   type?: boolean
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1478,6 +1540,7 @@ export type CategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   type?: boolean
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1491,6 +1554,7 @@ export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   type?: boolean
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
@@ -1504,12 +1568,13 @@ export type CategorySelectScalar = {
   type?: boolean
   is_active?: boolean
   is_system?: boolean
+  dfc_group?: boolean
   created_at?: boolean
   updated_at?: boolean
   deleted_at?: boolean
 }
 
-export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "type" | "is_active" | "is_system" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["category"]>
+export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "company_id" | "name" | "type" | "is_active" | "is_system" | "dfc_group" | "created_at" | "updated_at" | "deleted_at", ExtArgs["result"]["category"]>
 export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recurring_configs?: boolean | Prisma.Category$recurring_configsArgs<ExtArgs>
   subcategories?: boolean | Prisma.Category$subcategoriesArgs<ExtArgs>
@@ -1547,6 +1612,7 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     type: $Enums.TransactionType
     is_active: boolean
     is_system: boolean
+    dfc_group: $Enums.DfcGroup | null
     created_at: Date
     updated_at: Date
     deleted_at: Date | null
@@ -1987,6 +2053,7 @@ export interface CategoryFieldRefs {
   readonly type: Prisma.FieldRef<"Category", 'TransactionType'>
   readonly is_active: Prisma.FieldRef<"Category", 'Boolean'>
   readonly is_system: Prisma.FieldRef<"Category", 'Boolean'>
+  readonly dfc_group: Prisma.FieldRef<"Category", 'DfcGroup'>
   readonly created_at: Prisma.FieldRef<"Category", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Category", 'DateTime'>
   readonly deleted_at: Prisma.FieldRef<"Category", 'DateTime'>

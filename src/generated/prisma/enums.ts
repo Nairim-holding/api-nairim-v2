@@ -85,6 +85,16 @@ export const TransactionType = {
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
 
 
+export const DfcGroup = {
+  TAXES: 'TAXES',
+  VARIABLE_EXPENSE: 'VARIABLE_EXPENSE',
+  FIXED_EXPENSE: 'FIXED_EXPENSE',
+  PAYROLL: 'PAYROLL'
+} as const
+
+export type DfcGroup = (typeof DfcGroup)[keyof typeof DfcGroup]
+
+
 export const TransactionStatus = {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED'

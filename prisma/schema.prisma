@@ -730,6 +730,7 @@ model Category {
   type                   TransactionType
   is_active              Boolean           @default(true)
   is_system              Boolean           @default(false)
+  dfc_group              DfcGroup?
   created_at             DateTime          @default(now())
   updated_at             DateTime          @updatedAt
   deleted_at             DateTime?
@@ -1075,6 +1076,14 @@ enum PaymentCondition {
 enum TransactionType {
   INCOME
   EXPENSE
+}
+
+/** Classificação de categorias de Despesa usada no Demonstrativo do Fluxo de Caixa (DFC). */
+enum DfcGroup {
+  TAXES
+  VARIABLE_EXPENSE
+  FIXED_EXPENSE
+  PAYROLL
 }
 
 enum TransactionStatus {
