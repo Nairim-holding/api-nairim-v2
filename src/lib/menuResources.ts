@@ -178,6 +178,13 @@ export const MENU_RESOURCES: MenuResource[] = [
     actions: FULL,
     routes: ['/planning'],
   },
+  {
+    key: 'financial-reports',
+    label: 'Relatórios',
+    group: 'Financeiro',
+    actions: ['view', 'export'],
+    routes: ['/financial-reports'],
+  },
 
   // ─── Configurações ─────────────────────────────────────────────────────────
   {
