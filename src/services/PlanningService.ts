@@ -355,6 +355,7 @@ export class PlanningService {
   static async getPlanningDashboard(
     startDate: string,
     endDate: string,
+    filters: Record<string, string[]> = {},
   ): Promise<DashboardResponse> {
     try {
       const start = new Date(startDate);
@@ -402,12 +403,22 @@ export class PlanningService {
         planningMap.set(key, p);
       }
 
+      // Filtros do botão Filtro (Tarefa 13, 29/07/26): mesmos campos do filtro de
+      // Lançamentos, aplicados às transações agregadas. `status` fica de fora —
+      // "realizado" neste painel É COMPLETED por definição, não um filtro do usuário.
+      const extraWhere: Record<string, { in: string[] }> = {};
+      for (const field of ['category_id', 'subcategory_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id', 'description'] as const) {
+        const values = filters[field];
+        if (values?.length) extraWhere[field] = { in: values };
+      }
+
       // Busca transações no período (status COMPLETED apenas)
       const transactions = await prisma.transaction.findMany({
         where: {
           deleted_at: null,
           status: 'COMPLETED',
           effective_date: { gte: start, lte: end },
+          ...extraWhere,
         },
         select: {
           category_id: true,

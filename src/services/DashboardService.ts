@@ -126,68 +126,119 @@ export class DashboardService {
     const periods = this.getPeriodDates(startDate, endDate);
     const toNum = (v: any) => decimalToNumber(v);
 
-    const [properties, prevProperties] = await Promise.all([
-      prisma.property.findMany({
-        where: { created_at: { gte: periods.current.start, lte: periods.current.end }, deleted_at: null },
-        include: { 
-          type: true, 
-          values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 },
-          agency: true,
-          owner: true,
-          leases: { where: { deleted_at: null }, include: { tenant: true }, orderBy: { end_date: 'desc' }, take: 1 }
-        }
-      }),
-      prisma.property.findMany({
-        where: { created_at: { gte: periods.previous.start, lte: periods.previous.end }, deleted_at: null },
-        include: { 
-          values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 },
-          leases: { where: { deleted_at: null }, orderBy: { end_date: 'desc' }, take: 1 }
-        }
-      })
-    ]);
+    // O que estes cards medem é o portfólio *durante a janela selecionada*, e o
+    // dado de negócio que responde isso é a vigência do contrato (Lease), não o
+    // `created_at` do imóvel (data de cadastro no sistema — sem relação com o
+    // imóvel estar ativo) nem "sem filtro" (que tornava os cards insensíveis ao
+    // período: 1900 devolvia os mesmos valores de 2026).
+    //
+    // Um imóvel entra no período se teve contrato vigente sobrepondo a janela
+    // (start_date <= end && end_date >= start). Imóveis sem nenhum contrato são
+    // considerados vagos no período desde que já existissem nele (created_at <=
+    // end) — é o que sustenta os cards de vacância.
+    const propertiesRaw = await prisma.property.findMany({
+      where: { deleted_at: null, created_at: { lte: periods.current.end } },
+      include: {
+        type: true,
+        values: { where: { deleted_at: null }, orderBy: { created_at: 'desc' }, take: 1 },
+        agency: true,
+        owner: true,
+        leases: { where: { deleted_at: null }, include: { tenant: true }, orderBy: { end_date: 'desc' } }
+      }
+    });
+
+    const overlapsPeriod = (start: Date, end: Date) => (lease: any) =>
+      lease.start_date != null && lease.end_date != null &&
+      lease.start_date.getTime() <= end.getTime() &&
+      lease.end_date.getTime() >= start.getTime();
+
+    /** Imóvel relevante na janela: com contrato vigente nela, ou vago (sem contrato). */
+    const scopeToPeriod = (start: Date, end: Date) =>
+      propertiesRaw
+        .filter(p => p.created_at != null && p.created_at.getTime() <= end.getTime())
+        .map(p => {
+          const leasesInPeriod = p.leases.filter(overlapsPeriod(start, end));
+          return { ...p, leases: leasesInPeriod.length > 0 ? leasesInPeriod : p.leases.slice(0, 1), hadLeaseInPeriod: leasesInPeriod.length > 0 };
+        });
+
+    const properties = scopeToPeriod(periods.current.start, periods.current.end);
+    const prevProperties = scopeToPeriod(periods.previous.start, periods.previous.end);
+
+    const inPeriod = (date: Date | null | undefined, start: Date, end: Date) =>
+      date != null && date.getTime() >= start.getTime() && date.getTime() <= end.getTime();
 
     const avgRentalData = properties.filter(p => toNum(p.values[0]?.rental_value) > 0).map(p => ({
       id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), type: p.type?.description, areaTotal: p.area_total, valuePerSqm: p.area_total > 0 ? +(toNum(p.values[0]?.rental_value) / p.area_total).toFixed(2) : 0, owner: p.owner?.name
     }));
-    const prevAvgValue = prevProperties.length > 0 ? prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.rental_value), 0) / prevProperties.length : 0;
+    const avgRentalValue = avgRentalData.length > 0 ? avgRentalData.reduce((acc, p) => acc + p.rentalValue, 0) / avgRentalData.length : 0;
 
-    const activeRentalData = properties.filter(p => toNum(p.values[0]?.rental_value) > 0 && p.values[0]?.status === "AVAILABLE").map(p => ({
+    // "Ativo" = imóvel que gerou aluguel DENTRO da janela, isto é, teve contrato
+    // vigente nela (`hadLeaseInPeriod`). Usar o `status` atual do imóvel deixava
+    // o card preso ao presente e insensível ao período — e `AVAILABLE` (= vago)
+    // zerava o card por completo.
+    const activeRentalData = properties.filter(p => toNum(p.values[0]?.rental_value) > 0 && p.hadLeaseInPeriod).map(p => ({
       id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), status: p.values[0]?.status, type: p.type?.description, agency: p.agency ? { tradeName: p.agency.trade_name } : null, leaseInfo: p.leases[0] ? { contractNumber: p.leases[0].contract_number, tenantName: p.leases[0].tenant?.name } : null
     }));
-    const prevTotalRent = prevProperties.reduce((acc, p) => acc + (p.values[0]?.status === "AVAILABLE" ? toNum(p.values[0]?.rental_value) : 0), 0);
+    const totalActiveRental = activeRentalData.reduce((acc, p) => acc + p.rentalValue, 0);
+    const prevTotalActiveRental = prevProperties
+      .filter(p => toNum(p.values[0]?.rental_value) > 0 && p.hadLeaseInPeriod)
+      .reduce((acc, p) => acc + toNum(p.values[0]?.rental_value), 0);
 
     const taxFeeData = properties.filter(p => toNum(p.values[0]?.property_tax) > 0 || toNum(p.values[0]?.condo_fee) > 0).map(p => {
       const total = toNum(p.values[0]?.property_tax) + toNum(p.values[0]?.condo_fee);
       const rent = toNum(p.values[0]?.rental_value);
       return { id: p.id, title: p.title, type: p.type?.description, propertyTax: toNum(p.values[0]?.property_tax), condoFee: toNum(p.values[0]?.condo_fee), totalTaxAndCondo: total, rentalValue: rent, costToRentRatio: rent > 0 ? +((total / rent) * 100).toFixed(2) : 0, impactOnRevenue: rent > 0 ? +((total / rent) * 100).toFixed(2) : 0 };
     });
-    const prevTotalTax = prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.property_tax) + toNum(p.values[0]?.condo_fee), 0);
+    const totalTax = taxFeeData.reduce((acc, p) => acc + p.totalTaxAndCondo, 0);
 
-    const acquisitionData = properties.filter(p => toNum(p.values[0]?.purchase_value) > 0).map(p => {
-      const purchase = toNum(p.values[0]?.purchase_value);
-      const annualRent = toNum(p.values[0]?.rental_value) * 12;
-      return { id: p.id, title: p.title, type: p.type?.description, purchaseValue: purchase, currentStatus: p.values[0]?.status, acquisitionDate: p.values[0]?.created_at, saleValue: toNum(p.values[0]?.sale_value), estimatedAnnualROI: purchase > 0 ? +((annualRent / purchase) * 100).toFixed(2) : 0 };
-    });
-    const prevTotalAcq = prevProperties.reduce((acc, p) => acc + toNum(p.values[0]?.purchase_value), 0);
+    // Aquisição é um evento datado (Data da Compra, aba "Valores e Condições") —
+    // aqui sim o período de análise filtra quais imóveis entram no card.
+    const acquisitionData = properties
+      .filter(p => toNum(p.values[0]?.purchase_value) > 0 && inPeriod(p.values[0]?.purchase_date, periods.current.start, periods.current.end))
+      .map(p => {
+        const purchase = toNum(p.values[0]?.purchase_value);
+        const annualRent = toNum(p.values[0]?.rental_value) * 12;
+        return { id: p.id, title: p.title, type: p.type?.description, purchaseValue: purchase, currentStatus: p.values[0]?.status, acquisitionDate: p.values[0]?.purchase_date, saleValue: toNum(p.values[0]?.sale_value), estimatedAnnualROI: purchase > 0 ? +((annualRent / purchase) * 100).toFixed(2) : 0 };
+      });
+    const totalAcq = acquisitionData.reduce((acc, p) => acc + p.purchaseValue, 0);
+    const prevTotalAcq = prevProperties
+      .filter(p => toNum(p.values[0]?.purchase_value) > 0 && inPeriod(p.values[0]?.purchase_date, periods.previous.start, periods.previous.end))
+      .reduce((acc, p) => acc + toNum(p.values[0]?.purchase_value), 0);
 
-    const finVacancyData = properties.filter(p => p.values[0]?.status === "AVAILABLE").map(p => ({
-      id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), monthsVacant: this.calculateVacancyMonths(p.leases, endDate), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, endDate)
+    // Vago no período = sem contrato vigente sobrepondo a janela. Antes usava o
+    // `status` atual do imóvel, o que ignorava o período selecionado.
+    const vacantInPeriod = properties.filter(p => !p.hadLeaseInPeriod);
+    const finVacancyData = vacantInPeriod.map(p => ({
+      id: p.id, title: p.title, rentalValue: toNum(p.values[0]?.rental_value), monthsVacant: this.calculateVacancyMonths(p.leases, periods.current.end), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, periods.current.end)
     }));
     const currentFinVacRate = properties.length > 0 ? (finVacancyData.length / properties.length) * 100 : 0;
-    const prevFinVacRate = prevProperties.length > 0 ? (prevProperties.filter(p => p.values[0]?.status === "AVAILABLE").length / prevProperties.length) * 100 : 0;
+    const prevVacantInPeriod = prevProperties.filter(p => !p.hadLeaseInPeriod);
+    const prevFinVacRate = prevProperties.length > 0 ? (prevVacantInPeriod.length / prevProperties.length) * 100 : 0;
 
-    const vacMonthsData = properties.filter(p => p.values[0]?.status === "AVAILABLE").map(p => ({
-      id: p.id, title: p.title, vacancyMonths: this.calculateVacancyMonths(p.leases, endDate), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, endDate)
+    const vacMonthsData = vacantInPeriod.map(p => ({
+      id: p.id, title: p.title, vacancyMonths: this.calculateVacancyMonths(p.leases, periods.current.end), estimatedLoss: toNum(p.values[0]?.rental_value) * this.calculateVacancyMonths(p.leases, periods.current.end)
     }));
     const currentTotalVacMonths = vacMonthsData.reduce((acc, p) => acc + p.vacancyMonths, 0);
-    const prevTotalVacMonths = prevProperties.reduce((acc, p) => acc + this.calculateVacancyMonths(p.leases, periods.previous.end), 0);
+    const prevTotalVacMonths = prevVacantInPeriod
+      .reduce((acc, p) => acc + this.calculateVacancyMonths(p.leases, periods.previous.end), 0);
+
+    // Ticket médio e impostos são atributos do imóvel (não têm data própria): a
+    // variação sai da composição do portfólio em cada janela, já que o conjunto
+    // de imóveis considerado agora muda conforme o período.
+    const prevAvgRentalData = prevProperties.filter(p => toNum(p.values[0]?.rental_value) > 0);
+    const prevAvgRentalValue = prevAvgRentalData.length > 0
+      ? prevAvgRentalData.reduce((acc, p) => acc + toNum(p.values[0]?.rental_value), 0) / prevAvgRentalData.length
+      : 0;
+    const prevTotalTax = prevProperties
+      .filter(p => toNum(p.values[0]?.property_tax) > 0 || toNum(p.values[0]?.condo_fee) > 0)
+      .reduce((acc, p) => acc + toNum(p.values[0]?.property_tax) + toNum(p.values[0]?.condo_fee), 0);
 
     return {
-      averageRentalTicket: calcVariation(avgRentalData.length > 0 ? avgRentalData.reduce((acc, p) => acc + p.rentalValue, 0) / avgRentalData.length : 0, prevAvgValue, avgRentalData),
-      totalRentalActive: calcVariation(activeRentalData.reduce((acc, p) => acc + p.rentalValue, 0), prevTotalRent, activeRentalData),
-      totalAcquisitionValue: calcVariation(acquisitionData.reduce((acc, p) => acc + p.purchaseValue, 0), prevTotalAcq, acquisitionData),
+      averageRentalTicket: calcVariation(avgRentalValue, prevAvgRentalValue, avgRentalData),
+      totalRentalActive: calcVariation(totalActiveRental, prevTotalActiveRental, activeRentalData),
+      totalAcquisitionValue: calcVariation(totalAcq, prevTotalAcq, acquisitionData),
       financialVacancyRate: calcVariation(currentFinVacRate, prevFinVacRate, finVacancyData),
-      totalPropertyTaxAndCondoFee: calcVariation(taxFeeData.reduce((acc, p) => acc + p.totalTaxAndCondo, 0), prevTotalTax, taxFeeData),
+      totalPropertyTaxAndCondoFee: calcVariation(totalTax, prevTotalTax, taxFeeData),
       vacancyInMonths: calcVariation(currentTotalVacMonths, prevTotalVacMonths, vacMonthsData)
     };
   }

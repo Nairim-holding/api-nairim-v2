@@ -21,10 +21,12 @@ export const validateDashboardParams = (params: any): { isValid: boolean; errors
       errors.push('startDate não pode ser maior que endDate');
     }
     
-    // Verificar se a diferença não é muito grande (opcional)
+    // Seleção de múltiplos anos (Tarefa 5.2) e "Limpar período" (Tarefa 6.3, que
+    // envia um intervalo bem largo para pegar todo o histórico) precisam de mais
+    // que 365 dias — o teto vira ~15 anos, só para evitar requisições absurdas.
     const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-    if (diffDays > 365) {
-      errors.push('O intervalo máximo permitido é de 365 dias');
+    if (diffDays > 5480) {
+      errors.push('O intervalo máximo permitido é de 15 anos');
     }
   }
 

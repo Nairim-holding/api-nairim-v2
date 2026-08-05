@@ -245,7 +245,7 @@ export class CardService {
     }
   }
 
-  static async getCardUsageSummary(startDateInput: Date, endDateInput: Date) {
+  static async getCardUsageSummary(startDateInput: Date, endDateInput: Date, filters: Record<string, string[]> = {}) {
     const startDate = new Date(startDateInput);
     if (!isNaN(startDate.getTime())) {
       startDate.setHours(0, 0, 0, 0);
@@ -262,17 +262,28 @@ export class CardService {
       orderBy: { name: 'asc' },
     });
 
+    // Botão Filtro do Resumo (Tarefa 5.1) — mesmos campos do filtro de Lançamentos.
+    // `description` também usa OR internamente — não pode ser espalhado direto no
+    // where (colidiria com o OR da data), por isso os dois entram via AND.
+    const extraWhere: Record<string, { in: string[] }> = {};
+    for (const field of ['category_id', 'subcategory_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'] as const) {
+      if (filters[field]?.length) extraWhere[field] = { in: filters[field] };
+    }
+
     const usageGroups = await prisma.transaction.groupBy({
       by: ['card_id'],
       where: {
         deleted_at: null,
         NOT: { is_transfer: true },
         card_id: { not: null },
-        OR: [
-          { event_date: { gte: startDate, lte: endDate } },
-          { effective_date: { gte: startDate, lte: endDate } },
-        ],
         category: { type: 'EXPENSE' },
+        ...extraWhere,
+        AND: [
+          { OR: [{ event_date: { gte: startDate, lte: endDate } }, { effective_date: { gte: startDate, lte: endDate } }] },
+          ...(filters.description?.length
+            ? [{ OR: filters.description.map((d) => ({ description: { contains: d, mode: 'insensitive' as const } })) }]
+            : []),
+        ],
       },
       _sum: { amount: true },
     });

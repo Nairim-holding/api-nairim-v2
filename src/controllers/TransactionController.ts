@@ -7,6 +7,22 @@ import { ValidationUtil } from '../utils/validation';
 import { TransactionValidator } from '../lib/validators/transaction';
 
 export class TransactionController {
+  // Botão Filtro do Resumo/Dashboard (Tarefa 5.1, 29/07/26): mesmos campos do
+  // filtro de Lançamentos, aplicados aos endpoints de agregação usados pelos
+  // gráficos do Financeiro. Convenção de query string igual à da listagem
+  // (chave repetida = seleção múltipla, sem prefixo `filter[...]`).
+  private static parseEntityFilters(query: Record<string, unknown>): Record<string, string[]> {
+    const FIELDS = ['category_id', 'subcategory_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id', 'description'] as const;
+    const filters: Record<string, string[]> = {};
+    for (const field of FIELDS) {
+      const value = query[field];
+      if (value === undefined) continue;
+      const values = (Array.isArray(value) ? value : [value]).map(String).filter(Boolean);
+      if (values.length > 0) filters[field] = values;
+    }
+    return filters;
+  }
+
   static async getTransactions(req: Request, res: Response) {
     try {
       const limit = ValidationUtil.parseNumberParam(req.query?.limit, 30);
@@ -73,7 +89,8 @@ export class TransactionController {
   static async getMonthlySummary(req: Request, res: Response) {
     try {
       const year = ValidationUtil.parseNumberParam(req.query?.year, new Date().getFullYear());
-      const data = await TransactionService.getMonthlyIncomeExpenseSummary(year);
+      const filters = TransactionController.parseEntityFilters(req.query);
+      const data = await TransactionService.getMonthlyIncomeExpenseSummary(year, filters);
       res.status(200).json(ApiResponse.success(data, 'Resumo mensal recuperado com sucesso'));
     } catch (error: any) {
       console.error('Error getting monthly transaction summary:', error);
@@ -98,9 +115,11 @@ export class TransactionController {
         return res.status(400).json(ApiResponse.error('startDate e endDate são obrigatórios'));
       }
 
+      const filters = TransactionController.parseEntityFilters(req.query);
       const data = await TransactionService.getExpenseByCategory(
         new Date(startDate as string),
-        new Date(endDate as string)
+        new Date(endDate as string),
+        filters
       );
       res.status(200).json(ApiResponse.success(data, 'Despesas por categoria recuperadas com sucesso'));
     } catch (error: any) {
@@ -116,10 +135,12 @@ export class TransactionController {
         return res.status(400).json(ApiResponse.error('categoryId, startDate e endDate são obrigatórios'));
       }
 
+      const filters = TransactionController.parseEntityFilters(req.query);
       const data = await TransactionService.getSubcategoryBreakdown(
         String(categoryId),
         new Date(startDate as string),
-        new Date(endDate as string)
+        new Date(endDate as string),
+        filters
       );
       res.status(200).json(ApiResponse.success(data, 'Detalhamento por subcategoria recuperado com sucesso'));
     } catch (error: any) {

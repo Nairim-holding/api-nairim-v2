@@ -47,9 +47,21 @@ export class CardController {
         return res.status(400).json(ApiResponse.error('startDate e endDate são obrigatórios'));
       }
 
+      // Botão Filtro do Resumo (Tarefa 5.1) — mesma convenção de query string
+      // usada em Planejamento/Lançamentos (chave repetida = seleção múltipla).
+      const FILTER_FIELDS = ['category_id', 'subcategory_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id', 'description'] as const;
+      const filters: Record<string, string[]> = {};
+      for (const field of FILTER_FIELDS) {
+        const value = req.query[field];
+        if (value === undefined) continue;
+        const values = (Array.isArray(value) ? value : [value]).map(String).filter(Boolean);
+        if (values.length > 0) filters[field] = values;
+      }
+
       const data = await CardService.getCardUsageSummary(
         new Date(startDate as string),
-        new Date(endDate as string)
+        new Date(endDate as string),
+        filters
       );
       res.status(200).json(ApiResponse.success(data, 'Uso dos cartões recuperado com sucesso'));
     } catch (error: any) {

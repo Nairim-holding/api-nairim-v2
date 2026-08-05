@@ -104,7 +104,22 @@ export class PlanningController {
           .json(ApiResponse.error('startDate e endDate são obrigatórios (YYYY-MM-DD)'));
       }
 
-      const data = await PlanningService.getPlanningDashboard(startDate, endDate);
+      // Mesma convenção de query string do botão de Filtro de Lançamentos
+      // (useOptimizedTableData): chave repetida = seleção múltipla, sem prefixo
+      // `filter[...]`. Ex.: ?financial_institution_id=a&financial_institution_id=b
+      const FILTER_FIELDS = [
+        'category_id', 'subcategory_id', 'financial_institution_id',
+        'card_id', 'center_id', 'supplier_id', 'description',
+      ] as const;
+      const filters: Record<string, string[]> = {};
+      for (const field of FILTER_FIELDS) {
+        const value = req.query[field];
+        if (value === undefined) continue;
+        const values = (Array.isArray(value) ? value : [value]).map(String).filter(Boolean);
+        if (values.length > 0) filters[field] = values;
+      }
+
+      const data = await PlanningService.getPlanningDashboard(startDate, endDate, filters);
       res
         .status(200)
         .json(ApiResponse.success(data, 'Dashboard de planejamento recuperado com sucesso'));

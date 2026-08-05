@@ -478,7 +478,19 @@ export class TransactionService {
     }
   }
 
-  static async getMonthlyIncomeExpenseSummary(year: number) {
+  /** Converte os filtros do botão Filtro (Tarefa 5.1) num `where` do Prisma. */
+  private static buildEntityFilterWhere(filters: Record<string, string[]> = {}): Record<string, { in: string[] } | { OR: { description: { contains: string; mode: 'insensitive' } }[] }> {
+    const where: Record<string, any> = {};
+    for (const field of ['category_id', 'subcategory_id', 'financial_institution_id', 'card_id', 'center_id', 'supplier_id'] as const) {
+      if (filters[field]?.length) where[field] = { in: filters[field] };
+    }
+    if (filters.description?.length) {
+      where.OR = filters.description.map((d) => ({ description: { contains: d, mode: 'insensitive' as const } }));
+    }
+    return where;
+  }
+
+  static async getMonthlyIncomeExpenseSummary(year: number, filters: Record<string, string[]> = {}) {
     const startDate = new Date(Date.UTC(year, 0, 1));
     const endDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
 
@@ -487,6 +499,7 @@ export class TransactionService {
         deleted_at: null,
         NOT: { is_transfer: true },
         event_date: { gte: startDate, lte: endDate },
+        ...this.buildEntityFilterWhere(filters),
       },
       select: {
         event_date: true,
@@ -520,11 +533,12 @@ export class TransactionService {
     return { years };
   }
 
-  static async getExpenseByCategory(startDate: Date, endDate: Date) {
+  static async getExpenseByCategory(startDate: Date, endDate: Date, filters: Record<string, string[]> = {}) {
     const baseWhere = {
       deleted_at: null,
       NOT: { is_transfer: true },
       event_date: { gte: startDate, lte: endDate },
+      ...this.buildEntityFilterWhere(filters),
     };
 
     const [incomeResult, categoryGroups] = await Promise.all([
@@ -558,7 +572,7 @@ export class TransactionService {
     return { totalIncome, categories };
   }
 
-  static async getSubcategoryBreakdown(categoryId: string, startDate: Date, endDate: Date) {
+  static async getSubcategoryBreakdown(categoryId: string, startDate: Date, endDate: Date, filters: Record<string, string[]> = {}) {
     const category = await prisma.category.findFirst({
       where: { id: categoryId, deleted_at: null },
       select: { id: true, name: true },
@@ -570,8 +584,11 @@ export class TransactionService {
       where: {
         deleted_at: null,
         NOT: { is_transfer: true },
-        category_id: categoryId,
         event_date: { gte: startDate, lte: endDate },
+        ...this.buildEntityFilterWhere(filters),
+        // Sempre por último: a subcategoria pedida nunca pode ser sobrescrita
+        // por um category_id vindo do filtro global (Tarefa 5.1).
+        category_id: categoryId,
       },
       _sum: { amount: true },
     });
