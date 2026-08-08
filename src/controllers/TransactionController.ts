@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { TransactionService } from '../services/TransactionService';
 import { TransferService } from '../services/TransferService';
 import { RecurringService } from '../services/RecurringService';
+import { DocumentService } from '../services/DocumentService';
 import { ApiResponse } from '../utils/api-response';
 import { ValidationUtil } from '../utils/validation';
 import { TransactionValidator } from '../lib/validators/transaction';
@@ -95,6 +96,33 @@ export class TransactionController {
     } catch (error: any) {
       console.error('Error getting monthly transaction summary:', error);
       res.status(500).json(ApiResponse.error('Erro ao buscar resumo mensal'));
+    }
+  }
+
+  /**
+   * Mesmo gráfico do getMonthlySummary, mas para vários anos simultâneos
+   * (Tarefa 1.1): aceita `year` repetido (year=2024&year=2025) ou `years`
+   * separado por vírgula (years=2024,2025,2026).
+   */
+  static async getMonthlySummaryMulti(req: Request, res: Response) {
+    try {
+      const raw = req.query?.years ?? req.query?.year;
+      const rawValues = Array.isArray(raw) ? raw : [raw];
+      const years = rawValues
+        .flatMap((v) => String(v ?? '').split(','))
+        .map((v) => parseInt(v.trim(), 10))
+        .filter((v) => !isNaN(v));
+
+      if (years.length === 0) {
+        return res.status(400).json(ApiResponse.error('Informe ao menos um ano em "years" ou "year"'));
+      }
+
+      const filters = TransactionController.parseEntityFilters(req.query);
+      const data = await TransactionService.getMonthlyIncomeExpenseSummaryMulti(years, filters);
+      res.status(200).json(ApiResponse.success(data, 'Resumo mensal multi-ano recuperado com sucesso'));
+    } catch (error: any) {
+      console.error('Error getting multi-year monthly transaction summary:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar resumo mensal multi-ano'));
     }
   }
 
@@ -342,6 +370,69 @@ export class TransactionController {
     } catch (error: any) {
       if (error.message === 'Group not found or invalid') return res.status(404).json(ApiResponse.error('Grupo não encontrado'));
       res.status(500).json(ApiResponse.error('Erro ao remover grupo de lançamentos'));
+    }
+  }
+
+  // ==========================================
+  // ANEXOS DO LANÇAMENTO (Tarefa 2 do guia de correções)
+  // ==========================================
+
+  static async getTransactionDocuments(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+
+      const { company_id } = (req as any).user;
+      const documents = await DocumentService.getTransactionDocuments(id, company_id);
+      res.status(200).json(ApiResponse.success(documents, 'Anexos recuperados com sucesso'));
+    } catch (error: any) {
+      console.error('Error getting transaction documents:', error);
+      res.status(500).json(ApiResponse.error('Erro ao buscar anexos do lançamento'));
+    }
+  }
+
+  static async uploadTransactionDocuments(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      if (!id) return res.status(400).json(ApiResponse.error('O ID é obrigatório'));
+
+      const { company_id, id: userId } = (req as any).user;
+      const files = (req.files as Express.Multer.File[] | undefined) || [];
+
+      const documents = await DocumentService.uploadTransactionDocuments(id, userId, files, company_id);
+      res.status(201).json(ApiResponse.success(documents, 'Anexos enviados com sucesso'));
+    } catch (error: any) {
+      if (error.message === 'Transaction not found') {
+        return res.status(404).json(ApiResponse.error('Lançamento não encontrado'));
+      }
+      if (error.message.startsWith('Limite de') || error.message.startsWith('Tipo de arquivo')) {
+        return res.status(400).json(ApiResponse.error(error.message));
+      }
+      console.error('Error uploading transaction documents:', error);
+
+      // ECONNREFUSED no MinIO chega como AggregateError com message vazia.
+      if (error?.code === 'ECONNREFUSED' || error?.name === 'AggregateError') {
+        return res.status(502).json(
+          ApiResponse.error('Serviço de armazenamento de arquivos indisponível. Verifique se o MinIO está no ar e tente novamente.')
+        );
+      }
+
+      res.status(500).json(ApiResponse.error('Erro ao enviar anexos do lançamento'));
+    }
+  }
+
+  static async deleteTransactionDocument(req: Request, res: Response) {
+    try {
+      const id = String(req.params?.id || '');
+      const documentId = String(req.params?.documentId || '');
+      if (!id || !documentId) return res.status(400).json(ApiResponse.error('O ID do lançamento e do anexo são obrigatórios'));
+
+      const { company_id } = (req as any).user;
+      await DocumentService.removeTransactionDocuments(id, [documentId], company_id);
+      res.status(200).json(ApiResponse.success(null, 'Anexo removido com sucesso'));
+    } catch (error: any) {
+      console.error('Error deleting transaction document:', error);
+      res.status(500).json(ApiResponse.error('Erro ao remover anexo do lançamento'));
     }
   }
 }

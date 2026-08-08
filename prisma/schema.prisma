@@ -47,6 +47,7 @@ model Company {
   user_group_permissions  UserGroupPermission[]
   user_access_schedules   UserAccessSchedule[]
   audit_logs              AuditLog[]
+  iptu_audit_settings     IptuAuditSettings?
 }
 
 model CompanyBranding {
@@ -240,8 +241,8 @@ model User {
 
   // Telefone. Colunas próprias porque `Contact` não se relaciona com User
   // e não tem DDI nem ramal.
-  phone_country_code String? @db.VarChar(5)  // DDI
-  phone_area_code    String? @db.VarChar(5)  // Área
+  phone_country_code String? @db.VarChar(5) // DDI
+  phone_area_code    String? @db.VarChar(5) // Área
   phone              String? @db.VarChar(20) // Telefone
   phone_extension    String? @db.VarChar(10) // Ramal
 
@@ -419,26 +420,29 @@ model UserDashboardLayout {
 }
 
 model Document {
-  id          String       @id @default(uuid())
-  company_id  String
-  property_id String?
-  lease_id    String?
-  created_by  String?
-  file_path   String
-  file_type   String
-  description String?
-  type        DocumentType
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-  deleted_at  DateTime?
-  is_featured Boolean      @default(false)
-  user        User?        @relation(fields: [created_by], references: [id])
-  property    Property?    @relation(fields: [property_id], references: [id])
-  lease       Lease?       @relation(fields: [lease_id], references: [id])
-  company     Company      @relation(fields: [company_id], references: [id])
+  id             String       @id @default(uuid())
+  company_id     String
+  property_id    String?
+  lease_id       String?
+  transaction_id String?
+  created_by     String?
+  file_path      String
+  file_type      String
+  description    String?
+  type           DocumentType
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+  deleted_at     DateTime?
+  is_featured    Boolean      @default(false)
+  user           User?        @relation(fields: [created_by], references: [id])
+  property       Property?    @relation(fields: [property_id], references: [id])
+  lease          Lease?       @relation(fields: [lease_id], references: [id])
+  transaction    Transaction? @relation(fields: [transaction_id], references: [id])
+  company        Company      @relation(fields: [company_id], references: [id])
 
   @@index([property_id])
   @@index([lease_id])
+  @@index([transaction_id])
   @@index([company_id])
 }
 
@@ -724,45 +728,49 @@ model FinancialInstitution {
 }
 
 model Category {
-  id                     String            @id @default(uuid())
+  id                     String              @id @default(uuid())
   company_id             String
   name                   String
   type                   TransactionType
-  is_active              Boolean           @default(true)
-  is_system              Boolean           @default(false)
+  is_active              Boolean             @default(true)
+  is_system              Boolean             @default(false)
   dfc_group              DfcGroup?
-  created_at             DateTime          @default(now())
-  updated_at             DateTime          @updatedAt
+  created_at             DateTime            @default(now())
+  updated_at             DateTime            @updatedAt
   deleted_at             DateTime?
   recurring_configs      RecurringConfig[]
   subcategories          Subcategory[]
   transactions           Transaction[]
   plannings              Planning[]
-  properties             Property[]        @relation("PropertyCategory")
-  iptu_refund_properties Property[]        @relation("PropertyIptuRefundCategory")
+  properties             Property[]          @relation("PropertyCategory")
+  iptu_refund_properties Property[]          @relation("PropertyIptuRefundCategory")
   commission_agencies    Agency[]
-  company                Company           @relation(fields: [company_id], references: [id])
+  company                Company             @relation(fields: [company_id], references: [id])
+  iptu_audit_income      IptuAuditSettings[] @relation("IptuAuditIncomeCategory")
+  iptu_audit_expense     IptuAuditSettings[] @relation("IptuAuditExpenseCategory")
 
   @@index([company_id])
 }
 
 model Subcategory {
-  id                     String            @id @default(uuid())
+  id                     String              @id @default(uuid())
   company_id             String
   category_id            String
   name                   String
-  is_active              Boolean           @default(true)
-  created_at             DateTime          @default(now())
-  updated_at             DateTime          @updatedAt
+  is_active              Boolean             @default(true)
+  created_at             DateTime            @default(now())
+  updated_at             DateTime            @updatedAt
   deleted_at             DateTime?
   recurring_configs      RecurringConfig[]
-  category               Category          @relation(fields: [category_id], references: [id])
+  category               Category            @relation(fields: [category_id], references: [id])
   transactions           Transaction[]
   plannings              Planning[]
-  properties             Property[]        @relation("PropertySubcategory")
-  iptu_refund_properties Property[]        @relation("PropertyIptuRefundSubcategory")
+  properties             Property[]          @relation("PropertySubcategory")
+  iptu_refund_properties Property[]          @relation("PropertyIptuRefundSubcategory")
   commission_agencies    Agency[]
-  company                Company           @relation(fields: [company_id], references: [id])
+  company                Company             @relation(fields: [company_id], references: [id])
+  iptu_audit_income      IptuAuditSettings[] @relation("IptuAuditIncomeSubcategory")
+  iptu_audit_expense     IptuAuditSettings[] @relation("IptuAuditExpenseSubcategory")
 
   @@index([category_id])
   @@index([company_id])
@@ -898,6 +906,7 @@ model Transaction {
   subcategory              Subcategory?         @relation(fields: [subcategory_id], references: [id])
   supplier                 Supplier?            @relation(fields: [supplier_id], references: [id])
   company                  Company              @relation(fields: [company_id], references: [id])
+  documents                Document[]
 
   @@unique([recurring_group_id, occurrence_number])
   @@index([category_id])
@@ -1024,6 +1033,32 @@ model PlanningMonth {
   @@index([planning_id])
 }
 
+// ─── AUDITORIA ────────────────────────────────────────────────────────────────
+
+/// Configuração do módulo Auditoria de IPTU (botão Engrenagem): qual
+/// categoria/subcategoria de RECEITA representa a restituição de IPTU pelo
+/// inquilino, e qual categoria/subcategoria de DESPESA representa o IPTU pago
+/// pela empresa. Uma linha por empresa — a comparação usa essas categorias
+/// para agregar os lançamentos existentes, sem duplicar dado nenhum.
+model IptuAuditSettings {
+  id                     String   @id @default(uuid())
+  company_id             String   @unique
+  income_category_id     String?
+  income_subcategory_id  String?
+  expense_category_id    String?
+  expense_subcategory_id String?
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+
+  company             Company      @relation(fields: [company_id], references: [id])
+  income_category     Category?    @relation("IptuAuditIncomeCategory", fields: [income_category_id], references: [id])
+  income_subcategory  Subcategory? @relation("IptuAuditIncomeSubcategory", fields: [income_subcategory_id], references: [id])
+  expense_category    Category?    @relation("IptuAuditExpenseCategory", fields: [expense_category_id], references: [id])
+  expense_subcategory Subcategory? @relation("IptuAuditExpenseSubcategory", fields: [expense_subcategory_id], references: [id])
+
+  @@index([company_id])
+}
+
 // ─── ENUMS ───────────────────────────────────────────────────────────────────
 
 enum Gender {
@@ -1078,7 +1113,9 @@ enum TransactionType {
   EXPENSE
 }
 
-/** Classificação de categorias de Despesa usada no Demonstrativo do Fluxo de Caixa (DFC). */
+/**
+ * Classificação de categorias de Despesa usada no Demonstrativo do Fluxo de Caixa (DFC).
+ */
 enum DfcGroup {
   TAXES
   VARIABLE_EXPENSE

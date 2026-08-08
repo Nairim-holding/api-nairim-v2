@@ -266,6 +266,7 @@ export type CompanyWhereInput = {
   user_group_permissions?: Prisma.UserGroupPermissionListRelationFilter
   user_access_schedules?: Prisma.UserAccessScheduleListRelationFilter
   audit_logs?: Prisma.AuditLogListRelationFilter
+  iptu_audit_settings?: Prisma.XOR<Prisma.IptuAuditSettingsNullableScalarRelationFilter, Prisma.IptuAuditSettingsWhereInput> | null
 }
 
 export type CompanyOrderByWithRelationInput = {
@@ -303,6 +304,7 @@ export type CompanyOrderByWithRelationInput = {
   user_group_permissions?: Prisma.UserGroupPermissionOrderByRelationAggregateInput
   user_access_schedules?: Prisma.UserAccessScheduleOrderByRelationAggregateInput
   audit_logs?: Prisma.AuditLogOrderByRelationAggregateInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsOrderByWithRelationInput
 }
 
 export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -343,6 +345,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   user_group_permissions?: Prisma.UserGroupPermissionListRelationFilter
   user_access_schedules?: Prisma.UserAccessScheduleListRelationFilter
   audit_logs?: Prisma.AuditLogListRelationFilter
+  iptu_audit_settings?: Prisma.XOR<Prisma.IptuAuditSettingsNullableScalarRelationFilter, Prisma.IptuAuditSettingsWhereInput> | null
 }, "id" | "slug">
 
 export type CompanyOrderByWithAggregationInput = {
@@ -410,6 +413,7 @@ export type CompanyCreateInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateInput = {
@@ -447,6 +451,7 @@ export type CompanyUncheckedCreateInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUpdateInput = {
@@ -484,6 +489,7 @@ export type CompanyUpdateInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateInput = {
@@ -521,6 +527,7 @@ export type CompanyUncheckedUpdateInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateManyInput = {
@@ -997,6 +1004,20 @@ export type CompanyUpdateOneRequiredWithoutPlanningsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutPlanningsInput, Prisma.CompanyUpdateWithoutPlanningsInput>, Prisma.CompanyUncheckedUpdateWithoutPlanningsInput>
 }
 
+export type CompanyCreateNestedOneWithoutIptu_audit_settingsInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedCreateWithoutIptu_audit_settingsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutIptu_audit_settingsInput
+  connect?: Prisma.CompanyWhereUniqueInput
+}
+
+export type CompanyUpdateOneRequiredWithoutIptu_audit_settingsNestedInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedCreateWithoutIptu_audit_settingsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutIptu_audit_settingsInput
+  upsert?: Prisma.CompanyUpsertWithoutIptu_audit_settingsInput
+  connect?: Prisma.CompanyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutIptu_audit_settingsInput, Prisma.CompanyUpdateWithoutIptu_audit_settingsInput>, Prisma.CompanyUncheckedUpdateWithoutIptu_audit_settingsInput>
+}
+
 export type CompanyCreateWithoutBrandingInput = {
   id?: string
   name: string
@@ -1031,6 +1052,7 @@ export type CompanyCreateWithoutBrandingInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutBrandingInput = {
@@ -1067,6 +1089,7 @@ export type CompanyUncheckedCreateWithoutBrandingInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutBrandingInput = {
@@ -1119,6 +1142,7 @@ export type CompanyUpdateWithoutBrandingInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutBrandingInput = {
@@ -1155,6 +1179,7 @@ export type CompanyUncheckedUpdateWithoutBrandingInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutAgenciesInput = {
@@ -1191,6 +1216,7 @@ export type CompanyCreateWithoutAgenciesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutAgenciesInput = {
@@ -1227,6 +1253,7 @@ export type CompanyUncheckedCreateWithoutAgenciesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutAgenciesInput = {
@@ -1279,6 +1306,7 @@ export type CompanyUpdateWithoutAgenciesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutAgenciesInput = {
@@ -1315,6 +1343,7 @@ export type CompanyUncheckedUpdateWithoutAgenciesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutPropertiesInput = {
@@ -1351,6 +1380,7 @@ export type CompanyCreateWithoutPropertiesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutPropertiesInput = {
@@ -1387,6 +1417,7 @@ export type CompanyUncheckedCreateWithoutPropertiesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutPropertiesInput = {
@@ -1439,6 +1470,7 @@ export type CompanyUpdateWithoutPropertiesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutPropertiesInput = {
@@ -1475,6 +1507,7 @@ export type CompanyUncheckedUpdateWithoutPropertiesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUsersInput = {
@@ -1511,6 +1544,7 @@ export type CompanyCreateWithoutUsersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUsersInput = {
@@ -1547,6 +1581,7 @@ export type CompanyUncheckedCreateWithoutUsersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUsersInput = {
@@ -1599,6 +1634,7 @@ export type CompanyUpdateWithoutUsersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUsersInput = {
@@ -1635,6 +1671,7 @@ export type CompanyUncheckedUpdateWithoutUsersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUser_access_schedulesInput = {
@@ -1671,6 +1708,7 @@ export type CompanyCreateWithoutUser_access_schedulesInput = {
   user_groups?: Prisma.UserGroupCreateNestedManyWithoutCompanyInput
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUser_access_schedulesInput = {
@@ -1707,6 +1745,7 @@ export type CompanyUncheckedCreateWithoutUser_access_schedulesInput = {
   user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCompanyInput
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUser_access_schedulesInput = {
@@ -1759,6 +1798,7 @@ export type CompanyUpdateWithoutUser_access_schedulesInput = {
   user_groups?: Prisma.UserGroupUpdateManyWithoutCompanyNestedInput
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUser_access_schedulesInput = {
@@ -1795,6 +1835,7 @@ export type CompanyUncheckedUpdateWithoutUser_access_schedulesInput = {
   user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCompanyNestedInput
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUser_groupsInput = {
@@ -1831,6 +1872,7 @@ export type CompanyCreateWithoutUser_groupsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUser_groupsInput = {
@@ -1867,6 +1909,7 @@ export type CompanyUncheckedCreateWithoutUser_groupsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUser_groupsInput = {
@@ -1919,6 +1962,7 @@ export type CompanyUpdateWithoutUser_groupsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUser_groupsInput = {
@@ -1955,6 +1999,7 @@ export type CompanyUncheckedUpdateWithoutUser_groupsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUser_group_permissionsInput = {
@@ -1991,6 +2036,7 @@ export type CompanyCreateWithoutUser_group_permissionsInput = {
   user_groups?: Prisma.UserGroupCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUser_group_permissionsInput = {
@@ -2027,6 +2073,7 @@ export type CompanyUncheckedCreateWithoutUser_group_permissionsInput = {
   user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUser_group_permissionsInput = {
@@ -2079,6 +2126,7 @@ export type CompanyUpdateWithoutUser_group_permissionsInput = {
   user_groups?: Prisma.UserGroupUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUser_group_permissionsInput = {
@@ -2115,6 +2163,7 @@ export type CompanyUncheckedUpdateWithoutUser_group_permissionsInput = {
   user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutAudit_logsInput = {
@@ -2151,6 +2200,7 @@ export type CompanyCreateWithoutAudit_logsInput = {
   user_groups?: Prisma.UserGroupCreateNestedManyWithoutCompanyInput
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutAudit_logsInput = {
@@ -2187,6 +2237,7 @@ export type CompanyUncheckedCreateWithoutAudit_logsInput = {
   user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCompanyInput
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutAudit_logsInput = {
@@ -2239,6 +2290,7 @@ export type CompanyUpdateWithoutAudit_logsInput = {
   user_groups?: Prisma.UserGroupUpdateManyWithoutCompanyNestedInput
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutAudit_logsInput = {
@@ -2275,6 +2327,7 @@ export type CompanyUncheckedUpdateWithoutAudit_logsInput = {
   user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCompanyNestedInput
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUser_column_preferencesInput = {
@@ -2311,6 +2364,7 @@ export type CompanyCreateWithoutUser_column_preferencesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUser_column_preferencesInput = {
@@ -2347,6 +2401,7 @@ export type CompanyUncheckedCreateWithoutUser_column_preferencesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUser_column_preferencesInput = {
@@ -2399,6 +2454,7 @@ export type CompanyUpdateWithoutUser_column_preferencesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUser_column_preferencesInput = {
@@ -2435,6 +2491,7 @@ export type CompanyUncheckedUpdateWithoutUser_column_preferencesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutUser_dashboard_layoutsInput = {
@@ -2471,6 +2528,7 @@ export type CompanyCreateWithoutUser_dashboard_layoutsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutUser_dashboard_layoutsInput = {
@@ -2507,6 +2565,7 @@ export type CompanyUncheckedCreateWithoutUser_dashboard_layoutsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutUser_dashboard_layoutsInput = {
@@ -2559,6 +2618,7 @@ export type CompanyUpdateWithoutUser_dashboard_layoutsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutUser_dashboard_layoutsInput = {
@@ -2595,6 +2655,7 @@ export type CompanyUncheckedUpdateWithoutUser_dashboard_layoutsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutDocumentsInput = {
@@ -2631,6 +2692,7 @@ export type CompanyCreateWithoutDocumentsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutDocumentsInput = {
@@ -2667,6 +2729,7 @@ export type CompanyUncheckedCreateWithoutDocumentsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutDocumentsInput = {
@@ -2719,6 +2782,7 @@ export type CompanyUpdateWithoutDocumentsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutDocumentsInput = {
@@ -2755,6 +2819,7 @@ export type CompanyUncheckedUpdateWithoutDocumentsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutOwnersInput = {
@@ -2791,6 +2856,7 @@ export type CompanyCreateWithoutOwnersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutOwnersInput = {
@@ -2827,6 +2893,7 @@ export type CompanyUncheckedCreateWithoutOwnersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutOwnersInput = {
@@ -2879,6 +2946,7 @@ export type CompanyUpdateWithoutOwnersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutOwnersInput = {
@@ -2915,6 +2983,7 @@ export type CompanyUncheckedUpdateWithoutOwnersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutTenantsInput = {
@@ -2951,6 +3020,7 @@ export type CompanyCreateWithoutTenantsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutTenantsInput = {
@@ -2987,6 +3057,7 @@ export type CompanyUncheckedCreateWithoutTenantsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutTenantsInput = {
@@ -3039,6 +3110,7 @@ export type CompanyUpdateWithoutTenantsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutTenantsInput = {
@@ -3075,6 +3147,7 @@ export type CompanyUncheckedUpdateWithoutTenantsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutLeasesInput = {
@@ -3111,6 +3184,7 @@ export type CompanyCreateWithoutLeasesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutLeasesInput = {
@@ -3147,6 +3221,7 @@ export type CompanyUncheckedCreateWithoutLeasesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutLeasesInput = {
@@ -3199,6 +3274,7 @@ export type CompanyUpdateWithoutLeasesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutLeasesInput = {
@@ -3235,6 +3311,7 @@ export type CompanyUncheckedUpdateWithoutLeasesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutProperty_typesInput = {
@@ -3271,6 +3348,7 @@ export type CompanyCreateWithoutProperty_typesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutProperty_typesInput = {
@@ -3307,6 +3385,7 @@ export type CompanyUncheckedCreateWithoutProperty_typesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutProperty_typesInput = {
@@ -3359,6 +3438,7 @@ export type CompanyUpdateWithoutProperty_typesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutProperty_typesInput = {
@@ -3395,6 +3475,7 @@ export type CompanyUncheckedUpdateWithoutProperty_typesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutFavoritesInput = {
@@ -3431,6 +3512,7 @@ export type CompanyCreateWithoutFavoritesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutFavoritesInput = {
@@ -3467,6 +3549,7 @@ export type CompanyUncheckedCreateWithoutFavoritesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutFavoritesInput = {
@@ -3519,6 +3602,7 @@ export type CompanyUpdateWithoutFavoritesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutFavoritesInput = {
@@ -3555,6 +3639,7 @@ export type CompanyUncheckedUpdateWithoutFavoritesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutFinancial_institutionsInput = {
@@ -3591,6 +3676,7 @@ export type CompanyCreateWithoutFinancial_institutionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutFinancial_institutionsInput = {
@@ -3627,6 +3713,7 @@ export type CompanyUncheckedCreateWithoutFinancial_institutionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutFinancial_institutionsInput = {
@@ -3679,6 +3766,7 @@ export type CompanyUpdateWithoutFinancial_institutionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutFinancial_institutionsInput = {
@@ -3715,6 +3803,7 @@ export type CompanyUncheckedUpdateWithoutFinancial_institutionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutCategoriesInput = {
@@ -3751,6 +3840,7 @@ export type CompanyCreateWithoutCategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutCategoriesInput = {
@@ -3787,6 +3877,7 @@ export type CompanyUncheckedCreateWithoutCategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutCategoriesInput = {
@@ -3839,6 +3930,7 @@ export type CompanyUpdateWithoutCategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutCategoriesInput = {
@@ -3875,6 +3967,7 @@ export type CompanyUncheckedUpdateWithoutCategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutSubcategoriesInput = {
@@ -3911,6 +4004,7 @@ export type CompanyCreateWithoutSubcategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutSubcategoriesInput = {
@@ -3947,6 +4041,7 @@ export type CompanyUncheckedCreateWithoutSubcategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutSubcategoriesInput = {
@@ -3999,6 +4094,7 @@ export type CompanyUpdateWithoutSubcategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutSubcategoriesInput = {
@@ -4035,6 +4131,7 @@ export type CompanyUncheckedUpdateWithoutSubcategoriesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutCardsInput = {
@@ -4071,6 +4168,7 @@ export type CompanyCreateWithoutCardsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutCardsInput = {
@@ -4107,6 +4205,7 @@ export type CompanyUncheckedCreateWithoutCardsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutCardsInput = {
@@ -4159,6 +4258,7 @@ export type CompanyUpdateWithoutCardsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutCardsInput = {
@@ -4195,6 +4295,7 @@ export type CompanyUncheckedUpdateWithoutCardsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutCentersInput = {
@@ -4231,6 +4332,7 @@ export type CompanyCreateWithoutCentersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutCentersInput = {
@@ -4267,6 +4369,7 @@ export type CompanyUncheckedCreateWithoutCentersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutCentersInput = {
@@ -4319,6 +4422,7 @@ export type CompanyUpdateWithoutCentersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutCentersInput = {
@@ -4355,6 +4459,7 @@ export type CompanyUncheckedUpdateWithoutCentersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutSuppliersInput = {
@@ -4391,6 +4496,7 @@ export type CompanyCreateWithoutSuppliersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutSuppliersInput = {
@@ -4427,6 +4533,7 @@ export type CompanyUncheckedCreateWithoutSuppliersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutSuppliersInput = {
@@ -4479,6 +4586,7 @@ export type CompanyUpdateWithoutSuppliersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutSuppliersInput = {
@@ -4515,6 +4623,7 @@ export type CompanyUncheckedUpdateWithoutSuppliersInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutTransactionsInput = {
@@ -4551,6 +4660,7 @@ export type CompanyCreateWithoutTransactionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutTransactionsInput = {
@@ -4587,6 +4697,7 @@ export type CompanyUncheckedCreateWithoutTransactionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutTransactionsInput = {
@@ -4639,6 +4750,7 @@ export type CompanyUpdateWithoutTransactionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutTransactionsInput = {
@@ -4675,6 +4787,7 @@ export type CompanyUncheckedUpdateWithoutTransactionsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutInvoicesInput = {
@@ -4711,6 +4824,7 @@ export type CompanyCreateWithoutInvoicesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutInvoicesInput = {
@@ -4747,6 +4861,7 @@ export type CompanyUncheckedCreateWithoutInvoicesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutInvoicesInput = {
@@ -4799,6 +4914,7 @@ export type CompanyUpdateWithoutInvoicesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutInvoicesInput = {
@@ -4835,6 +4951,7 @@ export type CompanyUncheckedUpdateWithoutInvoicesInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutRecurring_configsInput = {
@@ -4871,6 +4988,7 @@ export type CompanyCreateWithoutRecurring_configsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutRecurring_configsInput = {
@@ -4907,6 +5025,7 @@ export type CompanyUncheckedCreateWithoutRecurring_configsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutRecurring_configsInput = {
@@ -4959,6 +5078,7 @@ export type CompanyUpdateWithoutRecurring_configsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutRecurring_configsInput = {
@@ -4995,6 +5115,7 @@ export type CompanyUncheckedUpdateWithoutRecurring_configsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutPlanningsInput = {
@@ -5031,6 +5152,7 @@ export type CompanyCreateWithoutPlanningsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutPlanningsInput = {
@@ -5067,6 +5189,7 @@ export type CompanyUncheckedCreateWithoutPlanningsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
   user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedCreateNestedOneWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutPlanningsInput = {
@@ -5119,6 +5242,7 @@ export type CompanyUpdateWithoutPlanningsInput = {
   user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
   user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUpdateOneWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutPlanningsInput = {
@@ -5147,6 +5271,171 @@ export type CompanyUncheckedUpdateWithoutPlanningsInput = {
   subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCompanyNestedInput
   centers?: Prisma.CenterUncheckedUpdateManyWithoutCompanyNestedInput
   recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCompanyNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutCompanyNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutCompanyNestedInput
+  user_column_preferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutCompanyNestedInput
+  user_dashboard_layouts?: Prisma.UserDashboardLayoutUncheckedUpdateManyWithoutCompanyNestedInput
+  user_groups?: Prisma.UserGroupUncheckedUpdateManyWithoutCompanyNestedInput
+  user_group_permissions?: Prisma.UserGroupPermissionUncheckedUpdateManyWithoutCompanyNestedInput
+  user_access_schedules?: Prisma.UserAccessScheduleUncheckedUpdateManyWithoutCompanyNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+  iptu_audit_settings?: Prisma.IptuAuditSettingsUncheckedUpdateOneWithoutCompanyNestedInput
+}
+
+export type CompanyCreateWithoutIptu_audit_settingsInput = {
+  id?: string
+  name: string
+  slug: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  db_quota_mb?: number | null
+  branding?: Prisma.CompanyBrandingCreateNestedOneWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutCompanyInput
+  property_types?: Prisma.PropertyTypeCreateNestedManyWithoutCompanyInput
+  owners?: Prisma.OwnerCreateNestedManyWithoutCompanyInput
+  agencies?: Prisma.AgencyCreateNestedManyWithoutCompanyInput
+  tenants?: Prisma.TenantCreateNestedManyWithoutCompanyInput
+  suppliers?: Prisma.SupplierCreateNestedManyWithoutCompanyInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutCompanyInput
+  financial_institutions?: Prisma.FinancialInstitutionCreateNestedManyWithoutCompanyInput
+  cards?: Prisma.CardCreateNestedManyWithoutCompanyInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutCompanyInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutCompanyInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutCompanyInput
+  subcategories?: Prisma.SubcategoryCreateNestedManyWithoutCompanyInput
+  centers?: Prisma.CenterCreateNestedManyWithoutCompanyInput
+  recurring_configs?: Prisma.RecurringConfigCreateNestedManyWithoutCompanyInput
+  plannings?: Prisma.PlanningCreateNestedManyWithoutCompanyInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutCompanyInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutCompanyInput
+  user_column_preferences?: Prisma.UserColumnPreferenceCreateNestedManyWithoutCompanyInput
+  user_dashboard_layouts?: Prisma.UserDashboardLayoutCreateNestedManyWithoutCompanyInput
+  user_groups?: Prisma.UserGroupCreateNestedManyWithoutCompanyInput
+  user_group_permissions?: Prisma.UserGroupPermissionCreateNestedManyWithoutCompanyInput
+  user_access_schedules?: Prisma.UserAccessScheduleCreateNestedManyWithoutCompanyInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyUncheckedCreateWithoutIptu_audit_settingsInput = {
+  id?: string
+  name: string
+  slug: string
+  is_active?: boolean
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  db_quota_mb?: number | null
+  branding?: Prisma.CompanyBrandingUncheckedCreateNestedOneWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutCompanyInput
+  property_types?: Prisma.PropertyTypeUncheckedCreateNestedManyWithoutCompanyInput
+  owners?: Prisma.OwnerUncheckedCreateNestedManyWithoutCompanyInput
+  agencies?: Prisma.AgencyUncheckedCreateNestedManyWithoutCompanyInput
+  tenants?: Prisma.TenantUncheckedCreateNestedManyWithoutCompanyInput
+  suppliers?: Prisma.SupplierUncheckedCreateNestedManyWithoutCompanyInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutCompanyInput
+  financial_institutions?: Prisma.FinancialInstitutionUncheckedCreateNestedManyWithoutCompanyInput
+  cards?: Prisma.CardUncheckedCreateNestedManyWithoutCompanyInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCompanyInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutCompanyInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCompanyInput
+  subcategories?: Prisma.SubcategoryUncheckedCreateNestedManyWithoutCompanyInput
+  centers?: Prisma.CenterUncheckedCreateNestedManyWithoutCompanyInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedCreateNestedManyWithoutCompanyInput
+  plannings?: Prisma.PlanningUncheckedCreateNestedManyWithoutCompanyInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutCompanyInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutCompanyInput
+  user_column_preferences?: Prisma.UserColumnPreferenceUncheckedCreateNestedManyWithoutCompanyInput
+  user_dashboard_layouts?: Prisma.UserDashboardLayoutUncheckedCreateNestedManyWithoutCompanyInput
+  user_groups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutCompanyInput
+  user_group_permissions?: Prisma.UserGroupPermissionUncheckedCreateNestedManyWithoutCompanyInput
+  user_access_schedules?: Prisma.UserAccessScheduleUncheckedCreateNestedManyWithoutCompanyInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyCreateOrConnectWithoutIptu_audit_settingsInput = {
+  where: Prisma.CompanyWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedCreateWithoutIptu_audit_settingsInput>
+}
+
+export type CompanyUpsertWithoutIptu_audit_settingsInput = {
+  update: Prisma.XOR<Prisma.CompanyUpdateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedUpdateWithoutIptu_audit_settingsInput>
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedCreateWithoutIptu_audit_settingsInput>
+  where?: Prisma.CompanyWhereInput
+}
+
+export type CompanyUpdateToOneWithWhereWithoutIptu_audit_settingsInput = {
+  where?: Prisma.CompanyWhereInput
+  data: Prisma.XOR<Prisma.CompanyUpdateWithoutIptu_audit_settingsInput, Prisma.CompanyUncheckedUpdateWithoutIptu_audit_settingsInput>
+}
+
+export type CompanyUpdateWithoutIptu_audit_settingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  db_quota_mb?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  branding?: Prisma.CompanyBrandingUpdateOneWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutCompanyNestedInput
+  property_types?: Prisma.PropertyTypeUpdateManyWithoutCompanyNestedInput
+  owners?: Prisma.OwnerUpdateManyWithoutCompanyNestedInput
+  agencies?: Prisma.AgencyUpdateManyWithoutCompanyNestedInput
+  tenants?: Prisma.TenantUpdateManyWithoutCompanyNestedInput
+  suppliers?: Prisma.SupplierUpdateManyWithoutCompanyNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutCompanyNestedInput
+  financial_institutions?: Prisma.FinancialInstitutionUpdateManyWithoutCompanyNestedInput
+  cards?: Prisma.CardUpdateManyWithoutCompanyNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutCompanyNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutCompanyNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutCompanyNestedInput
+  subcategories?: Prisma.SubcategoryUpdateManyWithoutCompanyNestedInput
+  centers?: Prisma.CenterUpdateManyWithoutCompanyNestedInput
+  recurring_configs?: Prisma.RecurringConfigUpdateManyWithoutCompanyNestedInput
+  plannings?: Prisma.PlanningUpdateManyWithoutCompanyNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutCompanyNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutCompanyNestedInput
+  user_column_preferences?: Prisma.UserColumnPreferenceUpdateManyWithoutCompanyNestedInput
+  user_dashboard_layouts?: Prisma.UserDashboardLayoutUpdateManyWithoutCompanyNestedInput
+  user_groups?: Prisma.UserGroupUpdateManyWithoutCompanyNestedInput
+  user_group_permissions?: Prisma.UserGroupPermissionUpdateManyWithoutCompanyNestedInput
+  user_access_schedules?: Prisma.UserAccessScheduleUpdateManyWithoutCompanyNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyUncheckedUpdateWithoutIptu_audit_settingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  db_quota_mb?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  branding?: Prisma.CompanyBrandingUncheckedUpdateOneWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutCompanyNestedInput
+  property_types?: Prisma.PropertyTypeUncheckedUpdateManyWithoutCompanyNestedInput
+  owners?: Prisma.OwnerUncheckedUpdateManyWithoutCompanyNestedInput
+  agencies?: Prisma.AgencyUncheckedUpdateManyWithoutCompanyNestedInput
+  tenants?: Prisma.TenantUncheckedUpdateManyWithoutCompanyNestedInput
+  suppliers?: Prisma.SupplierUncheckedUpdateManyWithoutCompanyNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutCompanyNestedInput
+  financial_institutions?: Prisma.FinancialInstitutionUncheckedUpdateManyWithoutCompanyNestedInput
+  cards?: Prisma.CardUncheckedUpdateManyWithoutCompanyNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutCompanyNestedInput
+  subcategories?: Prisma.SubcategoryUncheckedUpdateManyWithoutCompanyNestedInput
+  centers?: Prisma.CenterUncheckedUpdateManyWithoutCompanyNestedInput
+  recurring_configs?: Prisma.RecurringConfigUncheckedUpdateManyWithoutCompanyNestedInput
+  plannings?: Prisma.PlanningUncheckedUpdateManyWithoutCompanyNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutCompanyNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutCompanyNestedInput
   user_column_preferences?: Prisma.UserColumnPreferenceUncheckedUpdateManyWithoutCompanyNestedInput
@@ -5439,6 +5728,7 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user_group_permissions?: boolean | Prisma.Company$user_group_permissionsArgs<ExtArgs>
   user_access_schedules?: boolean | Prisma.Company$user_access_schedulesArgs<ExtArgs>
   audit_logs?: boolean | Prisma.Company$audit_logsArgs<ExtArgs>
+  iptu_audit_settings?: boolean | Prisma.Company$iptu_audit_settingsArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["company"]>
 
@@ -5503,6 +5793,7 @@ export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user_group_permissions?: boolean | Prisma.Company$user_group_permissionsArgs<ExtArgs>
   user_access_schedules?: boolean | Prisma.Company$user_access_schedulesArgs<ExtArgs>
   audit_logs?: boolean | Prisma.Company$audit_logsArgs<ExtArgs>
+  iptu_audit_settings?: boolean | Prisma.Company$iptu_audit_settingsArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CompanyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5537,6 +5828,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     user_group_permissions: Prisma.$UserGroupPermissionPayload<ExtArgs>[]
     user_access_schedules: Prisma.$UserAccessSchedulePayload<ExtArgs>[]
     audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
+    iptu_audit_settings: Prisma.$IptuAuditSettingsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5970,6 +6262,7 @@ export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.
   user_group_permissions<T extends Prisma.Company$user_group_permissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$user_group_permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGroupPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user_access_schedules<T extends Prisma.Company$user_access_schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$user_access_schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAccessSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   audit_logs<T extends Prisma.Company$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  iptu_audit_settings<T extends Prisma.Company$iptu_audit_settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$iptu_audit_settingsArgs<ExtArgs>>): Prisma.Prisma__IptuAuditSettingsClient<runtime.Types.Result.GetResult<Prisma.$IptuAuditSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7011,6 +7304,25 @@ export type Company$audit_logsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * Company.iptu_audit_settings
+ */
+export type Company$iptu_audit_settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IptuAuditSettings
+   */
+  select?: Prisma.IptuAuditSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IptuAuditSettings
+   */
+  omit?: Prisma.IptuAuditSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IptuAuditSettingsInclude<ExtArgs> | null
+  where?: Prisma.IptuAuditSettingsWhereInput
 }
 
 /**

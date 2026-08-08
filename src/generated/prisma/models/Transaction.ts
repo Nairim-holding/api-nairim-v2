@@ -448,6 +448,7 @@ export type TransactionWhereInput = {
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+  documents?: Prisma.DocumentListRelationFilter
 }
 
 export type TransactionOrderByWithRelationInput = {
@@ -494,6 +495,7 @@ export type TransactionOrderByWithRelationInput = {
   subcategory?: Prisma.SubcategoryOrderByWithRelationInput
   supplier?: Prisma.SupplierOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
+  documents?: Prisma.DocumentOrderByRelationAggregateInput
 }
 
 export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -544,6 +546,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   subcategory?: Prisma.XOR<Prisma.SubcategoryNullableScalarRelationFilter, Prisma.SubcategoryWhereInput> | null
   supplier?: Prisma.XOR<Prisma.SupplierNullableScalarRelationFilter, Prisma.SupplierWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
+  documents?: Prisma.DocumentListRelationFilter
 }, "id" | "recurring_group_id_occurrence_number">
 
 export type TransactionOrderByWithAggregationInput = {
@@ -655,6 +658,7 @@ export type TransactionCreateInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateInput = {
@@ -690,6 +694,7 @@ export type TransactionUncheckedCreateInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUpdateInput = {
@@ -725,6 +730,7 @@ export type TransactionUpdateInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
@@ -760,6 +766,7 @@ export type TransactionUncheckedUpdateInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionCreateManyInput = {
@@ -1029,6 +1036,22 @@ export type TransactionUncheckedUpdateManyWithoutCompanyNestedInput = {
   update?: Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput | Prisma.TransactionUpdateWithWhereUniqueWithoutCompanyInput[]
   updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput | Prisma.TransactionUpdateManyWithWhereWithoutCompanyInput[]
   deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
+}
+
+export type TransactionCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutDocumentsInput, Prisma.TransactionUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.TransactionWhereUniqueInput
+}
+
+export type TransactionUpdateOneWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutDocumentsInput, Prisma.TransactionUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.TransactionUpsertWithoutDocumentsInput
+  disconnect?: Prisma.TransactionWhereInput | boolean
+  delete?: Prisma.TransactionWhereInput | boolean
+  connect?: Prisma.TransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TransactionUpdateToOneWithWhereWithoutDocumentsInput, Prisma.TransactionUpdateWithoutDocumentsInput>, Prisma.TransactionUncheckedUpdateWithoutDocumentsInput>
 }
 
 export type TransactionCreateNestedManyWithoutLeaseInput = {
@@ -1511,6 +1534,7 @@ export type TransactionCreateWithoutCompanyInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCompanyInput = {
@@ -1545,6 +1569,7 @@ export type TransactionUncheckedCreateWithoutCompanyInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCompanyInput = {
@@ -1610,6 +1635,162 @@ export type TransactionScalarWhereInput = {
   is_cancellation_charge?: Prisma.BoolFilter<"Transaction"> | boolean
 }
 
+export type TransactionCreateWithoutDocumentsInput = {
+  id?: string
+  event_date: Date | string
+  effective_date: Date | string
+  purchase_date?: Date | string | null
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TransactionStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  installment_number?: number | null
+  is_recurring?: boolean
+  occurrence_number?: number | null
+  payment_mode?: $Enums.PaymentMode | null
+  recurring_frequency?: $Enums.RecurringFrequency | null
+  installment_group_id?: string | null
+  total_installments?: number | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
+  is_cancellation_charge?: boolean
+  card?: Prisma.CardCreateNestedOneWithoutTransactionsInput
+  category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
+  center?: Prisma.CenterCreateNestedOneWithoutTransactionsInput
+  financial_institution: Prisma.FinancialInstitutionCreateNestedOneWithoutTransactionsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutTransactionsInput
+  lease?: Prisma.LeaseCreateNestedOneWithoutTransactionsInput
+  parent_transaction?: Prisma.TransactionCreateNestedOneWithoutChild_transactionsInput
+  child_transactions?: Prisma.TransactionCreateNestedManyWithoutParent_transactionInput
+  recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
+  subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
+  supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+}
+
+export type TransactionUncheckedCreateWithoutDocumentsInput = {
+  id?: string
+  company_id: string
+  event_date: Date | string
+  effective_date: Date | string
+  purchase_date?: Date | string | null
+  description: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TransactionStatus
+  category_id: string
+  subcategory_id?: string | null
+  financial_institution_id: string
+  card_id?: string | null
+  center_id?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  supplier_id?: string | null
+  installment_number?: number | null
+  is_recurring?: boolean
+  occurrence_number?: number | null
+  parent_transaction_id?: string | null
+  payment_mode?: $Enums.PaymentMode | null
+  recurring_frequency?: $Enums.RecurringFrequency | null
+  recurring_group_id?: string | null
+  installment_group_id?: string | null
+  total_installments?: number | null
+  invoice_id?: string | null
+  lease_id?: string | null
+  transfer_group_id?: string | null
+  is_transfer?: boolean
+  is_cancellation_charge?: boolean
+  child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+}
+
+export type TransactionCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutDocumentsInput, Prisma.TransactionUncheckedCreateWithoutDocumentsInput>
+}
+
+export type TransactionUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.TransactionUpdateWithoutDocumentsInput, Prisma.TransactionUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutDocumentsInput, Prisma.TransactionUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.TransactionWhereInput
+}
+
+export type TransactionUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.TransactionWhereInput
+  data: Prisma.XOR<Prisma.TransactionUpdateWithoutDocumentsInput, Prisma.TransactionUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type TransactionUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  installment_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  occurrence_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
+  installment_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  card?: Prisma.CardUpdateOneWithoutTransactionsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
+  center?: Prisma.CenterUpdateOneWithoutTransactionsNestedInput
+  financial_institution?: Prisma.FinancialInstitutionUpdateOneRequiredWithoutTransactionsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutTransactionsNestedInput
+  lease?: Prisma.LeaseUpdateOneWithoutTransactionsNestedInput
+  parent_transaction?: Prisma.TransactionUpdateOneWithoutChild_transactionsNestedInput
+  child_transactions?: Prisma.TransactionUpdateManyWithoutParent_transactionNestedInput
+  recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
+  subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
+  supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+}
+
+export type TransactionUncheckedUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  company_id?: Prisma.StringFieldUpdateOperationsInput | string
+  event_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effective_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchase_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+  category_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subcategory_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  financial_institution_id?: Prisma.StringFieldUpdateOperationsInput | string
+  card_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  center_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  supplier_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installment_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  is_recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  occurrence_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parent_transaction_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payment_mode?: Prisma.NullableEnumPaymentModeFieldUpdateOperationsInput | $Enums.PaymentMode | null
+  recurring_frequency?: Prisma.NullableEnumRecurringFrequencyFieldUpdateOperationsInput | $Enums.RecurringFrequency | null
+  recurring_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installment_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  total_installments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  invoice_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lease_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+}
+
 export type TransactionCreateWithoutLeaseInput = {
   id?: string
   event_date: Date | string
@@ -1642,6 +1823,7 @@ export type TransactionCreateWithoutLeaseInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutLeaseInput = {
@@ -1676,6 +1858,7 @@ export type TransactionUncheckedCreateWithoutLeaseInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutLeaseInput = {
@@ -1736,6 +1919,7 @@ export type TransactionCreateWithoutFinancial_institutionInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutFinancial_institutionInput = {
@@ -1770,6 +1954,7 @@ export type TransactionUncheckedCreateWithoutFinancial_institutionInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutFinancial_institutionInput = {
@@ -1830,6 +2015,7 @@ export type TransactionCreateWithoutCategoryInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCategoryInput = {
@@ -1864,6 +2050,7 @@ export type TransactionUncheckedCreateWithoutCategoryInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCategoryInput = {
@@ -1924,6 +2111,7 @@ export type TransactionCreateWithoutSubcategoryInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutSubcategoryInput = {
@@ -1958,6 +2146,7 @@ export type TransactionUncheckedCreateWithoutSubcategoryInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutSubcategoryInput = {
@@ -2018,6 +2207,7 @@ export type TransactionCreateWithoutCardInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCardInput = {
@@ -2052,6 +2242,7 @@ export type TransactionUncheckedCreateWithoutCardInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCardInput = {
@@ -2112,6 +2303,7 @@ export type TransactionCreateWithoutCenterInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCenterInput = {
@@ -2146,6 +2338,7 @@ export type TransactionUncheckedCreateWithoutCenterInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCenterInput = {
@@ -2206,6 +2399,7 @@ export type TransactionCreateWithoutSupplierInput = {
   recurring_config?: Prisma.RecurringConfigCreateNestedOneWithoutTransactionsInput
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutSupplierInput = {
@@ -2240,6 +2434,7 @@ export type TransactionUncheckedCreateWithoutSupplierInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutSupplierInput = {
@@ -2300,6 +2495,7 @@ export type TransactionCreateWithoutChild_transactionsInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutChild_transactionsInput = {
@@ -2334,6 +2530,7 @@ export type TransactionUncheckedCreateWithoutChild_transactionsInput = {
   transfer_group_id?: string | null
   is_transfer?: boolean
   is_cancellation_charge?: boolean
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutChild_transactionsInput = {
@@ -2373,6 +2570,7 @@ export type TransactionCreateWithoutParent_transactionInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutParent_transactionInput = {
@@ -2407,6 +2605,7 @@ export type TransactionUncheckedCreateWithoutParent_transactionInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutParent_transactionInput = {
@@ -2462,6 +2661,7 @@ export type TransactionUpdateWithoutChild_transactionsInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutChild_transactionsInput = {
@@ -2496,6 +2696,7 @@ export type TransactionUncheckedUpdateWithoutChild_transactionsInput = {
   transfer_group_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUpsertWithWhereUniqueWithoutParent_transactionInput = {
@@ -2546,6 +2747,7 @@ export type TransactionCreateWithoutInvoiceInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutInvoiceInput = {
@@ -2580,6 +2782,7 @@ export type TransactionUncheckedCreateWithoutInvoiceInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutInvoiceInput = {
@@ -2640,6 +2843,7 @@ export type TransactionCreateWithoutRecurring_configInput = {
   subcategory?: Prisma.SubcategoryCreateNestedOneWithoutTransactionsInput
   supplier?: Prisma.SupplierCreateNestedOneWithoutTransactionsInput
   company: Prisma.CompanyCreateNestedOneWithoutTransactionsInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutRecurring_configInput = {
@@ -2674,6 +2878,7 @@ export type TransactionUncheckedCreateWithoutRecurring_configInput = {
   is_transfer?: boolean
   is_cancellation_charge?: boolean
   child_transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutParent_transactionInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutRecurring_configInput = {
@@ -2767,6 +2972,7 @@ export type TransactionUpdateWithoutCompanyInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCompanyInput = {
@@ -2801,6 +3007,7 @@ export type TransactionUncheckedUpdateWithoutCompanyInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCompanyInput = {
@@ -2901,6 +3108,7 @@ export type TransactionUpdateWithoutLeaseInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutLeaseInput = {
@@ -2935,6 +3143,7 @@ export type TransactionUncheckedUpdateWithoutLeaseInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutLeaseInput = {
@@ -3035,6 +3244,7 @@ export type TransactionUpdateWithoutFinancial_institutionInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
@@ -3069,6 +3279,7 @@ export type TransactionUncheckedUpdateWithoutFinancial_institutionInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutFinancial_institutionInput = {
@@ -3169,6 +3380,7 @@ export type TransactionUpdateWithoutCategoryInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCategoryInput = {
@@ -3203,6 +3415,7 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
@@ -3303,6 +3516,7 @@ export type TransactionUpdateWithoutSubcategoryInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
@@ -3337,6 +3551,7 @@ export type TransactionUncheckedUpdateWithoutSubcategoryInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutSubcategoryInput = {
@@ -3437,6 +3652,7 @@ export type TransactionUpdateWithoutCardInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCardInput = {
@@ -3471,6 +3687,7 @@ export type TransactionUncheckedUpdateWithoutCardInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCardInput = {
@@ -3571,6 +3788,7 @@ export type TransactionUpdateWithoutCenterInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCenterInput = {
@@ -3605,6 +3823,7 @@ export type TransactionUncheckedUpdateWithoutCenterInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCenterInput = {
@@ -3705,6 +3924,7 @@ export type TransactionUpdateWithoutSupplierInput = {
   recurring_config?: Prisma.RecurringConfigUpdateOneWithoutTransactionsNestedInput
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutSupplierInput = {
@@ -3739,6 +3959,7 @@ export type TransactionUncheckedUpdateWithoutSupplierInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutSupplierInput = {
@@ -3839,6 +4060,7 @@ export type TransactionUpdateWithoutParent_transactionInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
@@ -3873,6 +4095,7 @@ export type TransactionUncheckedUpdateWithoutParent_transactionInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutParent_transactionInput = {
@@ -3973,6 +4196,7 @@ export type TransactionUpdateWithoutInvoiceInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutInvoiceInput = {
@@ -4007,6 +4231,7 @@ export type TransactionUncheckedUpdateWithoutInvoiceInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutInvoiceInput = {
@@ -4107,6 +4332,7 @@ export type TransactionUpdateWithoutRecurring_configInput = {
   subcategory?: Prisma.SubcategoryUpdateOneWithoutTransactionsNestedInput
   supplier?: Prisma.SupplierUpdateOneWithoutTransactionsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutTransactionsNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
@@ -4141,6 +4367,7 @@ export type TransactionUncheckedUpdateWithoutRecurring_configInput = {
   is_transfer?: Prisma.BoolFieldUpdateOperationsInput | boolean
   is_cancellation_charge?: Prisma.BoolFieldUpdateOperationsInput | boolean
   child_transactions?: Prisma.TransactionUncheckedUpdateManyWithoutParent_transactionNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutRecurring_configInput = {
@@ -4183,10 +4410,12 @@ export type TransactionUncheckedUpdateManyWithoutRecurring_configInput = {
 
 export type TransactionCountOutputType = {
   child_transactions: number
+  documents: number
 }
 
 export type TransactionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   child_transactions?: boolean | TransactionCountOutputTypeCountChild_transactionsArgs
+  documents?: boolean | TransactionCountOutputTypeCountDocumentsArgs
 }
 
 /**
@@ -4204,6 +4433,13 @@ export type TransactionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
  */
 export type TransactionCountOutputTypeCountChild_transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TransactionWhereInput
+}
+
+/**
+ * TransactionCountOutputType without action
+ */
+export type TransactionCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentWhereInput
 }
 
 
@@ -4251,6 +4487,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  documents?: boolean | Prisma.Transaction$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
@@ -4392,6 +4629,7 @@ export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.Internal
   subcategory?: boolean | Prisma.Transaction$subcategoryArgs<ExtArgs>
   supplier?: boolean | Prisma.Transaction$supplierArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
+  documents?: boolean | Prisma.Transaction$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4436,6 +4674,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     subcategory: Prisma.$SubcategoryPayload<ExtArgs> | null
     supplier: Prisma.$SupplierPayload<ExtArgs> | null
     company: Prisma.$CompanyPayload<ExtArgs>
+    documents: Prisma.$DocumentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4875,6 +5114,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
   subcategory<T extends Prisma.Transaction$subcategoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$subcategoryArgs<ExtArgs>>): Prisma.Prisma__SubcategoryClient<runtime.Types.Result.GetResult<Prisma.$SubcategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   supplier<T extends Prisma.Transaction$supplierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$supplierArgs<ExtArgs>>): Prisma.Prisma__SupplierClient<runtime.Types.Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  documents<T extends Prisma.Transaction$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5504,6 +5744,30 @@ export type Transaction$supplierArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.SupplierInclude<ExtArgs> | null
   where?: Prisma.SupplierWhereInput
+}
+
+/**
+ * Transaction.documents
+ */
+export type Transaction$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Document
+   */
+  select?: Prisma.DocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Document
+   */
+  omit?: Prisma.DocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentInclude<ExtArgs> | null
+  where?: Prisma.DocumentWhereInput
+  orderBy?: Prisma.DocumentOrderByWithRelationInput | Prisma.DocumentOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[]
 }
 
 /**

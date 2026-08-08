@@ -209,3 +209,12 @@ export type Planning = Prisma.PlanningModel
  * 
  */
 export type PlanningMonth = Prisma.PlanningMonthModel
+/**
+ * Model IptuAuditSettings
+ * Configuração do módulo Auditoria de IPTU (botão Engrenagem): qual
+ * categoria/subcategoria de RECEITA representa a restituição de IPTU pelo
+ * inquilino, e qual categoria/subcategoria de DESPESA representa o IPTU pago
+ * pela empresa. Uma linha por empresa — a comparação usa essas categorias
+ * para agregar os lançamentos existentes, sem duplicar dado nenhum.
+ */
+export type IptuAuditSettings = Prisma.IptuAuditSettingsModel

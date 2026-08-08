@@ -190,6 +190,108 @@ export class DocumentService {
     });
   }
 
+  /** Máximo de anexos por lançamento financeiro (Tarefa 2 do guia de correções). */
+  static readonly MAX_TRANSACTION_ATTACHMENTS = 5;
+
+  static readonly ALLOWED_TRANSACTION_ATTACHMENT_MIME_TYPES = [
+    'application/pdf',
+    'image/jpeg',
+    'image/png',
+  ];
+
+  /**
+   * Anexa comprovantes/boletos/notas fiscais a um lançamento financeiro
+   * (Transaction). Mesmo mecanismo de storage de Imóveis/Locações
+   * (UploadServiceFactory) e mesma tabela `Document`, vinculando via
+   * `transaction_id`. Limitado a MAX_TRANSACTION_ATTACHMENTS por lançamento,
+   * contando os já existentes.
+   */
+  static async uploadTransactionDocuments(transactionId: string, userId: string, files: Express.Multer.File[], company_id: string) {
+    const transaction = await prisma.transaction.findFirst({
+      where: { id: transactionId, company_id, deleted_at: null }
+    });
+    if (!transaction) {
+      throw new Error('Transaction not found');
+    }
+
+    if (!files || files.length === 0) return [];
+
+    const invalidFile = files.find(f => !this.ALLOWED_TRANSACTION_ATTACHMENT_MIME_TYPES.includes(f.mimetype));
+    if (invalidFile) {
+      throw new Error(`Tipo de arquivo não permitido: ${invalidFile.mimetype}. Envie apenas PDF, JPG ou PNG.`);
+    }
+
+    const existingCount = await prisma.document.count({
+      where: { transaction_id: transactionId, company_id, deleted_at: null }
+    });
+
+    if (existingCount + files.length > this.MAX_TRANSACTION_ATTACHMENTS) {
+      throw new Error(
+        `Limite de ${this.MAX_TRANSACTION_ATTACHMENTS} anexos por lançamento excedido (já existem ${existingCount}).`
+      );
+    }
+
+    const uploadService = UploadServiceFactory.create();
+    const savedDocuments = [];
+
+    for (const file of files) {
+      let fileUrl: string;
+
+      if (uploadService) {
+        fileUrl = await uploadService.uploadFile(file, 'transactions/attachments');
+      } else {
+        const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+        const relativePath = path.relative(path.join(__dirname, '../../uploads'), file.path);
+        fileUrl = `${baseUrl}/uploads/${relativePath.replace(/\\/g, '/')}`;
+      }
+
+      const document = await prisma.document.create({
+        data: {
+          transaction_id: transactionId,
+          company_id,
+          file_path: fileUrl,
+          file_type: file.mimetype,
+          description: file.originalname,
+          type: 'OTHER',
+          created_by: userId?.trim() || null,
+        }
+      });
+
+      savedDocuments.push(document);
+    }
+
+    return savedDocuments;
+  }
+
+  static async getTransactionDocuments(transactionId: string, company_id: string) {
+    return prisma.document.findMany({
+      where: { transaction_id: transactionId, company_id, deleted_at: null },
+      orderBy: { created_at: 'asc' }
+    });
+  }
+
+  /**
+   * Remoção (soft-delete) de anexos de um lançamento financeiro e do arquivo no
+   * storage. Restringe por `transaction_id` + `company_id` para não afetar
+   * anexos de outro lançamento/empresa.
+   */
+  static async removeTransactionDocuments(transactionId: string, documentIds: string[], company_id: string) {
+    if (!documentIds || documentIds.length === 0) return;
+
+    const documents = await prisma.document.findMany({
+      where: { id: { in: documentIds }, transaction_id: transactionId, company_id, deleted_at: null }
+    });
+
+    for (const document of documents) {
+      await this.deleteDocumentFile(document.file_path);
+    }
+
+    await prisma.document.updateMany({
+      where: { id: { in: documents.map(d => d.id) } },
+      data: { deleted_at: new Date() }
+    });
+  }
+
   static async setFeaturedDocument(propertyId: string, documentId: string) {
     try {
       const result = await prisma.$transaction(async (tx) => {

@@ -1,5 +1,7 @@
 import { TransactionController } from '@/controllers/TransactionController';
 import { canView, canCreate, canEdit, canDelete } from '../middlewares/permission';
+import { upload } from '../utils/upload';
+import { DocumentService } from '@/services/DocumentService';
 import { Router } from 'express';
 
 const RESOURCE = 'financial-transactions';
@@ -10,9 +12,20 @@ const router = Router();
 router.get('/', canView(RESOURCE), TransactionController.getTransactions);
 router.get('/filters', canView(RESOURCE), TransactionController.getFilters);
 router.get('/monthly-summary', canView(RESOURCE), TransactionController.getMonthlySummary);
+router.get('/monthly-summary-multi', canView(RESOURCE), TransactionController.getMonthlySummaryMulti);
 router.get('/available-years', canView(RESOURCE), TransactionController.getAvailableYears);
 router.get('/expense-by-category', canView(RESOURCE), TransactionController.getExpenseByCategory);
 router.get('/subcategory-breakdown', canView(RESOURCE), TransactionController.getSubcategoryBreakdown);
+
+// Anexos do lançamento (Tarefa 2 do guia de correções, até 5 arquivos)
+router.get('/:id/documents', canView(RESOURCE), TransactionController.getTransactionDocuments);
+router.post(
+  '/:id/documents',
+  canEdit(RESOURCE),
+  upload.array('attachments', DocumentService.MAX_TRANSACTION_ATTACHMENTS),
+  TransactionController.uploadTransactionDocuments
+);
+router.delete('/:id/documents/:documentId', canEdit(RESOURCE), TransactionController.deleteTransactionDocument);
 
 // Rota para transferência entre contas (cria o par origem + espelho)
 router.post('/transfer', canCreate(RESOURCE), TransactionController.createTransfer);

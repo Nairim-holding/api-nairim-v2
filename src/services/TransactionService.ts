@@ -298,14 +298,17 @@ export class TransactionService {
       let transactions: any[] = [];
       let total = 0;
 
-      // Inclui a subcategoria diretamente da transação
-      const includeConfig = { 
+      // Inclui a subcategoria diretamente da transação. _count.documents conta
+      // os anexos (Tarefa 2 do guia de correções) para o ícone de clipe da
+      // grid sem precisar de uma chamada por linha.
+      const includeConfig = {
         category: true,
         subcategory: true,
-        financial_institution: true, 
-        card: true, 
+        financial_institution: true,
+        card: true,
         center: true,
-        supplier: true
+        supplier: true,
+        _count: { select: { documents: { where: { deleted_at: null } } } }
       };
 
       if (search.trim()) {
@@ -374,7 +377,8 @@ export class TransactionService {
       // Usa a subcategoria diretamente da transação
       const mappedTransactions = transactions.map(t => ({
         ...t,
-        subcategory: t.subcategory ? { name: t.subcategory.name } : { name: 'Nenhuma' }
+        subcategory: t.subcategory ? { name: t.subcategory.name } : { name: 'Nenhuma' },
+        _attachmentsCount: t._count?.documents ?? 0
       }));
 
       const aggregations = await prisma.transaction.groupBy({
@@ -491,8 +495,22 @@ export class TransactionService {
   }
 
   static async getMonthlyIncomeExpenseSummary(year: number, filters: Record<string, string[]> = {}) {
-    const startDate = new Date(Date.UTC(year, 0, 1));
-    const endDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
+    const [result] = await this.getMonthlyIncomeExpenseSummaryMulti([year], filters);
+    return result;
+  }
+
+  /**
+   * Mesma agregação de `getMonthlyIncomeExpenseSummary`, mas para vários anos de
+   * uma vez — necessário para o gráfico "Receitas e Despesas por Mês" mostrar
+   * todos os meses de todos os anos selecionados no filtro (ex: 2024+2025+2026 =
+   * 36 pontos), em vez de só o último ano.
+   */
+  static async getMonthlyIncomeExpenseSummaryMulti(years: number[], filters: Record<string, string[]> = {}) {
+    const uniqueYears = Array.from(new Set(years)).sort((a, b) => a - b);
+    if (uniqueYears.length === 0) return [];
+
+    const startDate = new Date(Date.UTC(uniqueYears[0], 0, 1));
+    const endDate = new Date(Date.UTC(uniqueYears[uniqueYears.length - 1], 11, 31, 23, 59, 59, 999));
 
     const transactions = await prisma.transaction.findMany({
       where: {
@@ -508,9 +526,15 @@ export class TransactionService {
       },
     });
 
-    const months = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, income: 0, expense: 0 }));
+    const byYear = new Map<number, { month: number; income: number; expense: number }[]>(
+      uniqueYears.map((year) => [year, Array.from({ length: 12 }, (_, i) => ({ month: i + 1, income: 0, expense: 0 }))])
+    );
 
     for (const transaction of transactions) {
+      const transactionYear = transaction.event_date.getUTCFullYear();
+      const months = byYear.get(transactionYear);
+      if (!months) continue;
+
       const monthIndex = transaction.event_date.getUTCMonth();
       const amount = Number(transaction.amount);
 
@@ -518,7 +542,7 @@ export class TransactionService {
       else if (transaction.category.type === 'EXPENSE') months[monthIndex].expense += amount;
     }
 
-    return { year, months };
+    return uniqueYears.map((year) => ({ year, months: byYear.get(year)! }));
   }
 
   static async getAvailableYears() {
@@ -541,7 +565,7 @@ export class TransactionService {
       ...this.buildEntityFilterWhere(filters),
     };
 
-    const [incomeResult, categoryGroups] = await Promise.all([
+    const [incomeResult, categoryGroups, expenseTransactions] = await Promise.all([
       prisma.transaction.aggregate({
         where: { ...baseWhere, category: { type: 'INCOME' } },
         _sum: { amount: true },
@@ -550,6 +574,13 @@ export class TransactionService {
         by: ['category_id'],
         where: { ...baseWhere, category: { type: 'EXPENSE' } },
         _sum: { amount: true },
+      }),
+      // Buscado à parte (sem groupBy por ano, que o Prisma não faz em cima de
+      // uma coluna de data) para montar o detalhamento por ano no tooltip
+      // (Tarefa 1.2) quando o período selecionado cobre mais de um ano.
+      prisma.transaction.findMany({
+        where: { ...baseWhere, category: { type: 'EXPENSE' } },
+        select: { category_id: true, amount: true, event_date: true },
       }),
     ]);
 
@@ -561,12 +592,34 @@ export class TransactionService {
       : [];
     const nameById = new Map(categoryNames.map((c) => [c.id, c.name]));
 
+    // Total por (categoria, ano) — só populado quando o período cobre mais de
+    // um ano civil; período de 1 ano só produz uma entrada por categoria.
+    const byYearByCategory = new Map<string, Map<number, number>>();
+    for (const t of expenseTransactions) {
+      const year = t.event_date.getUTCFullYear();
+      const perYear = byYearByCategory.get(t.category_id) ?? new Map<number, number>();
+      perYear.set(year, (perYear.get(year) ?? 0) + Number(t.amount));
+      byYearByCategory.set(t.category_id, perYear);
+    }
+
     const categories = categoryGroups
-      .map((g) => ({
-        categoryId: g.category_id,
-        name: nameById.get(g.category_id) ?? 'Sem categoria',
-        value: Number(g._sum.amount ?? 0),
-      }))
+      .map((g) => {
+        const perYear = byYearByCategory.get(g.category_id);
+        const byYear = perYear
+          ? Array.from(perYear.entries())
+              .map(([year, value]) => ({ year, value }))
+              .sort((a, b) => a.year - b.year)
+          : [];
+
+        return {
+          categoryId: g.category_id,
+          name: nameById.get(g.category_id) ?? 'Sem categoria',
+          value: Number(g._sum.amount ?? 0),
+          // Presente sempre que o período abrange >1 ano; front usa para o
+          // tooltip "Categoria: X | 2025: R$ ... | 2026: R$ ... | Total: R$ ...".
+          byYear: byYear.length > 1 ? byYear : undefined,
+        };
+      })
       .sort((a, b) => b.value - a.value);
 
     return { totalIncome, categories };
@@ -579,19 +632,27 @@ export class TransactionService {
     });
     if (!category) throw new Error('Categoria não encontrada');
 
-    const subcategoryGroups = await prisma.transaction.groupBy({
-      by: ['subcategory_id'],
-      where: {
-        deleted_at: null,
-        NOT: { is_transfer: true },
-        event_date: { gte: startDate, lte: endDate },
-        ...this.buildEntityFilterWhere(filters),
-        // Sempre por último: a subcategoria pedida nunca pode ser sobrescrita
-        // por um category_id vindo do filtro global (Tarefa 5.1).
-        category_id: categoryId,
-      },
-      _sum: { amount: true },
-    });
+    const baseWhere = {
+      deleted_at: null,
+      NOT: { is_transfer: true },
+      event_date: { gte: startDate, lte: endDate },
+      ...this.buildEntityFilterWhere(filters),
+      // Sempre por último: a subcategoria pedida nunca pode ser sobrescrita
+      // por um category_id vindo do filtro global (Tarefa 5.1).
+      category_id: categoryId,
+    };
+
+    const [subcategoryGroups, transactions] = await Promise.all([
+      prisma.transaction.groupBy({
+        by: ['subcategory_id'],
+        where: baseWhere,
+        _sum: { amount: true },
+      }),
+      prisma.transaction.findMany({
+        where: baseWhere,
+        select: { subcategory_id: true, amount: true, event_date: true },
+      }),
+    ]);
 
     const subcategoryIds = subcategoryGroups.map((g) => g.subcategory_id).filter((id): id is string => id !== null);
     const subcategoryNames = subcategoryIds.length > 0
@@ -599,12 +660,31 @@ export class TransactionService {
       : [];
     const nameById = new Map(subcategoryNames.map((s) => [s.id, s.name]));
 
+    const byYearBySubcategory = new Map<string, Map<number, number>>();
+    for (const t of transactions) {
+      const key = t.subcategory_id ?? 'none';
+      const year = t.event_date.getUTCFullYear();
+      const perYear = byYearBySubcategory.get(key) ?? new Map<number, number>();
+      perYear.set(year, (perYear.get(year) ?? 0) + Number(t.amount));
+      byYearBySubcategory.set(key, perYear);
+    }
+
     const subcategories = subcategoryGroups
-      .map((g) => ({
-        subcategoryId: g.subcategory_id,
-        name: g.subcategory_id ? (nameById.get(g.subcategory_id) ?? 'Sem subcategoria') : 'Sem subcategoria',
-        value: Number(g._sum.amount ?? 0),
-      }))
+      .map((g) => {
+        const perYear = byYearBySubcategory.get(g.subcategory_id ?? 'none');
+        const byYear = perYear
+          ? Array.from(perYear.entries())
+              .map(([year, value]) => ({ year, value }))
+              .sort((a, b) => a.year - b.year)
+          : [];
+
+        return {
+          subcategoryId: g.subcategory_id,
+          name: g.subcategory_id ? (nameById.get(g.subcategory_id) ?? 'Sem subcategoria') : 'Sem subcategoria',
+          value: Number(g._sum.amount ?? 0),
+          byYear: byYear.length > 1 ? byYear : undefined,
+        };
+      })
       .sort((a, b) => b.value - a.value);
 
     const total = subcategories.reduce((sum, s) => sum + s.value, 0);

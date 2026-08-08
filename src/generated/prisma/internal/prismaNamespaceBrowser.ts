@@ -87,7 +87,8 @@ export const ModelName = {
   Invoice: 'Invoice',
   RecurringConfig: 'RecurringConfig',
   Planning: 'Planning',
-  PlanningMonth: 'PlanningMonth'
+  PlanningMonth: 'PlanningMonth',
+  IptuAuditSettings: 'IptuAuditSettings'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -361,6 +362,7 @@ export const DocumentScalarFieldEnum = {
   company_id: 'company_id',
   property_id: 'property_id',
   lease_id: 'lease_id',
+  transaction_id: 'transaction_id',
   created_by: 'created_by',
   file_path: 'file_path',
   file_type: 'file_type',
@@ -825,6 +827,20 @@ export const PlanningMonthScalarFieldEnum = {
 } as const
 
 export type PlanningMonthScalarFieldEnum = (typeof PlanningMonthScalarFieldEnum)[keyof typeof PlanningMonthScalarFieldEnum]
+
+
+export const IptuAuditSettingsScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  income_category_id: 'income_category_id',
+  income_subcategory_id: 'income_subcategory_id',
+  expense_category_id: 'expense_category_id',
+  expense_subcategory_id: 'expense_subcategory_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type IptuAuditSettingsScalarFieldEnum = (typeof IptuAuditSettingsScalarFieldEnum)[keyof typeof IptuAuditSettingsScalarFieldEnum]
 
 
 export const SortOrder = {

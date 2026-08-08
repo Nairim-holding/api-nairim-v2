@@ -31,8 +31,9 @@ import { StorageUsageService, invalidateStorageUsageCache } from './StorageUsage
 
 const MB = 1024 * 1024;
 const url = (key: string) => `${PREFIX}${key}`;
-const propertyDoc = (key: string) => ({ file_path: url(key), property_id: 'prop-1', lease_id: null });
-const leaseDoc = (key: string) => ({ file_path: url(key), property_id: null, lease_id: 'lease-1' });
+const propertyDoc = (key: string) => ({ file_path: url(key), property_id: 'prop-1', lease_id: null, transaction_id: null });
+const leaseDoc = (key: string) => ({ file_path: url(key), property_id: null, lease_id: 'lease-1', transaction_id: null });
+const transactionDoc = (key: string) => ({ file_path: url(key), property_id: null, lease_id: null, transaction_id: 'txn-1' });
 const groupOf = <T extends { key: string }>(groups: T[], key: string): T => groups.find((g) => g.key === key)!;
 
 /** Carimbo do estado das mídias: muda quando um documento entra/sai ou o branding é alterado. */
@@ -147,17 +148,26 @@ describe('StorageUsageService.getStorageUsage', () => {
     listAllObjects.mockResolvedValue([{ key: 'properties/prop-1/foto.jpg', size: 1 * MB }]);
 
     const semOutros = await StorageUsageService.getStorageUsage('company-1');
-    expect(semOutros.groups.map((g) => g.key)).toEqual(['properties', 'leases', 'company']);
+    expect(semOutros.groups.map((g) => g.key)).toEqual(['properties', 'leases', 'transactions', 'company']);
 
     invalidateStorageUsageCache();
     documentFindMany.mockResolvedValue([
-      { file_path: url('properties/documents/solto.pdf'), property_id: null, lease_id: null },
+      { file_path: url('properties/documents/solto.pdf'), property_id: null, lease_id: null, transaction_id: null },
     ]);
     listAllObjects.mockResolvedValue([{ key: 'properties/documents/solto.pdf', size: 1 * MB }]);
 
     const comOutros = await StorageUsageService.getStorageUsage('company-1');
     expect(groupOf(comOutros.groups, 'other')).toMatchObject({ label: 'Outros', megabytes: 1 });
     expect(comOutros.totalMegabytes).toBe(1);
+  });
+
+  it('agrupa anexos de lançamentos financeiros em "transactions"', async () => {
+    documentFindMany.mockResolvedValue([transactionDoc('transactions/attachments/boleto.pdf')]);
+    listAllObjects.mockResolvedValue([{ key: 'transactions/attachments/boleto.pdf', size: 1 * MB }]);
+
+    const usage = await StorageUsageService.getStorageUsage('company-1');
+
+    expect(groupOf(usage.groups, 'transactions')).toMatchObject({ label: 'Lançamentos Financeiros', megabytes: 1, files: 1 });
   });
 
   it('reflete um anexo novo imediatamente, sem esperar o TTL do cache', async () => {

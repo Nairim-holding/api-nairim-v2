@@ -420,7 +420,8 @@ export const ModelName = {
   Invoice: 'Invoice',
   RecurringConfig: 'RecurringConfig',
   Planning: 'Planning',
-  PlanningMonth: 'PlanningMonth'
+  PlanningMonth: 'PlanningMonth',
+  IptuAuditSettings: 'IptuAuditSettings'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -436,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "company" | "companyBranding" | "agency" | "property" | "propertyIptu" | "user" | "userAccessSchedule" | "userGroup" | "userGroupPermission" | "auditLog" | "userColumnPreference" | "userDashboardLayout" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth"
+    modelProps: "company" | "companyBranding" | "agency" | "property" | "propertyIptu" | "user" | "userAccessSchedule" | "userGroup" | "userGroupPermission" | "auditLog" | "userColumnPreference" | "userDashboardLayout" | "document" | "owner" | "tenant" | "lease" | "propertyValue" | "propertyType" | "address" | "contact" | "favorite" | "agencyAddress" | "propertyAddress" | "ownerAddress" | "tenantAddress" | "financialInstitution" | "category" | "subcategory" | "card" | "center" | "supplier" | "supplierAddress" | "transaction" | "invoice" | "recurringConfig" | "planning" | "planningMonth" | "iptuAuditSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3178,6 +3179,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    IptuAuditSettings: {
+      payload: Prisma.$IptuAuditSettingsPayload<ExtArgs>
+      fields: Prisma.IptuAuditSettingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IptuAuditSettingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IptuAuditSettingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        findFirst: {
+          args: Prisma.IptuAuditSettingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IptuAuditSettingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        findMany: {
+          args: Prisma.IptuAuditSettingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>[]
+        }
+        create: {
+          args: Prisma.IptuAuditSettingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        createMany: {
+          args: Prisma.IptuAuditSettingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IptuAuditSettingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>[]
+        }
+        delete: {
+          args: Prisma.IptuAuditSettingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        update: {
+          args: Prisma.IptuAuditSettingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.IptuAuditSettingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IptuAuditSettingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IptuAuditSettingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.IptuAuditSettingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IptuAuditSettingsPayload>
+        }
+        aggregate: {
+          args: Prisma.IptuAuditSettingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIptuAuditSettings>
+        }
+        groupBy: {
+          args: Prisma.IptuAuditSettingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IptuAuditSettingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IptuAuditSettingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IptuAuditSettingsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3472,6 +3547,7 @@ export const DocumentScalarFieldEnum = {
   company_id: 'company_id',
   property_id: 'property_id',
   lease_id: 'lease_id',
+  transaction_id: 'transaction_id',
   created_by: 'created_by',
   file_path: 'file_path',
   file_type: 'file_type',
@@ -3938,6 +4014,20 @@ export const PlanningMonthScalarFieldEnum = {
 export type PlanningMonthScalarFieldEnum = (typeof PlanningMonthScalarFieldEnum)[keyof typeof PlanningMonthScalarFieldEnum]
 
 
+export const IptuAuditSettingsScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  income_category_id: 'income_category_id',
+  income_subcategory_id: 'income_subcategory_id',
+  expense_category_id: 'expense_category_id',
+  expense_subcategory_id: 'expense_subcategory_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type IptuAuditSettingsScalarFieldEnum = (typeof IptuAuditSettingsScalarFieldEnum)[keyof typeof IptuAuditSettingsScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4396,6 +4486,7 @@ export type GlobalOmitConfig = {
   recurringConfig?: Prisma.RecurringConfigOmit
   planning?: Prisma.PlanningOmit
   planningMonth?: Prisma.PlanningMonthOmit
+  iptuAuditSettings?: Prisma.IptuAuditSettingsOmit
 }
 
 /* Types for Logging */

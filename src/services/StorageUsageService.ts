@@ -33,16 +33,17 @@ const toMegabytes = (bytes: number) => Math.round((bytes / BYTES_PER_MB) * 100) 
 const GROUP_LABELS: Record<string, string> = {
   properties: 'Imóveis',
   leases: 'Locações',
+  transactions: 'Lançamentos Financeiros',
   company: 'Identidade Visual',
   other: 'Outros',
 };
 
-const FIXED_GROUPS = ['properties', 'leases', 'company'] as const;
+const FIXED_GROUPS = ['properties', 'leases', 'transactions', 'company'] as const;
 
 /**
- * Cache do inventário do bucket. É global (não por empresa) porque a listagem é
- * do bucket inteiro — uma varredura serve todas as empresas dentro da janela do
- * TTL. Sem isso, cada abertura do dashboard pagaria uma varredura completa.
+ * Cache do inventário do bucket, por empresa. É por empresa porque a listagem
+ * do bucket retorna tudo, mas cada empresa só vê seus próprios documentos.
+ * Sem isso, cada abertura do dashboard pagaria uma varredura completa.
  *
  * O TTL sozinho não basta: um anexo enviado agora só apareceria no gráfico
  * quando a janela expirasse. Por isso o cache também guarda um "carimbo" do
@@ -51,29 +52,35 @@ const FIXED_GROUPS = ['properties', 'leases', 'company'] as const;
  * listar o bucket a cada requisição.
  */
 const BUCKET_CACHE_TTL_MS = 5 * 60 * 1000;
-let bucketCache: { objects: MinioObjectInfo[]; fetchedAt: number; stamp: string } | null = null;
-let bucketInFlight: Promise<MinioObjectInfo[]> | null = null;
+const bucketCacheByCompany = new Map<string, { objects: MinioObjectInfo[]; fetchedAt: number; stamp: string }>();
+const bucketInFlightByCompany = new Map<string, Promise<MinioObjectInfo[]>>();
 
-export function invalidateStorageUsageCache(): void {
-  bucketCache = null;
+export function invalidateStorageUsageCache(companyId?: string): void {
+  if (companyId) {
+    bucketCacheByCompany.delete(companyId);
+    bucketInFlightByCompany.delete(companyId);
+  } else {
+    bucketCacheByCompany.clear();
+    bucketInFlightByCompany.clear();
+  }
 }
 
 /**
- * Assinatura barata do estado dos anexos, global a todas as empresas (o cache
- * também é). Cobre as duas origens de mídia: `Document` (imóveis e locações) e
- * `CompanyBranding` (logo, favicon e demais assets da empresa) — sem a segunda,
- * subir um logo não invalidaria o cache e o grupo "Empresa" ficaria parado.
+ * Assinatura barata do estado dos anexos da empresa. Cobre as duas origens de
+ * mídia: `Document` (imóveis e locações) e `CompanyBranding` (logo, favicon e
+ * demais assets da empresa) — sem a segunda, subir um logo não invalidaria o
+ * cache e o grupo "Empresa" ficaria parado.
  *
- * Vai por $queryRaw de propósito: a extensão de tenant do Prisma injeta
- * company_id nas agregações, e aqui o número precisa ser do banco todo.
+ * Vai por $queryRaw para filtrar por company_id explicitamente, já que essa é a
+ * única maneira de garantir que o cache respeita os limites de multi-tenant.
  */
-async function getMediaStamp(): Promise<string> {
+async function getMediaStamp(companyId: string): Promise<string> {
   const rows = await prisma.$queryRaw<
     Array<{ docs: bigint; docs_last: Date | null; branding_last: Date | null }>
   >`
-    SELECT (SELECT COUNT(*)::bigint    FROM "Document" WHERE deleted_at IS NULL) AS docs,
-           (SELECT MAX(updated_at)     FROM "Document" WHERE deleted_at IS NULL) AS docs_last,
-           (SELECT MAX(updated_at)     FROM "CompanyBranding")                   AS branding_last
+    SELECT (SELECT COUNT(*)::bigint    FROM "Document" WHERE company_id = ${companyId} AND deleted_at IS NULL) AS docs,
+           (SELECT MAX(updated_at)     FROM "Document" WHERE company_id = ${companyId} AND deleted_at IS NULL) AS docs_last,
+           (SELECT MAX(updated_at)     FROM "CompanyBranding" WHERE company_id = ${companyId})                    AS branding_last
   `;
 
   const row = rows[0];
@@ -84,31 +91,33 @@ async function getMediaStamp(): Promise<string> {
   ].join(':');
 }
 
-async function getBucketObjects(forceRefresh: boolean): Promise<MinioObjectInfo[]> {
-  if (forceRefresh) bucketCache = null;
+async function getBucketObjects(companyId: string, forceRefresh: boolean): Promise<MinioObjectInfo[]> {
+  if (forceRefresh) bucketCacheByCompany.delete(companyId);
 
-  if (bucketCache && Date.now() - bucketCache.fetchedAt < BUCKET_CACHE_TTL_MS) {
+  const cachedEntry = bucketCacheByCompany.get(companyId);
+  if (cachedEntry && Date.now() - cachedEntry.fetchedAt < BUCKET_CACHE_TTL_MS) {
     // Se um anexo entrou ou saiu desde a varredura, o cache está velho mesmo
     // dentro do TTL. Falha na conferência não derruba a resposta: nesse caso
     // vale mais servir o número cacheado do que quebrar o gráfico.
-    const stamp = await getMediaStamp().catch(() => bucketCache?.stamp);
-    if (stamp === bucketCache.stamp) return bucketCache.objects;
-    bucketCache = null;
+    const stamp = await getMediaStamp(companyId).catch(() => cachedEntry?.stamp);
+    if (stamp === cachedEntry.stamp) return cachedEntry.objects;
+    bucketCacheByCompany.delete(companyId);
   }
 
   // Requisições concorrentes com o cache frio compartilham a mesma varredura.
-  if (!bucketInFlight) {
-    bucketInFlight = Promise.all([MinioService.listAllObjects(), getMediaStamp()])
+  if (!bucketInFlightByCompany.has(companyId)) {
+    const inFlight = Promise.all([MinioService.listAllObjects(), getMediaStamp(companyId)])
       .then(([objects, stamp]) => {
-        bucketCache = { objects, fetchedAt: Date.now(), stamp };
+        bucketCacheByCompany.set(companyId, { objects, fetchedAt: Date.now(), stamp });
         return objects;
       })
       .finally(() => {
-        bucketInFlight = null;
+        bucketInFlightByCompany.delete(companyId);
       });
+    bucketInFlightByCompany.set(companyId, inFlight);
   }
 
-  return bucketInFlight;
+  return bucketInFlightByCompany.get(companyId)!;
 }
 
 /**
@@ -169,7 +178,7 @@ export class StorageUsageService {
     const [documents, branding, objects] = await Promise.all([
       prisma.document.findMany({
         where: { deleted_at: null },
-        select: { file_path: true, property_id: true, lease_id: true },
+        select: { file_path: true, property_id: true, lease_id: true, transaction_id: true },
       }),
       prisma.companyBranding.findUnique({
         where: { company_id: companyId },
@@ -181,7 +190,7 @@ export class StorageUsageService {
           og_image_url: true,
         },
       }),
-      getBucketObjects(forceRefresh),
+      getBucketObjects(companyId, forceRefresh),
     ]);
 
     const bucketIndex = indexBucket(objects);
@@ -211,8 +220,19 @@ export class StorageUsageService {
     };
 
     for (const document of documents) {
-      const group = document.property_id ? 'properties' : document.lease_id ? 'leases' : 'other';
+      const group = document.property_id
+        ? 'properties'
+        : document.lease_id
+        ? 'leases'
+        : document.transaction_id
+        ? 'transactions'
+        : 'other';
       addFile(group, document.file_path);
+    }
+
+    // Debug: log quantos documentos e keys foram encontrados
+    if (documents.length > 0) {
+      console.log(`[StorageUsageService] companyId=${companyId}: ${documents.length} documentos, ${bucketKeysByGroup.size} grupos com keys, ${objects.length} objetos no bucket`);
     }
 
     for (const url of Object.values(branding ?? {})) {

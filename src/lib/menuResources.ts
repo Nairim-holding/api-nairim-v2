@@ -185,6 +185,15 @@ export const MENU_RESOURCES: MenuResource[] = [
     actions: ['view', 'export'],
     routes: ['/financial-reports'],
   },
+  {
+    key: 'financial-audit',
+    label: 'Auditoria',
+    group: 'Financeiro',
+    // 'edit' cobre salvar a configuração (botão Engrenagem) das categorias
+    // comparadas — o módulo não cadastra nada, só compara lançamentos existentes.
+    actions: ['view', 'edit', 'export'],
+    routes: ['/financial-audit'],
+  },
 
   // ─── Configurações ─────────────────────────────────────────────────────────
   {
